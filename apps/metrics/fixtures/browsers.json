@@ -1,0 +1,443 @@
+[
+  {
+    "model": "metrics.Browser",
+    "pk": 1,
+    "fields": {
+      "lft": 1,
+      "rght": 12,
+      "tree_id": 1,
+      "level": 0,
+      "parent": null,
+      "index": 1,
+      "name": "Internet Explorer",
+      "token": "MSIE"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 30,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 1,
+      "name": "Internet Explorer 11",
+      "token": "MSIE 11"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 2,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 2,
+      "name": "Internet Explorer 10",
+      "token": "MSIE 10"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 3,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 3,
+      "name": "Internet Explorer 9",
+      "token": "MSIE 9"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 4,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 4,
+      "name": "Internet Explorer 8",
+      "token": "MSIE 8"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 5,
+    "fields": {
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 5,
+      "name": "Internet Explorer 7",
+      "token": "MSIE 7"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 6,
+    "fields": {
+      "lft": 12,
+      "rght": 13,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "index": 6,
+      "name": "Internet Explorer 6",
+      "token": "MSIE 6"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 7,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 2,
+      "level": 0,
+      "parent": null,
+      "index": 2,
+      "name": "Opera Mobile",
+      "token": "Opera Mobi"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 8,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 3,
+      "level": 0,
+      "parent": null,
+      "index": 3,
+      "name": "Opera Mini",
+      "token": "Opera Mini"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 9,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 4,
+      "level": 0,
+      "parent": null,
+      "index": 4,
+      "name": "Opera",
+      "token": "(Opera|OPR)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 10,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 5,
+      "level": 0,
+      "parent": null,
+      "index": 5,
+      "name": "rekonq",
+      "token": "rekonq"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 11,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 6,
+      "level": 0,
+      "parent": null,
+      "index": 6,
+      "name": "Konqueror",
+      "token": "Konqueror"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 12,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 7,
+      "level": 0,
+      "parent": null,
+      "index": 7,
+      "name": "Epiphany",
+      "token": "Epiphany"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 13,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 8,
+      "level": 0,
+      "parent": null,
+      "index": 8,
+      "name": "Midori",
+      "token": "Midori"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 14,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 9,
+      "level": 0,
+      "parent": null,
+      "index": 9,
+      "name": "Dolphin",
+      "token": "Dol(ph|f)in",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 20,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 10,
+      "level": 0,
+      "parent": null,
+      "index": 10,
+      "name": "Maxthon",
+      "token": "Maxthon"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 21,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 11,
+      "level": 0,
+      "parent": null,
+      "index": 11,
+      "name": "RockMelt",
+      "token": "RockMelt"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 26,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 12,
+      "level": 0,
+      "parent": null,
+      "index": 12,
+      "name": "Baidu Browser",
+      "token": "baidubrowser"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 27,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 13,
+      "level": 0,
+      "parent": null,
+      "index": 13,
+      "name": "Yandex.Browser",
+      "token": "YaBrowser"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 15,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 14,
+      "level": 0,
+      "parent": null,
+      "index": 14,
+      "name": "Android Browser",
+      "token": "Android[^)]+\\) AppleWebKit[^)]+\\) Version/[.0-9]+( Mobile)? Safari/[.0-9]+",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 31,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 15,
+      "level": 0,
+      "parent": null,
+      "index": 15,
+      "name": "BlackBerry Browser",
+      "token": "(BlackBerry|RIM|BB[0-9]+)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 29,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 16,
+      "level": 0,
+      "parent": null,
+      "index": 16,
+      "name": "Nokia Browser",
+      "token": "(NokiaBrowser|BrowserNG|S(eries)?60|Sym(bian|OS))",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 28,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 17,
+      "level": 0,
+      "parent": null,
+      "index": 17,
+      "name": "Nokia Xpress Browser",
+      "token": "(OviBrowser|S(eries)?40)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 22,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 18,
+      "level": 0,
+      "parent": null,
+      "index": 18,
+      "name": "Iron",
+      "token": "Iron"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 16,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 19,
+      "level": 0,
+      "parent": null,
+      "index": 19,
+      "name": "Chromium",
+      "token": "Chromium"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 17,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 20,
+      "level": 0,
+      "parent": null,
+      "index": 20,
+      "name": "Chrome",
+      "token": "Chrome"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 18,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 21,
+      "level": 0,
+      "parent": null,
+      "index": 21,
+      "name": "Firefox",
+      "token": "Firefox"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 23,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 22,
+      "level": 0,
+      "parent": null,
+      "index": 22,
+      "name": "iCab",
+      "token": "iCab"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 19,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 23,
+      "level": 0,
+      "parent": null,
+      "index": 23,
+      "name": "Safari",
+      "token": "(Macintosh|iPhone|iPod|iPad|Windows).+AppleWebKit.+Safari",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 24,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 24,
+      "level": 0,
+      "parent": null,
+      "index": 24,
+      "name": "Lynx",
+      "token": "Lynx"
+    }
+  },
+  {
+    "model": "metrics.Browser",
+    "pk": 25,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 25,
+      "level": 0,
+      "parent": null,
+      "index": 25,
+      "name": "Links",
+      "token": "Links"
+    }
+  }
+]

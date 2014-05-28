@@ -1,0 +1,151 @@
+
+.mdEditorFrame {
+  background: #fdfdfd;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  display: table;
+  height: auto;
+  overflow: hidden;
+  padding: 5px;
+  position: relative;
+  width: auto;
+}
+.mdEditorFrameFocus {
+  background-color: #ffffff;
+  border-color: #aaaaaa;
+  box-shadow: 0 0 6px #cccccc;
+}
+
+.mdEditorWindow {
+  height: 342px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  resize: both;
+  width: 746px;
+}
+
+.mdEditorCanvas {
+  display: table;
+}
+
+.mdEditorTextArea {
+  background: none;
+  border: 0 none;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: bold;
+  min-height: 100%;
+  padding: 0 5px 0 0;
+  overflow: hidden;
+  position: absolute;
+  resize: none;
+  width: 50% !important;
+  width: calc(50% - 1px) !important;
+}
+.mdEditorTextArea:focus {
+  background: none;
+  border: 0 none;
+  box-shadow: none;
+}
+
+.mdEditorSeparator {
+  background: #eeeeee;
+  bottom: 0;
+  position: absolute;
+  right: 50%;
+  top: 0;
+  width: 1px;
+}
+
+.mdEditorPreview {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+  margin: 0 0 10px 0;
+  padding: 10px 5px 0 10px;
+  position: absolute;
+  resize: none;
+  right: 0;
+  top: 0;
+  width: 50%;
+}
+.mdEditorPreview a:hover {
+  text-decoration: underline;
+}
+.mdEditorPreview blockquote {
+  border-left: 10px solid #a1d4e5;
+  margin: 0 20px 16px 20px;
+  padding: 0 10px;
+}
+.mdEditorPreview code {
+  background: #e1f0f5;
+  border: 1px solid #309bbf;
+  border-radius: 2px;
+  font-family: "Andale Mono WT", "Andale Mono", "Lucida Console",
+   "Lucida Sans Typewriter", "DejaVu Sans Mono",
+   "Bitstream Vera Sans Mono", Monaco, "Courier New",
+   monospace;
+  font-size: 12px;
+  margin: 0 1px;
+  padding: 2px 3px 1px 3px;
+}
+.mdEditorPreview h1,
+.mdEditorPreview h2,
+.mdEditorPreview h3,
+.mdEditorPreview h4,
+.mdEditorPreview h5,
+.mdEditorPreview h6 {
+  background: none;
+  border: 0 none;
+  margin: 0 0 16px 0;
+  padding: 0;
+  text-shadow: none;
+}
+.mdEditorPreview hr {
+  background: none;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid #bcdfeb;
+  display: block;
+  height: 1px;
+  margin: 16px 0;
+  padding: 0;
+}
+.mdEditorPreview img {
+  border: 0 none;
+}
+.mdEditorPreview ol,
+.mdEditorPreview ul {
+  list-style: decimal;
+  margin: 0 0 16px 0;
+  padding: 0 0 0 40px;
+}
+.mdEditorPreview ul {
+  list-style: disc;
+}
+.mdEditorPreview ol ol,
+.mdEditorPreview ol ul,
+.mdEditorPreview ul ol,
+.mdEditorPreview ul ul {
+  list-style: lower-alpha;
+  margin: 8px 0;
+  padding: 0 0 0 30px;
+}
+.mdEditorPreview ol ul,
+.mdEditorPreview ul ul {
+  list-style: circle;
+}
+.mdEditorPreview p {
+  margin: 0 0 16px 0;
+}
+.mdEditorPreview pre {
+  margin: 16px 0;
+}
+.mdEditorPreview pre code {
+  display: block;
+  padding: 6px 8px 5px 8px;
+}

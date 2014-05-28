@@ -1,0 +1,886 @@
+[
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-C",
+      "name": "A Coruña",
+      "name_de": "A Coruña",
+      "name_en": "La Corunna",
+      "name_es": "La Coruña",
+      "name_fr": "La Corogne",
+      "name_pt": "Corunha",
+      "name_ru": "Ла-Корунья",
+      "name_zh": "拉科魯尼亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 2,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-VI",
+      "name": "Araba / Álava",
+      "name_de": "Álava",
+      "name_en": "Álava",
+      "name_es": "Álava",
+      "name_fr": "Álava",
+      "name_pt": "Álava",
+      "name_ru": "Алава",
+      "name_zh": "阿拉瓦省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 3,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-AB",
+      "name": "Albacete",
+      "name_de": "Albacete",
+      "name_en": "Albacete",
+      "name_es": "Albacete",
+      "name_fr": "Albacete",
+      "name_pt": "Albacete",
+      "name_ru": "Альбасете",
+      "name_zh": "阿爾瓦塞特省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 4,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-A",
+      "name": "Alacant / Alicante",
+      "name_de": "Alicante",
+      "name_en": "Alicante",
+      "name_es": "Alicante",
+      "name_fr": "Alicante",
+      "name_pt": "Alicante",
+      "name_ru": "Аликанте",
+      "name_zh": "阿利坎特省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 5,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-AL",
+      "name": "Almería",
+      "name_de": "Almería",
+      "name_en": "Almería",
+      "name_es": "Almería",
+      "name_fr": "Almería",
+      "name_pt": "Almería",
+      "name_ru": "Альмерия",
+      "name_zh": "阿爾梅里亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 6,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-AS",
+      "name": "Asturias",
+      "name_de": "Asturien",
+      "name_en": "Asturias",
+      "name_es": "Asturias",
+      "name_fr": "Asturies",
+      "name_pt": "Astúrias",
+      "name_ru": "Астурия",
+      "name_zh": "阿斯圖里亞斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 7,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-AV",
+      "name": "Ávila",
+      "name_de": "Ávila",
+      "name_en": "Ávila",
+      "name_es": "Ávila",
+      "name_fr": "Ávila",
+      "name_pt": "Ávila",
+      "name_ru": "Авила",
+      "name_zh": "阿維拉省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 8,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-BA",
+      "name": "Badajoz",
+      "name_de": "Badajoz",
+      "name_en": "Badajoz",
+      "name_es": "Badajoz",
+      "name_fr": "Badajoz",
+      "name_pt": "Badajoz",
+      "name_ru": "Бадахос",
+      "name_zh": "巴達霍斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 9,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-PM",
+      "name": "Illes Balears",
+      "name_de": "Balearen",
+      "name_en": "Balearic Islands",
+      "name_es": "Islas Baleares",
+      "name_fr": "Îles Baléares",
+      "name_pt": "Ilhas Baleares",
+      "name_ru": "Балеарские острова",
+      "name_zh": "巴利亞利省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 10,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-B",
+      "name": "Barcelona",
+      "name_de": "Barcelona",
+      "name_en": "Barcelona",
+      "name_es": "Barcelona",
+      "name_fr": "Barcelone",
+      "name_pt": "Barcelona",
+      "name_ru": "Барселона",
+      "name_zh": "巴塞隆納省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 11,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-BU",
+      "name": "Burgos",
+      "name_de": "Burgos",
+      "name_en": "Burgos",
+      "name_es": "Burgos",
+      "name_fr": "Burgos",
+      "name_pt": "Burgos",
+      "name_ru": "Бургос",
+      "name_zh": "布爾戈斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 12,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CC",
+      "name": "Cáceres",
+      "name_de": "Cáceres",
+      "name_en": "Cáceres",
+      "name_es": "Cáceres",
+      "name_fr": "Cáceres",
+      "name_pt": "Cáceres",
+      "name_ru": "Касерес",
+      "name_zh": "卡塞雷斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 13,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CA",
+      "name": "Cádiz",
+      "name_de": "Cádiz",
+      "name_en": "Cádiz",
+      "name_es": "Cádiz",
+      "name_fr": "Cadix",
+      "name_pt": "Cádis",
+      "name_ru": "Кадис",
+      "name_zh": "加的斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 14,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CB",
+      "name": "Cantabria",
+      "name_de": "Kantabrien",
+      "name_en": "Cantabria",
+      "name_es": "Cantabria",
+      "name_fr": "Cantabrie",
+      "name_pt": "Cantabria",
+      "name_ru": "Кантабрия",
+      "name_zh": "坎塔布里亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 15,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CS",
+      "name": "Castelló / Castellón",
+      "name_de": "Castelló",
+      "name_en": "Castellón",
+      "name_es": "Castellón",
+      "name_fr": "Castellón",
+      "name_pt": "Castellón",
+      "name_ru": "Кастельон",
+      "name_zh": "卡斯特利翁省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 16,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CE",
+      "name": "Ceuta",
+      "name_de": "Ceuta",
+      "name_en": "Ceuta",
+      "name_es": "Ceuta",
+      "name_fr": "Ceuta",
+      "name_pt": "Ceuta",
+      "name_ru": "Сеута",
+      "name_zh": "休達"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 17,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CR",
+      "name": "Ciudad Real",
+      "name_de": "Ciudad Real",
+      "name_en": "Ciudad Real",
+      "name_es": "Ciudad Real",
+      "name_fr": "Ciudad Real",
+      "name_pt": "Ciudad Real",
+      "name_ru": "Сьюдад-Реаль",
+      "name_zh": "雷阿爾城省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 18,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CO",
+      "name": "Córdoba",
+      "name_de": "Córdoba",
+      "name_en": "Cordova",
+      "name_es": "Córdoba",
+      "name_fr": "Cordoue",
+      "name_pt": "Córdoba",
+      "name_ru": "Кордова",
+      "name_zh": "哥多華省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 19,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-CU",
+      "name": "Cuenca",
+      "name_de": "Cuenca",
+      "name_en": "Cuenca",
+      "name_es": "Cuenca",
+      "name_fr": "Cuenca",
+      "name_pt": "Cuenca",
+      "name_ru": "Куэнка",
+      "name_zh": "昆卡省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 20,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-GI",
+      "name": "Girona",
+      "name_de": "Girona",
+      "name_en": "Gerona",
+      "name_es": "Gerona",
+      "name_fr": "Gérone",
+      "name_pt": "Gerunda",
+      "name_ru": "Херона",
+      "name_zh": "赫羅納省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 21,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-GR",
+      "name": "Granada",
+      "name_de": "Granada",
+      "name_en": "Granada",
+      "name_es": "Granada",
+      "name_fr": "Granade",
+      "name_pt": "Granada",
+      "name_ru": "Гранада",
+      "name_zh": "格拉納達省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 22,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-GU",
+      "name": "Guadalajara",
+      "name_de": "Guadalajara",
+      "name_en": "Guadalajara",
+      "name_es": "Guadalajara",
+      "name_fr": "Guadalajara",
+      "name_pt": "Guadalajara",
+      "name_ru": "Гвадалахара",
+      "name_zh": "瓜達拉哈拉省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 23,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-SS",
+      "name": "Gipuzkoa",
+      "name_de": "Gipuzkoa",
+      "name_en": "Guipuscoa",
+      "name_es": "Guipúzcoa",
+      "name_fr": "Guipuscoa",
+      "name_pt": "Guipúscoa",
+      "name_ru": "Гипускоа",
+      "name_zh": "吉普斯誇省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 24,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-H",
+      "name": "Huelva",
+      "name_de": "Huelva",
+      "name_en": "Huelva",
+      "name_es": "Huelva",
+      "name_fr": "Huelva",
+      "name_pt": "Huelva",
+      "name_ru": "Уэльва",
+      "name_zh": "韋爾瓦省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 25,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-HU",
+      "name": "Uesca / Huesca",
+      "name_de": "Huesca",
+      "name_en": "Huesca",
+      "name_es": "Huesca",
+      "name_fr": "Huesca",
+      "name_pt": "Huesca",
+      "name_ru": "Уэска",
+      "name_zh": "韋斯卡省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 26,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-J",
+      "name": "Jaén",
+      "name_de": "Jaén",
+      "name_en": "Jaén",
+      "name_es": "Jaén",
+      "name_fr": "Jaén",
+      "name_pt": "Jaén",
+      "name_ru": "Хаэн",
+      "name_zh": "哈恩省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 27,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-RI",
+      "name": "La Rioja",
+      "name_de": "La Rioja",
+      "name_en": "La Rioja",
+      "name_es": "La Rioja",
+      "name_fr": "La Rioja",
+      "name_pt": "La Rioja",
+      "name_ru": "Ла-Риоха",
+      "name_zh": "拉里奧哈省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 28,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-GC",
+      "name": "Las Palmas",
+      "name_de": "Las Palmas",
+      "name_en": "Las Palmas",
+      "name_es": "Las Palmas",
+      "name_fr": "Las Palmas",
+      "name_pt": "Las Palmas",
+      "name_ru": "Лас-Пальмас",
+      "name_zh": "拉斯帕爾馬斯省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 29,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-LE",
+      "name": "León",
+      "name_de": "León",
+      "name_en": "León",
+      "name_es": "León",
+      "name_fr": "León",
+      "name_pt": "León",
+      "name_ru": "Леон",
+      "name_zh": "雷昂省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 30,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-L",
+      "name": "Lleida",
+      "name_de": "Lleida",
+      "name_en": "Lérida",
+      "name_es": "Lérida",
+      "name_fr": "Lérida",
+      "name_pt": "Lérida",
+      "name_ru": "Лерида",
+      "name_zh": "萊里達省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 31,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-LU",
+      "name": "Lugo",
+      "name_de": "Lugo",
+      "name_en": "Lugo",
+      "name_es": "Lugo",
+      "name_fr": "Lugo",
+      "name_pt": "Lugo",
+      "name_ru": "Луго",
+      "name_zh": "盧戈省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 32,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-MD",
+      "name": "Madrid",
+      "name_de": "Madrid",
+      "name_en": "Madrid",
+      "name_es": "Madrid",
+      "name_fr": "Madrid",
+      "name_pt": "Madrid",
+      "name_ru": "Мадрид",
+      "name_zh": "馬德里省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 33,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-MA",
+      "name": "Málaga",
+      "name_de": "Málaga",
+      "name_en": "Málaga",
+      "name_es": "Málaga",
+      "name_fr": "Málaga",
+      "name_pt": "Málaga",
+      "name_ru": "Малага",
+      "name_zh": "馬拉加省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 34,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-ML",
+      "name": "Melilla",
+      "name_de": "Melilla",
+      "name_en": "Melilla",
+      "name_es": "Melilla",
+      "name_fr": "Melilla",
+      "name_pt": "Melilla",
+      "name_ru": "Мелилья",
+      "name_zh": "梅利利亞"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 35,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-MC",
+      "name": "Murcia",
+      "name_de": "Murcia",
+      "name_en": "Murcia",
+      "name_es": "Murcia",
+      "name_fr": "Murcie",
+      "name_pt": "Múrcia",
+      "name_ru": "Мурсия",
+      "name_zh": "莫夕亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 36,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-NC",
+      "name": "Navarra",
+      "name_de": "Navarra",
+      "name_en": "Navarre",
+      "name_es": "Navarra",
+      "name_fr": "Navarre",
+      "name_pt": "Navarra",
+      "name_ru": "Наварра",
+      "name_zh": "納瓦拉省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 37,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-OR",
+      "name": "Ourense",
+      "name_de": "Ourense",
+      "name_en": "Orense",
+      "name_es": "Orense",
+      "name_fr": "Orense",
+      "name_pt": "Ourense",
+      "name_ru": "Оренсе",
+      "name_zh": "奧倫塞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 38,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-P",
+      "name": "Palencia",
+      "name_de": "Palencia",
+      "name_en": "Palencia",
+      "name_es": "Palencia",
+      "name_fr": "Palencia",
+      "name_pt": "Palência",
+      "name_ru": "Паленсия",
+      "name_zh": "帕倫西亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 39,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-PO",
+      "name": "Pontevedra",
+      "name_de": "Pontevedra",
+      "name_en": "Pontevedra",
+      "name_es": "Pontevedra",
+      "name_fr": "Pontevedra",
+      "name_pt": "Pontevedra",
+      "name_ru": "Понтеведра",
+      "name_zh": "蓬特韋德拉省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 40,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-SA",
+      "name": "Salamanca",
+      "name_de": "Salamanca",
+      "name_en": "Salamanca",
+      "name_es": "Salamanca",
+      "name_fr": "Salamanque",
+      "name_pt": "Salamanca",
+      "name_ru": "Саламанка",
+      "name_zh": "薩拉曼卡省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 41,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-TF",
+      "name": "Santa Cruz de Tenerife",
+      "name_de": "Santa Cruz de Tenerife",
+      "name_en": "Santa Cruz de Tenerife",
+      "name_es": "Santa Cruz de Tenerife",
+      "name_fr": "Santa Cruz de Tenerife",
+      "name_pt": "Santa Cruz de Tenerife",
+      "name_ru": "Санта-Крус-де-Тенерифе",
+      "name_zh": "聖克魯斯-德特內里費省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 42,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-SG",
+      "name": "Segovia",
+      "name_de": "Segovia",
+      "name_en": "Segovia",
+      "name_es": "Segovia",
+      "name_fr": "Ségovie",
+      "name_pt": "Segóvia",
+      "name_ru": "Сеговия",
+      "name_zh": "塞哥維亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 43,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-SE",
+      "name": "Sevilla",
+      "name_de": "Sevilla",
+      "name_en": "Seville",
+      "name_es": "Sevilla",
+      "name_fr": "Séville",
+      "name_pt": "Sevilha",
+      "name_ru": "Севилья",
+      "name_zh": "塞維亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 44,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-SO",
+      "name": "Soria",
+      "name_de": "Soria",
+      "name_en": "Soria",
+      "name_es": "Soria",
+      "name_fr": "Soria",
+      "name_pt": "Sória",
+      "name_ru": "Сория",
+      "name_zh": "索里亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 45,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-T",
+      "name": "Tarragona",
+      "name_de": "Tarragona",
+      "name_en": "Tarragona",
+      "name_es": "Tarragona",
+      "name_fr": "Tarragone",
+      "name_pt": "Tarragona",
+      "name_ru": "Таррагона",
+      "name_zh": "塔拉戈納省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 46,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-TE",
+      "name": "Teruel",
+      "name_de": "Teruel",
+      "name_en": "Teruel",
+      "name_es": "Teruel",
+      "name_fr": "Teruel",
+      "name_pt": "Teruel",
+      "name_ru": "Теруэль",
+      "name_zh": "特魯埃爾省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 47,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-TO",
+      "name": "Toledo",
+      "name_de": "Toledo",
+      "name_en": "Toledo",
+      "name_es": "Toledo",
+      "name_fr": "Tolède",
+      "name_pt": "Toledo",
+      "name_ru": "Толедо",
+      "name_zh": "托萊多省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 48,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-V",
+      "name": "València / Valencia",
+      "name_de": "Valencia",
+      "name_en": "Valencia",
+      "name_es": "Valencia",
+      "name_fr": "Valence",
+      "name_pt": "Valência",
+      "name_ru": "Валенсия",
+      "name_zh": "瓦倫西亞省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 49,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-VA",
+      "name": "Valladolid",
+      "name_de": "Valladolid",
+      "name_en": "Valladolid",
+      "name_es": "Valladolid",
+      "name_fr": "Valladolid",
+      "name_pt": "Valladolid",
+      "name_ru": "Вальядолид",
+      "name_zh": "巴利亞多利德省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 50,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-BI",
+      "name": "Bizkaia",
+      "name_de": "Bizkaia",
+      "name_en": "Biscay",
+      "name_es": "Vizcaya",
+      "name_fr": "Vizcaya",
+      "name_pt": "Biscaia",
+      "name_ru": "Бискайя",
+      "name_zh": "比斯開省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 51,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-ZA",
+      "name": "Zamora",
+      "name_de": "Zamora",
+      "name_en": "Zamora",
+      "name_es": "Zamora",
+      "name_fr": "Zamora",
+      "name_pt": "Zamora",
+      "name_ru": "Самора",
+      "name_zh": "薩莫拉省"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 52,
+    "fields": {
+      "is_enabled": true,
+      "country": 68,
+      "code": "ES-Z",
+      "name": "Zaragoza",
+      "name_de": "Saragossa",
+      "name_en": "Saragossa",
+      "name_es": "Zaragoza",
+      "name_fr": "Saragosse",
+      "name_pt": "Saragoça",
+      "name_ru": "Сарагоса",
+      "name_zh": "薩拉戈薩省"
+    }
+  }
+]

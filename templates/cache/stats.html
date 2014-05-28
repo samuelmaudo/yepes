@@ -1,0 +1,97 @@
+{% extends 'admin/base_site.html' %}
+
+<!-- LOADING -->
+{% load i18n %}
+
+<!-- STYLESHEETS -->
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+      #grp-content-container table { margin-bottom: 2px; }
+      #grp-content-container th { width: 138px; }
+      #grp-content-container td { width: 800px; }
+      .grp-default {
+        background-image: linear-gradient(#D34F4F, #BF3030) !important;
+        border: 1px solid #AB2B2B !important;
+      }
+      .grp-default:hover {
+        background-image: linear-gradient(#FFFFFF, #EEEEEE) !important;
+        border-color: #C8C8C8 !important;
+      }
+    </style>
+{% endblock %}
+
+<!-- BREADCRUMBS -->
+{% block breadcrumbs %}
+    <ul class="grp-horizontal-list">
+      <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+      <li>{{ title }}</li>
+    </ul>
+{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+    <div class="g-d-c">
+      <div class="grp-group">
+        <h2>{% trans 'Analytics on the state of the cache engine.' %}</h2>
+        <table>
+          <tr>
+            <th>{% trans 'Backend' %}:</th>
+            <td>{{ cache_backend }}</td>
+          </tr>
+          <tr>
+            <th>{% trans 'Timeout' %}:</th>
+            <td>{{ cache_timeout }} {% trans 'seconds' %}</td>
+          </tr>
+          <tr>
+            <th>{% trans 'Max size' %}:</th>
+  {% if cache_size %}
+            <td>{{ cache_size }} {% trans 'bytes' %}</td>
+  {% else %}
+            <td>---</td>
+  {% endif %}
+          </tr>
+          <tr>
+            <th>{% trans 'Used' %}:</th>
+  {% if cache_used %}
+            <td>{{ cache_used }} {% trans 'bytes' %} ({{ cache_used_rate }})</td>
+  {% else %}
+            <td>---</td>
+  {% endif %}
+          </tr>
+          <tr>
+            <th>{% trans 'Keys in cache' %}:</th>
+  {% if cache_items %}
+            <td>{{ cache_items }}</td>
+  {% else %}
+            <td>---</td>
+  {% endif %}
+          </tr>
+          <tr>
+            <th>{% trans 'Cache calls' %}:</th>
+  {% if cache_calls %}
+            <td>{{ cache_calls }}</td>
+  {% else %}
+            <td>---</td>
+  {% endif %}
+          </tr>
+          <tr>
+            <th>{% trans 'Cache hits' %}:</th>
+  {% if cache_hits %}
+            <td>{{ cache_hits }} ({{ cache_hit_rate }})</td>
+  {% else %}
+            <td>---</td>
+  {% endif %}
+          </tr>
+        </table>
+      </div>
+      <form method="post">{% csrf_token %}
+        <div class="grp-module grp-submit-row grp-fixed-footer">
+          <ul>
+            <li><input type="submit" value="{% trans 'Flush cache' %}" class="grp-button grp-default" /></li>
+          </ul>
+          <input type="hidden" name="post" value="yes" />
+        </div>
+      </form>
+    </div>
+{% endblock %}

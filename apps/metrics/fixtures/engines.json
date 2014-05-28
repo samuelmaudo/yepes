@@ -1,0 +1,89 @@
+[
+  {
+    "model": "metrics.Engine",
+    "pk": 1,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 1,
+      "level": 0,
+      "parent": null,
+      "index": 1,
+      "name": "Blink",
+      "token": "(Blink|OPR)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Engine",
+    "pk": 2,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 2,
+      "level": 0,
+      "parent": null,
+      "index": 2,
+      "name": "Servo",
+      "token": "Servo"
+    }
+  },
+  {
+    "model": "metrics.Engine",
+    "pk": 3,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 3,
+      "level": 0,
+      "parent": null,
+      "index": 3,
+      "name": "Presto",
+      "token": "(Presto|Opera)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Engine",
+    "pk": 4,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 4,
+      "level": 0,
+      "parent": null,
+      "index": 4,
+      "name": "Trident",
+      "token": "(MSIE|Trident)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Engine",
+    "pk": 5,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 5,
+      "level": 0,
+      "parent": null,
+      "index": 5,
+      "name": "WebKit",
+      "token": "WebKit"
+    }
+  },
+  {
+    "model": "metrics.Engine",
+    "pk": 6,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 6,
+      "level": 0,
+      "parent": null,
+      "index": 6,
+      "name": "Gecko",
+      "token": "Gecko"
+    }
+  }
+]

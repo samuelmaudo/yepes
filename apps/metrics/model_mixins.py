@@ -1,0 +1,59 @@
+# -*- coding:utf-8 -*-
+
+from __future__ import unicode_literals
+
+import re
+
+from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
+
+from yepes.apps.metrics.managers import ParameterManager
+from yepes.model_mixins import Nestable, ParentForeignKey
+
+
+@python_2_unicode_compatible
+class Parameter(Nestable):
+
+    parent = ParentForeignKey(
+            'self',
+            null=True,
+            related_name='children',
+            verbose_name=_('Parent'))
+    index = models.PositiveIntegerField(
+            null=True,
+            blank=True,
+            verbose_name=_('Index'))
+    name = models.CharField(
+            unique=True,
+            max_length=63,
+            verbose_name=_('Name'))
+    token = models.CharField(
+            max_length=255,
+            verbose_name=_('Token'),
+            help_text=_('Used to check the User-Agent strings.'))
+    regex = models.BooleanField(
+            default=False,
+            verbose_name=_('Regular Expression'),
+            help_text=_('Check this if your token is a regular expression.'))
+
+    objects = ParameterManager()
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ('name__icontains', )
+
+    def check(self, user_agent_string):
+        token = self.token.lower()
+        ua = user_agent_string.lower()
+        if self.regex:
+            return (re.search(token, ua) is not None)
+        else:
+            return (token in ua)
+

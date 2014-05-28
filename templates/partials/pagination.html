@@ -1,0 +1,48 @@
+
+    <ul class="pagination">
+{% if page_number > 1 %}
+      <li>
+        <a href="{{ query_string }}page=1" rel="first" class="arrow">&laquo;</a>
+      </li>
+      <li>
+        <a href="{{ query_string }}page={{ previous_page_number }}" rel="prev" class="arrow">&lsaquo;</a>
+      </li>
+{% else %}
+      <li>
+        <span class="inactive arrow">&laquo;</span>
+      </li>
+      <li>
+        <span class="inactive arrow">&lsaquo;</span>
+      </li>
+{% endif %}
+{% for page in visible_page_range %}
+  {% if not page %}
+      <li>
+        <span class="inactive">&hellip;</span>
+      </li>
+  {% elif page == page_number %}
+      <li>
+        <a href="{{ query_string }}page={{ page }}" class="active">{{ page }}</a>
+      </li>
+  {% else %}
+      <li>
+        <a href="{{ query_string }}page={{ page }}">{{ page }}</a>
+      </li>
+  {% endif %}
+{% endfor %}
+{% if page_number < num_pages %}
+      <li>
+        <a href="{{ query_string }}page={{ next_page_number }}" rel="next" class="arrow">&rsaquo;</a>
+      </li>
+      <li>
+        <a href="{{ query_string }}page={{ num_pages }}" rel="last" class="arrow">&raquo;</a>
+      </li>
+{% else %}
+      <li>
+        <span class="inactive arrow">&rsaquo;</span>
+      </li>
+      <li>
+        <span class="inactive arrow">&raquo;</span>
+      </li>
+{% endif %}
+    </ul>

@@ -1,0 +1,175 @@
+{% extends 'admin/base_site.html' %}
+
+<!-- LOADING -->
+{% load i18n %}
+
+<!-- EXTRASTYLES -->
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+      #yps-structure {
+        border: 0 none;
+        height: 100px;
+        padding-bottom: 2px;
+        width: 100%;
+      }
+      #yps-settings {
+        padding: 0;
+      }
+      #yps-settings table {
+        background: #f6f6f6;
+        height: 100%;
+      }
+      #yps-settings th,
+      #yps-settings td {
+        border-left: 0 none;
+        line-height: 15px;
+        white-space: nowrap;
+      }
+      #yps-settings tr:first-child th,
+      #yps-settings tr:first-child td {
+        padding-top: 14px;
+      }
+      #yps-settings tr:last-child th,
+      #yps-settings tr:last-child td {
+        font-size: 0;
+        height: 100%;
+        line-height: 0;
+      }
+      #yps-filters {
+        border-left: 2px solid transparent;
+        padding: 0;
+        width: 100%;
+      }
+      #yps-filters ul {
+        margin: -2px 0 0 0;
+      }
+      #yps-filters li {
+        line-height: 23px;
+      }
+      #yps-filters label {
+        display: inline-block;
+        width: 155px;
+      }
+      #yps-filters input,
+      #yps-filters select {
+        margin-left: 8px;
+      }
+      #yps-filters select:first-of-type {
+        margin-left: none;
+        width: 185px;
+      }
+    </style>
+{% endblock %}
+
+<!-- JAVASCRIPTS -->
+{% block javascripts %}
+    {{ block.super }}
+    <script>
+      (function($) {
+        $(document).ready(function() {
+            grappelli.initDateAndTimePicker();
+        });
+      })(grp.jQuery);
+    </script>
+    {{ media }}
+{% endblock %}
+
+<!-- COLTYPE/BODYCLASS -->
+{% block bodyclass %}grp-delete-confirmation{% endblock %}
+{% block content-class %}{% endblock %}
+
+<!-- BREADCRUMBS -->
+{% block breadcrumbs %}
+    <ul class="grp-horizontal-list">
+      <li><a href="../../../../">{% trans 'Home' %}</a></li>
+      <li><a href="../../../">{% trans app_label|capfirst|escape %}</a></li>
+      <li><a href="../../">{{ opts.verbose_name_plural|capfirst|escape }}</a></li>
+      <li><a href="../">{{ original|truncatewords:'18' }}</a></li>
+      <li>{{ title }}</li>
+    </ul>
+{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+    <form method="post">
+      {% csrf_token %}
+  {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+  {% endfor %}
+      <div class="g-d-c">
+        <div class="grp-group">
+          <h2>{{ subtitle }}</h2>
+          <table id="yps-structure">
+            <tr>
+              <td id="yps-settings">
+                <table>
+                  <tr>
+                    <td>
+                      {% trans 'Newsletter' %}:
+                    </td>
+                    <td>
+                      <div class="grp-readonly">{{ original.newsletter }}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {% trans 'Message' %}:
+                    </td>
+                    <td>
+                      <div class="grp-readonly">{{ original }}</div>
+                    </td>
+                  </tr>
+  {% for field in form.visible_fields %}
+    {% cycle False True as is_even silent %}
+    {% if forloop.counter <= 1 %}
+                  <tr>
+                    <td>
+                      {{ field.label_tag }}
+                    </td>
+                    <td>
+                      {{ field }}
+                      {{ field.errors }}
+                    </td>
+                  </tr>
+    {% endif %}
+    {% if forloop.counter == 1 %}
+                  <tr>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+              <td id="yps-filters">
+                <ul class="grp-nested-list">
+    {% endif %}
+    {% if forloop.counter > 1 %}
+      {% if is_even %}
+                  <li>
+                    {{ field.label_tag }}
+                    {{ field }}
+      {% else %}
+                    {{ field }}
+                    {{ field.errors }}
+                  </li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div id="submit" class="grp-submit-row grp-fixed-footer">
+          <ul>
+            <li class="grp-float-left">
+              <a href="../" class="grp-button grp-cancel-link">{% trans 'Cancel' %}</a>
+            </li>
+            <li>
+              <input type="submit" value="{% trans 'Dispatch' %}" class="grp-button grp-default">
+            </li>
+          </ul>
+          <input type="hidden" name="post" value="yes" />
+        </div>
+      </div>
+    </form>
+{% endblock %}

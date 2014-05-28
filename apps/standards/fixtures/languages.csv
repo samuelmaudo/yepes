@@ -1,0 +1,101 @@
+id;is_enabled;tag;Iso_639_1;Iso_639_2;Iso_639_3;name;name_de;name_en;name_es;name_fr;name_pt;name_ru;name_zh
+1;false;am;am;amh;amh;አማርኛ / Āmariññā;Amharisch;Amharic;Amhárico;Amharique;Amárico;Амхарский;阿姆哈拉语
+2;false;ar;ar;ara;ara;العربية / Al-ʿArabīyah;Arabisch;Arabic;Árabe;Arabe;Árabe;Арабский;阿拉伯语
+3;false;arc;;;arc;ܐܪܡܝܐ‎ / ארמית / Arāmît;Aramäisch;Aramaic;Arameo;Araméen;Aramaico;Арамейские;亚拉姆语
+4;false;as;as;asm;asm;অসমীয়া / Ôxômiya;Assamesisch;Assamese;Asamés;Assamais;Assamês;Ассамский;阿萨姆语
+5;false;az;az;aze;aze;Azərbaycanca;Aserbaidschanisch;Azerbaijani;Azerí;Azéri;Azeri;Азербайджанский;阿塞拜疆语
+6;false;bg;bg;bul;bui;Български / Bulgarski;Bulgarisch;Bulgarian;Búlgaro;Bulgare;Búlgaro;Болгарский;保加利亚语
+7;false;bh;bh;bho;bho;भोजपुरी / Bhōjapurī;Bhojpuri;Bhojpuri;Bopurí;Bhodjpouri;Bhojpuri;Бходжпури;博杰普尔语
+8;false;bn;bn;ben;ben;বাংলা / Bangla;Bengalisch;Bengali;Bengalí;Bengali;Bengali;Бенгальский;孟加拉语
+9;false;ca;ca;cat;cat;Català;Katalanisch;Catalan;Catalán;Catalan;Catalão;Каталанский;加泰罗尼亚语
+10;false;ceb;;ceb;ceb;Sinugboanon;Cebuano;Cebuano;Cebuano;Cebuano;Cebuano;Себуанский;宿务语
+11;false;cs;cs;cze;ces;Česky;Tschechisch;Czech;Checo;Tchèque;Tcheco;Чешский;捷克语
+12;false;cu;cu;chu;chu;Словѣ́ньскъ / Slověnĭskŭ;Kirchenslawisch;Church Slavonic;Eslavo eclesiástico;Slave liturgique;Eslavo eclesiástico;Церковнославянский;教會斯拉夫語
+13;false;da;da;dan;dan;Dansk;Dänisch;Danish;Danés;Danois;Dinamarquês;Датский;丹麦语
+14;false;de;de;ger;deu;Deutsch;Deutsch;German;Alemán;Allemand;Alemão;Немецкий;德语
+15;false;egy;;egy;egy;Aegyptia;Ägyptisch;Egyptian;Egipcio;Égyptien;Egípcio;Египетский;埃及语
+16;false;el;el;gre;ell;Ελληνικά / Ellīniká;Griechisch;Greek;Griego;Grec;Grego;Греческий;希腊语
+17;false;en;en;eng;eng;English;Englisch;English;Inglés;Anglais;Inglês;Английский;英语
+18;false;eo;eo;epo;epo;Esperanto;Esperanto;Esperanto;Esperanto;Espéranto;Esperanto;Эсперанто;世界语
+19;true;es;es;spa;spa;Español;Spanisch;Spanish;Español;Espagnol;Espanhol;Испанский;西班牙语
+20;false;et;et;est;est;Eesti;Estnisch;Estonian;Estonio;Estonien;Estoniano;Эстонский;爱沙尼亚语
+21;false;ett;;ett;ett;Mechl Rasnal;Etruskisch;Etruscan;Etrusco;Étrusque;Etrusco;Этрусский;伊特拉斯坎語
+22;false;eu;eu;baq;eus;Euskara;Baskisch;Basque;Vasco;Basque;Basco;Баскский;巴斯克語
+23;false;fa;fa;per;fas;فارسی / Fārsi;Persisch;Persian;Persa;Persan;Persa;Персидский;波斯语
+24;false;ff;ff;ful;ful;Fulfulde;Fulfulde;Fula;Fula;Peul;Fula;Фула;富拉語
+25;false;fi;fi;fin;fin;Suomi;Finnisch;Finnish;Finés;Finnois;Finlandês;Фи́нский;芬兰语
+26;false;fil;;fil;fil;Filipino;Filipino;Filipino;Filipino;Filipino;Filipino;Филиппинский;菲律賓語
+27;false;fr;fr;fre;fra;Français;Französisch;French;Francés;Français;Francês;Французский;法语
+28;false;ga;ga;gle;gle;Gaeilge;Irisch;Irish;Irlandés;Irlandais;Irlandês;Ирландский;愛爾蘭語
+29;false;gez;;gez;gez;ግዕዝ / Gəʿəz;Ge'ez;Ge'ez;Ge'ez;Ge'ez;Ge'ez;Геэз;吉茲語
+30;false;gu;gu;guj;guj;ગુજરાતી / Gujarati;Gujarati;Gujarati;Guyaratí;Gujarātī;Gujarati;Гуджарати;古吉拉特语
+31;false;ha;ha;hau;hau;هَوُسَ / Hausa;Hausa;Hausa;Hausa;Haoussa;Haúça;Хауса;豪萨语
+32;false;he;he;heb;heb;עברית / ‘Ivrit;Hebräisch;Hebrew;Hebreo;Hébreu;Hebraico;Иврит;希伯来语
+33;false;hi;hi;hin;hin;हिन्दी / Hindī;Hindi;Hindi;Hindi;Hindi;Hindi;Хинди;印地语
+34;false;hit;;hit;hit;𒉈𒅆𒇷 / Nešili;Hethitisch;Hittite;Hitita;Hittite;Hitita;Хеттский;赫梯語
+35;false;hr;hr;hrv;hrv;Hrvatski;Kroatisch;Croatian;Croata;Croate;Croata;Хорватский;克罗地亚语
+36;false;hu;hu;hun;hun;Magyar;Ungarisch;Hungarian;Húngaro;Hongrois;Húngaro;Венгерский;匈牙利语
+37;false;id;id;ind;ind;Bahasa Indonesia;Indonesisch;Indonesian;Indonesio;Indonésien;Indonésio;Индонезийский;印尼语
+38;false;ig;ig;ibo;ibo;Igbo;Igbo;Igbo;Igbo;Igbo;Igbo;Игбо;伊博語
+39;false;it;it;ita;ita;Italiano;Italienisch;Italian;Italiano;Italien;Italiano;Итальянский;意大利语
+40;false;ja;ja;jpn;jpn;日本語 / Nihongo;Japanisch;Japanese;Japonés;Japonais;Japonês;Японский;日语
+41;false;jv;jv;jav;jav;Basa Jawa;Javanisch;Javanese;Javanés;Javanais;Javanês;Яванский;爪哇語
+42;false;kk;kk;kaz;kaz;Қазақша / Qazaqşa / قازاقشا;Kasachisch;Kazakh;Kazajo;Kazakh;Cazaque;Казахский;哈萨克语
+43;false;kn;kn;kan;kan;ಕನ್ನಡ / Kannada;Kanaresisch;Kannada;Canarés;Kannada;Canarês;Каннада;卡纳达语
+44;false;ko;ko;kor;kor;한국어 / Hangugeo;Koreanisch;Korean;Coreano;Coréen;Coreano;Корейский;朝鮮語
+45;false;ku;ku;kur;kur;كوردی / Kurdî;Kurdisch;Kurdish;Kurdo;Kurde;Curdo;Курдская;库尔德语
+46;false;la;la;lat;lat;Latina;Latein;Latin;Latín;Latin;Latim;Латинский;拉丁语
+47;false;lo;lo;lao;lao;ພາສາລາວ / Phaasaa Laao;Laotisch;Lao;Laosiano;Laotien;Laociano;Лаосский;老挝语
+48;false;lt;lt;lit;lit;Lietuvių;Litauisch;Lithuanian;Lituano;Lituanien;Lituano;Литовский;立陶宛语
+49;false;lv;lv;lav;lav;Latviešu;Lettisch;Latvian;Letón;Letton;Letão;Латышский;拉脱维亚语
+50;false;mag;;mag;mag;मगही / Magahī;Magadhi;Magadhi;Magahi;Magahi;Magahi;Магахи;摩揭陀語
+51;false;mai;;mai;mai;मैथिली / Maithilī;Maithili;Maithili;Maithili;Maïthili;Maithili;Майтхили;迈蒂利语
+52;false;mg;mg;mlg;mlg;Malagasy;Madagassisch;Malagasy;Malgache;Malgache;Malgaxe;Малагасийский;马拉加斯语
+53;false;ml;ml;mal;mal;മലയാളം / Malayalam;Malayalam;Malayalam;Malabar;Malayalam;Malabar;Малаялам;马拉雅拉姆语
+54;false;mr;mr;mar;mar;मराठी / Marathi;Marathisch;Marathi;Maratí;Marâthî;Marata;Маратхи;马拉地语
+55;false;ms;ms;may;msa;Bahasa Melayu;Malaiisch;Malay;Malayo;Malaisien;Malaio;Малайский;马来人
+56;false;mt;mt;mlt;mlt;Malti;Maltesisch;Maltese;Maltés;Maltais;Maltês;Мальтийский;马耳他语
+57;false;mwr;;mwr;mwr;मारवाड़ी / Marwari;Marwari;Marwari;Marwari;Marwari;Marwari;Марвари;馬爾瓦里語
+58;false;my;my;bur;mya;မြန်မာဘာသာ / Myanmarsar;Birmanisch;Burmese;Birmano;Birman;Birmanês;Бирманский;缅甸语
+59;false;myn;;myn;myn;Màaya;Maya;Mayan;Maya;Maya;Maia;Майяские;馬雅語系
+60;false;nah;;nah;nah;Nāhuatl;Nahuatl;Nahuatl;Náhuatl;Nahuatl;Náuatle;Астекские;納瓦特爾語
+61;false;ne;ne;nep;nep;नेपाली / Nepālī;Nepalesisch;Nepali;Nepalí;Népalais;Nepali;Непальский;尼泊尔语
+62;false;nl;nl;dut;nld;Nederlands;Niederländisch;Dutch;Neerlandés;Néerlandais;Neerlandês;Нидерландский;荷蘭語
+63;false;no;no;nor;nor;Norsk;Norwegisch;Norwegian;Noruego;Norvégien;Norueguês;Норвежский;挪威语
+64;false;ny;ny;nya;nya;chiChewa;Chichewa;Chewa;Chichewa;Chichewa;Nianja;Ньянджа;齐切瓦语
+65;false;om;om;orm;orm;Oromoo;Oromo;Oromo;Oromo;Oromo;Oromo;Оромо;奧羅莫語
+66;false;or;or;ori;ori;ଓଡ଼ିଆ / Oṛiā;Oriya;Oriya;Oriya;Oriya;Oriá;Ория;奥里亚语
+67;false;pa;pa;pan;pan;ਪੰਜਾਬੀ / Pañjābī;Panjabi;Punjabi;Panyabí;Panjābī;Panjabi;Панджаби;旁遮普語
+68;false;phn;;phn;phn;𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌 / Dabarīm kanaʿnīm;Phönizisch;Phoenician;Fenicio;Phénicien;Fenício;Финикийский;腓尼基语
+69;false;pl;pl;pol;pol;Polski;Polnisch;Polish;Polaco;Polonais;Polaco;Польский;波兰语
+70;false;ps;ps;pus;pus;پښتو / Paʂto;Paschtunisch;Pashto;Pastún;Pachto;Pachto;Пушту;普什图语
+71;true;pt;pt;por;por;Português;Portugiesisch;Portuguese;Portugués;Portugais;Português;Португальский;葡萄牙語
+72;false;qu;qu;que;que;Qhichwa simi;Quechua;Quechua;Quechua;Quechua;Quíchua;Кечуа;克丘亞語
+73;false;ro;ro;rum;ron;Română;Rumänisch;Romanian;Rumano;Roumain;Romeno;Румынский;羅馬尼亞語
+74;false;ru;ru;rus;rus;Русский / Russkiy;Russisch;Russian;Ruso;Russe;Russo;Русский;俄语
+75;false;sa;sa;san;san;संस्कृतम् / Saṃskṛtam;Sanskrit;Sanskrit;Sánscrito;Sanskrit;Sânscrito;Санскрит;梵语
+76;false;sd;sd;snd;snd;سنڌي / सिन्धी / Sindhi;Sindhi;Sindhi;Sindhi;Sindhî;Sindi;Синдхи;信德语
+77;false;sk;sk;slo;slk;Slovenčina;Slowakisch;Slovak;Eslovaco;Slovaque;Eslovaco;Словацкий;斯洛伐克语
+78;false;sl;sl;slv;slv;Slovenščina;Slowenisch;Slovene;Esloveno;Slovène;Esloveno;Словенский;斯洛文尼亞语
+79;false;sn;sn;sna;sna;chiShona;Shona;Shona;Shona;Shona;Chona;Шона;
+80;false;so;so;som;som;Soomaaliga;Somali;Somali;Somalí;Somali;Somali;Сомалийский;索馬利亞語
+81;false;sr;sr;srp;srp;Српски / Srpski;Serbisch;Serbian;Serbio;Serbe;Sérvio;Сербский;塞尔维亚语
+82;false;su;su;sun;sun;Basa Sunda;Sundanesisch;Sundanese;Sondanés;Soundanais;Sundanês;Сунданский;巽他語
+83;false;sux;;sux;sux;𒅴𒂠 / Eme-Ĝir;Sumerisch;Sumerian;Sumerio;Sumérien;Sumério;Шумерский;苏美尔语
+84;false;sv;sv;swe;swe;Svenska;Schwedisch;Swedish;Sueco;Suédois;Sueco;Шведский;瑞典语
+85;false;sw;sw;swa;swa;Kiswahili;Swahili;Swahili;Suajili;Swahili;Suaíli;Суахили;斯瓦希里语
+86;false;syc;;syc;syc;ܣܘܪܝܝܐ / Suryāyā;Syrisch;Syriac;Siríaco;Syriaque;Siríaco;Сирийский;敘利亞語
+87;false;ta;ta;tam;tam;தமிழ் / Tamiḻ;Tamilisch;Tamil;Tamil;Tamoul;Tâmil;Тамильский;泰米尔语
+88;false;te;te;tel;tel;తెలుగు / Telugu;Telugisch;Telugu;Télugu;Télougou;Telugu;Телугу;泰卢固语
+89;false;th;th;tha;tha;ไทย / Thai;Thailändisch;Thai;Tailandés;Thaï;Tailandês;Тайский;泰语
+90;false;tl;tl;tgl;tgl;Tagalog;Tagalog;Tagalog;Tagalo;Tagal;Tagalo;Тагальский;他加祿語
+91;false;tr;tr;tur;tur;Türkçe;Türkisch;Turkish;Turco;Turc;Turco;Турецкий;土耳其语
+92;false;uk;uk;ukr;ukr;Українська / Ukrayins’ka;Ukrainisch;Ukrainian;Ucraniano;Ukrainien;Ucraniano;Украинский;乌克兰语
+93;false;ur;ur;urd;urd;اردو / Urdu;Urdu;Urdu;Urdu;Ourdou;Urdu;Урду;乌尔都语
+94;false;uz;uz;uzb;uzb;Oʻzbekcha;Usbekisch;Uzbek;Uzbeko;Ouzbek;Uzbeque;Узбекский;乌兹别克语
+95;false;vi;vi;vie;vie;Tiếng Việt;Vietnamesisch;Vietnamese;Vietnamita;Vietnamien;Vietnamita;Вьетнамский;越南语
+96;false;vo;vo;vol;vol;Volapük;Volapük;Volapük;Volapük;Volapük;Volapuque;Волапюк;沃拉普克语
+97;false;war;;war;war;Winaray;Wáray-Wáray;Waray-Waray;Samareño;Waray-waray;Waray-Waray;Варайский;瓦瑞瓦瑞語
+98;false;yo;yo;yor;yor;Yorùbá;Yoruba;Yoruba;Yoruba;Yoruba;Iorubá;Йоруба;约鲁巴语
+99;false;zh;zh;chi;zho;中文 / Zhōngwén;Chinesisch;Chinese;Chino;Chinois;Chinês;Китайский;中文
+100;false;zu;zu;zul;zul;isiZulu;Zulu;Zulu;Zulú;Zoulou;Zulu;Зулу;祖鲁语

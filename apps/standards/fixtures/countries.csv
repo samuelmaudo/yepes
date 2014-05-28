@@ -1,0 +1,250 @@
+id;is_enabled;region;code;long_code;number;fips;name;name_de;name_en;name_es;name_fr;name_pt;name_ru;name_zh
+1;false;22;AD;AND;020;AN;Andorra;Andorra;Andorra;Andorra;Andorre;Andorra;Андорра;安道尔
+10;false;11;AR;ARG;032;AR;Argentina;Argentinien;Argentina;Argentina;Argentine;Argentina;Аргентина;阿根廷
+100;false;24;HU;HUN;348;HU;Magyarország / Hungary;Ungarn;Hungary;Hungría;Hongrie;Hungria;Венгрия;匈牙利
+101;false;17;ID;IDN;360;ID;Indonesia;Indonesien;Indonesia;Indonesia;Indonésie;Indonésia;Индонезия;印尼
+102;false;25;IE;IRL;372;EI;Éire / Ireland;Irland;Ireland;Irlanda;Irlande;Irlanda;Ирландия;爱尔兰
+103;false;19;IL;ISR;376;IS;ישראלל / Israel;Israel;Israel;Israel;Israël;Israel;Израиль;以色列
+104;false;25;IM;IMN;833;IM;Isle of Man;Insel Man;Isle of Man;Isla de Man;Île de Man;Ilha de Man;Остров Мэн;马恩岛
+105;false;16;IN;IND;356;IN;India;Indien;India;India;Inde;Índia;Индия;印度
+106;false;16;IO;IOT;086;IO;British Indian Ocean Territory;Britisches Territorium im Indischen Ozean;British Indian Ocean Territory;Territorio Británico del Océano Índico;Territoire britannique de l'océan Indien;Território Britânico do Oceano Índico;Британская территория в Индийском океане;英属印度洋领地
+107;false;19;IQ;IRQ;368;IZ;العراق / Iraq;Irak;Iraq;Irak;Irak;Iraque;Ирак;伊拉克
+108;false;16;IR;IRN;364;IR;ایران‎ / Iran;Iran;Iran;Irán;Iran;Irã;Иран;伊朗
+109;false;25;IS;ISL;352;IC;Ísland;Island;Iceland;Islandia;Islande;Islândia;Исландия;冰岛
+11;false;30;AS;ASM;016;AQ;American Samoa / Sāmoa Amelika;Amerikanisch-Samoa;American Samoa;Samoa Americana;Samoa américaines;Samoa Americana;Американское Самоа;美属萨摩亚
+110;false;22;IT;ITA;380;IT;Italia;Italien;Italy;Italia;Italie;Itália;Италия;意大利
+111;false;25;JE;JEY;832;JE;Jersey;Jersey;Jersey;Jersey;Jersey;Jersey;Джерси;泽西岛
+112;false;13;JM;JAM;388;JM;Jamaïca;Jamaika;Jamaica;Jamaica;Jamaïque;Jamaica;Ямайка;牙买加
+113;false;19;JO;JOR;400;JO;الأردنّ / Jordan;Jordanien;Jordan;Jordania;Jordanie;Jordânia;Иордания;约旦
+114;false;20;JP;JPN;392;JA;日本 / Japan;Japan;Japan;Japón;Japon;Japão;Япония;日本
+115;false;7;KE;KEN;404;KE;Kenya;Kenia;Kenya;Kenia;Kenya;Quênia;Кения;肯尼亚
+116;false;18;KG;KGZ;417;KG;Кыргызстан / Киргизия / Kyrgyzstan;Kirgisistan;Kyrgyzstan;Kirguistán;Kirghizistan;Quirguistão;Киргизия;吉尔吉斯斯坦
+117;false;17;KH;KHM;116;CB;កម្ពុជា / Cambodia;Kambodscha;Cambodia;Camboya;Cambodge;Camboja;Камбоджа;柬埔寨
+118;false;29;KI;KIR;296;KR;Kiribati;Kiribati;Kiribati;Kiribati;Kiribati;Kiribati;Кирибати;基里巴斯
+119;false;7;KM;COM;174;CN;جزر القمر / Comores;Komoren;Comoros;Comoras;Comores;Comores;Коморы;科摩罗
+12;false;23;AT;AUT;040;AU;Österreich / Austria;Österreich;Austria;Austria;Autriche;Áustria;Австрия;奥地利
+120;false;13;KN;KNA;659;SC;Saint Kitts and Nevis;St. Kitts und Nevis;Saint Kitts and Nevis;San Cristóbal y Nieves;Saint-Christophe-et-Niévès;São Cristóvão e Nevis;Сент-Китс и Невис;圣基茨和尼维斯
+121;false;20;KP;PRK;408;KN;북한 / North Korea;Nordkorea;North Korea;Corea del Norte;Corée du Nord;Coreia do Norte;КНДР;北韓
+122;false;20;KR;KOR;410;KS;대한민국 / South Korea;Südkorea;South Korea;Corea del Sur;Corée du Sud;Coreia do Sul;Республика Корея;南韓
+123;false;19;KW;KWT;414;KU;الكويت / Kuwait;Kuwait;Kuwait;Kuwait;Koweït;Kuwait;Кувейт;科威特
+124;false;13;KY;CYM;136;CJ;Cayman Islands;Kaimaninseln;Cayman Islands;Islas Caimán;Îles Caïmans;Ilhas Cayman;Каймановы острова;开曼群岛
+125;false;18;KZ;KAZ;398;KZ;Қазақстан / Kazakhstan;Kasachstan;Kazakhstan;Kazajistán;Kazakhstan;Cazaquistão;Казахстан;哈萨克斯坦
+126;false;17;LA;LAO;418;LA;ປະເທດລາວ / Laos;Laos;Laos;Laos;Laos;Laos;Лаос;老挝
+127;false;19;LB;LBN;422;LE;لبنان / Lebanon;Libanon;Lebanon;Líbano;Liban;Líbano;Ливан;黎巴嫩
+128;false;13;LC;LCA;662;ST;Saint Lucia;St. Lucia;Saint Lucia;Santa Lucía;Sainte-Lucie;Santa Lúcia;Сент-Люсия;圣卢西亚
+129;false;23;LI;LIE;438;LS;Liechtenstein;Liechtenstein;Liechtenstein;Liechtenstein;Liechtenstein;Liechtenstein;Лихтенштейн;列支敦士登
+13;false;27;AU;AUS;036;AS;Australia;Australien;Australia;Australia;Australie;Austrália;Австралия;澳大利亚
+130;false;16;LK;LKA;144;CE;ශ්‍රී ලංකාව / Sri Lanka;Sri Lanka;Sri Lanka;Sri Lanka;Sri Lanka;Sri Lanka;Шри-Ланка;斯里兰卡
+131;false;6;LR;LBR;430;LI;Liberia;Liberia;Liberia;Liberia;Liberia;Libéria;Либерия;利比里亚
+132;false;4;LS;LSO;426;LT;Lesotho;Lesotho;Lesotho;Lesoto;Lesotho;Lesoto;Лесото;莱索托
+133;false;25;LT;LTU;440;LH;Lietuva;Litauen;Lithuania;Lituania;Lituanie;Lituânia;Литва;立陶宛
+134;false;23;LU;LUX;442;LU;Luxembourg;Luxemburg;Luxembourg;Luxemburgo;Luxembourg;Luxemburgo;Люксембург;卢森堡
+135;false;25;LV;LVA;428;LG;Latvijas;Lettland;Latvia;Letonia;Lettonie;Letônia;Латвия;拉脱维亚
+136;false;2;LY;LBY;434;LY;ليبيا‎ / Libya;Libyen;Libya;Libia;Libye;Líbia;Ливия;利比亚
+137;false;2;MA;MAR;504;MO;المغرب‎ / Morocco;Marokko;Morocco;Marruecos;Maroc;Marrocos;Марокко;摩洛哥
+138;false;23;MC;MCO;492;MN;Monaco;Monaco;Monaco;Mónaco;Monaco;Mónaco;Монако;摩纳哥
+139;false;24;MD;MDA;498;MD;Moldova;Moldawien;Moldova;Moldavia;Moldavie;Moldávia;Молдавия;摩尔多瓦
+14;false;13;AW;ABW;533;AA;Aruba;Aruba;Aruba;Aruba;Aruba;Aruba;Аруба;阿鲁巴
+140;false;22;ME;MNE;499;MJ;Црна Гора / Crna Gora;Montenegro;Montenegro;Montenegro;Monténégro;Montenegro;Черногория;黑山
+141;false;13;MF;MAF;663;RN;Saint-Martin;Saint-Martin (franz. Teil);Saint Martin (French part);San Martín (Francia);Saint-Martin;São Martinho (França);Сен-Мартен;法属圣马丁
+142;false;7;MG;MDG;450;MA;Madagasikara / Madagascar;Madagaskar;Madagascar;Madagascar;Madagascar;Madagáscar;Мадагаскар;马达加斯加
+143;false;29;MH;MHL;584;RM;Marshall Islands / Aolepān Aorōkin M̧ajeļ;Marshallinseln;Marshall Islands;Islas Marshall;Îles Marshall;Ilhas Marshall;Маршалловы Острова;马绍尔群岛
+144;false;22;MK;MKD;807;MK;Македонија / Macedonia;Mazedonien;Macedonia;Macedonia;Macédoine;Macedónia;Македония;马其顿
+145;false;6;ML;MLI;466;ML;Mali;Mali;Mali;Malí;Mali;Mali;Мали;马里
+146;false;17;MM;MMR;104;BM;မြန်မာပြည် / Myanmar;Myanmar;Burma;Birmania;Birmanie;Myanmar;Мьянма;缅甸
+147;false;20;MN;MNG;496;MG;Монгол улс / Mongolia;Mongolei;Mongolia;Mongolia;Mongolie;Mongólia;Монголия;蒙古国；蒙古
+148;false;20;MO;MAC;446;MC;澳門 / Macau;Macao;Macau;Macao;Macao;Macau;Макао;澳门
+149;false;29;MP;MNP;580;CQ;Northern Mariana Islands;Nördliche Marianen;Northern Mariana Islands;Islas Marianas del Norte;Îles Mariannes du Nord;Marianas Setentrionais;Северные Марианские острова;北马里亚纳群岛
+15;false;25;AX;ALA;248;;Åland;Åland;Åland Islands;Åland;Åland;Ilhas Åland;Аландские острова;奥兰群岛
+150;false;13;MQ;MTQ;474;MB;Martinique;Martinique;Martinique;Martinica;Martinique;Martinica;Мартиника;马提尼克
+151;false;6;MR;MRT;478;MR;موريتانيا‎ / Mauritanie;Mauretanien;Mauritania;Mauritania;Mauritanie;Mauritânia;Мавритания;毛里塔尼亚
+152;false;13;MS;MSR;500;MH;Montserrat;Montserrat;Montserrat;Montserrat;Montserrat;Montserrat;Монтсеррат;蒙塞拉特岛
+153;false;22;MT;MLT;470;MT;Malta;Malta;Malta;Malta;Malte;Malta;Мальта;马耳他
+154;false;7;MU;MUS;480;MP;Mauritius;Mauritius;Mauritius;Mauricio;Maurice;Maurícia;Маврикий;毛里求斯
+155;false;16;MV;MDV;462;MV;ދިވެހިރާއްޖެ / Maldives;Malediven;Maldives;Maldivas;Maldives;Maldivas;Мальдивы;马尔代夫
+156;false;7;MW;MWI;454;MI;Malaŵi;Malawi;Malawi;Malaui;Malawi;Malawi;Малави;马拉维
+157;false;12;MX;MEX;484;MX;México;Mexiko;Mexico;México;Mexique;México;Мексика;墨西哥
+158;false;17;MY;MYS;458;MY;Malaysia;Malaysia;Malaysia;Malasia;Malaisie;Malásia;Малайзия;马来西亚
+159;false;7;MZ;MOZ;508;MZ;Moçambique;Mosambik;Mozambique;Mozambique;Mozambique;Moçambique;Мозамбик;莫桑比克
+16;false;19;AZ;AZE;031;AJ;Azərbaycan;Aserbaidschan;Azerbaijan;Azerbaiyán;Azerbaïdjan;Azerbaijão;Азербайджан;阿塞拜疆
+160;false;4;NA;NAM;516;WA;Namibia;Namibia;Namibia;Namibia;Namibie;Namíbia;Намибия;纳米比亚
+161;false;28;NC;NCL;540;NC;Nouvelle-Calédonie;Neukaledonien;New Caledonia;Nueva Caledonia;Nouvelle-Calédonie;Nova Caledônia;Новая Каледония;新喀里多尼亚
+162;false;6;NE;NER;562;NG;Niger;Niger;Niger;Níger;Niger;Níger;Нигер;尼日尔
+163;false;27;NF;NFK;574;NF;Norfolk Island;Norfolkinsel;Norfolk Island;Norfolk;Île Norfolk;Ilha Norfolk;Остров Норфолк;诺福克岛
+164;false;6;NG;NGA;566;NI;Nigeria;Nigeria;Nigeria;Nigeria;Nigeria;Nigéria;Нигерия;尼日利亚
+165;false;12;NI;NIC;558;NU;Nicaragua;Nicaragua;Nicaragua;Nicaragua;Nicaragua;Nicarágua;Никарагуа;尼加拉瓜
+166;false;23;NL;NLD;528;NL;Nederland;Niederlande;Netherlands;Países Bajos;Pays-Bas;Países Baixos;Нидерланды;荷兰
+167;false;25;NO;NOR;578;NO;Norge;Norwegen;Norway;Noruega;Norvège;Noruega;Норвегия;挪威
+168;false;16;NP;NPL;524;NP;नेपाल / Nepal;Nepal;Nepal;Nepal;Népal;Nepal;Непал;尼泊尔
+169;false;29;NR;NRU;520;NR;Naoero / Nauru;Nauru;Nauru;Nauru;Nauru;Nauru;Науру;瑙鲁
+17;false;22;BA;BIH;070;BK;Bosna i Hercegovina;Bosnien und Herzegowina;Bosnia and Herzegovina;Bosnia y Herzegovina;Bosnie-Herzégovine;Bósnia e Herzegovina;Босния и Герцеговина;波黑
+170;false;30;NU;NIU;570;NE;Niuē;Niue;Niue;Niue;Niue;Niue;Ниуэ;纽埃
+171;false;27;NZ;NZL;554;NZ;New Zeland;Neuseeland;New Zealand;Nueva Zelanda;Nouvelle-Zélande;Nova Zelândia;Новая Зеландия;新西兰
+172;false;19;OM;OMN;512;MU;عمان‎ / Oman;Oman;Oman;Omán;Oman;Omã;Оман;阿曼
+173;false;12;PA;PAN;591;PM;Panamá;Panama;Panama;Panamá;Panama;Panamá;Панама;巴拿马
+174;false;11;PE;PER;604;PE;Perú;Peru;Peru;Perú;Pérou;Peru;Перу;秘鲁
+175;false;30;PF;PYF;258;FP;Polynésie française;Französisch-Polynesien;French Polynesia;Polinesia Francesa;Polynésie française;Polinésia Francesa;Французская Полинезия;法属波利尼西亚
+176;false;28;PG;PNG;598;PP;Papua New Guinea;Papua-Neuguinea;Papua New Guinea;Papúa Nueva Guinea;Papouasie-Nouvelle-Guinée;Papua-Nova Guiné;Папуа — Новая Гвинея;巴布亚新几内亚
+177;false;17;PH;PHL;608;RP;Pilipinás;Philippinen;Philippines;Filipinas;Philippines;Filipinas;Филиппины;菲律宾
+178;false;16;PK;PAK;586;PK;Pakistan / پاكِستان;Pakistan;Pakistan;Pakistán;Pakistan;Paquistão;Пакистан;巴基斯坦
+179;false;24;PL;POL;616;PL;Polska;Polen;Poland;Polonia;Pologne;Polónia;Польша;波兰
+18;false;13;BB;BRB;052;BB;Barbados;Barbados;Barbados;Barbados;Barbade;Barbados;Барбадос;巴巴多斯
+180;false;14;PM;SPM;666;SB;Saint-Pierre-et-Miquelon;Saint-Pierre und Miquelon;Saint Pierre and Miquelon;San Pedro y Miquelón;Saint-Pierre-et-Miquelon;Saint-Pierre e Miquelon;Сен-Пьер и Микелон;圣皮埃尔和密克隆
+181;false;30;PN;PCN;612;PC;Pitcairn Islands;Pitcairninseln;Pitcairn Islands;Islas Pitcairn;Îles Pitcairn;Pitcairn;Острова Питкэрн;皮特凯恩群岛
+182;false;13;PR;PRI;630;RQ;Puerto Rico;Puerto Rico;Puerto Rico;Puerto Rico;Porto Rico;Porto Rico;Пуэрто-Рико;波多黎各
+183;false;19;PS;PSE;275;;فلسطين‎ / Palestine;Palästina;Palestine;Palestina;Palestine;Palestina;Шаблон:PSE;巴勒斯坦
+184;true;22;PT;PRT;620;PO;Portugal;Portugal;Portugal;Portugal;Portugal;Portugal;Португалия;葡萄牙
+185;false;29;PW;PLW;585;PS;Palau / Belau;Palau;Palau;Palaos;Palaos;Palau;Палау;帕劳
+186;false;11;PY;PRY;600;PA;Paraguay / Paraguáype;Paraguay;Paraguay;Paraguay;Paraguay;Paraguai;Парагвай;巴拉圭
+187;false;19;QA;QAT;634;QA;قطر‎ / Qatar;Katar;Qatar;Catar;Qatar;Catar;Катар;卡塔尔
+188;false;7;RE;REU;638;RE;La Réunion;Réunion;Réunion;Reunión;La Réunion;Reunião;Реюньон;留尼汪
+189;false;24;RO;ROU;642;RO;România;Rumänien;Romania;Rumania;Roumanie;Roménia;Румыния;罗马尼亚
+19;false;16;BD;BGD;050;BG;Bānglādesh;Bangladesch;Bangladesh;Bangladés;Bangladesh;Bangladesh;Бангладеш;孟加拉
+190;false;22;RS;SRB;688;RI;Србија / Serbia;Serbien;Serbia;Serbia;Serbie;Sérvia;Сербия;塞尔维亚
+191;false;24;RU;RUS;643;RS;Россия / Russia;Russische Föderation;Russia;Rusia;Russie;Rússia;Россия;俄罗斯
+192;false;7;RW;RWA;646;RW;Rwanda;Ruanda;Rwanda;Ruanda;Rwanda;Ruanda;Руанда;卢旺达
+193;false;19;SA;SAU;682;SA;السعودية‎ / Saudi Arabia;Saudi-Arabien;Saudi Arabia;Arabia Saudita;Arabie saoudite;Arábia Saudita;Саудовская Аравия;沙特阿拉伯
+194;false;28;SB;SLB;090;BP;Salomons Islands;Salomonen;Solomon Islands;Islas Salomón;Salomon;Ilhas Salomão;Соломоновы Острова;所罗门群岛
+195;false;7;SC;SYC;690;SE;Seychelles / Sesel;Seychellen;Seychelles;Seychelles;Seychelles;Seychelles;Сейшельские Острова;塞舌尔
+196;false;2;SD;SDN;729;SU;السودان‎ / Sudan;Sudan;Sudan;Sudán;Soudan;Sudão;Судан;苏丹
+197;false;25;SE;SWE;752;SW;Sverige;Schweden;Sweden;Suecia;Suède;Suécia;Швеция;瑞典
+198;false;17;SG;SGP;702;SN;Singapore / Singapura / 新加坡 / சிங்கப்பூர்;Singapur;Singapore;Singapur;Singapour;Singapura;Сингапур;新加坡
+199;false;6;SH;SHN;654;SH;Saint Helena, Ascension and Tristan da Cunha;St. Helena, Ascension und Tristan da Cunha;Saint Helena, Ascension and Tristan da Cunha;Santa Elena, Ascensión y Tristán de Acuña;Sainte-Hélène, Ascension et Tristan da Cunha;Santa Helena, Ascensão e Tristão da Cunha;Острова Святой Елены, Вознесения и Тристан-да-Кунья;圣赫勒拿、阿森松与特里斯坦达库尼亚
+2;false;19;AE;ARE;784;AE;لإمارات العربيّة المتّحدة / United Arab Emirates;Vereinigte Arabische Emirate;United Arab Emirates;Emiratos Árabes Unidos;Émirats arabes unis;Emirados Árabes Unidos;Объединённые Арабские Эмираты;阿联酋
+20;false;23;BE;BEL;056;BE;België / Belgique / Belgien;Belgien;Belgium;Bélgica;Belgique;Bélgica;Бельгия;比利时
+200;false;22;SI;SVN;705;SI;Slovenija;Slowenien;Slovenia;Eslovenia;Slovénie;Eslovênia;Словения;斯洛文尼亚
+201;false;25;SJ;SJM;744;;Svalbard og Jan Mayen;Svalbard und Jan Mayen;Svalbard and Jan Mayen;Svalbard y Jan Mayen;Svalbard et île Jan Mayen;Svalbard e Jan Mayen;Шпицберген и Ян-Майен;斯瓦尔巴群岛和扬马延岛
+202;false;24;SK;SVK;703;LO;Slovensko;Slowakei;Slovakia;Eslovaquia;Slovaquie;Eslováquia;Словакия;斯洛伐克
+203;false;6;SL;SLE;694;SL;Sierra Leone;Sierra Leone;Sierra Leone;Sierra Leona;Sierra Leone;Serra Leoa;Сьерра-Леоне;塞拉利昂
+204;false;22;SM;SMR;674;SM;San Marino;San Marino;San Marino;San Marino;Saint-Marin;São Marino;Сан-Марино;圣马力诺
+205;false;6;SN;SEN;686;SG;Sénégal;Senegal;Senegal;Senegal;Sénégal;Senegal;Сенегал;塞内加尔
+206;false;7;SO;SOM;706;SO;Soomaaliya / الصومال;Somalia;Somalia;Somalia;Somalie;Somália;Сомали;索马里
+207;false;11;SR;SUR;740;NS;Suriname;Suriname;Suriname;Surinam;Suriname;Suriname;Суринам;苏里南
+208;false;7;SS;SSD;728;OD;South Sudan;Südsudan;South Sudan;Sudán del Sur;Soudan du Sud;Sudão do Sul;Южный Судан;南苏丹
+209;false;5;ST;STP;678;TP;São Tomé e Príncipe;São Tomé und Príncipe;Sao Tome and Principe;Santo Tomé y Príncipe;Sao Tomé-et-Principe;São Tomé e Príncipe;Сан-Томе и Принсипи;圣多美和普林西比
+21;false;6;BF;BFA;854;UV;Burkina Faso;Burkina Faso;Burkina Faso;Burkina Faso;Burkina Faso;Burkina Faso;Буркина-Фасо;布基纳法索
+210;false;12;SV;SLV;222;ES;El Salvador;El Salvador;El Salvador;El Salvador;Salvador;El Salvador;Сальвадор;萨尔瓦多
+211;false;13;SX;SXM;534;NN;Sint Maarten;Sint Maarten (niederl. Teil);Sint Maarten (Dutch part);Sint Maarten;Saint-Martin;São Martinho;Синт-Мартен;荷属圣马丁
+212;false;19;SY;SYR;760;SY;سوريا‎ / Syria;Syrien;Syria;Siria;Syrie;Síria;Сирия;叙利亚
+213;false;4;SZ;SWZ;748;WZ;Swaziland / Swatini;Swasiland;Swaziland;Suazilandia;Swaziland;Suazilândia;Свазиленд;斯威士兰
+214;false;13;TC;TCA;796;TK;Turks and Caicos Islands;Turks- und Caicosinseln;Turks and Caicos Islands;Islas Turcas y Caicos;Îles Turques-et-Caïques;Turcas e Caicos;Тёркс и Кайкос;特克斯和凯科斯群岛
+215;false;5;TD;TCD;148;CD;تشاد‎ / Tchad;Tschad;Chad;Chad;Tchad;Chade;Чад;乍得
+216;false;7;TF;ATF;260;FS;Terres australes et antarctiques françaises;Französische Süd- und Antarktisgebiete;French Southern Territories;Territorios Australes Franceses;Terres australes et antarctiques françaises;Terras Austrais e Antárticas Francesas;Французские Южные и Антарктические Территории;法属南部领地
+217;false;6;TG;TGO;768;TO;Togo;Togo;Togo;Togo;Togo;Togo;Того;多哥
+218;false;17;TH;THA;764;TH;ประเทศไทย / Thailand;Thailand;Thailand;Tailandia;Thaïlande;Tailândia;Таиланд;泰国
+219;false;18;TJ;TJK;762;TI;Тоҷикистон / Tajikistan;Tadschikistan;Tajikistan;Tayikistán;Tadjikistan;Tadjiquistão;Таджикистан;塔吉克斯坦
+22;false;24;BG;BGR;100;BU;България / Bulgaria;Bulgarien;Bulgaria;Bulgaria;Bulgarie;Bulgária;Болгария;保加利亚
+220;false;30;TK;TKL;772;TL;Tokelau;Tokelau;Tokelau;Tokelau;Tokelau;Toquelau;Токелау;托克劳
+221;false;17;TL;TLS;626;TT;Timor-Leste;Osttimor;Timor-Leste;Timor Oriental;Timor oriental;Timor-Leste;Восточный Тимор;东帝汶
+222;false;18;TM;TKM;795;TX;Türkmenistan;Turkmenistan;Turkmenistan;Turkmenistán;Turkménistan;Turquemenistão;Туркмения;土库曼斯坦
+223;false;2;TN;TUN;788;TS;تونس‎ / Tunisie;Tunesien;Tunisia;Túnez;Tunisie;Tunísia;Тунис;突尼斯
+224;false;30;TO;TON;776;TN;Tonga;Tonga;Tonga;Tonga;Tonga;Tonga;Тонга;汤加
+225;false;19;TR;TUR;792;TU;Türkiye;Türkei;Turkey;Turquía;Turquie;Turquia;Турция;土耳其
+226;false;13;TT;TTO;780;TD;Trinidad and Tobago;Trinidad und Tobago;Trinidad and Tobago;Trinidad y Tobago;Trinité-et-Tobago;Trinidad e Tobago;Тринидад и Тобаго;特立尼达和多巴哥
+227;false;30;TV;TUV;798;TV;Tuvalu;Tuvalu;Tuvalu;Tuvalu;Tuvalu;Tuvalu;Тувалу;图瓦卢
+228;false;20;TW;TWN;158;TW;台湾 / Taiwan;Taiwan;Taiwan;Taiwán;Taïwan;Taiwan;Китайская Республика;台湾
+229;false;7;TZ;TZA;834;TZ;Tanzania;Tansania;Tanzania;Tanzania;Tanzanie;Tanzânia;Танзания;坦桑尼亚
+23;false;19;BH;BHR;048;BA;مملكة البحرين / Bahrain;Bahrain;Bahrain;Baréin;Bahreïn;Bahrein;Бахрейн;巴林
+230;false;24;UA;UKR;804;UP;Украïна / Ukraïna;Ukraine;Ukraine;Ucrania;Ukraine;Ucrânia;Украина;乌克兰
+231;false;7;UG;UGA;800;UG;Uganda;Uganda;Uganda;Uganda;Ouganda;Uganda;Уганда;乌干达
+232;false;29;UM;UMI;581;;United States Minor Outlying Islands;United States Minor Outlying Islands;United States Minor Outlying Islands;Islas ultramarinas de Estados Unidos;Îles mineures éloignées des États-Unis;Ilhas Menores Distantes dos Estados Unidos;Внешние малые острова США;美国本土外小岛屿
+233;false;14;US;USA;840;US;United States of America (USA);Vereinigte Staaten von Amerika;United States;Estados Unidos;États-Unis;Estados Unidos;Соединённые Штаты Америки;美国
+234;false;11;UY;URY;858;UY;Uruguay;Uruguay;Uruguay;Uruguay;Uruguay;Uruguai;Уругвай;乌拉圭
+235;false;18;UZ;UZB;860;UZ;O'zbekiston / Ўзбекистон;Usbekistan;Uzbekistan;Uzbekistán;Ouzbékistan;Uzbequistão;Узбекистан;乌兹别克斯坦
+236;false;22;VA;VAT;336;VT;Città del Vaticano;Vatikanstadt;Vatican City;Ciudad del Vaticano;Cité du Vatican;Cidade do Vaticano;Ватикан;梵蒂冈
+237;false;13;VC;VCT;670;VC;Saint Vincent and the Grenadines;St. Vincent und die Grenadinen;Saint Vincent and the Grenadines;San Vicente y las Granadinas;Saint-Vincent-et-les-Grenadines;São Vicente e Granadinas;Сент-Винсент и Гренадины;圣文森特和格林纳丁斯
+238;false;11;VE;VEN;862;VE;Venezuela;Venezuela;Venezuela;Venezuela;Venezuela;Venezuela;Венесуэла;委内瑞拉
+239;false;13;VG;VGB;092;VI;British Virgin Islands;Britische Jungferninseln;British Virgin Islands;Islas Vírgenes Británicas;Îles Vierges britanniques;Ilhas Virgens Britânicas;Британские Виргинские острова;英属维尔京群岛
+24;false;7;BI;BDI;108;BY;Burundi;Burundi;Burundi;Burundi;Burundi;Burundi;Бурунди;布隆迪
+240;false;13;VI;VIR;850;VQ;United States Virgin Islands;Amerikanische Jungferninseln;United States Virgin Islands;Islas Vírgenes de los Estados Unidos;Îles Vierges des États-Unis;Ilhas Virgens Americanas;Американские Виргинские острова;美属维尔京群岛
+241;false;17;VN;VNM;704;VM;Việt Nam;Vietnam;Vietnam;Vietnam;Viêt Nam;Vietname;Вьетнам;越南
+242;false;28;VU;VUT;548;NH;Vanuatu;Vanuatu;Vanuatu;Vanuatu;Vanuatu;Vanuatu;Вануату;瓦努阿图
+243;false;30;WF;WLF;876;WF;Wallis-et-Futuna;Wallis und Futuna;Wallis and Futuna;Wallis y Futuna;Wallis-et-Futuna;Wallis e Futuna;Уоллис и Футуна;瓦利斯和富图纳
+244;false;30;WS;WSM;882;WS;Samoa;Samoa;Samoa;Samoa;Samoa;Samoa;Самоа;萨摩亚
+245;false;19;YE;YEM;887;YM;ﺍﻟﺠﻤﻬﻮﺭﯾّﺔ اليمنية;Jemen;Yemen;Yemen;Yémen;Iémen/Iêmen;Йемен;也门
+246;false;7;YT;MYT;175;MF;Mayotte;Mayotte;Mayotte;Mayotte;Mayotte;Mayotte;Майотта;马约特
+247;false;4;ZA;ZAF;710;SF;South Africa / Suid-Afrika / Ningizimu Afrika / Afrika-Borwa;Südafrika;South Africa;Sudáfrica;Afrique du Sud;África do Sul;ЮАР;南非
+248;false;7;ZM;ZMB;894;ZA;Zambia;Sambia;Zambia;Zambia;Zambie;Zâmbia;Замбия;赞比亚
+249;false;7;ZW;ZWE;716;ZI;Zimbabwe;Simbabwe;Zimbabwe;Zimbabue;Zimbabwe;Zimbabwe;Зимбабве;津巴布韦
+25;false;6;BJ;BEN;204;BN;Bénin;Benin;Benin;Benín;Bénin;Benim;Бенин;贝宁
+26;false;13;BL;BLM;652;TB;Saint-Barthélemy;Saint-Barthélemy;Saint Barthélemy;San Bartolomé;Saint-Barthélemy;São Bartolomeu;Сен-Бартелеми;圣巴泰勒米岛
+27;false;14;BM;BMU;060;BD;Bermuda;Bermuda;Bermuda;Bermudas;Bermudes;Bermudas;Бермуды;百慕大
+28;false;17;BN;BRN;096;BX;بروناي / Brunei;Brunei Darussalam;Brunei Darussalam;Brunéi;Brunei;Brunei;Бруней;文莱
+29;false;11;BO;BOL;068;BL;Bolivia;Bolivien;Bolivia;Bolivia;Bolivie;Bolívia;Боливия;玻利维亚
+3;false;16;AF;AFG;004;AF;افغانستان / Afghanistan;Afghanistan;Afghanistan;Afganistán;Afghanistan;Afeganistão;Афганистан;阿富汗
+30;false;13;BQ;BES;535;;Caribisch Nederland;Karibische Niederlande;Caribbean Netherlands;Caribe Neerlandés;Pays-Bas caribéens;Países Baixos Caribenhos;Кари́бские Нидерла́нды;荷兰加勒比区
+31;false;11;BR;BRA;076;BR;Brasil;Brasilien;Brazil;Brasil;Brésil;Brasil;Бразилия;巴西
+32;false;13;BS;BHS;044;BF;Bahamas;Bahamas;Bahamas;Bahamas;Bahamas;Bahamas;Багамы;巴哈马
+33;false;16;BT;BTN;064;BT;འབྲུག་ཡུལ / Druk Yul;Bhutan;Bhutan;Bután;Bhoutan;Butão;Бутан;不丹
+34;false;8;BV;BVT;074;BV;Bouvetøya;Bouvetinsel;Bouvet Island;Isla Bouvet;Île Bouvet;Ilha Bouvet;Остров Буве;布韦岛
+35;false;4;BW;BWA;072;BC;Botswana;Botswana;Botswana;Botsuana;Botswana;Botswana;Ботсвана;博茨瓦纳
+36;false;24;BY;BLR;112;BO;Беларусь / Belarus;Weißrussland;Belarus;Bielorrusia;Biélorussie;Bielorrússia;Белоруссия;白俄罗斯
+37;false;12;BZ;BLZ;084;BH;Belize;Belize;Belize;Belice;Belize;Belize;Белиз;伯利兹
+38;false;14;CA;CAN;124;CA;Canada;Kanada;Canada;Canadá;Canada;Canadá;Канада;加拿大
+39;false;17;CC;CCK;166;CK;Territory of Cocos Island;Kokosinseln;Cocos (Keeling) Islands;Islas Cocos;Îles Cocos;Ilhas Cocos (Keeling);Кокосовые острова;科科斯群岛
+4;false;13;AG;ATG;028;AC;Antigua and Barbadua;Antigua und Barbuda;Antigua and Barbuda;Antigua y Barbuda;Antigua-et-Barbuda;Antígua e Barbuda;Антигуа и Барбуда;安提瓜和巴布达
+40;false;5;CD;COD;180;CG;République démocratique du Congo;Demokratische Republik Kongo;Democratic Republic of the Congo;República Democrática del Congo;République démocratique du Congo;República Democrática do Congo;Демократическая Республика Конго;刚果
+41;false;5;CF;CAF;140;CT;République centrafricaine;Zentralafrikanische Republik;Central African Republic;República Centroafricana;République centrafricaine;República Centro-Africana;Центральноафриканская Республика;中非
+42;false;5;CG;COG;178;CF;République du Congo;Republik Kongo;Republic of the Congo;República del Congo;République du Congo;República do Congo;Республика Конго;刚果
+43;false;23;CH;CHE;756;SZ;Schweiz / Suisse / Svizzera;Schweiz;Switzerland;Suiza;Suisse;Suíça;Швейцария;瑞士
+44;false;6;CI;CIV;384;IV;Côte d’Ivoire;Elfenbeinküste;Ivory Coast;Costa de Marfil;Côte d'Ivoire;Costa do Marfim;Кот-д’Ивуар;科特迪瓦
+45;false;30;CK;COK;184;CW;Cook Islands;Cookinseln;Cook Islands;Islas Cook;Îles Cook;Ilhas Cook;Острова Кука;库克群岛
+46;false;11;CL;CHL;152;CI;Chile;Chile;Chile;Chile;Chili;Chile;Чили;智利
+47;false;5;CM;CMR;120;CM;Cameroun / Cameroon;Kamerun;Cameroon;Camerún;Cameroun;Camarões;Камерун;喀麦隆
+48;false;20;CN;CHN;156;CH;中国 / China;China;China;China;Chine;China;Кита́й;中国
+49;false;11;CO;COL;170;CO;Colombia;Kolumbien;Colombia;Colombia;Colombie;Colômbia;Колумбия;哥伦比亚
+5;false;13;AI;AIA;660;AV;Anguilla;Anguilla;Anguilla;Anguila;Anguilla;Anguilla;Ангилья;安圭拉
+50;false;12;CR;CRI;188;CS;Costa Rica;Costa Rica;Costa Rica;Costa Rica;Costa Rica;Costa Rica;Коста-Рика;哥斯达黎加
+51;false;13;CU;CUB;192;CU;Cuba;Kuba;Cuba;Cuba;Cuba;Cuba;Куба;古巴
+52;false;6;CV;CPV;132;CV;Cabo Verde;Kap Verde;Cape Verde;Cabo Verde;Cap-Vert;Cabo Verde;Кабо-Верде;佛得角
+53;false;13;CW;CUW;531;UC;Kòrsou / Curaçao;Curaçao;Curaçao;Curazao;Curaçao;Curaçao;Кюрасао;库拉索
+54;false;17;CX;CXR;162;KT;Christmas Islands;Weihnachtsinsel;Christmas Island;Isla de Navidad;Île Christmas;Ilha do Natal;Остров Рождества;圣诞岛
+55;false;19;CY;CYP;196;CY;Κύπρος / Kıbrıs / Cyprus;Zypern;Cyprus;Chipre;Chypre (pays);Chipre;Кипр;塞浦路斯
+56;false;24;CZ;CZE;203;EZ;Ceská Republika;Tschechische Republik;Czech Republic;República Checa;République tchèque;República Checa;Чехия;捷克
+57;false;23;DE;DEU;276;GM;Deutschland / Germany;Deutschland;Germany;Alemania;Allemagne;Alemanha;Германия;德国
+58;false;7;DJ;DJI;262;DJ;جيبوتي / Djibouti;Dschibuti;Djibouti;Yibuti;Djibouti;Djibouti;Джибути;吉布提
+59;false;25;DK;DNK;208;DA;Danmark;Dänemark;Denmark;Dinamarca;Danemark;Dinamarca;Дания;丹麦
+6;false;22;AL;ALB;008;AL;Shqipëri / Albania;Albanien;Albania;Albania;Albanie;Albânia;Албания;阿尔巴尼亚
+60;false;13;DM;DMA;212;DO;Dominica;Dominica;Dominica;Dominica;Dominique;Dominica;Доминика;多米尼克
+61;false;13;DO;DOM;214;DR;República Dominicana;Dominikanische Republik;Dominican Republic;República Dominicana;République dominicaine;República Dominicana;Доминиканская Республика;多米尼加
+62;false;2;DZ;DZA;012;AG;الجزائر / Algérie;Algerien;Algeria;Argelia;Algérie;Argélia;Алжир;阿尔及利亚
+63;false;11;EC;ECU;218;EC;Equador;Ecuador;Ecuador;Ecuador;Équateur;Equador;Эквадор;厄瓜多尔
+64;false;25;EE;EST;233;EN;Eesti;Estland;Estonia;Estonia;Estonie;Estónia;Эстония;爱沙尼亚
+65;false;2;EG;EGY;818;EG;مصر / Egypt;Ägypten;Egypt;Egipto;Égypte;Egito;Египет;埃及
+66;false;2;EH;ESH;732;WI;لصحراء الغربية / Sahara Occidental;Westsahara;Western Sahara;Sahara Occidental;Sahara occidental;Saara Ocidental;Западная Сахара;西撒哈拉
+67;false;7;ER;ERI;232;ER;ኤርትራ / إرتريا /‎ Eritrea;Eritrea;Eritrea;Eritrea;Érythrée;Eritreia;Эритрея;厄立特里亚
+68;true;22;ES;ESP;724;SP;España;Spanien;Spain;España;Espagne;Espanha;Испания;西班牙
+69;false;7;ET;ETH;231;ET;ኢትዮጵያ / Ethiopia;Äthiopien;Ethiopia;Etiopía;Éthiopie;Etiópia;Эфиопия;埃塞俄比亚
+7;false;19;AM;ARM;051;AM;Հայաստան / Armenia;Armenien;Armenia;Armenia;Arménie;Arménia;Армения;亚美尼亚
+70;false;25;FI;FIN;246;FI;Suomi / Finland;Finnland;Finland;Finlandia;Finlande;Finlândia;Финляндия;芬兰
+71;false;28;FJ;FJI;242;FJ;Fiji;Fidschi;Fiji;Fiyi;Fidji;Fiji;Фиджи;斐济群岛
+72;false;11;FK;FLK;238;FK;Falkland Islands;Falklandinseln;Falkland Islands;Islas Malvinas;Îles Malouines;Ilhas Malvinas;Фолклендские острова;马尔维纳斯群岛（福克兰）
+73;false;29;FM;FSM;583;FM;Micronesia;Mikronesien;Micronesia;Micronesia;Micronésie;Micronésia;Микронезия;密克罗尼西亚联邦
+74;false;25;FO;FRO;234;FO;Føroyar / Færøerne;Färöer;Faroe Islands;Islas Feroe;Îles Féroé;Ilhas Feroé;Фарерские острова;法罗群岛
+75;false;23;FR;FRA;250;FR;France;Frankreich;France;Francia;France;França;Франция;法国
+76;false;5;GA;GAB;266;GB;Gabon;Gabun;Gabon;Gabón;Gabon;Gabão;Габон;加蓬
+77;false;25;GB;GBR;826;UK;United Kingdom;Vereinigtes Königreich;United Kingdom;Reino Unido;Royaume-Uni;Reino Unido;Великобритания;英国
+78;false;13;GD;GRD;308;GJ;Grenada;Grenada;Grenada;Granada;Grenade;Granada;Гренада;格林纳达
+79;false;19;GE;GEO;268;GG;საქართველო / Georgia;Georgien;Georgia;Georgia;Géorgie;Geórgia;Грузия;格鲁吉亚
+8;false;5;AO;AGO;024;AO;Angola;Angola;Angola;Angola;Angola;Angola;Ангола;安哥拉
+80;false;11;GF;GUF;254;FG;Guyane;Französisch-Guayana;French Guiana;Guayana Francesa;Guyane;Guiana Francesa;Гвиана;法属圭亚那
+81;false;25;GG;GGY;831;GK;Guernesey;Guernsey;Guernsey;Guernsey;Guernesey;Guernesei;Гернси;根西岛
+82;false;6;GH;GHA;288;GH;Ghana;Ghana;Ghana;Ghana;Ghana;Gana;Гана;加纳
+83;false;22;GI;GIB;292;GI;Gibraltar;Gibraltar;Gibraltar;Gibraltar;Gibraltar;Gibraltar;Гибралтар;直布罗陀
+84;false;14;GL;GRL;304;GL;Kalaallit Nunaat / Grønland;Grönland;Greenland;Groenlandia;Groenland;Groenlândia;Гренландия;格陵兰
+85;false;6;GM;GMB;270;GA;Gambia;Gambia;Gambia;Gambia;Gambie;Gâmbia;Гамбия;冈比亚
+86;false;6;GN;GIN;324;GV;Guinnée;Guinea;Guinea;Guinea;Guinée;Guiné;Гвинея;几内亚
+87;false;13;GP;GLP;312;GP;Guadeloupe;Guadeloupe;Guadeloupe;Guadalupe;Guadeloupe;Guadalupe;Гваделупа;瓜德罗普
+88;false;5;GQ;GNQ;226;EK;Guiena ecuatorial / Guinée équatoriale;Äquatorialguinea;Equatorial Guinea;Guinea Ecuatorial;Guinée équatoriale;Guiné Equatorial;Экваториальная Гвинея;赤道几内亚
+89;false;22;GR;GRC;300;GR;Ελλάδα / Greece;Griechenland;Greece;Grecia;Grèce;Grécia;Греция;希腊
+9;false;8;AQ;ATA;010;AY;Antarctica;Antarktika;Antarctica;Antártida;Antarctique;Antárctida;Антарктида;南极洲
+90;false;11;GS;SGS;239;SX;South Georgia and the South Sandwich Islands;Südgeorgien und die Südlichen Sandwichinseln;South Georgia and the South Sandwich Islands;Islas Georgias del Sur y Sandwich del Sur;Géorgie du Sud-et-les Îles Sandwich du Sud;Ilhas Geórgia do Sul e Sandwich do Sul;Южная Георгия и Южные Сандвичевы острова;南乔治亚岛和南桑威奇群岛
+91;false;12;GT;GTM;320;GT;Guatemala;Guatemala;Guatemala;Guatemala;Guatemala;Guatemala;Гватемала;危地马拉
+92;false;29;GU;GUM;316;GQ;Guam / Guåhån;Guam;Guam;Guam;Guam;Guam;Гуам;关岛
+93;false;6;GW;GNB;624;PU;Guiné-Bissau;Guinea-Bissau;Guinea-Bissau;Guinea-Bisáu;Guinée-Bissau;Guiné-Bissau;Гвинея-Бисау;几内亚比绍
+94;false;11;GY;GUY;328;GY;Guyana;Guyana;Guyana;Guyana;Guyana;Guiana;Гайана;圭亚那
+95;false;20;HK;HKG;344;HK;香港 / Hong Kong;Hongkong;Hong Kong;Hong Kong;Hong Kong;Hong Kong;Гонконг;香港
+96;false;8;HM;HMD;334;HM;Heard Island and McDonald Islands;Heard und McDonaldinseln;Heard Island and McDonald Islands;Islas Heard y McDonald;Îles Heard-et-MacDonald;Ilha Heard e Ilhas McDonald;Херд и Макдональд;赫德岛和麦克唐纳群岛
+97;false;12;HN;HND;340;HO;Honduras;Honduras;Honduras;Honduras;Honduras;Honduras;Гондурас;洪都拉斯
+98;false;22;HR;HRV;191;HR;Hrvatska / Croatia;Kroatien;Croatia;Croacia;Croatie;Croácia;Хорватия;克罗地亚
+99;false;13;HT;HTI;332;HA;Ayiti / Haïti;Haiti;Haiti;Haití;Haïti;Haiti;Гаити;海地

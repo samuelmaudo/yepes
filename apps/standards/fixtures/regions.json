@@ -1,0 +1,602 @@
+[
+  {
+    "model": "standards.Region",
+    "pk": 1,
+    "fields": {
+      "lft": 1,
+      "rght": 14,
+      "tree_id": 1,
+      "level": 0,
+      "parent": null,
+      "number": "002",
+      "name": "Africa",
+      "name_de": "Afrika",
+      "name_en": "Africa",
+      "name_es": "África",
+      "name_fr": "Afrique",
+      "name_pt": "África",
+      "name_ru": "Африка",
+      "name_zh": "非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 2,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "number": "015",
+      "name": "Africa Septentrionalis",
+      "name_de": "Nordafrika",
+      "name_en": "Northern Africa",
+      "name_es": "África del Norte",
+      "name_fr": "Afrique du Nord",
+      "name_pt": "África do Norte",
+      "name_ru": "Северная Африка",
+      "name_zh": "北部非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 3,
+    "fields": {
+      "lft": 4,
+      "rght": 13,
+      "tree_id": 1,
+      "level": 1,
+      "parent": 1,
+      "number": "999",
+      "name": "Africa Subsahariana",
+      "name_de": "Subsahara-Afrika",
+      "name_en": "Sub-Saharan Africa",
+      "name_es": "África subsahariana",
+      "name_fr": "Afrique subsaharienne",
+      "name_pt": "África subsariana",
+      "name_ru": "Африка южнее Сахары",
+      "name_zh": "撒哈拉以南非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 4,
+    "fields": {
+      "lft": 5,
+      "rght": 6,
+      "tree_id": 1,
+      "level": 2,
+      "parent": 3,
+      "number": "018",
+      "name": "Africa Austrina",
+      "name_de": "Südliches Afrika",
+      "name_en": "Southern Africa",
+      "name_es": "África Austral",
+      "name_fr": "Afrique australe",
+      "name_pt": "África Austral",
+      "name_ru": "Южная Африка",
+      "name_zh": "南部非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 5,
+    "fields": {
+      "lft": 7,
+      "rght": 8,
+      "tree_id": 1,
+      "level": 2,
+      "parent": 3,
+      "number": "017",
+      "name": "Africa Centralis",
+      "name_de": "Zentralafrika",
+      "name_en": "Central Africa",
+      "name_es": "África Central",
+      "name_fr": "Afrique centrale",
+      "name_pt": "África Central",
+      "name_ru": "Центральная Африка",
+      "name_zh": "中部非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 6,
+    "fields": {
+      "lft": 9,
+      "rght": 10,
+      "tree_id": 1,
+      "level": 2,
+      "parent": 3,
+      "number": "011",
+      "name": "Africa Occidentalis",
+      "name_de": "Westafrika",
+      "name_en": "Western Africa",
+      "name_es": "África Occidental",
+      "name_fr": "Afrique de l'Ouest",
+      "name_pt": "África Ocidental",
+      "name_ru": "Западная Африка",
+      "name_zh": "西部非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 7,
+    "fields": {
+      "lft": 11,
+      "rght": 12,
+      "tree_id": 1,
+      "level": 2,
+      "parent": 3,
+      "number": "014",
+      "name": "Africa Orientalis",
+      "name_de": "Ostafrika",
+      "name_en": "Eastern Africa",
+      "name_es": "África Oriental",
+      "name_fr": "Afrique de l'Est",
+      "name_pt": "África Oriental",
+      "name_ru": "Восточная Африка",
+      "name_zh": "东部非洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 8,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 8,
+      "level": 0,
+      "parent": null,
+      "number": "010",
+      "name": "Antarctica",
+      "name_de": "Antarktika",
+      "name_en": "Antarctica",
+      "name_es": "Antártida",
+      "name_fr": "Antarctique",
+      "name_pt": "Antárctida",
+      "name_ru": "Антарктида",
+      "name_zh": "南极洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 9,
+    "fields": {
+      "lft": 1,
+      "rght": 12,
+      "tree_id": 9,
+      "level": 0,
+      "parent": null,
+      "number": "019",
+      "name": "America",
+      "name_de": "Amerika",
+      "name_en": "Americas",
+      "name_es": "América",
+      "name_fr": "Amérique",
+      "name_pt": "América",
+      "name_ru": "Америка",
+      "name_zh": "美洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 10,
+    "fields": {
+      "lft": 2,
+      "rght": 9,
+      "tree_id": 9,
+      "level": 1,
+      "parent": 9,
+      "number": "419",
+      "name": "America Latina",
+      "name_de": "Lateinamerika",
+      "name_en": "Latin America",
+      "name_es": "América Latina",
+      "name_fr": "Amérique latine",
+      "name_pt": "América Latina",
+      "name_ru": "Латинская Америка",
+      "name_zh": "拉丁美洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 11,
+    "fields": {
+      "lft": 3,
+      "rght": 4,
+      "tree_id": 9,
+      "level": 2,
+      "parent": 10,
+      "number": "005",
+      "name": "America Australis",
+      "name_de": "Südamerika",
+      "name_en": "South America",
+      "name_es": "América del Sur",
+      "name_fr": "Amérique du Sud",
+      "name_pt": "América do Sul",
+      "name_ru": "Южная Америка",
+      "name_zh": "南美洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 12,
+    "fields": {
+      "lft": 5,
+      "rght": 6,
+      "tree_id": 9,
+      "level": 2,
+      "parent": 10,
+      "number": "013",
+      "name": "America Centralis",
+      "name_de": "Zentralamerika",
+      "name_en": "Central America",
+      "name_es": "América Central",
+      "name_fr": "Amérique centrale",
+      "name_pt": "América Central",
+      "name_ru": "Центральная Америка",
+      "name_zh": "中美洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 13,
+    "fields": {
+      "lft": 7,
+      "rght": 8,
+      "tree_id": 9,
+      "level": 2,
+      "parent": 10,
+      "number": "029",
+      "name": "Caribe",
+      "name_de": "Karibik",
+      "name_en": "Caribbean",
+      "name_es": "Caribe",
+      "name_fr": "Caraïbe",
+      "name_pt": "Caribe",
+      "name_ru": "Вест-Индия",
+      "name_zh": "加勒比的"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 14,
+    "fields": {
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 9,
+      "level": 1,
+      "parent": 9,
+      "number": "021",
+      "name": "America Septentrionalis",
+      "name_de": "Northern America",
+      "name_en": "Northern America",
+      "name_es": "América del Norte",
+      "name_fr": "Amérique du Nord",
+      "name_pt": "América do Norte",
+      "name_ru": "Северная Америка",
+      "name_zh": "北美洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 15,
+    "fields": {
+      "lft": 1,
+      "rght": 12,
+      "tree_id": 15,
+      "level": 0,
+      "parent": null,
+      "number": "142",
+      "name": "Asia",
+      "name_de": "Asien",
+      "name_en": "Asia",
+      "name_es": "Asia",
+      "name_fr": "Asie",
+      "name_pt": "Ásia",
+      "name_ru": "Азия",
+      "name_zh": "亚洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 16,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 15,
+      "level": 1,
+      "parent": 15,
+      "number": "034",
+      "name": "Asia Australis",
+      "name_de": "Südasien",
+      "name_en": "Southern Asia",
+      "name_es": "Asia del Sur",
+      "name_fr": "Asie du Sud",
+      "name_pt": "Ásia Meridional",
+      "name_ru": "Южная Азия",
+      "name_zh": "南亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 17,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 15,
+      "level": 1,
+      "parent": 15,
+      "number": "035",
+      "name": "Asia Australorientalis",
+      "name_de": "Südostasien",
+      "name_en": "South-Eastern Asia",
+      "name_es": "Sudeste Asiático",
+      "name_fr": "Asie du Sud-Est",
+      "name_pt": "Sudeste Asiático",
+      "name_ru": "Юго-Восточная Азия",
+      "name_zh": "东南亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 18,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 15,
+      "level": 1,
+      "parent": 15,
+      "number": "143",
+      "name": "Asia Centralis",
+      "name_de": "Zentralasien",
+      "name_en": "Central Asia",
+      "name_es": "Asia Central",
+      "name_fr": "Asie centrale",
+      "name_pt": "Ásia Central",
+      "name_ru": "Центральная Азия",
+      "name_zh": "中亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 19,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 15,
+      "level": 1,
+      "parent": 15,
+      "number": "145",
+      "name": "Asia Occidentalis",
+      "name_de": "Westasien",
+      "name_en": "Western Asia",
+      "name_es": "Asia Occidental",
+      "name_fr": "Asie de l'Ouest",
+      "name_pt": "Ásia Ocidental",
+      "name_ru": "Передняя Азия",
+      "name_zh": "西亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 20,
+    "fields": {
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 15,
+      "level": 1,
+      "parent": 15,
+      "number": "030",
+      "name": "Asia Orientalis",
+      "name_de": "Ostasien",
+      "name_en": "Eastern Asia",
+      "name_es": "Asia Oriental",
+      "name_fr": "Asie de l'Est",
+      "name_pt": "Ásia Oriental",
+      "name_ru": "Восточная Азия",
+      "name_zh": "东亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 21,
+    "fields": {
+      "lft": 1,
+      "rght": 10,
+      "tree_id": 21,
+      "level": 0,
+      "parent": null,
+      "number": "150",
+      "name": "Europa",
+      "name_de": "Europa",
+      "name_en": "Europe",
+      "name_es": "Europa",
+      "name_fr": "Europe",
+      "name_pt": "Europa",
+      "name_ru": "Европа",
+      "name_zh": "欧洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 22,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 21,
+      "level": 1,
+      "parent": 21,
+      "number": "039",
+      "name": "Europa Australis",
+      "name_de": "Südeuropa",
+      "name_en": "Southern Europe",
+      "name_es": "Europa del Sur",
+      "name_fr": "Europe du Sud",
+      "name_pt": "Europa Meridional",
+      "name_ru": "Южная Европа",
+      "name_zh": "南欧"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 23,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 21,
+      "level": 1,
+      "parent": 21,
+      "number": "155",
+      "name": "Europa Occidentalis",
+      "name_de": "Westeuropa",
+      "name_en": "Western Europe",
+      "name_es": "Europa Occidental",
+      "name_fr": "Europe de l'Ouest",
+      "name_pt": "Europa Ocidental",
+      "name_ru": "Западная Европа",
+      "name_zh": "西欧"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 24,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 21,
+      "level": 1,
+      "parent": 21,
+      "number": "151",
+      "name": "Europa Orientalis",
+      "name_de": "Osteuropa",
+      "name_en": "Eastern Europe",
+      "name_es": "Europa Oriental",
+      "name_fr": "Europe de l'Est",
+      "name_pt": "Europa Oriental",
+      "name_ru": "Восточная Европа",
+      "name_zh": "东欧"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 25,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 21,
+      "level": 1,
+      "parent": 21,
+      "number": "154",
+      "name": "Europa Septentrionalis",
+      "name_de": "Nordeuropa",
+      "name_en": "Northern Europe",
+      "name_es": "Europa del Norte",
+      "name_fr": "Europe du Nord",
+      "name_pt": "Europa Setentrional",
+      "name_ru": "Северная Европа",
+      "name_zh": "北歐"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 26,
+    "fields": {
+      "lft": 1,
+      "rght": 10,
+      "tree_id": 26,
+      "level": 0,
+      "parent": null,
+      "number": "009",
+      "name": "Oceania",
+      "name_de": "Ozeanien",
+      "name_en": "Oceania",
+      "name_es": "Oceanía",
+      "name_fr": "Océanie",
+      "name_pt": "Oceania",
+      "name_ru": "Океания",
+      "name_zh": "大洋洲"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 27,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 26,
+      "level": 1,
+      "parent": 26,
+      "number": "053",
+      "name": "Australasia",
+      "name_de": "Australasien",
+      "name_en": "Australasia",
+      "name_es": "Australasia",
+      "name_fr": "Australasie",
+      "name_pt": "Australásia",
+      "name_ru": "Австралазия",
+      "name_zh": "澳大拉西亞"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 28,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 26,
+      "level": 1,
+      "parent": 26,
+      "number": "054",
+      "name": "Melanesia",
+      "name_de": "Melanesien",
+      "name_en": "Melanesia",
+      "name_es": "Melanesia",
+      "name_fr": "Mélanésie",
+      "name_pt": "Melanésia",
+      "name_ru": "Меланезия",
+      "name_zh": "美拉尼西亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 29,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 26,
+      "level": 1,
+      "parent": 26,
+      "number": "057",
+      "name": "Micronesia",
+      "name_de": "Mikronesien",
+      "name_en": "Micronesia",
+      "name_es": "Micronesia",
+      "name_fr": "Micronésie",
+      "name_pt": "Micronésia",
+      "name_ru": "Микронезия",
+      "name_zh": "密克罗尼西亚"
+    }
+  },
+  {
+    "model": "standards.Region",
+    "pk": 30,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 26,
+      "level": 1,
+      "parent": 26,
+      "number": "061",
+      "name": "Polynesia",
+      "name_de": "Polynesien",
+      "name_en": "Polynesia",
+      "name_es": "Polinesia",
+      "name_fr": "Polynésie",
+      "name_pt": "Polinésia",
+      "name_ru": "Полинезия",
+      "name_zh": "玻里尼西亞"
+    }
+  }
+]

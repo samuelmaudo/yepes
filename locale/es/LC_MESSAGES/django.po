@@ -1,0 +1,490 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Samuel Maudo, 2012, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-13 12:09+0100\n"
+"PO-Revision-Date: 2014-02-12 16:17+0100\n"
+"Last-Translator: Radagast el Pardo\n"
+"Language-Team: English <kde-i18n-doc@kde.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: admin.py:50
+#, python-brace-format
+msgid "Delete selected {verbose_name_plural}"
+msgstr "Eliminar los {verbose_name_plural} seleccionados"
+
+#: admin.py:288 model_mixins/activatable.py:20
+msgid "Active"
+msgstr "Activo"
+
+#: admin.py:291 model_mixins/activatable.py:21
+msgid "Inactive"
+msgstr "Inactivo"
+
+#: admin.py:295 admin.py:338 admin.py:375 model_mixins/activatable.py:28
+#: model_mixins/displayable.py:35 model_mixins/enableable.py:26
+msgid "Status"
+msgstr "Estado"
+
+#: admin.py:302
+#, python-brace-format
+msgid "Activate \"{record}\""
+msgstr "Activar «{record}»"
+
+#: admin.py:303
+#, python-brace-format
+msgid "\"{record}\" has been successfully activated"
+msgstr "«{record}» ha sido activado correctamente"
+
+#: admin.py:304
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully activated"
+msgstr "{record_count} {verbose_name_plural} han sido activados correctamente"
+
+#: admin.py:305
+#, python-brace-format
+msgid "Activate selected {verbose_name_plural}"
+msgstr "Activar los {verbose_name_plural} seleccionados"
+
+#: admin.py:311
+#, python-brace-format
+msgid "Deactivate \"{record}\""
+msgstr "Desactivar «{record}»"
+
+#: admin.py:312
+#, python-brace-format
+msgid "\"{record}\" has been successfully deactivated"
+msgstr "«{record}» ha sido desactivado correctamente"
+
+#: admin.py:313
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully deactivated"
+msgstr ""
+"{record_count} {verbose_name_plural} han sido desactivados correctamente"
+
+#: admin.py:314
+#, python-brace-format
+msgid "Deactivate selected {verbose_name_plural}"
+msgstr "Desactivar los {verbose_name_plural} seleccionados"
+
+#: admin.py:325 model_mixins/displayable.py:26
+msgid "Draft"
+msgstr "Borrador"
+
+#: admin.py:328 model_mixins/displayable.py:28
+msgid "Hidden"
+msgstr "Oculto"
+
+#: admin.py:331 model_mixins/displayable.py:27
+msgid "Published"
+msgstr "Publicado"
+
+#: admin.py:334
+msgid "Not published"
+msgstr "No publicado"
+
+#: admin.py:344
+#, python-brace-format
+msgid "Hide \"{record}\""
+msgstr "Ocultar «{record}»"
+
+#: admin.py:345
+#, python-brace-format
+msgid "\"{record}\" has been successfully hidden"
+msgstr "«{record}» ha sido ocultado correctamente"
+
+#: admin.py:346
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully hidden"
+msgstr "{record_count} {verbose_name_plural} han sido ocultados correctamente"
+
+#: admin.py:347
+#, python-brace-format
+msgid "Hide selected {verbose_name_plural}"
+msgstr "Ocultar los {verbose_name_plural} seleccionados"
+
+#: admin.py:354
+#, python-brace-format
+msgid "Publish \"{record}\""
+msgstr "Publicar «{record}»"
+
+#: admin.py:355
+#, python-brace-format
+msgid "\"{record}\" has been successfully published"
+msgstr "«{record}» ha sido publicado correctamente"
+
+#: admin.py:356
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully published"
+msgstr "{record_count} {verbose_name_plural} han sido publicados correctamente"
+
+#: admin.py:357
+#, python-brace-format
+msgid "Publish selected {verbose_name_plural}"
+msgstr "Publicar los {verbose_name_plural} seleccionados"
+
+#: admin.py:368 model_mixins/enableable.py:18
+msgid "Enabled"
+msgstr "Habilitado"
+
+#: admin.py:371 model_mixins/enableable.py:19
+msgid "Disabled"
+msgstr "Inhabilitado"
+
+#: admin.py:381
+#, python-brace-format
+msgid "Disable \"{record}\""
+msgstr "Inhabilitar «{record}»"
+
+#: admin.py:382
+#, python-brace-format
+msgid "\"{record}\" has been successfully disabled"
+msgstr "«{record}» ha sido inhabilitado correctamente"
+
+#: admin.py:383
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully disabled"
+msgstr ""
+"{record_count} {verbose_name_plural} han sido inhabilitados correctamente"
+
+#: admin.py:384
+#, python-brace-format
+msgid "Disable selected {verbose_name_plural}"
+msgstr "Inhabilitar los {verbose_name_plural} seleccionados"
+
+#: admin.py:390
+#, python-brace-format
+msgid "Enable \"{record}\""
+msgstr "Habilitar «{record}»"
+
+#: admin.py:391
+#, python-brace-format
+msgid "\"{record}\" has been successfully enabled"
+msgstr "«{record}» ha sido habilitado correctamente"
+
+#: admin.py:392
+#, python-brace-format
+msgid "{record_count} {verbose_name_plural} has been successfully enabled"
+msgstr ""
+"{record_count} {verbose_name_plural} han sido habilitados correctamente"
+
+#: admin.py:393
+#, python-brace-format
+msgid "Enable selected {verbose_name_plural}"
+msgstr "Habilitar los {verbose_name_plural} seleccionados"
+
+#: admin.py:408
+msgid "Preview"
+msgstr "Vista previa"
+
+#: admin.py:436
+msgid "All"
+msgstr "Todos"
+
+#: admin.py:445
+msgid "None"
+msgstr "Ninguno"
+
+#: registry.py:16
+msgid "Allowed subdomains"
+msgstr "Subdominios permitidos"
+
+#: registry.py:24
+msgid "Banned IP addresses"
+msgstr "Direcciones IP bloqueadas"
+
+#: registry.py:32
+msgid "Default subdomain"
+msgstr "Subdominio por defecto"
+
+#: registry.py:141
+msgid "Stop words"
+msgstr ""
+
+#: views.py:96
+msgid "Cache Stats"
+msgstr "Estadísticas de la cache"
+
+#: views.py:240
+#, python-brace-format
+msgid "No {verbose_name} found matching the query"
+msgstr "No se ha encontrado ningún {verbose_name} que coincida con la consulta"
+
+#: views.py:439
+#, python-brace-format
+msgid "Empty list and '{class_name}.allow_empty' is False."
+msgstr ""
+"El listado está vacío y el valor de '{class_name}.allow_empty' es False."
+
+#: fields/guid.py:20
+msgid "Global Unique Identifier"
+msgstr "Identificador único global"
+
+#: fields/guid.py:32
+msgid "Enter a valid value."
+msgstr "Introduce un valor válido."
+
+#: fields/key.py:23
+msgid "Enter a valid key."
+msgstr "Introduce una clave válida."
+
+#: model_mixins/activatable.py:32
+msgid "Active From"
+msgstr "Activo desde"
+
+#: model_mixins/activatable.py:33
+msgid "Won't be active until this time."
+msgstr "No estará activo antes de esta fecha."
+
+#: model_mixins/activatable.py:37 model_mixins/displayable.py:44
+msgid "To"
+msgstr "Hasta"
+
+#: model_mixins/activatable.py:38
+msgid "Won't be active after this time."
+msgstr "No estará activo después de esta fecha."
+
+#: model_mixins/activatable.py:49 model_mixins/displayable.py:57
+msgid "End date cannot be earlier than starting date."
+msgstr "La fecha final no puede ser anterior a la fecha de inicio."
+
+#: model_mixins/activatable.py:59
+msgid "Is Active?"
+msgstr "¿Activo?"
+
+#: model_mixins/displayable.py:39
+msgid "Publish From"
+msgstr "Publicado desde"
+
+#: model_mixins/displayable.py:40
+msgid "Won't be shown until this time."
+msgstr "No se mostrará antes de esta fecha."
+
+#: model_mixins/displayable.py:45
+msgid "Won't be shown after this time."
+msgstr "No se mostrará después de esta fecha."
+
+#: model_mixins/displayable.py:63
+msgid "Is Draft?"
+msgstr "¿Borrador?"
+
+#: model_mixins/displayable.py:68
+msgid "Is Hidden?"
+msgstr "¿Oculto?"
+
+#: model_mixins/displayable.py:77
+msgid "Is Published?"
+msgstr "¿Publicado?"
+
+#: model_mixins/illustrated.py:34
+msgid "Image"
+msgstr "Imagen"
+
+#: model_mixins/illustrated.py:39
+msgid "Image Height"
+msgstr "Altura de la imagen"
+
+#: model_mixins/illustrated.py:44
+msgid "Image Width"
+msgstr "Anchura de la imagen"
+
+#: model_mixins/logged.py:16
+msgid "Creation Date"
+msgstr "Fecha de creación"
+
+#: model_mixins/logged.py:20
+msgid "Last Modified"
+msgstr "Última modificación"
+
+#: model_mixins/metadata.py:29
+msgid "Title"
+msgstr "Título"
+
+#: model_mixins/metadata.py:30
+msgid ""
+"Optional title to be used in the HTML title tag. If left blank, the main "
+"title field will be used."
+msgstr ""
+"Título opcional para utilizar en la etiqueta HTML «title». Si se deja en "
+"blanco, se utilizará el título principal."
+
+#: model_mixins/metadata.py:34
+msgid "Description"
+msgstr "Descripción"
+
+#: model_mixins/metadata.py:35
+msgid ""
+"Optional description to be used in the description meta tag. If left blank, "
+"the content field will be used."
+msgstr ""
+"Descripción opcional para utilizar en la meta etiqueta «description». Si se "
+"deja en blanco, se utilizará el campo de contenido."
+
+#: model_mixins/metadata.py:39
+msgid "Keywords"
+msgstr "Palabras clave"
+
+#: model_mixins/metadata.py:40
+msgid ""
+"Optional keywords to be used in the keywords meta tag. If left blank, will "
+"be extracted from the description."
+msgstr ""
+"Palabras clave opcionales para utilizar en la meta etiqueta «keywords». Si "
+"se deja en blanco, se extraerán de la descripción."
+
+#: model_mixins/orderable.py:67
+msgid "Index"
+msgstr "Índice"
+
+#: model_mixins/slugged.py:22
+msgid "Slug"
+msgstr ""
+
+#: model_mixins/slugged.py:23
+msgid ""
+"URL friendly version of the main title. It is usually all lowercase and "
+"contains only letters, numbers and hyphens."
+msgstr ""
+"Versión del título principal para utilizar en la URL. Normalmente, sólo "
+"contiene letras minúsculas, números y guiones."
+
+#: model_mixins/slugged.py:33
+msgid "View on site"
+msgstr "Ver en el sitio"
+
+#: templates/cache/stats.html:27
+msgid "Home"
+msgstr "Inicio"
+
+#: templates/cache/stats.html:36
+msgid "Analytics on the state of the cache engine."
+msgstr "Analítica sobre el estado de la caché."
+
+#: templates/cache/stats.html:39
+msgid "Backend"
+msgstr ""
+
+#: templates/cache/stats.html:43
+msgid "Timeout"
+msgstr "Tiempo de vida"
+
+#: templates/cache/stats.html:44
+msgid "seconds"
+msgstr "segundos"
+
+#: templates/cache/stats.html:47
+msgid "Max size"
+msgstr "Tamaño máximo"
+
+#: templates/cache/stats.html:49 templates/cache/stats.html.py:57
+msgid "bytes"
+msgstr ""
+
+#: templates/cache/stats.html:55
+msgid "Used"
+msgstr "Utilizado"
+
+#: templates/cache/stats.html:63
+msgid "Keys in cache"
+msgstr "Claves almacenadas"
+
+#: templates/cache/stats.html:71
+msgid "Cache calls"
+msgstr "Llamadas a cache"
+
+#: templates/cache/stats.html:79
+msgid "Cache hits"
+msgstr "Aciertos"
+
+#: templates/cache/stats.html:91
+msgid "Flush cache"
+msgstr "Vaciar cache"
+
+#: types/bit.py:39
+msgid "(All)"
+msgstr "(Todos)"
+
+#: utils/humanize.py:36
+msgid "Next Monday"
+msgstr "El próximo lunes"
+
+#: utils/humanize.py:38
+msgid "Next Tuesday"
+msgstr "El próximo martes"
+
+#: utils/humanize.py:40
+msgid "Next Wednesday"
+msgstr "El próximo miércoles"
+
+#: utils/humanize.py:42
+msgid "Next Thursday"
+msgstr "El próximo jueves"
+
+#: utils/humanize.py:44
+msgid "Next Friday"
+msgstr "El próximo viernes"
+
+#: utils/humanize.py:46
+msgid "Next Saturday"
+msgstr "El próximo sábado"
+
+#: utils/humanize.py:48
+msgid "Next Sunday"
+msgstr "El próximo domingo"
+
+#: utils/humanize.py:50
+msgid "After tomorrow"
+msgstr "Pasado manaña"
+
+#: utils/humanize.py:52
+msgid "Tomorrow"
+msgstr "Mañana"
+
+#: utils/humanize.py:54
+msgid "Today"
+msgstr "Hoy"
+
+#: utils/humanize.py:56
+msgid "Yesterday"
+msgstr "Ayer"
+
+#: utils/humanize.py:58
+msgid "Before yesterday"
+msgstr "Antes de ayer"
+
+#: utils/humanize.py:61
+msgid "Last Monday"
+msgstr "El pasado lunes"
+
+#: utils/humanize.py:63
+msgid "Last Tuesday"
+msgstr "El pasado martes"
+
+#: utils/humanize.py:65
+msgid "Last Wednesday"
+msgstr "El pasado miércoles"
+
+#: utils/humanize.py:67
+msgid "Last Thursday"
+msgstr "El pasado jueves"
+
+#: utils/humanize.py:69
+msgid "Last Friday"
+msgstr "El pasado viernes"
+
+#: utils/humanize.py:71
+msgid "Last Saturday"
+msgstr "El pasado sábado"
+
+#: utils/humanize.py:73
+msgid "Last Sunday"
+msgstr "El pasado domingo"

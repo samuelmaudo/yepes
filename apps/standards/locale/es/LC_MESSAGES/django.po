@@ -1,0 +1,417 @@
+#
+# Samuel Maudo, 2012, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: Yepes\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-12 13:31+0100\n"
+"PO-Revision-Date: 2014-02-12 13:32+0100\n"
+"Last-Translator: Radagast el Pardo\n"
+"Language-Team: English <kde-i18n-doc@kde.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Language: es\n"
+"X-Source-Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: __init__.py:5
+msgid "Standards"
+msgstr "Estándares"
+
+#: abstract_models.py:24 abstract_models.py:238 fields.py:173
+msgid "Region"
+msgstr "Región"
+
+#: abstract_models.py:28 abstract_models.py:76 abstract_models.py:106
+msgid "Code"
+msgstr "Código"
+
+#: abstract_models.py:29
+msgid "Specify 2-letter country code, for example \"ES\"."
+msgstr "Indica el código de 2 letras del país, por ejemplo «ES»."
+
+#: abstract_models.py:33
+msgid "Long Code"
+msgstr "Código largo"
+
+#: abstract_models.py:34
+msgid "Specify 3-letter country code, for example \"ESP\"."
+msgstr "Indica el código de 3 letras del país, por ejemplo «ESP»."
+
+#: abstract_models.py:38 abstract_models.py:111 abstract_models.py:230
+msgid "Number"
+msgstr "Número"
+
+#: abstract_models.py:39
+msgid "Specify numeric country code, for example \"724\"."
+msgstr "Indica el código numérico del país, por ejemplo «724»."
+
+#: abstract_models.py:46 abstract_models.py:72 fields.py:20
+msgid "Country"
+msgstr "País"
+
+#: abstract_models.py:47 abstract_models.py:124 abstract_models.py:186
+#: fields.py:33 fields.py:45
+msgid "Countries"
+msgstr "Países"
+
+#: abstract_models.py:60
+msgid ""
+"You can find country names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/ISO_3166-1\">http://en.wikipedia.org/wiki/"
+"ISO_3166-1</a>"
+msgstr ""
+"Puedes encontrar los nombres de los países y sus códigos ISO aquí: <a target="
+"\"_blank\" href=\"http://es.wikipedia.org/wiki/ISO_3166-1\">http://es."
+"wikipedia.org/wiki/ISO_3166-1</a>"
+
+#: abstract_models.py:77
+msgid "Specify country subdivision code, for example \"ES-O\"."
+msgstr "Indica el código de la provincia, por ejemplo «ES-O»."
+
+#: abstract_models.py:84
+msgid "Country Subdivision"
+msgstr "Subdivisión de país"
+
+#: abstract_models.py:85
+msgid "Country Subdivisions"
+msgstr "Subdivisiones de países"
+
+#: abstract_models.py:101
+msgid "Symbol"
+msgstr "Símbolo"
+
+#: abstract_models.py:102
+msgid "Specify currency symbol, for example \"€\"."
+msgstr "Indica el símbolo de la moneda, por ejemplo «€»."
+
+#: abstract_models.py:107
+msgid "Specify 3-letter currency code, for example \"EUR\"."
+msgstr "Indica el código de 3 letras de la moneda, por ejemplo «EUR»."
+
+#: abstract_models.py:112
+msgid "Specify numeric currency code, for example \"978\"."
+msgstr "Indica el código numérico de la moneda, por ejemplo «978»."
+
+#: abstract_models.py:118
+msgid "Decimals"
+msgstr "Decimales"
+
+#: abstract_models.py:119
+msgid "Number of digits after the decimal separator."
+msgstr "Número de dígitos después del separador decimal."
+
+#: abstract_models.py:125
+msgid "Countries using this currency."
+msgstr "Países que utilizan esta moneda."
+
+#: abstract_models.py:132 fields.py:98
+msgid "Currency"
+msgstr "Moneda"
+
+#: abstract_models.py:133 fields.py:111 fields.py:123
+msgid "Currencies"
+msgstr "Monedas"
+
+#: abstract_models.py:145
+msgid ""
+"You can find currency names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/ISO_4217\">http://en.wikipedia.org/wiki/"
+"ISO_4217</a>"
+msgstr ""
+"Puedes encontrar los nombres de las monedas y sus códigos ISO aquí: <a "
+"target=\"_blank\" href=\"http://es.wikipedia.org/wiki/ISO_4217\">http://es."
+"wikipedia.org/wiki/ISO_4217</a>"
+
+#: abstract_models.py:157
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: abstract_models.py:158
+msgid ""
+"You can find an explanation about the language tags here: <a target=\"_blank"
+"\" href=\"http://www.w3.org/International/articles/language-tags/Overview.en."
+"php\">http://www.w3.org/International/articles/language-tags/Overview.en."
+"php</a>"
+msgstr ""
+"Puedes encontrar una explicación sobre las etiquetas de idiomas aquí: <a "
+"target=\"_blank\" href=\"http://www.w3.org/International/articles/language-"
+"tags/Overview.es.php\">http://www.w3.org/International/articles/language-"
+"tags/Overview.es.php</a>"
+
+#: abstract_models.py:166
+msgid "ISO 639-1"
+msgstr ""
+
+#: abstract_models.py:167
+msgid "Specify 2-letter language code, for example \"es\"."
+msgstr "Indica el código de 2 letras del idioma, por ejemplo «es»."
+
+#: abstract_models.py:172
+msgid "ISO 639-2"
+msgstr ""
+
+#: abstract_models.py:173 abstract_models.py:179
+msgid "Specify 3-letter language code, for example \"spa\"."
+msgstr "Indica el código de 3 letras del idioma, por ejemplo «spa»."
+
+#: abstract_models.py:178
+msgid "ISO 639-3"
+msgstr ""
+
+#: abstract_models.py:187
+msgid "Countries where this language is official."
+msgstr "Países donde este idioma es oficial."
+
+#: abstract_models.py:194 fields.py:136
+msgid "Language"
+msgstr "Idioma"
+
+#: abstract_models.py:195 fields.py:149 fields.py:161
+msgid "Languages"
+msgstr "Idiomas"
+
+#: abstract_models.py:213
+msgid ""
+"You can find language names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes\">http://en.wikipedia."
+"org/wiki/List_of_ISO_639-3_codes</a>"
+msgstr ""
+"Puedes encontrar los nombres de los idiomas y sus códigos ISO aquí: <a "
+"target=\"_blank\" href=\"http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes"
+"\">http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes</a>"
+
+#: abstract_models.py:226
+msgid "Parent Region"
+msgstr "Región superior"
+
+#: abstract_models.py:231
+msgid "Specify numeric region code, for example \"150\"."
+msgstr "Indica el código numérico de la región, por ejemplo «150»."
+
+#: abstract_models.py:239 fields.py:185 fields.py:196
+msgid "Regions"
+msgstr "Regiones"
+
+#: abstract_models.py:254
+msgid "Name"
+msgstr "Nombre"
+
+#: abstract_models.py:256
+msgid ""
+"You can find region names and United Nations codes here: <a target=\"_blank"
+"\" href=\"http://en.wikipedia.org/wiki/UN_M.49\">http://en.wikipedia.org/"
+"wiki/UN_M.49</a>"
+msgstr ""
+"Puedes encontrar los nombres de las regiones y sus códigos de las Naciones "
+"Unidas aquí: <a target=\"_blank\" href=\"http://en.wikipedia.org/wiki/"
+"UN_M.49\">http://en.wikipedia.org/wiki/UN_M.49</a>"
+
+#: admin.py:38 fields.py:58
+msgid "Subdivision"
+msgstr "Provincia"
+
+#: admin.py:39 fields.py:72 fields.py:85
+msgid "Subdivisions"
+msgstr "Provincias"
+
+#: admin.py:56 admin.py:109 admin.py:169 admin.py:229
+msgid "Localized Names"
+msgstr "Nombres localizados"
+
+#: admin.py:124 admin.py:184
+msgid "Additional Info"
+msgstr "Información adicional"
+
+#: fields.py:13
+msgid "Many-to-one relationship with Country model."
+msgstr ""
+
+#: fields.py:26
+msgid "Many-to-many relationship with Country model."
+msgstr ""
+
+#: fields.py:39
+msgid "Binary relationship with Country model."
+msgstr ""
+
+#: fields.py:51
+msgid "Many-to-one relationship with CountrySubdivision model."
+msgstr ""
+
+#: fields.py:64
+msgid "Many-to-many relationship with CountrySubdivision model."
+msgstr ""
+
+#: fields.py:78
+msgid "Binary relationship with CountrySubdivision model."
+msgstr ""
+
+#: fields.py:91
+msgid "Many-to-one relationship with Currency model."
+msgstr ""
+
+#: fields.py:104
+msgid "Many-to-many relationship with Currency model."
+msgstr ""
+
+#: fields.py:117
+msgid "Binary relationship with Currency model."
+msgstr ""
+
+#: fields.py:129
+msgid "Many-to-one relationship with Language model."
+msgstr ""
+
+#: fields.py:142
+msgid "Many-to-many relationship with Language model."
+msgstr ""
+
+#: fields.py:155
+msgid "Binary relationship with Language model."
+msgstr ""
+
+#: fields.py:167
+msgid "Many-to-one relationship with Region model."
+msgstr ""
+
+#: fields.py:179
+msgid "Many-to-many relationship with Region model."
+msgstr ""
+
+#: fields.py:191
+msgid "Binary relationship with Region model."
+msgstr ""
+
+#: model_mixins.py:19
+msgid "Native Name"
+msgstr "Nombre nativo"
+
+#: model_mixins.py:24
+msgid "German Name"
+msgstr "Nombre en alemán"
+
+#: model_mixins.py:29
+msgid "English Name"
+msgstr "Nombre en inglés"
+
+#: model_mixins.py:34
+msgid "Spanish Name"
+msgstr "Nombre en español"
+
+#: model_mixins.py:39
+msgid "French Name"
+msgstr "Nombre en francés"
+
+#: model_mixins.py:44
+msgid "Portuguese Name"
+msgstr "Nombre en portugués"
+
+#: model_mixins.py:49
+msgid "Russian Name"
+msgstr "Nombre en ruso"
+
+#: model_mixins.py:54
+msgid "Chinese Name"
+msgstr "Nombre en chino"
+
+#~ msgid "Image"
+#~ msgstr "Imágen"
+
+#~ msgid "Regular expression"
+#~ msgstr "Expresión regular"
+
+#~ msgid "Used to check the bank card numbers."
+#~ msgstr "Sirve para comprobar los números de las tarjetas bancarias."
+
+#~ msgid "Bank card"
+#~ msgstr "Tarjeta bancaria"
+
+#~ msgid "Website"
+#~ msgstr "Sitio web"
+
+#~ msgid "Tracking URL"
+#~ msgstr "URL de seguimiento"
+
+#~ msgid "Carrier"
+#~ msgstr "Transportista"
+
+#~ msgid "Carriers"
+#~ msgstr "Transportistas"
+
+#~ msgid "Alpha-2"
+#~ msgstr "2 letras"
+
+#~ msgid "Alpha-3"
+#~ msgstr "3 letras"
+
+#~ msgid "Numeric"
+#~ msgstr "Numérico"
+
+#~ msgid "Sender's mail"
+#~ msgstr "Correo del remitente"
+
+#~ msgid "Recipient's name"
+#~ msgstr "Nombre del destinatario"
+
+#~ msgid "Recipient's mail"
+#~ msgstr "Correo del destinatario"
+
+#~ msgid "If field is blank, it will be populated when the email is sent."
+#~ msgstr ""
+#~ "Si dejas el campo en blanco, se completará al enviar el correo "
+#~ "electrónico."
+
+#~ msgid "Subject"
+#~ msgstr "Asunto"
+
+#~ msgid "Body"
+#~ msgstr "Cuerpo"
+
+#~ msgid "Has HTML?"
+#~ msgstr "¿Tiene HTML?"
+
+#~ msgid "Mail template"
+#~ msgstr "Plantilla de correo"
+
+#~ msgid "Mail templates"
+#~ msgstr "Plantillas de correo"
+
+#~ msgid "Rate"
+#~ msgstr "Ratio"
+
+#~ msgid "Taxes"
+#~ msgstr "Impuestos"
+
+#~ msgid "If field is blank, it returns the full name."
+#~ msgstr "Si dejas el campo en blanco, devolverá el nombre completo."
+
+#~ msgid "Exempt"
+#~ msgstr "Exento"
+
+#~ msgid "Not subject"
+#~ msgstr "No sujeto"
+
+#~ msgid "Status"
+#~ msgstr "Estado"
+
+#~ msgid "Statuses"
+#~ msgstr "Estados"
+
+#~ msgid "name"
+#~ msgstr "nombre"
+
+#~ msgid "subject"
+#~ msgstr "asunto"
+
+#~ msgid "body"
+#~ msgstr "cuerpo"
+
+#~ msgid "rate"
+#~ msgstr "ratio"
+
+#~ msgid "(None)"
+#~ msgstr "───"

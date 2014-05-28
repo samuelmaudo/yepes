@@ -1,0 +1,342 @@
+[
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 53,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-20",
+      "name": "Açores",
+      "name_de": "Azoren",
+      "name_en": "Azores",
+      "name_es": "Azores",
+      "name_fr": "Açores",
+      "name_pt": "Açores",
+      "name_ru": "Азорские",
+      "name_zh": "亚速尔群岛"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 54,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-01",
+      "name": "Aveiro",
+      "name_de": "Aveiro",
+      "name_en": "Aveiro",
+      "name_es": "Aveiro",
+      "name_fr": "Aveiro",
+      "name_pt": "Aveiro",
+      "name_ru": "Авейру",
+      "name_zh": "阿威羅區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 55,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-02",
+      "name": "Beja",
+      "name_de": "Beja",
+      "name_en": "Beja",
+      "name_es": "Beja",
+      "name_fr": "Beja",
+      "name_pt": "Beja",
+      "name_ru": "Бежа",
+      "name_zh": "貝雅區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 56,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-03",
+      "name": "Braga",
+      "name_de": "Braga",
+      "name_en": "Braga",
+      "name_es": "Braga",
+      "name_fr": "Braga",
+      "name_pt": "Braga",
+      "name_ru": "Брага",
+      "name_zh": "布拉加區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 57,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-04",
+      "name": "Bragança",
+      "name_de": "Bragança",
+      "name_en": "Bragança",
+      "name_es": "Braganza",
+      "name_fr": "Bragance",
+      "name_pt": "Bragança",
+      "name_ru": "Браганса",
+      "name_zh": "布拉干薩區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 58,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-05",
+      "name": "Castelo Branco",
+      "name_de": "Castelo Branco",
+      "name_en": "Castelo Branco",
+      "name_es": "Castelo Branco",
+      "name_fr": "Castelo Branco",
+      "name_pt": "Castelo Branco",
+      "name_ru": "Каштелу-Бранку",
+      "name_zh": "布朗庫堡區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 59,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-06",
+      "name": "Coimbra",
+      "name_de": "Coimbra",
+      "name_en": "Coimbra",
+      "name_es": "Coímbra",
+      "name_fr": "Coimbra",
+      "name_pt": "Coimbra",
+      "name_ru": "Коимбра",
+      "name_zh": "科英布拉區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 60,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-07",
+      "name": "Évora",
+      "name_de": "Évora",
+      "name_en": "Évora",
+      "name_es": "Évora",
+      "name_fr": "Évora",
+      "name_pt": "Évora",
+      "name_ru": "Эвора",
+      "name_zh": "埃武拉區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 61,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-08",
+      "name": "Faro",
+      "name_de": "Faro",
+      "name_en": "Faro",
+      "name_es": "Faro",
+      "name_fr": "Faro",
+      "name_pt": "Faro",
+      "name_ru": "Фару",
+      "name_zh": "法魯區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 62,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-09",
+      "name": "Guarda",
+      "name_de": "Guarda",
+      "name_en": "Guarda",
+      "name_es": "Guarda",
+      "name_fr": "Guarda",
+      "name_pt": "Guarda",
+      "name_ru": "Гуарда",
+      "name_zh": "瓜達區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 63,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-10",
+      "name": "Leiria",
+      "name_de": "Leiria",
+      "name_en": "Leiria",
+      "name_es": "Leiria",
+      "name_fr": "Leiria",
+      "name_pt": "Leiria",
+      "name_ru": "Лейрия",
+      "name_zh": "萊里亞區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 64,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-11",
+      "name": "Lisboa",
+      "name_de": "Lissabon",
+      "name_en": "Lisbon",
+      "name_es": "Lisboa",
+      "name_fr": "Lisbonne",
+      "name_pt": "Lisboa",
+      "name_ru": "Лиссабон",
+      "name_zh": "里斯本區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 65,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-30",
+      "name": "Madeira",
+      "name_de": "Madeira",
+      "name_en": "Madeira",
+      "name_es": "Madeira",
+      "name_fr": "Madère",
+      "name_pt": "Madeira",
+      "name_ru": "Мадейра",
+      "name_zh": "馬德拉"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 66,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-12",
+      "name": "Portalegre",
+      "name_de": "Portalegre",
+      "name_en": "Portalegre",
+      "name_es": "Portalegre",
+      "name_fr": "Portalegre",
+      "name_pt": "Portalegre",
+      "name_ru": "Порталегри",
+      "name_zh": "波塔萊格雷區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 67,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-13",
+      "name": "Porto",
+      "name_de": "Porto",
+      "name_en": "Porto",
+      "name_es": "Oporto",
+      "name_fr": "Porto",
+      "name_pt": "Porto",
+      "name_ru": "Порту",
+      "name_zh": "波爾圖區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 68,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-14",
+      "name": "Santarém",
+      "name_de": "Santarém",
+      "name_en": "Santarém",
+      "name_es": "Santarém",
+      "name_fr": "Santarém",
+      "name_pt": "Santarém",
+      "name_ru": "Сантарен",
+      "name_zh": "聖塔倫區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 69,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-15",
+      "name": "Setúbal",
+      "name_de": "Setúbal",
+      "name_en": "Setúbal",
+      "name_es": "Setúbal",
+      "name_fr": "Setúbal",
+      "name_pt": "Setúbal",
+      "name_ru": "Сетубал",
+      "name_zh": "塞圖巴爾區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 70,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-16",
+      "name": "Viana do Castelo",
+      "name_de": "Viana do Castelo",
+      "name_en": "Viana do Castelo",
+      "name_es": "Viana do Castelo",
+      "name_fr": "Viana do Castelo",
+      "name_pt": "Viana do Castelo",
+      "name_ru": "Виана-ду-Каштелу",
+      "name_zh": "維亞納堡區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 71,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-17",
+      "name": "Vila Real",
+      "name_de": "Vila Real",
+      "name_en": "Vila Real",
+      "name_es": "Vila Real",
+      "name_fr": "Vila Real",
+      "name_pt": "Vila Real",
+      "name_ru": "Вила-Реал",
+      "name_zh": "雷亞爾城區"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 72,
+    "fields": {
+      "is_enabled": true,
+      "country": 184,
+      "code": "PT-18",
+      "name": "Viseu",
+      "name_de": "Viseu",
+      "name_en": "Viseu",
+      "name_es": "Viseu",
+      "name_fr": "Viseu",
+      "name_pt": "Viseu",
+      "name_ru": "Визеу",
+      "name_zh": "維塞烏區"
+    }
+  }
+]

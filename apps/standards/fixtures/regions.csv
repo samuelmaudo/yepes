@@ -1,0 +1,31 @@
+id;parent;number;name;name_de;name_en;name_es;name_fr;name_pt;name_ru;name_zh
+1;;002;Africa;Afrika;Africa;África;Afrique;África;Африка;非洲
+2;1;015;Africa Septentrionalis;Nordafrika;Northern Africa;África del Norte;Afrique du Nord;África do Norte;Северная Африка;北部非洲
+3;1;999;Africa Subsahariana;Subsahara-Afrika;Sub-Saharan Africa;África subsahariana;Afrique subsaharienne;África subsariana;Африка южнее Сахары;撒哈拉以南非洲
+4;3;018;Africa Austrina;Südliches Afrika;Southern Africa;África Austral;Afrique australe;África Austral;Южная Африка;南部非洲
+5;3;017;Africa Centralis;Zentralafrika;Central Africa;África Central;Afrique centrale;África Central;Центральная Африка;中部非洲
+6;3;011;Africa Occidentalis;Westafrika;Western Africa;África Occidental;Afrique de l'Ouest;África Ocidental;Западная Африка;西部非洲
+7;3;014;Africa Orientalis;Ostafrika;Eastern Africa;África Oriental;Afrique de l'Est;África Oriental;Восточная Африка;东部非洲
+8;;010;Antarctica;Antarktika;Antarctica;Antártida;Antarctique;Antárctida;Антарктида;南极洲
+9;;019;America;Amerika;Americas;América;Amérique;América;Америка;美洲
+10;9;419;America Latina;Lateinamerika;Latin America;América Latina;Amérique latine;América Latina;Латинская Америка;拉丁美洲
+11;10;005;America Australis;Südamerika;South America;América del Sur;Amérique du Sud;América do Sul;Южная Америка;南美洲
+12;10;013;America Centralis;Zentralamerika;Central America;América Central;Amérique centrale;América Central;Центральная Америка;中美洲
+13;10;029;Caribe;Karibik;Caribbean;Caribe;Caraïbe;Caribe;Вест-Индия;加勒比的
+14;9;021;America Septentrionalis;Northern America;Northern America;América del Norte;Amérique du Nord;América do Norte;Северная Америка;北美洲
+15;;142;Asia;Asien;Asia;Asia;Asie;Ásia;Азия;亚洲
+16;15;034;Asia Australis;Südasien;Southern Asia;Asia del Sur;Asie du Sud;Ásia Meridional;Южная Азия;南亚
+17;15;035;Asia Australorientalis;Südostasien;South-Eastern Asia;Sudeste Asiático;Asie du Sud-Est;Sudeste Asiático;Юго-Восточная Азия;东南亚
+18;15;143;Asia Centralis;Zentralasien;Central Asia;Asia Central;Asie centrale;Ásia Central;Центральная Азия;中亚
+19;15;145;Asia Occidentalis;Westasien;Western Asia;Asia Occidental;Asie de l'Ouest;Ásia Ocidental;Передняя Азия;西亚
+20;15;030;Asia Orientalis;Ostasien;Eastern Asia;Asia Oriental;Asie de l'Est;Ásia Oriental;Восточная Азия;东亚
+21;;150;Europa;Europa;Europe;Europa;Europe;Europa;Европа;欧洲
+22;21;039;Europa Australis;Südeuropa;Southern Europe;Europa del Sur;Europe du Sud;Europa Meridional;Южная Европа;南欧
+23;21;155;Europa Occidentalis;Westeuropa;Western Europe;Europa Occidental;Europe de l'Ouest;Europa Ocidental;Западная Европа;西欧
+24;21;151;Europa Orientalis;Osteuropa;Eastern Europe;Europa Oriental;Europe de l'Est;Europa Oriental;Восточная Европа;东欧
+25;21;154;Europa Septentrionalis;Nordeuropa;Northern Europe;Europa del Norte;Europe du Nord;Europa Setentrional;Северная Европа;北歐
+26;;009;Oceania;Ozeanien;Oceania;Oceanía;Océanie;Oceania;Океания;大洋洲
+27;26;053;Australasia;Australasien;Australasia;Australasia;Australasie;Australásia;Австралазия;澳大拉西亞
+28;26;054;Melanesia;Melanesien;Melanesia;Melanesia;Mélanésie;Melanésia;Меланезия;美拉尼西亚
+29;26;057;Micronesia;Mikronesien;Micronesia;Micronesia;Micronésie;Micronésia;Микронезия;密克罗尼西亚
+30;26;061;Polynesia;Polynesien;Polynesia;Polinesia;Polynésie;Polinésia;Полинезия;玻里尼西亞

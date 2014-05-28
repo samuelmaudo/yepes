@@ -1,0 +1,4733 @@
+[
+  {
+    "model": "standards.Country",
+    "pk": 1,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "AD",
+      "long_code": "AND",
+      "number": "020",
+      "name": "Andorra",
+      "name_de": "Andorra",
+      "name_en": "Andorra",
+      "name_es": "Andorra",
+      "name_fr": "Andorre",
+      "name_pt": "Andorra",
+      "name_ru": "Андорра",
+      "name_zh": "安道尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 2,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "AE",
+      "long_code": "ARE",
+      "number": "784",
+      "name": "لإمارات العربيّة المتّحدة / United Arab Emirates",
+      "name_de": "Vereinigte Arabische Emirate",
+      "name_en": "United Arab Emirates",
+      "name_es": "Emiratos Árabes Unidos",
+      "name_fr": "Émirats arabes unis",
+      "name_pt": "Emirados Árabes Unidos",
+      "name_ru": "Объединённые Арабские Эмираты",
+      "name_zh": "阿联酋"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 3,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "AF",
+      "long_code": "AFG",
+      "number": "004",
+      "name": "افغانستان / Afghanistan",
+      "name_de": "Afghanistan",
+      "name_en": "Afghanistan",
+      "name_es": "Afganistán",
+      "name_fr": "Afghanistan",
+      "name_pt": "Afeganistão",
+      "name_ru": "Афганистан",
+      "name_zh": "阿富汗"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 4,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "AG",
+      "long_code": "ATG",
+      "number": "028",
+      "name": "Antigua and Barbadua",
+      "name_de": "Antigua und Barbuda",
+      "name_en": "Antigua and Barbuda",
+      "name_es": "Antigua y Barbuda",
+      "name_fr": "Antigua-et-Barbuda",
+      "name_pt": "Antígua e Barbuda",
+      "name_ru": "Антигуа и Барбуда",
+      "name_zh": "安提瓜和巴布达"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 5,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "AI",
+      "long_code": "AIA",
+      "number": "660",
+      "name": "Anguilla",
+      "name_de": "Anguilla",
+      "name_en": "Anguilla",
+      "name_es": "Anguila",
+      "name_fr": "Anguilla",
+      "name_pt": "Anguilla",
+      "name_ru": "Ангилья",
+      "name_zh": "安圭拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 6,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "AL",
+      "long_code": "ALB",
+      "number": "008",
+      "name": "Shqipëri / Albania",
+      "name_de": "Albanien",
+      "name_en": "Albania",
+      "name_es": "Albania",
+      "name_fr": "Albanie",
+      "name_pt": "Albânia",
+      "name_ru": "Албания",
+      "name_zh": "阿尔巴尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 7,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "AM",
+      "long_code": "ARM",
+      "number": "051",
+      "name": "Հայաստան / Armenia",
+      "name_de": "Armenien",
+      "name_en": "Armenia",
+      "name_es": "Armenia",
+      "name_fr": "Arménie",
+      "name_pt": "Arménia",
+      "name_ru": "Армения",
+      "name_zh": "亚美尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 8,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "AO",
+      "long_code": "AGO",
+      "number": "024",
+      "name": "Angola",
+      "name_de": "Angola",
+      "name_en": "Angola",
+      "name_es": "Angola",
+      "name_fr": "Angola",
+      "name_pt": "Angola",
+      "name_ru": "Ангола",
+      "name_zh": "安哥拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 9,
+    "fields": {
+      "is_enabled": false,
+      "region": 8,
+      "code": "AQ",
+      "long_code": "ATA",
+      "number": "010",
+      "name": "Antarctica",
+      "name_de": "Antarktika",
+      "name_en": "Antarctica",
+      "name_es": "Antártida",
+      "name_fr": "Antarctique",
+      "name_pt": "Antárctida",
+      "name_ru": "Антарктида",
+      "name_zh": "南极洲"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 10,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "AR",
+      "long_code": "ARG",
+      "number": "032",
+      "name": "Argentina",
+      "name_de": "Argentinien",
+      "name_en": "Argentina",
+      "name_es": "Argentina",
+      "name_fr": "Argentine",
+      "name_pt": "Argentina",
+      "name_ru": "Аргентина",
+      "name_zh": "阿根廷"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 11,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "AS",
+      "long_code": "ASM",
+      "number": "016",
+      "name": "American Samoa / Sāmoa Amelika",
+      "name_de": "Amerikanisch-Samoa",
+      "name_en": "American Samoa",
+      "name_es": "Samoa Americana",
+      "name_fr": "Samoa américaines",
+      "name_pt": "Samoa Americana",
+      "name_ru": "Американское Самоа",
+      "name_zh": "美属萨摩亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 12,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "AT",
+      "long_code": "AUT",
+      "number": "040",
+      "name": "Österreich / Austria",
+      "name_de": "Österreich",
+      "name_en": "Austria",
+      "name_es": "Austria",
+      "name_fr": "Autriche",
+      "name_pt": "Áustria",
+      "name_ru": "Австрия",
+      "name_zh": "奥地利"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 13,
+    "fields": {
+      "is_enabled": false,
+      "region": 27,
+      "code": "AU",
+      "long_code": "AUS",
+      "number": "036",
+      "name": "Australia",
+      "name_de": "Australien",
+      "name_en": "Australia",
+      "name_es": "Australia",
+      "name_fr": "Australie",
+      "name_pt": "Austrália",
+      "name_ru": "Австралия",
+      "name_zh": "澳大利亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 14,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "AW",
+      "long_code": "ABW",
+      "number": "533",
+      "name": "Aruba",
+      "name_de": "Aruba",
+      "name_en": "Aruba",
+      "name_es": "Aruba",
+      "name_fr": "Aruba",
+      "name_pt": "Aruba",
+      "name_ru": "Аруба",
+      "name_zh": "阿鲁巴"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 15,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "AX",
+      "long_code": "ALA",
+      "number": "248",
+      "name": "Åland",
+      "name_de": "Åland",
+      "name_en": "Åland Islands",
+      "name_es": "Åland",
+      "name_fr": "Åland",
+      "name_pt": "Ilhas Åland",
+      "name_ru": "Аландские острова",
+      "name_zh": "奥兰群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 16,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "AZ",
+      "long_code": "AZE",
+      "number": "031",
+      "name": "Azərbaycan",
+      "name_de": "Aserbaidschan",
+      "name_en": "Azerbaijan",
+      "name_es": "Azerbaiyán",
+      "name_fr": "Azerbaïdjan",
+      "name_pt": "Azerbaijão",
+      "name_ru": "Азербайджан",
+      "name_zh": "阿塞拜疆"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 17,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "BA",
+      "long_code": "BIH",
+      "number": "070",
+      "name": "Bosna i Hercegovina",
+      "name_de": "Bosnien und Herzegowina",
+      "name_en": "Bosnia and Herzegovina",
+      "name_es": "Bosnia y Herzegovina",
+      "name_fr": "Bosnie-Herzégovine",
+      "name_pt": "Bósnia e Herzegovina",
+      "name_ru": "Босния и Герцеговина",
+      "name_zh": "波黑"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 18,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "BB",
+      "long_code": "BRB",
+      "number": "052",
+      "name": "Barbados",
+      "name_de": "Barbados",
+      "name_en": "Barbados",
+      "name_es": "Barbados",
+      "name_fr": "Barbade",
+      "name_pt": "Barbados",
+      "name_ru": "Барбадос",
+      "name_zh": "巴巴多斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 19,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "BD",
+      "long_code": "BGD",
+      "number": "050",
+      "name": "Bānglādesh",
+      "name_de": "Bangladesch",
+      "name_en": "Bangladesh",
+      "name_es": "Bangladés",
+      "name_fr": "Bangladesh",
+      "name_pt": "Bangladesh",
+      "name_ru": "Бангладеш",
+      "name_zh": "孟加拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 20,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "BE",
+      "long_code": "BEL",
+      "number": "056",
+      "name": "België / Belgique / Belgien",
+      "name_de": "Belgien",
+      "name_en": "Belgium",
+      "name_es": "Bélgica",
+      "name_fr": "Belgique",
+      "name_pt": "Bélgica",
+      "name_ru": "Бельгия",
+      "name_zh": "比利时"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 21,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "BF",
+      "long_code": "BFA",
+      "number": "854",
+      "name": "Burkina Faso",
+      "name_de": "Burkina Faso",
+      "name_en": "Burkina Faso",
+      "name_es": "Burkina Faso",
+      "name_fr": "Burkina Faso",
+      "name_pt": "Burkina Faso",
+      "name_ru": "Буркина-Фасо",
+      "name_zh": "布基纳法索"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 22,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "BG",
+      "long_code": "BGR",
+      "number": "100",
+      "name": "България / Bulgaria",
+      "name_de": "Bulgarien",
+      "name_en": "Bulgaria",
+      "name_es": "Bulgaria",
+      "name_fr": "Bulgarie",
+      "name_pt": "Bulgária",
+      "name_ru": "Болгария",
+      "name_zh": "保加利亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 23,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "BH",
+      "long_code": "BHR",
+      "number": "048",
+      "name": "مملكة البحرين / Bahrain",
+      "name_de": "Bahrain",
+      "name_en": "Bahrain",
+      "name_es": "Baréin",
+      "name_fr": "Bahreïn",
+      "name_pt": "Bahrein",
+      "name_ru": "Бахрейн",
+      "name_zh": "巴林"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 24,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "BI",
+      "long_code": "BDI",
+      "number": "108",
+      "name": "Burundi",
+      "name_de": "Burundi",
+      "name_en": "Burundi",
+      "name_es": "Burundi",
+      "name_fr": "Burundi",
+      "name_pt": "Burundi",
+      "name_ru": "Бурунди",
+      "name_zh": "布隆迪"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 25,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "BJ",
+      "long_code": "BEN",
+      "number": "204",
+      "name": "Bénin",
+      "name_de": "Benin",
+      "name_en": "Benin",
+      "name_es": "Benín",
+      "name_fr": "Bénin",
+      "name_pt": "Benim",
+      "name_ru": "Бенин",
+      "name_zh": "贝宁"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 26,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "BL",
+      "long_code": "BLM",
+      "number": "652",
+      "name": "Saint-Barthélemy",
+      "name_de": "Saint-Barthélemy",
+      "name_en": "Saint Barthélemy",
+      "name_es": "San Bartolomé",
+      "name_fr": "Saint-Barthélemy",
+      "name_pt": "São Bartolomeu",
+      "name_ru": "Сен-Бартелеми",
+      "name_zh": "圣巴泰勒米岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 27,
+    "fields": {
+      "is_enabled": false,
+      "region": 14,
+      "code": "BM",
+      "long_code": "BMU",
+      "number": "060",
+      "name": "Bermuda",
+      "name_de": "Bermuda",
+      "name_en": "Bermuda",
+      "name_es": "Bermudas",
+      "name_fr": "Bermudes",
+      "name_pt": "Bermudas",
+      "name_ru": "Бермуды",
+      "name_zh": "百慕大"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 28,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "BN",
+      "long_code": "BRN",
+      "number": "096",
+      "name": "بروناي / Brunei",
+      "name_de": "Brunei Darussalam",
+      "name_en": "Brunei Darussalam",
+      "name_es": "Brunéi",
+      "name_fr": "Brunei",
+      "name_pt": "Brunei",
+      "name_ru": "Бруней",
+      "name_zh": "文莱"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 29,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "BO",
+      "long_code": "BOL",
+      "number": "068",
+      "name": "Bolivia",
+      "name_de": "Bolivien",
+      "name_en": "Bolivia",
+      "name_es": "Bolivia",
+      "name_fr": "Bolivie",
+      "name_pt": "Bolívia",
+      "name_ru": "Боливия",
+      "name_zh": "玻利维亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 30,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "BQ",
+      "long_code": "BES",
+      "number": "535",
+      "name": "Caribisch Nederland",
+      "name_de": "Karibische Niederlande",
+      "name_en": "Caribbean Netherlands",
+      "name_es": "Caribe Neerlandés",
+      "name_fr": "Pays-Bas caribéens",
+      "name_pt": "Países Baixos Caribenhos",
+      "name_ru": "Кари́бские Нидерла́нды",
+      "name_zh": "荷兰加勒比区"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 31,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "BR",
+      "long_code": "BRA",
+      "number": "076",
+      "name": "Brasil",
+      "name_de": "Brasilien",
+      "name_en": "Brazil",
+      "name_es": "Brasil",
+      "name_fr": "Brésil",
+      "name_pt": "Brasil",
+      "name_ru": "Бразилия",
+      "name_zh": "巴西"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 32,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "BS",
+      "long_code": "BHS",
+      "number": "044",
+      "name": "Bahamas",
+      "name_de": "Bahamas",
+      "name_en": "Bahamas",
+      "name_es": "Bahamas",
+      "name_fr": "Bahamas",
+      "name_pt": "Bahamas",
+      "name_ru": "Багамы",
+      "name_zh": "巴哈马"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 33,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "BT",
+      "long_code": "BTN",
+      "number": "064",
+      "name": "འབྲུག་ཡུལ / Druk Yul",
+      "name_de": "Bhutan",
+      "name_en": "Bhutan",
+      "name_es": "Bután",
+      "name_fr": "Bhoutan",
+      "name_pt": "Butão",
+      "name_ru": "Бутан",
+      "name_zh": "不丹"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 34,
+    "fields": {
+      "is_enabled": false,
+      "region": 8,
+      "code": "BV",
+      "long_code": "BVT",
+      "number": "074",
+      "name": "Bouvetøya",
+      "name_de": "Bouvetinsel",
+      "name_en": "Bouvet Island",
+      "name_es": "Isla Bouvet",
+      "name_fr": "Île Bouvet",
+      "name_pt": "Ilha Bouvet",
+      "name_ru": "Остров Буве",
+      "name_zh": "布韦岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 35,
+    "fields": {
+      "is_enabled": false,
+      "region": 4,
+      "code": "BW",
+      "long_code": "BWA",
+      "number": "072",
+      "name": "Botswana",
+      "name_de": "Botswana",
+      "name_en": "Botswana",
+      "name_es": "Botsuana",
+      "name_fr": "Botswana",
+      "name_pt": "Botswana",
+      "name_ru": "Ботсвана",
+      "name_zh": "博茨瓦纳"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 36,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "BY",
+      "long_code": "BLR",
+      "number": "112",
+      "name": "Беларусь / Belarus",
+      "name_de": "Weißrussland",
+      "name_en": "Belarus",
+      "name_es": "Bielorrusia",
+      "name_fr": "Biélorussie",
+      "name_pt": "Bielorrússia",
+      "name_ru": "Белоруссия",
+      "name_zh": "白俄罗斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 37,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "BZ",
+      "long_code": "BLZ",
+      "number": "084",
+      "name": "Belize",
+      "name_de": "Belize",
+      "name_en": "Belize",
+      "name_es": "Belice",
+      "name_fr": "Belize",
+      "name_pt": "Belize",
+      "name_ru": "Белиз",
+      "name_zh": "伯利兹"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 38,
+    "fields": {
+      "is_enabled": false,
+      "region": 14,
+      "code": "CA",
+      "long_code": "CAN",
+      "number": "124",
+      "name": "Canada",
+      "name_de": "Kanada",
+      "name_en": "Canada",
+      "name_es": "Canadá",
+      "name_fr": "Canada",
+      "name_pt": "Canadá",
+      "name_ru": "Канада",
+      "name_zh": "加拿大"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 39,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "CC",
+      "long_code": "CCK",
+      "number": "166",
+      "name": "Territory of Cocos Island",
+      "name_de": "Kokosinseln",
+      "name_en": "Cocos (Keeling) Islands",
+      "name_es": "Islas Cocos",
+      "name_fr": "Îles Cocos",
+      "name_pt": "Ilhas Cocos (Keeling)",
+      "name_ru": "Кокосовые острова",
+      "name_zh": "科科斯群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 40,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "CD",
+      "long_code": "COD",
+      "number": "180",
+      "name": "République démocratique du Congo",
+      "name_de": "Demokratische Republik Kongo",
+      "name_en": "Democratic Republic of the Congo",
+      "name_es": "República Democrática del Congo",
+      "name_fr": "République démocratique du Congo",
+      "name_pt": "República Democrática do Congo",
+      "name_ru": "Демократическая Республика Конго",
+      "name_zh": "刚果"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 41,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "CF",
+      "long_code": "CAF",
+      "number": "140",
+      "name": "République centrafricaine",
+      "name_de": "Zentralafrikanische Republik",
+      "name_en": "Central African Republic",
+      "name_es": "República Centroafricana",
+      "name_fr": "République centrafricaine",
+      "name_pt": "República Centro-Africana",
+      "name_ru": "Центральноафриканская Республика",
+      "name_zh": "中非"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 42,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "CG",
+      "long_code": "COG",
+      "number": "178",
+      "name": "République du Congo",
+      "name_de": "Republik Kongo",
+      "name_en": "Republic of the Congo",
+      "name_es": "República del Congo",
+      "name_fr": "République du Congo",
+      "name_pt": "República do Congo",
+      "name_ru": "Республика Конго",
+      "name_zh": "刚果"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 43,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "CH",
+      "long_code": "CHE",
+      "number": "756",
+      "name": "Schweiz / Suisse / Svizzera",
+      "name_de": "Schweiz",
+      "name_en": "Switzerland",
+      "name_es": "Suiza",
+      "name_fr": "Suisse",
+      "name_pt": "Suíça",
+      "name_ru": "Швейцария",
+      "name_zh": "瑞士"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 44,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "CI",
+      "long_code": "CIV",
+      "number": "384",
+      "name": "Côte d’Ivoire",
+      "name_de": "Elfenbeinküste",
+      "name_en": "Ivory Coast",
+      "name_es": "Costa de Marfil",
+      "name_fr": "Côte d'Ivoire",
+      "name_pt": "Costa do Marfim",
+      "name_ru": "Кот-д’Ивуар",
+      "name_zh": "科特迪瓦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 45,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "CK",
+      "long_code": "COK",
+      "number": "184",
+      "name": "Cook Islands",
+      "name_de": "Cookinseln",
+      "name_en": "Cook Islands",
+      "name_es": "Islas Cook",
+      "name_fr": "Îles Cook",
+      "name_pt": "Ilhas Cook",
+      "name_ru": "Острова Кука",
+      "name_zh": "库克群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 46,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "CL",
+      "long_code": "CHL",
+      "number": "152",
+      "name": "Chile",
+      "name_de": "Chile",
+      "name_en": "Chile",
+      "name_es": "Chile",
+      "name_fr": "Chili",
+      "name_pt": "Chile",
+      "name_ru": "Чили",
+      "name_zh": "智利"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 47,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "CM",
+      "long_code": "CMR",
+      "number": "120",
+      "name": "Cameroun / Cameroon",
+      "name_de": "Kamerun",
+      "name_en": "Cameroon",
+      "name_es": "Camerún",
+      "name_fr": "Cameroun",
+      "name_pt": "Camarões",
+      "name_ru": "Камерун",
+      "name_zh": "喀麦隆"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 48,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "CN",
+      "long_code": "CHN",
+      "number": "156",
+      "name": "中国 / China",
+      "name_de": "China",
+      "name_en": "China",
+      "name_es": "China",
+      "name_fr": "Chine",
+      "name_pt": "China",
+      "name_ru": "Кита́й",
+      "name_zh": "中国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 49,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "CO",
+      "long_code": "COL",
+      "number": "170",
+      "name": "Colombia",
+      "name_de": "Kolumbien",
+      "name_en": "Colombia",
+      "name_es": "Colombia",
+      "name_fr": "Colombie",
+      "name_pt": "Colômbia",
+      "name_ru": "Колумбия",
+      "name_zh": "哥伦比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 50,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "CR",
+      "long_code": "CRI",
+      "number": "188",
+      "name": "Costa Rica",
+      "name_de": "Costa Rica",
+      "name_en": "Costa Rica",
+      "name_es": "Costa Rica",
+      "name_fr": "Costa Rica",
+      "name_pt": "Costa Rica",
+      "name_ru": "Коста-Рика",
+      "name_zh": "哥斯达黎加"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 51,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "CU",
+      "long_code": "CUB",
+      "number": "192",
+      "name": "Cuba",
+      "name_de": "Kuba",
+      "name_en": "Cuba",
+      "name_es": "Cuba",
+      "name_fr": "Cuba",
+      "name_pt": "Cuba",
+      "name_ru": "Куба",
+      "name_zh": "古巴"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 52,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "CV",
+      "long_code": "CPV",
+      "number": "132",
+      "name": "Cabo Verde",
+      "name_de": "Kap Verde",
+      "name_en": "Cape Verde",
+      "name_es": "Cabo Verde",
+      "name_fr": "Cap-Vert",
+      "name_pt": "Cabo Verde",
+      "name_ru": "Кабо-Верде",
+      "name_zh": "佛得角"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 53,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "CW",
+      "long_code": "CUW",
+      "number": "531",
+      "name": "Kòrsou / Curaçao",
+      "name_de": "Curaçao",
+      "name_en": "Curaçao",
+      "name_es": "Curazao",
+      "name_fr": "Curaçao",
+      "name_pt": "Curaçao",
+      "name_ru": "Кюрасао",
+      "name_zh": "库拉索"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 54,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "CX",
+      "long_code": "CXR",
+      "number": "162",
+      "name": "Christmas Islands",
+      "name_de": "Weihnachtsinsel",
+      "name_en": "Christmas Island",
+      "name_es": "Isla de Navidad",
+      "name_fr": "Île Christmas",
+      "name_pt": "Ilha do Natal",
+      "name_ru": "Остров Рождества",
+      "name_zh": "圣诞岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 55,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "CY",
+      "long_code": "CYP",
+      "number": "196",
+      "name": "Κύπρος / Kıbrıs / Cyprus",
+      "name_de": "Zypern",
+      "name_en": "Cyprus",
+      "name_es": "Chipre",
+      "name_fr": "Chypre (pays)",
+      "name_pt": "Chipre",
+      "name_ru": "Кипр",
+      "name_zh": "塞浦路斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 56,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "CZ",
+      "long_code": "CZE",
+      "number": "203",
+      "name": "Ceská Republika",
+      "name_de": "Tschechische Republik",
+      "name_en": "Czech Republic",
+      "name_es": "República Checa",
+      "name_fr": "République tchèque",
+      "name_pt": "República Checa",
+      "name_ru": "Чехия",
+      "name_zh": "捷克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 57,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "DE",
+      "long_code": "DEU",
+      "number": "276",
+      "name": "Deutschland / Germany",
+      "name_de": "Deutschland",
+      "name_en": "Germany",
+      "name_es": "Alemania",
+      "name_fr": "Allemagne",
+      "name_pt": "Alemanha",
+      "name_ru": "Германия",
+      "name_zh": "德国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 58,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "DJ",
+      "long_code": "DJI",
+      "number": "262",
+      "name": "جيبوتي / Djibouti",
+      "name_de": "Dschibuti",
+      "name_en": "Djibouti",
+      "name_es": "Yibuti",
+      "name_fr": "Djibouti",
+      "name_pt": "Djibouti",
+      "name_ru": "Джибути",
+      "name_zh": "吉布提"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 59,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "DK",
+      "long_code": "DNK",
+      "number": "208",
+      "name": "Danmark",
+      "name_de": "Dänemark",
+      "name_en": "Denmark",
+      "name_es": "Dinamarca",
+      "name_fr": "Danemark",
+      "name_pt": "Dinamarca",
+      "name_ru": "Дания",
+      "name_zh": "丹麦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 60,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "DM",
+      "long_code": "DMA",
+      "number": "212",
+      "name": "Dominica",
+      "name_de": "Dominica",
+      "name_en": "Dominica",
+      "name_es": "Dominica",
+      "name_fr": "Dominique",
+      "name_pt": "Dominica",
+      "name_ru": "Доминика",
+      "name_zh": "多米尼克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 61,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "DO",
+      "long_code": "DOM",
+      "number": "214",
+      "name": "República Dominicana",
+      "name_de": "Dominikanische Republik",
+      "name_en": "Dominican Republic",
+      "name_es": "República Dominicana",
+      "name_fr": "République dominicaine",
+      "name_pt": "República Dominicana",
+      "name_ru": "Доминиканская Республика",
+      "name_zh": "多米尼加"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 62,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "DZ",
+      "long_code": "DZA",
+      "number": "012",
+      "name": "الجزائر / Algérie",
+      "name_de": "Algerien",
+      "name_en": "Algeria",
+      "name_es": "Argelia",
+      "name_fr": "Algérie",
+      "name_pt": "Argélia",
+      "name_ru": "Алжир",
+      "name_zh": "阿尔及利亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 63,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "EC",
+      "long_code": "ECU",
+      "number": "218",
+      "name": "Equador",
+      "name_de": "Ecuador",
+      "name_en": "Ecuador",
+      "name_es": "Ecuador",
+      "name_fr": "Équateur",
+      "name_pt": "Equador",
+      "name_ru": "Эквадор",
+      "name_zh": "厄瓜多尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 64,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "EE",
+      "long_code": "EST",
+      "number": "233",
+      "name": "Eesti",
+      "name_de": "Estland",
+      "name_en": "Estonia",
+      "name_es": "Estonia",
+      "name_fr": "Estonie",
+      "name_pt": "Estónia",
+      "name_ru": "Эстония",
+      "name_zh": "爱沙尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 65,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "EG",
+      "long_code": "EGY",
+      "number": "818",
+      "name": "مصر / Egypt",
+      "name_de": "Ägypten",
+      "name_en": "Egypt",
+      "name_es": "Egipto",
+      "name_fr": "Égypte",
+      "name_pt": "Egito",
+      "name_ru": "Египет",
+      "name_zh": "埃及"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 66,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "EH",
+      "long_code": "ESH",
+      "number": "732",
+      "name": "لصحراء الغربية / Sahara Occidental",
+      "name_de": "Westsahara",
+      "name_en": "Western Sahara",
+      "name_es": "Sahara Occidental",
+      "name_fr": "Sahara occidental",
+      "name_pt": "Saara Ocidental",
+      "name_ru": "Западная Сахара",
+      "name_zh": "西撒哈拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 67,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "ER",
+      "long_code": "ERI",
+      "number": "232",
+      "name": "ኤርትራ / إرتريا /‎ Eritrea",
+      "name_de": "Eritrea",
+      "name_en": "Eritrea",
+      "name_es": "Eritrea",
+      "name_fr": "Érythrée",
+      "name_pt": "Eritreia",
+      "name_ru": "Эритрея",
+      "name_zh": "厄立特里亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 68,
+    "fields": {
+      "is_enabled": true,
+      "region": 22,
+      "code": "ES",
+      "long_code": "ESP",
+      "number": "724",
+      "name": "España",
+      "name_de": "Spanien",
+      "name_en": "Spain",
+      "name_es": "España",
+      "name_fr": "Espagne",
+      "name_pt": "Espanha",
+      "name_ru": "Испания",
+      "name_zh": "西班牙"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 69,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "ET",
+      "long_code": "ETH",
+      "number": "231",
+      "name": "ኢትዮጵያ / Ethiopia",
+      "name_de": "Äthiopien",
+      "name_en": "Ethiopia",
+      "name_es": "Etiopía",
+      "name_fr": "Éthiopie",
+      "name_pt": "Etiópia",
+      "name_ru": "Эфиопия",
+      "name_zh": "埃塞俄比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 70,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "FI",
+      "long_code": "FIN",
+      "number": "246",
+      "name": "Suomi / Finland",
+      "name_de": "Finnland",
+      "name_en": "Finland",
+      "name_es": "Finlandia",
+      "name_fr": "Finlande",
+      "name_pt": "Finlândia",
+      "name_ru": "Финляндия",
+      "name_zh": "芬兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 71,
+    "fields": {
+      "is_enabled": false,
+      "region": 28,
+      "code": "FJ",
+      "long_code": "FJI",
+      "number": "242",
+      "name": "Fiji",
+      "name_de": "Fidschi",
+      "name_en": "Fiji",
+      "name_es": "Fiyi",
+      "name_fr": "Fidji",
+      "name_pt": "Fiji",
+      "name_ru": "Фиджи",
+      "name_zh": "斐济群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 72,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "FK",
+      "long_code": "FLK",
+      "number": "238",
+      "name": "Falkland Islands",
+      "name_de": "Falklandinseln",
+      "name_en": "Falkland Islands",
+      "name_es": "Islas Malvinas",
+      "name_fr": "Îles Malouines",
+      "name_pt": "Ilhas Malvinas",
+      "name_ru": "Фолклендские острова",
+      "name_zh": "马尔维纳斯群岛（福克兰）"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 73,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "FM",
+      "long_code": "FSM",
+      "number": "583",
+      "name": "Micronesia",
+      "name_de": "Mikronesien",
+      "name_en": "Micronesia",
+      "name_es": "Micronesia",
+      "name_fr": "Micronésie",
+      "name_pt": "Micronésia",
+      "name_ru": "Микронезия",
+      "name_zh": "密克罗尼西亚联邦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 74,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "FO",
+      "long_code": "FRO",
+      "number": "234",
+      "name": "Føroyar / Færøerne",
+      "name_de": "Färöer",
+      "name_en": "Faroe Islands",
+      "name_es": "Islas Feroe",
+      "name_fr": "Îles Féroé",
+      "name_pt": "Ilhas Feroé",
+      "name_ru": "Фарерские острова",
+      "name_zh": "法罗群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 75,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "FR",
+      "long_code": "FRA",
+      "number": "250",
+      "name": "France",
+      "name_de": "Frankreich",
+      "name_en": "France",
+      "name_es": "Francia",
+      "name_fr": "France",
+      "name_pt": "França",
+      "name_ru": "Франция",
+      "name_zh": "法国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 76,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "GA",
+      "long_code": "GAB",
+      "number": "266",
+      "name": "Gabon",
+      "name_de": "Gabun",
+      "name_en": "Gabon",
+      "name_es": "Gabón",
+      "name_fr": "Gabon",
+      "name_pt": "Gabão",
+      "name_ru": "Габон",
+      "name_zh": "加蓬"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 77,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "GB",
+      "long_code": "GBR",
+      "number": "826",
+      "name": "United Kingdom",
+      "name_de": "Vereinigtes Königreich",
+      "name_en": "United Kingdom",
+      "name_es": "Reino Unido",
+      "name_fr": "Royaume-Uni",
+      "name_pt": "Reino Unido",
+      "name_ru": "Великобритания",
+      "name_zh": "英国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 78,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "GD",
+      "long_code": "GRD",
+      "number": "308",
+      "name": "Grenada",
+      "name_de": "Grenada",
+      "name_en": "Grenada",
+      "name_es": "Granada",
+      "name_fr": "Grenade",
+      "name_pt": "Granada",
+      "name_ru": "Гренада",
+      "name_zh": "格林纳达"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 79,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "GE",
+      "long_code": "GEO",
+      "number": "268",
+      "name": "საქართველო / Georgia",
+      "name_de": "Georgien",
+      "name_en": "Georgia",
+      "name_es": "Georgia",
+      "name_fr": "Géorgie",
+      "name_pt": "Geórgia",
+      "name_ru": "Грузия",
+      "name_zh": "格鲁吉亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 80,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "GF",
+      "long_code": "GUF",
+      "number": "254",
+      "name": "Guyane",
+      "name_de": "Französisch-Guayana",
+      "name_en": "French Guiana",
+      "name_es": "Guayana Francesa",
+      "name_fr": "Guyane",
+      "name_pt": "Guiana Francesa",
+      "name_ru": "Гвиана",
+      "name_zh": "法属圭亚那"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 81,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "GG",
+      "long_code": "GGY",
+      "number": "831",
+      "name": "Guernesey",
+      "name_de": "Guernsey",
+      "name_en": "Guernsey",
+      "name_es": "Guernsey",
+      "name_fr": "Guernesey",
+      "name_pt": "Guernesei",
+      "name_ru": "Гернси",
+      "name_zh": "根西岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 82,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "GH",
+      "long_code": "GHA",
+      "number": "288",
+      "name": "Ghana",
+      "name_de": "Ghana",
+      "name_en": "Ghana",
+      "name_es": "Ghana",
+      "name_fr": "Ghana",
+      "name_pt": "Gana",
+      "name_ru": "Гана",
+      "name_zh": "加纳"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 83,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "GI",
+      "long_code": "GIB",
+      "number": "292",
+      "name": "Gibraltar",
+      "name_de": "Gibraltar",
+      "name_en": "Gibraltar",
+      "name_es": "Gibraltar",
+      "name_fr": "Gibraltar",
+      "name_pt": "Gibraltar",
+      "name_ru": "Гибралтар",
+      "name_zh": "直布罗陀"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 84,
+    "fields": {
+      "is_enabled": false,
+      "region": 14,
+      "code": "GL",
+      "long_code": "GRL",
+      "number": "304",
+      "name": "Kalaallit Nunaat / Grønland",
+      "name_de": "Grönland",
+      "name_en": "Greenland",
+      "name_es": "Groenlandia",
+      "name_fr": "Groenland",
+      "name_pt": "Groenlândia",
+      "name_ru": "Гренландия",
+      "name_zh": "格陵兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 85,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "GM",
+      "long_code": "GMB",
+      "number": "270",
+      "name": "Gambia",
+      "name_de": "Gambia",
+      "name_en": "Gambia",
+      "name_es": "Gambia",
+      "name_fr": "Gambie",
+      "name_pt": "Gâmbia",
+      "name_ru": "Гамбия",
+      "name_zh": "冈比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 86,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "GN",
+      "long_code": "GIN",
+      "number": "324",
+      "name": "Guinnée",
+      "name_de": "Guinea",
+      "name_en": "Guinea",
+      "name_es": "Guinea",
+      "name_fr": "Guinée",
+      "name_pt": "Guiné",
+      "name_ru": "Гвинея",
+      "name_zh": "几内亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 87,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "GP",
+      "long_code": "GLP",
+      "number": "312",
+      "name": "Guadeloupe",
+      "name_de": "Guadeloupe",
+      "name_en": "Guadeloupe",
+      "name_es": "Guadalupe",
+      "name_fr": "Guadeloupe",
+      "name_pt": "Guadalupe",
+      "name_ru": "Гваделупа",
+      "name_zh": "瓜德罗普"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 88,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "GQ",
+      "long_code": "GNQ",
+      "number": "226",
+      "name": "Guiena ecuatorial / Guinée équatoriale",
+      "name_de": "Äquatorialguinea",
+      "name_en": "Equatorial Guinea",
+      "name_es": "Guinea Ecuatorial",
+      "name_fr": "Guinée équatoriale",
+      "name_pt": "Guiné Equatorial",
+      "name_ru": "Экваториальная Гвинея",
+      "name_zh": "赤道几内亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 89,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "GR",
+      "long_code": "GRC",
+      "number": "300",
+      "name": "Ελλάδα / Greece",
+      "name_de": "Griechenland",
+      "name_en": "Greece",
+      "name_es": "Grecia",
+      "name_fr": "Grèce",
+      "name_pt": "Grécia",
+      "name_ru": "Греция",
+      "name_zh": "希腊"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 90,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "GS",
+      "long_code": "SGS",
+      "number": "239",
+      "name": "South Georgia and the South Sandwich Islands",
+      "name_de": "Südgeorgien und die Südlichen Sandwichinseln",
+      "name_en": "South Georgia and the South Sandwich Islands",
+      "name_es": "Islas Georgias del Sur y Sandwich del Sur",
+      "name_fr": "Géorgie du Sud-et-les Îles Sandwich du Sud",
+      "name_pt": "Ilhas Geórgia do Sul e Sandwich do Sul",
+      "name_ru": "Южная Георгия и Южные Сандвичевы острова",
+      "name_zh": "南乔治亚岛和南桑威奇群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 91,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "GT",
+      "long_code": "GTM",
+      "number": "320",
+      "name": "Guatemala",
+      "name_de": "Guatemala",
+      "name_en": "Guatemala",
+      "name_es": "Guatemala",
+      "name_fr": "Guatemala",
+      "name_pt": "Guatemala",
+      "name_ru": "Гватемала",
+      "name_zh": "危地马拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 92,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "GU",
+      "long_code": "GUM",
+      "number": "316",
+      "name": "Guam / Guåhån",
+      "name_de": "Guam",
+      "name_en": "Guam",
+      "name_es": "Guam",
+      "name_fr": "Guam",
+      "name_pt": "Guam",
+      "name_ru": "Гуам",
+      "name_zh": "关岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 93,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "GW",
+      "long_code": "GNB",
+      "number": "624",
+      "name": "Guiné-Bissau",
+      "name_de": "Guinea-Bissau",
+      "name_en": "Guinea-Bissau",
+      "name_es": "Guinea-Bisáu",
+      "name_fr": "Guinée-Bissau",
+      "name_pt": "Guiné-Bissau",
+      "name_ru": "Гвинея-Бисау",
+      "name_zh": "几内亚比绍"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 94,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "GY",
+      "long_code": "GUY",
+      "number": "328",
+      "name": "Guyana",
+      "name_de": "Guyana",
+      "name_en": "Guyana",
+      "name_es": "Guyana",
+      "name_fr": "Guyana",
+      "name_pt": "Guiana",
+      "name_ru": "Гайана",
+      "name_zh": "圭亚那"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 95,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "HK",
+      "long_code": "HKG",
+      "number": "344",
+      "name": "香港 / Hong Kong",
+      "name_de": "Hongkong",
+      "name_en": "Hong Kong",
+      "name_es": "Hong Kong",
+      "name_fr": "Hong Kong",
+      "name_pt": "Hong Kong",
+      "name_ru": "Гонконг",
+      "name_zh": "香港"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 96,
+    "fields": {
+      "is_enabled": false,
+      "region": 8,
+      "code": "HM",
+      "long_code": "HMD",
+      "number": "334",
+      "name": "Heard Island and McDonald Islands",
+      "name_de": "Heard und McDonaldinseln",
+      "name_en": "Heard Island and McDonald Islands",
+      "name_es": "Islas Heard y McDonald",
+      "name_fr": "Îles Heard-et-MacDonald",
+      "name_pt": "Ilha Heard e Ilhas McDonald",
+      "name_ru": "Херд и Макдональд",
+      "name_zh": "赫德岛和麦克唐纳群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 97,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "HN",
+      "long_code": "HND",
+      "number": "340",
+      "name": "Honduras",
+      "name_de": "Honduras",
+      "name_en": "Honduras",
+      "name_es": "Honduras",
+      "name_fr": "Honduras",
+      "name_pt": "Honduras",
+      "name_ru": "Гондурас",
+      "name_zh": "洪都拉斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 98,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "HR",
+      "long_code": "HRV",
+      "number": "191",
+      "name": "Hrvatska / Croatia",
+      "name_de": "Kroatien",
+      "name_en": "Croatia",
+      "name_es": "Croacia",
+      "name_fr": "Croatie",
+      "name_pt": "Croácia",
+      "name_ru": "Хорватия",
+      "name_zh": "克罗地亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 99,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "HT",
+      "long_code": "HTI",
+      "number": "332",
+      "name": "Ayiti / Haïti",
+      "name_de": "Haiti",
+      "name_en": "Haiti",
+      "name_es": "Haití",
+      "name_fr": "Haïti",
+      "name_pt": "Haiti",
+      "name_ru": "Гаити",
+      "name_zh": "海地"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 100,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "HU",
+      "long_code": "HUN",
+      "number": "348",
+      "name": "Magyarország / Hungary",
+      "name_de": "Ungarn",
+      "name_en": "Hungary",
+      "name_es": "Hungría",
+      "name_fr": "Hongrie",
+      "name_pt": "Hungria",
+      "name_ru": "Венгрия",
+      "name_zh": "匈牙利"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 101,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "ID",
+      "long_code": "IDN",
+      "number": "360",
+      "name": "Indonesia",
+      "name_de": "Indonesien",
+      "name_en": "Indonesia",
+      "name_es": "Indonesia",
+      "name_fr": "Indonésie",
+      "name_pt": "Indonésia",
+      "name_ru": "Индонезия",
+      "name_zh": "印尼"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 102,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "IE",
+      "long_code": "IRL",
+      "number": "372",
+      "name": "Éire / Ireland",
+      "name_de": "Irland",
+      "name_en": "Ireland",
+      "name_es": "Irlanda",
+      "name_fr": "Irlande",
+      "name_pt": "Irlanda",
+      "name_ru": "Ирландия",
+      "name_zh": "爱尔兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 103,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "IL",
+      "long_code": "ISR",
+      "number": "376",
+      "name": "ישראלל / Israel",
+      "name_de": "Israel",
+      "name_en": "Israel",
+      "name_es": "Israel",
+      "name_fr": "Israël",
+      "name_pt": "Israel",
+      "name_ru": "Израиль",
+      "name_zh": "以色列"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 104,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "IM",
+      "long_code": "IMN",
+      "number": "833",
+      "name": "Isle of Man",
+      "name_de": "Insel Man",
+      "name_en": "Isle of Man",
+      "name_es": "Isla de Man",
+      "name_fr": "Île de Man",
+      "name_pt": "Ilha de Man",
+      "name_ru": "Остров Мэн",
+      "name_zh": "马恩岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 105,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "IN",
+      "long_code": "IND",
+      "number": "356",
+      "name": "India",
+      "name_de": "Indien",
+      "name_en": "India",
+      "name_es": "India",
+      "name_fr": "Inde",
+      "name_pt": "Índia",
+      "name_ru": "Индия",
+      "name_zh": "印度"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 106,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "IO",
+      "long_code": "IOT",
+      "number": "086",
+      "name": "British Indian Ocean Territory",
+      "name_de": "Britisches Territorium im Indischen Ozean",
+      "name_en": "British Indian Ocean Territory",
+      "name_es": "Territorio Británico del Océano Índico",
+      "name_fr": "Territoire britannique de l'océan Indien",
+      "name_pt": "Território Britânico do Oceano Índico",
+      "name_ru": "Британская территория в Индийском океане",
+      "name_zh": "英属印度洋领地"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 107,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "IQ",
+      "long_code": "IRQ",
+      "number": "368",
+      "name": "العراق / Iraq",
+      "name_de": "Irak",
+      "name_en": "Iraq",
+      "name_es": "Irak",
+      "name_fr": "Irak",
+      "name_pt": "Iraque",
+      "name_ru": "Ирак",
+      "name_zh": "伊拉克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 108,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "IR",
+      "long_code": "IRN",
+      "number": "364",
+      "name": "ایران‎ / Iran",
+      "name_de": "Iran",
+      "name_en": "Iran",
+      "name_es": "Irán",
+      "name_fr": "Iran",
+      "name_pt": "Irã",
+      "name_ru": "Иран",
+      "name_zh": "伊朗"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 109,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "IS",
+      "long_code": "ISL",
+      "number": "352",
+      "name": "Ísland",
+      "name_de": "Island",
+      "name_en": "Iceland",
+      "name_es": "Islandia",
+      "name_fr": "Islande",
+      "name_pt": "Islândia",
+      "name_ru": "Исландия",
+      "name_zh": "冰岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 110,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "IT",
+      "long_code": "ITA",
+      "number": "380",
+      "name": "Italia",
+      "name_de": "Italien",
+      "name_en": "Italy",
+      "name_es": "Italia",
+      "name_fr": "Italie",
+      "name_pt": "Itália",
+      "name_ru": "Италия",
+      "name_zh": "意大利"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 111,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "JE",
+      "long_code": "JEY",
+      "number": "832",
+      "name": "Jersey",
+      "name_de": "Jersey",
+      "name_en": "Jersey",
+      "name_es": "Jersey",
+      "name_fr": "Jersey",
+      "name_pt": "Jersey",
+      "name_ru": "Джерси",
+      "name_zh": "泽西岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 112,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "JM",
+      "long_code": "JAM",
+      "number": "388",
+      "name": "Jamaïca",
+      "name_de": "Jamaika",
+      "name_en": "Jamaica",
+      "name_es": "Jamaica",
+      "name_fr": "Jamaïque",
+      "name_pt": "Jamaica",
+      "name_ru": "Ямайка",
+      "name_zh": "牙买加"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 113,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "JO",
+      "long_code": "JOR",
+      "number": "400",
+      "name": "الأردنّ / Jordan",
+      "name_de": "Jordanien",
+      "name_en": "Jordan",
+      "name_es": "Jordania",
+      "name_fr": "Jordanie",
+      "name_pt": "Jordânia",
+      "name_ru": "Иордания",
+      "name_zh": "约旦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 114,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "JP",
+      "long_code": "JPN",
+      "number": "392",
+      "name": "日本 / Japan",
+      "name_de": "Japan",
+      "name_en": "Japan",
+      "name_es": "Japón",
+      "name_fr": "Japon",
+      "name_pt": "Japão",
+      "name_ru": "Япония",
+      "name_zh": "日本"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 115,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "KE",
+      "long_code": "KEN",
+      "number": "404",
+      "name": "Kenya",
+      "name_de": "Kenia",
+      "name_en": "Kenya",
+      "name_es": "Kenia",
+      "name_fr": "Kenya",
+      "name_pt": "Quênia",
+      "name_ru": "Кения",
+      "name_zh": "肯尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 116,
+    "fields": {
+      "is_enabled": false,
+      "region": 18,
+      "code": "KG",
+      "long_code": "KGZ",
+      "number": "417",
+      "name": "Кыргызстан / Киргизия / Kyrgyzstan",
+      "name_de": "Kirgisistan",
+      "name_en": "Kyrgyzstan",
+      "name_es": "Kirguistán",
+      "name_fr": "Kirghizistan",
+      "name_pt": "Quirguistão",
+      "name_ru": "Киргизия",
+      "name_zh": "吉尔吉斯斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 117,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "KH",
+      "long_code": "KHM",
+      "number": "116",
+      "name": "កម្ពុជា / Cambodia",
+      "name_de": "Kambodscha",
+      "name_en": "Cambodia",
+      "name_es": "Camboya",
+      "name_fr": "Cambodge",
+      "name_pt": "Camboja",
+      "name_ru": "Камбоджа",
+      "name_zh": "柬埔寨"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 118,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "KI",
+      "long_code": "KIR",
+      "number": "296",
+      "name": "Kiribati",
+      "name_de": "Kiribati",
+      "name_en": "Kiribati",
+      "name_es": "Kiribati",
+      "name_fr": "Kiribati",
+      "name_pt": "Kiribati",
+      "name_ru": "Кирибати",
+      "name_zh": "基里巴斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 119,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "KM",
+      "long_code": "COM",
+      "number": "174",
+      "name": "جزر القمر / Comores",
+      "name_de": "Komoren",
+      "name_en": "Comoros",
+      "name_es": "Comoras",
+      "name_fr": "Comores",
+      "name_pt": "Comores",
+      "name_ru": "Коморы",
+      "name_zh": "科摩罗"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 120,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "KN",
+      "long_code": "KNA",
+      "number": "659",
+      "name": "Saint Kitts and Nevis",
+      "name_de": "St. Kitts und Nevis",
+      "name_en": "Saint Kitts and Nevis",
+      "name_es": "San Cristóbal y Nieves",
+      "name_fr": "Saint-Christophe-et-Niévès",
+      "name_pt": "São Cristóvão e Nevis",
+      "name_ru": "Сент-Китс и Невис",
+      "name_zh": "圣基茨和尼维斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 121,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "KP",
+      "long_code": "PRK",
+      "number": "408",
+      "name": "북한 / North Korea",
+      "name_de": "Nordkorea",
+      "name_en": "North Korea",
+      "name_es": "Corea del Norte",
+      "name_fr": "Corée du Nord",
+      "name_pt": "Coreia do Norte",
+      "name_ru": "КНДР",
+      "name_zh": "北韓"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 122,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "KR",
+      "long_code": "KOR",
+      "number": "410",
+      "name": "대한민국 / South Korea",
+      "name_de": "Südkorea",
+      "name_en": "South Korea",
+      "name_es": "Corea del Sur",
+      "name_fr": "Corée du Sud",
+      "name_pt": "Coreia do Sul",
+      "name_ru": "Республика Корея",
+      "name_zh": "南韓"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 123,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "KW",
+      "long_code": "KWT",
+      "number": "414",
+      "name": "الكويت / Kuwait",
+      "name_de": "Kuwait",
+      "name_en": "Kuwait",
+      "name_es": "Kuwait",
+      "name_fr": "Koweït",
+      "name_pt": "Kuwait",
+      "name_ru": "Кувейт",
+      "name_zh": "科威特"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 124,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "KY",
+      "long_code": "CYM",
+      "number": "136",
+      "name": "Cayman Islands",
+      "name_de": "Kaimaninseln",
+      "name_en": "Cayman Islands",
+      "name_es": "Islas Caimán",
+      "name_fr": "Îles Caïmans",
+      "name_pt": "Ilhas Cayman",
+      "name_ru": "Каймановы острова",
+      "name_zh": "开曼群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 125,
+    "fields": {
+      "is_enabled": false,
+      "region": 18,
+      "code": "KZ",
+      "long_code": "KAZ",
+      "number": "398",
+      "name": "Қазақстан / Kazakhstan",
+      "name_de": "Kasachstan",
+      "name_en": "Kazakhstan",
+      "name_es": "Kazajistán",
+      "name_fr": "Kazakhstan",
+      "name_pt": "Cazaquistão",
+      "name_ru": "Казахстан",
+      "name_zh": "哈萨克斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 126,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "LA",
+      "long_code": "LAO",
+      "number": "418",
+      "name": "ປະເທດລາວ / Laos",
+      "name_de": "Laos",
+      "name_en": "Laos",
+      "name_es": "Laos",
+      "name_fr": "Laos",
+      "name_pt": "Laos",
+      "name_ru": "Лаос",
+      "name_zh": "老挝"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 127,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "LB",
+      "long_code": "LBN",
+      "number": "422",
+      "name": "لبنان / Lebanon",
+      "name_de": "Libanon",
+      "name_en": "Lebanon",
+      "name_es": "Líbano",
+      "name_fr": "Liban",
+      "name_pt": "Líbano",
+      "name_ru": "Ливан",
+      "name_zh": "黎巴嫩"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 128,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "LC",
+      "long_code": "LCA",
+      "number": "662",
+      "name": "Saint Lucia",
+      "name_de": "St. Lucia",
+      "name_en": "Saint Lucia",
+      "name_es": "Santa Lucía",
+      "name_fr": "Sainte-Lucie",
+      "name_pt": "Santa Lúcia",
+      "name_ru": "Сент-Люсия",
+      "name_zh": "圣卢西亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 129,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "LI",
+      "long_code": "LIE",
+      "number": "438",
+      "name": "Liechtenstein",
+      "name_de": "Liechtenstein",
+      "name_en": "Liechtenstein",
+      "name_es": "Liechtenstein",
+      "name_fr": "Liechtenstein",
+      "name_pt": "Liechtenstein",
+      "name_ru": "Лихтенштейн",
+      "name_zh": "列支敦士登"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 130,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "LK",
+      "long_code": "LKA",
+      "number": "144",
+      "name": "ශ්‍රී ලංකාව / Sri Lanka",
+      "name_de": "Sri Lanka",
+      "name_en": "Sri Lanka",
+      "name_es": "Sri Lanka",
+      "name_fr": "Sri Lanka",
+      "name_pt": "Sri Lanka",
+      "name_ru": "Шри-Ланка",
+      "name_zh": "斯里兰卡"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 131,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "LR",
+      "long_code": "LBR",
+      "number": "430",
+      "name": "Liberia",
+      "name_de": "Liberia",
+      "name_en": "Liberia",
+      "name_es": "Liberia",
+      "name_fr": "Liberia",
+      "name_pt": "Libéria",
+      "name_ru": "Либерия",
+      "name_zh": "利比里亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 132,
+    "fields": {
+      "is_enabled": false,
+      "region": 4,
+      "code": "LS",
+      "long_code": "LSO",
+      "number": "426",
+      "name": "Lesotho",
+      "name_de": "Lesotho",
+      "name_en": "Lesotho",
+      "name_es": "Lesoto",
+      "name_fr": "Lesotho",
+      "name_pt": "Lesoto",
+      "name_ru": "Лесото",
+      "name_zh": "莱索托"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 133,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "LT",
+      "long_code": "LTU",
+      "number": "440",
+      "name": "Lietuva",
+      "name_de": "Litauen",
+      "name_en": "Lithuania",
+      "name_es": "Lituania",
+      "name_fr": "Lituanie",
+      "name_pt": "Lituânia",
+      "name_ru": "Литва",
+      "name_zh": "立陶宛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 134,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "LU",
+      "long_code": "LUX",
+      "number": "442",
+      "name": "Luxembourg",
+      "name_de": "Luxemburg",
+      "name_en": "Luxembourg",
+      "name_es": "Luxemburgo",
+      "name_fr": "Luxembourg",
+      "name_pt": "Luxemburgo",
+      "name_ru": "Люксембург",
+      "name_zh": "卢森堡"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 135,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "LV",
+      "long_code": "LVA",
+      "number": "428",
+      "name": "Latvijas",
+      "name_de": "Lettland",
+      "name_en": "Latvia",
+      "name_es": "Letonia",
+      "name_fr": "Lettonie",
+      "name_pt": "Letônia",
+      "name_ru": "Латвия",
+      "name_zh": "拉脱维亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 136,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "LY",
+      "long_code": "LBY",
+      "number": "434",
+      "name": "ليبيا‎ / Libya",
+      "name_de": "Libyen",
+      "name_en": "Libya",
+      "name_es": "Libia",
+      "name_fr": "Libye",
+      "name_pt": "Líbia",
+      "name_ru": "Ливия",
+      "name_zh": "利比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 137,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "MA",
+      "long_code": "MAR",
+      "number": "504",
+      "name": "المغرب‎ / Morocco",
+      "name_de": "Marokko",
+      "name_en": "Morocco",
+      "name_es": "Marruecos",
+      "name_fr": "Maroc",
+      "name_pt": "Marrocos",
+      "name_ru": "Марокко",
+      "name_zh": "摩洛哥"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 138,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "MC",
+      "long_code": "MCO",
+      "number": "492",
+      "name": "Monaco",
+      "name_de": "Monaco",
+      "name_en": "Monaco",
+      "name_es": "Mónaco",
+      "name_fr": "Monaco",
+      "name_pt": "Mónaco",
+      "name_ru": "Монако",
+      "name_zh": "摩纳哥"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 139,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "MD",
+      "long_code": "MDA",
+      "number": "498",
+      "name": "Moldova",
+      "name_de": "Moldawien",
+      "name_en": "Moldova",
+      "name_es": "Moldavia",
+      "name_fr": "Moldavie",
+      "name_pt": "Moldávia",
+      "name_ru": "Молдавия",
+      "name_zh": "摩尔多瓦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 140,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "ME",
+      "long_code": "MNE",
+      "number": "499",
+      "name": "Црна Гора / Crna Gora",
+      "name_de": "Montenegro",
+      "name_en": "Montenegro",
+      "name_es": "Montenegro",
+      "name_fr": "Monténégro",
+      "name_pt": "Montenegro",
+      "name_ru": "Черногория",
+      "name_zh": "黑山"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 141,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "MF",
+      "long_code": "MAF",
+      "number": "663",
+      "name": "Saint-Martin",
+      "name_de": "Saint-Martin (franz. Teil)",
+      "name_en": "Saint Martin (French part)",
+      "name_es": "San Martín (Francia)",
+      "name_fr": "Saint-Martin",
+      "name_pt": "São Martinho (França)",
+      "name_ru": "Сен-Мартен",
+      "name_zh": "法属圣马丁"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 142,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "MG",
+      "long_code": "MDG",
+      "number": "450",
+      "name": "Madagasikara / Madagascar",
+      "name_de": "Madagaskar",
+      "name_en": "Madagascar",
+      "name_es": "Madagascar",
+      "name_fr": "Madagascar",
+      "name_pt": "Madagáscar",
+      "name_ru": "Мадагаскар",
+      "name_zh": "马达加斯加"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 143,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "MH",
+      "long_code": "MHL",
+      "number": "584",
+      "name": "Marshall Islands / Aolepān Aorōkin M̧ajeļ",
+      "name_de": "Marshallinseln",
+      "name_en": "Marshall Islands",
+      "name_es": "Islas Marshall",
+      "name_fr": "Îles Marshall",
+      "name_pt": "Ilhas Marshall",
+      "name_ru": "Маршалловы Острова",
+      "name_zh": "马绍尔群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 144,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "MK",
+      "long_code": "MKD",
+      "number": "807",
+      "name": "Македонија / Macedonia",
+      "name_de": "Mazedonien",
+      "name_en": "Macedonia",
+      "name_es": "Macedonia",
+      "name_fr": "Macédoine",
+      "name_pt": "Macedónia",
+      "name_ru": "Македония",
+      "name_zh": "马其顿"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 145,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "ML",
+      "long_code": "MLI",
+      "number": "466",
+      "name": "Mali",
+      "name_de": "Mali",
+      "name_en": "Mali",
+      "name_es": "Malí",
+      "name_fr": "Mali",
+      "name_pt": "Mali",
+      "name_ru": "Мали",
+      "name_zh": "马里"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 146,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "MM",
+      "long_code": "MMR",
+      "number": "104",
+      "name": "မြန်မာပြည် / Myanmar",
+      "name_de": "Myanmar",
+      "name_en": "Burma",
+      "name_es": "Birmania",
+      "name_fr": "Birmanie",
+      "name_pt": "Myanmar",
+      "name_ru": "Мьянма",
+      "name_zh": "缅甸"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 147,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "MN",
+      "long_code": "MNG",
+      "number": "496",
+      "name": "Монгол улс / Mongolia",
+      "name_de": "Mongolei",
+      "name_en": "Mongolia",
+      "name_es": "Mongolia",
+      "name_fr": "Mongolie",
+      "name_pt": "Mongólia",
+      "name_ru": "Монголия",
+      "name_zh": "蒙古国；蒙古"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 148,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "MO",
+      "long_code": "MAC",
+      "number": "446",
+      "name": "澳門 / Macau",
+      "name_de": "Macao",
+      "name_en": "Macau",
+      "name_es": "Macao",
+      "name_fr": "Macao",
+      "name_pt": "Macau",
+      "name_ru": "Макао",
+      "name_zh": "澳门"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 149,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "MP",
+      "long_code": "MNP",
+      "number": "580",
+      "name": "Northern Mariana Islands",
+      "name_de": "Nördliche Marianen",
+      "name_en": "Northern Mariana Islands",
+      "name_es": "Islas Marianas del Norte",
+      "name_fr": "Îles Mariannes du Nord",
+      "name_pt": "Marianas Setentrionais",
+      "name_ru": "Северные Марианские острова",
+      "name_zh": "北马里亚纳群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 150,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "MQ",
+      "long_code": "MTQ",
+      "number": "474",
+      "name": "Martinique",
+      "name_de": "Martinique",
+      "name_en": "Martinique",
+      "name_es": "Martinica",
+      "name_fr": "Martinique",
+      "name_pt": "Martinica",
+      "name_ru": "Мартиника",
+      "name_zh": "马提尼克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 151,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "MR",
+      "long_code": "MRT",
+      "number": "478",
+      "name": "موريتانيا‎ / Mauritanie",
+      "name_de": "Mauretanien",
+      "name_en": "Mauritania",
+      "name_es": "Mauritania",
+      "name_fr": "Mauritanie",
+      "name_pt": "Mauritânia",
+      "name_ru": "Мавритания",
+      "name_zh": "毛里塔尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 152,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "MS",
+      "long_code": "MSR",
+      "number": "500",
+      "name": "Montserrat",
+      "name_de": "Montserrat",
+      "name_en": "Montserrat",
+      "name_es": "Montserrat",
+      "name_fr": "Montserrat",
+      "name_pt": "Montserrat",
+      "name_ru": "Монтсеррат",
+      "name_zh": "蒙塞拉特岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 153,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "MT",
+      "long_code": "MLT",
+      "number": "470",
+      "name": "Malta",
+      "name_de": "Malta",
+      "name_en": "Malta",
+      "name_es": "Malta",
+      "name_fr": "Malte",
+      "name_pt": "Malta",
+      "name_ru": "Мальта",
+      "name_zh": "马耳他"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 154,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "MU",
+      "long_code": "MUS",
+      "number": "480",
+      "name": "Mauritius",
+      "name_de": "Mauritius",
+      "name_en": "Mauritius",
+      "name_es": "Mauricio",
+      "name_fr": "Maurice",
+      "name_pt": "Maurícia",
+      "name_ru": "Маврикий",
+      "name_zh": "毛里求斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 155,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "MV",
+      "long_code": "MDV",
+      "number": "462",
+      "name": "ދިވެހިރާއްޖެ / Maldives",
+      "name_de": "Malediven",
+      "name_en": "Maldives",
+      "name_es": "Maldivas",
+      "name_fr": "Maldives",
+      "name_pt": "Maldivas",
+      "name_ru": "Мальдивы",
+      "name_zh": "马尔代夫"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 156,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "MW",
+      "long_code": "MWI",
+      "number": "454",
+      "name": "Malaŵi",
+      "name_de": "Malawi",
+      "name_en": "Malawi",
+      "name_es": "Malaui",
+      "name_fr": "Malawi",
+      "name_pt": "Malawi",
+      "name_ru": "Малави",
+      "name_zh": "马拉维"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 157,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "MX",
+      "long_code": "MEX",
+      "number": "484",
+      "name": "México",
+      "name_de": "Mexiko",
+      "name_en": "Mexico",
+      "name_es": "México",
+      "name_fr": "Mexique",
+      "name_pt": "México",
+      "name_ru": "Мексика",
+      "name_zh": "墨西哥"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 158,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "MY",
+      "long_code": "MYS",
+      "number": "458",
+      "name": "Malaysia",
+      "name_de": "Malaysia",
+      "name_en": "Malaysia",
+      "name_es": "Malasia",
+      "name_fr": "Malaisie",
+      "name_pt": "Malásia",
+      "name_ru": "Малайзия",
+      "name_zh": "马来西亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 159,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "MZ",
+      "long_code": "MOZ",
+      "number": "508",
+      "name": "Moçambique",
+      "name_de": "Mosambik",
+      "name_en": "Mozambique",
+      "name_es": "Mozambique",
+      "name_fr": "Mozambique",
+      "name_pt": "Moçambique",
+      "name_ru": "Мозамбик",
+      "name_zh": "莫桑比克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 160,
+    "fields": {
+      "is_enabled": false,
+      "region": 4,
+      "code": "NA",
+      "long_code": "NAM",
+      "number": "516",
+      "name": "Namibia",
+      "name_de": "Namibia",
+      "name_en": "Namibia",
+      "name_es": "Namibia",
+      "name_fr": "Namibie",
+      "name_pt": "Namíbia",
+      "name_ru": "Намибия",
+      "name_zh": "纳米比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 161,
+    "fields": {
+      "is_enabled": false,
+      "region": 28,
+      "code": "NC",
+      "long_code": "NCL",
+      "number": "540",
+      "name": "Nouvelle-Calédonie",
+      "name_de": "Neukaledonien",
+      "name_en": "New Caledonia",
+      "name_es": "Nueva Caledonia",
+      "name_fr": "Nouvelle-Calédonie",
+      "name_pt": "Nova Caledônia",
+      "name_ru": "Новая Каледония",
+      "name_zh": "新喀里多尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 162,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "NE",
+      "long_code": "NER",
+      "number": "562",
+      "name": "Niger",
+      "name_de": "Niger",
+      "name_en": "Niger",
+      "name_es": "Níger",
+      "name_fr": "Niger",
+      "name_pt": "Níger",
+      "name_ru": "Нигер",
+      "name_zh": "尼日尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 163,
+    "fields": {
+      "is_enabled": false,
+      "region": 27,
+      "code": "NF",
+      "long_code": "NFK",
+      "number": "574",
+      "name": "Norfolk Island",
+      "name_de": "Norfolkinsel",
+      "name_en": "Norfolk Island",
+      "name_es": "Norfolk",
+      "name_fr": "Île Norfolk",
+      "name_pt": "Ilha Norfolk",
+      "name_ru": "Остров Норфолк",
+      "name_zh": "诺福克岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 164,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "NG",
+      "long_code": "NGA",
+      "number": "566",
+      "name": "Nigeria",
+      "name_de": "Nigeria",
+      "name_en": "Nigeria",
+      "name_es": "Nigeria",
+      "name_fr": "Nigeria",
+      "name_pt": "Nigéria",
+      "name_ru": "Нигерия",
+      "name_zh": "尼日利亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 165,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "NI",
+      "long_code": "NIC",
+      "number": "558",
+      "name": "Nicaragua",
+      "name_de": "Nicaragua",
+      "name_en": "Nicaragua",
+      "name_es": "Nicaragua",
+      "name_fr": "Nicaragua",
+      "name_pt": "Nicarágua",
+      "name_ru": "Никарагуа",
+      "name_zh": "尼加拉瓜"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 166,
+    "fields": {
+      "is_enabled": false,
+      "region": 23,
+      "code": "NL",
+      "long_code": "NLD",
+      "number": "528",
+      "name": "Nederland",
+      "name_de": "Niederlande",
+      "name_en": "Netherlands",
+      "name_es": "Países Bajos",
+      "name_fr": "Pays-Bas",
+      "name_pt": "Países Baixos",
+      "name_ru": "Нидерланды",
+      "name_zh": "荷兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 167,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "NO",
+      "long_code": "NOR",
+      "number": "578",
+      "name": "Norge",
+      "name_de": "Norwegen",
+      "name_en": "Norway",
+      "name_es": "Noruega",
+      "name_fr": "Norvège",
+      "name_pt": "Noruega",
+      "name_ru": "Норвегия",
+      "name_zh": "挪威"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 168,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "NP",
+      "long_code": "NPL",
+      "number": "524",
+      "name": "नेपाल / Nepal",
+      "name_de": "Nepal",
+      "name_en": "Nepal",
+      "name_es": "Nepal",
+      "name_fr": "Népal",
+      "name_pt": "Nepal",
+      "name_ru": "Непал",
+      "name_zh": "尼泊尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 169,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "NR",
+      "long_code": "NRU",
+      "number": "520",
+      "name": "Naoero / Nauru",
+      "name_de": "Nauru",
+      "name_en": "Nauru",
+      "name_es": "Nauru",
+      "name_fr": "Nauru",
+      "name_pt": "Nauru",
+      "name_ru": "Науру",
+      "name_zh": "瑙鲁"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 170,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "NU",
+      "long_code": "NIU",
+      "number": "570",
+      "name": "Niuē",
+      "name_de": "Niue",
+      "name_en": "Niue",
+      "name_es": "Niue",
+      "name_fr": "Niue",
+      "name_pt": "Niue",
+      "name_ru": "Ниуэ",
+      "name_zh": "纽埃"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 171,
+    "fields": {
+      "is_enabled": false,
+      "region": 27,
+      "code": "NZ",
+      "long_code": "NZL",
+      "number": "554",
+      "name": "New Zeland",
+      "name_de": "Neuseeland",
+      "name_en": "New Zealand",
+      "name_es": "Nueva Zelanda",
+      "name_fr": "Nouvelle-Zélande",
+      "name_pt": "Nova Zelândia",
+      "name_ru": "Новая Зеландия",
+      "name_zh": "新西兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 172,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "OM",
+      "long_code": "OMN",
+      "number": "512",
+      "name": "عمان‎ / Oman",
+      "name_de": "Oman",
+      "name_en": "Oman",
+      "name_es": "Omán",
+      "name_fr": "Oman",
+      "name_pt": "Omã",
+      "name_ru": "Оман",
+      "name_zh": "阿曼"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 173,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "PA",
+      "long_code": "PAN",
+      "number": "591",
+      "name": "Panamá",
+      "name_de": "Panama",
+      "name_en": "Panama",
+      "name_es": "Panamá",
+      "name_fr": "Panama",
+      "name_pt": "Panamá",
+      "name_ru": "Панама",
+      "name_zh": "巴拿马"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 174,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "PE",
+      "long_code": "PER",
+      "number": "604",
+      "name": "Perú",
+      "name_de": "Peru",
+      "name_en": "Peru",
+      "name_es": "Perú",
+      "name_fr": "Pérou",
+      "name_pt": "Peru",
+      "name_ru": "Перу",
+      "name_zh": "秘鲁"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 175,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "PF",
+      "long_code": "PYF",
+      "number": "258",
+      "name": "Polynésie française",
+      "name_de": "Französisch-Polynesien",
+      "name_en": "French Polynesia",
+      "name_es": "Polinesia Francesa",
+      "name_fr": "Polynésie française",
+      "name_pt": "Polinésia Francesa",
+      "name_ru": "Французская Полинезия",
+      "name_zh": "法属波利尼西亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 176,
+    "fields": {
+      "is_enabled": false,
+      "region": 28,
+      "code": "PG",
+      "long_code": "PNG",
+      "number": "598",
+      "name": "Papua New Guinea",
+      "name_de": "Papua-Neuguinea",
+      "name_en": "Papua New Guinea",
+      "name_es": "Papúa Nueva Guinea",
+      "name_fr": "Papouasie-Nouvelle-Guinée",
+      "name_pt": "Papua-Nova Guiné",
+      "name_ru": "Папуа — Новая Гвинея",
+      "name_zh": "巴布亚新几内亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 177,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "PH",
+      "long_code": "PHL",
+      "number": "608",
+      "name": "Pilipinás",
+      "name_de": "Philippinen",
+      "name_en": "Philippines",
+      "name_es": "Filipinas",
+      "name_fr": "Philippines",
+      "name_pt": "Filipinas",
+      "name_ru": "Филиппины",
+      "name_zh": "菲律宾"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 178,
+    "fields": {
+      "is_enabled": false,
+      "region": 16,
+      "code": "PK",
+      "long_code": "PAK",
+      "number": "586",
+      "name": "Pakistan / پاكِستان",
+      "name_de": "Pakistan",
+      "name_en": "Pakistan",
+      "name_es": "Pakistán",
+      "name_fr": "Pakistan",
+      "name_pt": "Paquistão",
+      "name_ru": "Пакистан",
+      "name_zh": "巴基斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 179,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "PL",
+      "long_code": "POL",
+      "number": "616",
+      "name": "Polska",
+      "name_de": "Polen",
+      "name_en": "Poland",
+      "name_es": "Polonia",
+      "name_fr": "Pologne",
+      "name_pt": "Polónia",
+      "name_ru": "Польша",
+      "name_zh": "波兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 180,
+    "fields": {
+      "is_enabled": false,
+      "region": 14,
+      "code": "PM",
+      "long_code": "SPM",
+      "number": "666",
+      "name": "Saint-Pierre-et-Miquelon",
+      "name_de": "Saint-Pierre und Miquelon",
+      "name_en": "Saint Pierre and Miquelon",
+      "name_es": "San Pedro y Miquelón",
+      "name_fr": "Saint-Pierre-et-Miquelon",
+      "name_pt": "Saint-Pierre e Miquelon",
+      "name_ru": "Сен-Пьер и Микелон",
+      "name_zh": "圣皮埃尔和密克隆"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 181,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "PN",
+      "long_code": "PCN",
+      "number": "612",
+      "name": "Pitcairn Islands",
+      "name_de": "Pitcairninseln",
+      "name_en": "Pitcairn Islands",
+      "name_es": "Islas Pitcairn",
+      "name_fr": "Îles Pitcairn",
+      "name_pt": "Pitcairn",
+      "name_ru": "Острова Питкэрн",
+      "name_zh": "皮特凯恩群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 182,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "PR",
+      "long_code": "PRI",
+      "number": "630",
+      "name": "Puerto Rico",
+      "name_de": "Puerto Rico",
+      "name_en": "Puerto Rico",
+      "name_es": "Puerto Rico",
+      "name_fr": "Porto Rico",
+      "name_pt": "Porto Rico",
+      "name_ru": "Пуэрто-Рико",
+      "name_zh": "波多黎各"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 183,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "PS",
+      "long_code": "PSE",
+      "number": "275",
+      "name": "فلسطين‎ / Palestine",
+      "name_de": "Palästina",
+      "name_en": "Palestine",
+      "name_es": "Palestina",
+      "name_fr": "Palestine",
+      "name_pt": "Palestina",
+      "name_ru": "Шаблон:PSE",
+      "name_zh": "巴勒斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 184,
+    "fields": {
+      "is_enabled": true,
+      "region": 22,
+      "code": "PT",
+      "long_code": "PRT",
+      "number": "620",
+      "name": "Portugal",
+      "name_de": "Portugal",
+      "name_en": "Portugal",
+      "name_es": "Portugal",
+      "name_fr": "Portugal",
+      "name_pt": "Portugal",
+      "name_ru": "Португалия",
+      "name_zh": "葡萄牙"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 185,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "PW",
+      "long_code": "PLW",
+      "number": "585",
+      "name": "Palau / Belau",
+      "name_de": "Palau",
+      "name_en": "Palau",
+      "name_es": "Palaos",
+      "name_fr": "Palaos",
+      "name_pt": "Palau",
+      "name_ru": "Палау",
+      "name_zh": "帕劳"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 186,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "PY",
+      "long_code": "PRY",
+      "number": "600",
+      "name": "Paraguay / Paraguáype",
+      "name_de": "Paraguay",
+      "name_en": "Paraguay",
+      "name_es": "Paraguay",
+      "name_fr": "Paraguay",
+      "name_pt": "Paraguai",
+      "name_ru": "Парагвай",
+      "name_zh": "巴拉圭"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 187,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "QA",
+      "long_code": "QAT",
+      "number": "634",
+      "name": "قطر‎ / Qatar",
+      "name_de": "Katar",
+      "name_en": "Qatar",
+      "name_es": "Catar",
+      "name_fr": "Qatar",
+      "name_pt": "Catar",
+      "name_ru": "Катар",
+      "name_zh": "卡塔尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 188,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "RE",
+      "long_code": "REU",
+      "number": "638",
+      "name": "La Réunion",
+      "name_de": "Réunion",
+      "name_en": "Réunion",
+      "name_es": "Reunión",
+      "name_fr": "La Réunion",
+      "name_pt": "Reunião",
+      "name_ru": "Реюньон",
+      "name_zh": "留尼汪"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 189,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "RO",
+      "long_code": "ROU",
+      "number": "642",
+      "name": "România",
+      "name_de": "Rumänien",
+      "name_en": "Romania",
+      "name_es": "Rumania",
+      "name_fr": "Roumanie",
+      "name_pt": "Roménia",
+      "name_ru": "Румыния",
+      "name_zh": "罗马尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 190,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "RS",
+      "long_code": "SRB",
+      "number": "688",
+      "name": "Србија / Serbia",
+      "name_de": "Serbien",
+      "name_en": "Serbia",
+      "name_es": "Serbia",
+      "name_fr": "Serbie",
+      "name_pt": "Sérvia",
+      "name_ru": "Сербия",
+      "name_zh": "塞尔维亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 191,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "RU",
+      "long_code": "RUS",
+      "number": "643",
+      "name": "Россия / Russia",
+      "name_de": "Russische Föderation",
+      "name_en": "Russia",
+      "name_es": "Rusia",
+      "name_fr": "Russie",
+      "name_pt": "Rússia",
+      "name_ru": "Россия",
+      "name_zh": "俄罗斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 192,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "RW",
+      "long_code": "RWA",
+      "number": "646",
+      "name": "Rwanda",
+      "name_de": "Ruanda",
+      "name_en": "Rwanda",
+      "name_es": "Ruanda",
+      "name_fr": "Rwanda",
+      "name_pt": "Ruanda",
+      "name_ru": "Руанда",
+      "name_zh": "卢旺达"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 193,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "SA",
+      "long_code": "SAU",
+      "number": "682",
+      "name": "السعودية‎ / Saudi Arabia",
+      "name_de": "Saudi-Arabien",
+      "name_en": "Saudi Arabia",
+      "name_es": "Arabia Saudita",
+      "name_fr": "Arabie saoudite",
+      "name_pt": "Arábia Saudita",
+      "name_ru": "Саудовская Аравия",
+      "name_zh": "沙特阿拉伯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 194,
+    "fields": {
+      "is_enabled": false,
+      "region": 28,
+      "code": "SB",
+      "long_code": "SLB",
+      "number": "090",
+      "name": "Salomons Islands",
+      "name_de": "Salomonen",
+      "name_en": "Solomon Islands",
+      "name_es": "Islas Salomón",
+      "name_fr": "Salomon",
+      "name_pt": "Ilhas Salomão",
+      "name_ru": "Соломоновы Острова",
+      "name_zh": "所罗门群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 195,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "SC",
+      "long_code": "SYC",
+      "number": "690",
+      "name": "Seychelles / Sesel",
+      "name_de": "Seychellen",
+      "name_en": "Seychelles",
+      "name_es": "Seychelles",
+      "name_fr": "Seychelles",
+      "name_pt": "Seychelles",
+      "name_ru": "Сейшельские Острова",
+      "name_zh": "塞舌尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 196,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "SD",
+      "long_code": "SDN",
+      "number": "729",
+      "name": "السودان‎ / Sudan",
+      "name_de": "Sudan",
+      "name_en": "Sudan",
+      "name_es": "Sudán",
+      "name_fr": "Soudan",
+      "name_pt": "Sudão",
+      "name_ru": "Судан",
+      "name_zh": "苏丹"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 197,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "SE",
+      "long_code": "SWE",
+      "number": "752",
+      "name": "Sverige",
+      "name_de": "Schweden",
+      "name_en": "Sweden",
+      "name_es": "Suecia",
+      "name_fr": "Suède",
+      "name_pt": "Suécia",
+      "name_ru": "Швеция",
+      "name_zh": "瑞典"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 198,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "SG",
+      "long_code": "SGP",
+      "number": "702",
+      "name": "Singapore / Singapura / 新加坡 / சிங்கப்பூர்",
+      "name_de": "Singapur",
+      "name_en": "Singapore",
+      "name_es": "Singapur",
+      "name_fr": "Singapour",
+      "name_pt": "Singapura",
+      "name_ru": "Сингапур",
+      "name_zh": "新加坡"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 199,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "SH",
+      "long_code": "SHN",
+      "number": "654",
+      "name": "Saint Helena, Ascension and Tristan da Cunha",
+      "name_de": "St. Helena, Ascension und Tristan da Cunha",
+      "name_en": "Saint Helena, Ascension and Tristan da Cunha",
+      "name_es": "Santa Elena, Ascensión y Tristán de Acuña",
+      "name_fr": "Sainte-Hélène, Ascension et Tristan da Cunha",
+      "name_pt": "Santa Helena, Ascensão e Tristão da Cunha",
+      "name_ru": "Острова Святой Елены, Вознесения и Тристан-да-Кунья",
+      "name_zh": "圣赫勒拿、阿森松与特里斯坦达库尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 200,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "SI",
+      "long_code": "SVN",
+      "number": "705",
+      "name": "Slovenija",
+      "name_de": "Slowenien",
+      "name_en": "Slovenia",
+      "name_es": "Eslovenia",
+      "name_fr": "Slovénie",
+      "name_pt": "Eslovênia",
+      "name_ru": "Словения",
+      "name_zh": "斯洛文尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 201,
+    "fields": {
+      "is_enabled": false,
+      "region": 25,
+      "code": "SJ",
+      "long_code": "SJM",
+      "number": "744",
+      "name": "Svalbard og Jan Mayen",
+      "name_de": "Svalbard und Jan Mayen",
+      "name_en": "Svalbard and Jan Mayen",
+      "name_es": "Svalbard y Jan Mayen",
+      "name_fr": "Svalbard et île Jan Mayen",
+      "name_pt": "Svalbard e Jan Mayen",
+      "name_ru": "Шпицберген и Ян-Майен",
+      "name_zh": "斯瓦尔巴群岛和扬马延岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 202,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "SK",
+      "long_code": "SVK",
+      "number": "703",
+      "name": "Slovensko",
+      "name_de": "Slowakei",
+      "name_en": "Slovakia",
+      "name_es": "Eslovaquia",
+      "name_fr": "Slovaquie",
+      "name_pt": "Eslováquia",
+      "name_ru": "Словакия",
+      "name_zh": "斯洛伐克"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 203,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "SL",
+      "long_code": "SLE",
+      "number": "694",
+      "name": "Sierra Leone",
+      "name_de": "Sierra Leone",
+      "name_en": "Sierra Leone",
+      "name_es": "Sierra Leona",
+      "name_fr": "Sierra Leone",
+      "name_pt": "Serra Leoa",
+      "name_ru": "Сьерра-Леоне",
+      "name_zh": "塞拉利昂"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 204,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "SM",
+      "long_code": "SMR",
+      "number": "674",
+      "name": "San Marino",
+      "name_de": "San Marino",
+      "name_en": "San Marino",
+      "name_es": "San Marino",
+      "name_fr": "Saint-Marin",
+      "name_pt": "São Marino",
+      "name_ru": "Сан-Марино",
+      "name_zh": "圣马力诺"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 205,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "SN",
+      "long_code": "SEN",
+      "number": "686",
+      "name": "Sénégal",
+      "name_de": "Senegal",
+      "name_en": "Senegal",
+      "name_es": "Senegal",
+      "name_fr": "Sénégal",
+      "name_pt": "Senegal",
+      "name_ru": "Сенегал",
+      "name_zh": "塞内加尔"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 206,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "SO",
+      "long_code": "SOM",
+      "number": "706",
+      "name": "Soomaaliya / الصومال",
+      "name_de": "Somalia",
+      "name_en": "Somalia",
+      "name_es": "Somalia",
+      "name_fr": "Somalie",
+      "name_pt": "Somália",
+      "name_ru": "Сомали",
+      "name_zh": "索马里"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 207,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "SR",
+      "long_code": "SUR",
+      "number": "740",
+      "name": "Suriname",
+      "name_de": "Suriname",
+      "name_en": "Suriname",
+      "name_es": "Surinam",
+      "name_fr": "Suriname",
+      "name_pt": "Suriname",
+      "name_ru": "Суринам",
+      "name_zh": "苏里南"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 208,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "SS",
+      "long_code": "SSD",
+      "number": "728",
+      "name": "South Sudan",
+      "name_de": "Südsudan",
+      "name_en": "South Sudan",
+      "name_es": "Sudán del Sur",
+      "name_fr": "Soudan du Sud",
+      "name_pt": "Sudão do Sul",
+      "name_ru": "Южный Судан",
+      "name_zh": "南苏丹"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 209,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "ST",
+      "long_code": "STP",
+      "number": "678",
+      "name": "São Tomé e Príncipe",
+      "name_de": "São Tomé und Príncipe",
+      "name_en": "Sao Tome and Principe",
+      "name_es": "Santo Tomé y Príncipe",
+      "name_fr": "Sao Tomé-et-Principe",
+      "name_pt": "São Tomé e Príncipe",
+      "name_ru": "Сан-Томе и Принсипи",
+      "name_zh": "圣多美和普林西比"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 210,
+    "fields": {
+      "is_enabled": false,
+      "region": 12,
+      "code": "SV",
+      "long_code": "SLV",
+      "number": "222",
+      "name": "El Salvador",
+      "name_de": "El Salvador",
+      "name_en": "El Salvador",
+      "name_es": "El Salvador",
+      "name_fr": "Salvador",
+      "name_pt": "El Salvador",
+      "name_ru": "Сальвадор",
+      "name_zh": "萨尔瓦多"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 211,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "SX",
+      "long_code": "SXM",
+      "number": "534",
+      "name": "Sint Maarten",
+      "name_de": "Sint Maarten (niederl. Teil)",
+      "name_en": "Sint Maarten (Dutch part)",
+      "name_es": "Sint Maarten",
+      "name_fr": "Saint-Martin",
+      "name_pt": "São Martinho",
+      "name_ru": "Синт-Мартен",
+      "name_zh": "荷属圣马丁"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 212,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "SY",
+      "long_code": "SYR",
+      "number": "760",
+      "name": "سوريا‎ / Syria",
+      "name_de": "Syrien",
+      "name_en": "Syria",
+      "name_es": "Siria",
+      "name_fr": "Syrie",
+      "name_pt": "Síria",
+      "name_ru": "Сирия",
+      "name_zh": "叙利亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 213,
+    "fields": {
+      "is_enabled": false,
+      "region": 4,
+      "code": "SZ",
+      "long_code": "SWZ",
+      "number": "748",
+      "name": "Swaziland / Swatini",
+      "name_de": "Swasiland",
+      "name_en": "Swaziland",
+      "name_es": "Suazilandia",
+      "name_fr": "Swaziland",
+      "name_pt": "Suazilândia",
+      "name_ru": "Свазиленд",
+      "name_zh": "斯威士兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 214,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "TC",
+      "long_code": "TCA",
+      "number": "796",
+      "name": "Turks and Caicos Islands",
+      "name_de": "Turks- und Caicosinseln",
+      "name_en": "Turks and Caicos Islands",
+      "name_es": "Islas Turcas y Caicos",
+      "name_fr": "Îles Turques-et-Caïques",
+      "name_pt": "Turcas e Caicos",
+      "name_ru": "Тёркс и Кайкос",
+      "name_zh": "特克斯和凯科斯群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 215,
+    "fields": {
+      "is_enabled": false,
+      "region": 5,
+      "code": "TD",
+      "long_code": "TCD",
+      "number": "148",
+      "name": "تشاد‎ / Tchad",
+      "name_de": "Tschad",
+      "name_en": "Chad",
+      "name_es": "Chad",
+      "name_fr": "Tchad",
+      "name_pt": "Chade",
+      "name_ru": "Чад",
+      "name_zh": "乍得"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 216,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "TF",
+      "long_code": "ATF",
+      "number": "260",
+      "name": "Terres australes et antarctiques françaises",
+      "name_de": "Französische Süd- und Antarktisgebiete",
+      "name_en": "French Southern Territories",
+      "name_es": "Territorios Australes Franceses",
+      "name_fr": "Terres australes et antarctiques françaises",
+      "name_pt": "Terras Austrais e Antárticas Francesas",
+      "name_ru": "Французские Южные и Антарктические Территории",
+      "name_zh": "法属南部领地"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 217,
+    "fields": {
+      "is_enabled": false,
+      "region": 6,
+      "code": "TG",
+      "long_code": "TGO",
+      "number": "768",
+      "name": "Togo",
+      "name_de": "Togo",
+      "name_en": "Togo",
+      "name_es": "Togo",
+      "name_fr": "Togo",
+      "name_pt": "Togo",
+      "name_ru": "Того",
+      "name_zh": "多哥"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 218,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "TH",
+      "long_code": "THA",
+      "number": "764",
+      "name": "ประเทศไทย / Thailand",
+      "name_de": "Thailand",
+      "name_en": "Thailand",
+      "name_es": "Tailandia",
+      "name_fr": "Thaïlande",
+      "name_pt": "Tailândia",
+      "name_ru": "Таиланд",
+      "name_zh": "泰国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 219,
+    "fields": {
+      "is_enabled": false,
+      "region": 18,
+      "code": "TJ",
+      "long_code": "TJK",
+      "number": "762",
+      "name": "Тоҷикистон / Tajikistan",
+      "name_de": "Tadschikistan",
+      "name_en": "Tajikistan",
+      "name_es": "Tayikistán",
+      "name_fr": "Tadjikistan",
+      "name_pt": "Tadjiquistão",
+      "name_ru": "Таджикистан",
+      "name_zh": "塔吉克斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 220,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "TK",
+      "long_code": "TKL",
+      "number": "772",
+      "name": "Tokelau",
+      "name_de": "Tokelau",
+      "name_en": "Tokelau",
+      "name_es": "Tokelau",
+      "name_fr": "Tokelau",
+      "name_pt": "Toquelau",
+      "name_ru": "Токелау",
+      "name_zh": "托克劳"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 221,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "TL",
+      "long_code": "TLS",
+      "number": "626",
+      "name": "Timor-Leste",
+      "name_de": "Osttimor",
+      "name_en": "Timor-Leste",
+      "name_es": "Timor Oriental",
+      "name_fr": "Timor oriental",
+      "name_pt": "Timor-Leste",
+      "name_ru": "Восточный Тимор",
+      "name_zh": "东帝汶"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 222,
+    "fields": {
+      "is_enabled": false,
+      "region": 18,
+      "code": "TM",
+      "long_code": "TKM",
+      "number": "795",
+      "name": "Türkmenistan",
+      "name_de": "Turkmenistan",
+      "name_en": "Turkmenistan",
+      "name_es": "Turkmenistán",
+      "name_fr": "Turkménistan",
+      "name_pt": "Turquemenistão",
+      "name_ru": "Туркмения",
+      "name_zh": "土库曼斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 223,
+    "fields": {
+      "is_enabled": false,
+      "region": 2,
+      "code": "TN",
+      "long_code": "TUN",
+      "number": "788",
+      "name": "تونس‎ / Tunisie",
+      "name_de": "Tunesien",
+      "name_en": "Tunisia",
+      "name_es": "Túnez",
+      "name_fr": "Tunisie",
+      "name_pt": "Tunísia",
+      "name_ru": "Тунис",
+      "name_zh": "突尼斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 224,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "TO",
+      "long_code": "TON",
+      "number": "776",
+      "name": "Tonga",
+      "name_de": "Tonga",
+      "name_en": "Tonga",
+      "name_es": "Tonga",
+      "name_fr": "Tonga",
+      "name_pt": "Tonga",
+      "name_ru": "Тонга",
+      "name_zh": "汤加"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 225,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "TR",
+      "long_code": "TUR",
+      "number": "792",
+      "name": "Türkiye",
+      "name_de": "Türkei",
+      "name_en": "Turkey",
+      "name_es": "Turquía",
+      "name_fr": "Turquie",
+      "name_pt": "Turquia",
+      "name_ru": "Турция",
+      "name_zh": "土耳其"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 226,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "TT",
+      "long_code": "TTO",
+      "number": "780",
+      "name": "Trinidad and Tobago",
+      "name_de": "Trinidad und Tobago",
+      "name_en": "Trinidad and Tobago",
+      "name_es": "Trinidad y Tobago",
+      "name_fr": "Trinité-et-Tobago",
+      "name_pt": "Trinidad e Tobago",
+      "name_ru": "Тринидад и Тобаго",
+      "name_zh": "特立尼达和多巴哥"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 227,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "TV",
+      "long_code": "TUV",
+      "number": "798",
+      "name": "Tuvalu",
+      "name_de": "Tuvalu",
+      "name_en": "Tuvalu",
+      "name_es": "Tuvalu",
+      "name_fr": "Tuvalu",
+      "name_pt": "Tuvalu",
+      "name_ru": "Тувалу",
+      "name_zh": "图瓦卢"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 228,
+    "fields": {
+      "is_enabled": false,
+      "region": 20,
+      "code": "TW",
+      "long_code": "TWN",
+      "number": "158",
+      "name": "台湾 / Taiwan",
+      "name_de": "Taiwan",
+      "name_en": "Taiwan",
+      "name_es": "Taiwán",
+      "name_fr": "Taïwan",
+      "name_pt": "Taiwan",
+      "name_ru": "Китайская Республика",
+      "name_zh": "台湾"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 229,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "TZ",
+      "long_code": "TZA",
+      "number": "834",
+      "name": "Tanzania",
+      "name_de": "Tansania",
+      "name_en": "Tanzania",
+      "name_es": "Tanzania",
+      "name_fr": "Tanzanie",
+      "name_pt": "Tanzânia",
+      "name_ru": "Танзания",
+      "name_zh": "坦桑尼亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 230,
+    "fields": {
+      "is_enabled": false,
+      "region": 24,
+      "code": "UA",
+      "long_code": "UKR",
+      "number": "804",
+      "name": "Украïна / Ukraïna",
+      "name_de": "Ukraine",
+      "name_en": "Ukraine",
+      "name_es": "Ucrania",
+      "name_fr": "Ukraine",
+      "name_pt": "Ucrânia",
+      "name_ru": "Украина",
+      "name_zh": "乌克兰"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 231,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "UG",
+      "long_code": "UGA",
+      "number": "800",
+      "name": "Uganda",
+      "name_de": "Uganda",
+      "name_en": "Uganda",
+      "name_es": "Uganda",
+      "name_fr": "Ouganda",
+      "name_pt": "Uganda",
+      "name_ru": "Уганда",
+      "name_zh": "乌干达"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 232,
+    "fields": {
+      "is_enabled": false,
+      "region": 29,
+      "code": "UM",
+      "long_code": "UMI",
+      "number": "581",
+      "name": "United States Minor Outlying Islands",
+      "name_de": "United States Minor Outlying Islands",
+      "name_en": "United States Minor Outlying Islands",
+      "name_es": "Islas ultramarinas de Estados Unidos",
+      "name_fr": "Îles mineures éloignées des États-Unis",
+      "name_pt": "Ilhas Menores Distantes dos Estados Unidos",
+      "name_ru": "Внешние малые острова США",
+      "name_zh": "美国本土外小岛屿"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 233,
+    "fields": {
+      "is_enabled": false,
+      "region": 14,
+      "code": "US",
+      "long_code": "USA",
+      "number": "840",
+      "name": "United States of America (USA)",
+      "name_de": "Vereinigte Staaten von Amerika",
+      "name_en": "United States",
+      "name_es": "Estados Unidos",
+      "name_fr": "États-Unis",
+      "name_pt": "Estados Unidos",
+      "name_ru": "Соединённые Штаты Америки",
+      "name_zh": "美国"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 234,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "UY",
+      "long_code": "URY",
+      "number": "858",
+      "name": "Uruguay",
+      "name_de": "Uruguay",
+      "name_en": "Uruguay",
+      "name_es": "Uruguay",
+      "name_fr": "Uruguay",
+      "name_pt": "Uruguai",
+      "name_ru": "Уругвай",
+      "name_zh": "乌拉圭"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 235,
+    "fields": {
+      "is_enabled": false,
+      "region": 18,
+      "code": "UZ",
+      "long_code": "UZB",
+      "number": "860",
+      "name": "O'zbekiston / Ўзбекистон",
+      "name_de": "Usbekistan",
+      "name_en": "Uzbekistan",
+      "name_es": "Uzbekistán",
+      "name_fr": "Ouzbékistan",
+      "name_pt": "Uzbequistão",
+      "name_ru": "Узбекистан",
+      "name_zh": "乌兹别克斯坦"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 236,
+    "fields": {
+      "is_enabled": false,
+      "region": 22,
+      "code": "VA",
+      "long_code": "VAT",
+      "number": "336",
+      "name": "Città del Vaticano",
+      "name_de": "Vatikanstadt",
+      "name_en": "Vatican City",
+      "name_es": "Ciudad del Vaticano",
+      "name_fr": "Cité du Vatican",
+      "name_pt": "Cidade do Vaticano",
+      "name_ru": "Ватикан",
+      "name_zh": "梵蒂冈"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 237,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "VC",
+      "long_code": "VCT",
+      "number": "670",
+      "name": "Saint Vincent and the Grenadines",
+      "name_de": "St. Vincent und die Grenadinen",
+      "name_en": "Saint Vincent and the Grenadines",
+      "name_es": "San Vicente y las Granadinas",
+      "name_fr": "Saint-Vincent-et-les-Grenadines",
+      "name_pt": "São Vicente e Granadinas",
+      "name_ru": "Сент-Винсент и Гренадины",
+      "name_zh": "圣文森特和格林纳丁斯"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 238,
+    "fields": {
+      "is_enabled": false,
+      "region": 11,
+      "code": "VE",
+      "long_code": "VEN",
+      "number": "862",
+      "name": "Venezuela",
+      "name_de": "Venezuela",
+      "name_en": "Venezuela",
+      "name_es": "Venezuela",
+      "name_fr": "Venezuela",
+      "name_pt": "Venezuela",
+      "name_ru": "Венесуэла",
+      "name_zh": "委内瑞拉"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 239,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "VG",
+      "long_code": "VGB",
+      "number": "092",
+      "name": "British Virgin Islands",
+      "name_de": "Britische Jungferninseln",
+      "name_en": "British Virgin Islands",
+      "name_es": "Islas Vírgenes Británicas",
+      "name_fr": "Îles Vierges britanniques",
+      "name_pt": "Ilhas Virgens Britânicas",
+      "name_ru": "Британские Виргинские острова",
+      "name_zh": "英属维尔京群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 240,
+    "fields": {
+      "is_enabled": false,
+      "region": 13,
+      "code": "VI",
+      "long_code": "VIR",
+      "number": "850",
+      "name": "United States Virgin Islands",
+      "name_de": "Amerikanische Jungferninseln",
+      "name_en": "United States Virgin Islands",
+      "name_es": "Islas Vírgenes de los Estados Unidos",
+      "name_fr": "Îles Vierges des États-Unis",
+      "name_pt": "Ilhas Virgens Americanas",
+      "name_ru": "Американские Виргинские острова",
+      "name_zh": "美属维尔京群岛"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 241,
+    "fields": {
+      "is_enabled": false,
+      "region": 17,
+      "code": "VN",
+      "long_code": "VNM",
+      "number": "704",
+      "name": "Việt Nam",
+      "name_de": "Vietnam",
+      "name_en": "Vietnam",
+      "name_es": "Vietnam",
+      "name_fr": "Viêt Nam",
+      "name_pt": "Vietname",
+      "name_ru": "Вьетнам",
+      "name_zh": "越南"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 242,
+    "fields": {
+      "is_enabled": false,
+      "region": 28,
+      "code": "VU",
+      "long_code": "VUT",
+      "number": "548",
+      "name": "Vanuatu",
+      "name_de": "Vanuatu",
+      "name_en": "Vanuatu",
+      "name_es": "Vanuatu",
+      "name_fr": "Vanuatu",
+      "name_pt": "Vanuatu",
+      "name_ru": "Вануату",
+      "name_zh": "瓦努阿图"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 243,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "WF",
+      "long_code": "WLF",
+      "number": "876",
+      "name": "Wallis-et-Futuna",
+      "name_de": "Wallis und Futuna",
+      "name_en": "Wallis and Futuna",
+      "name_es": "Wallis y Futuna",
+      "name_fr": "Wallis-et-Futuna",
+      "name_pt": "Wallis e Futuna",
+      "name_ru": "Уоллис и Футуна",
+      "name_zh": "瓦利斯和富图纳"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 244,
+    "fields": {
+      "is_enabled": false,
+      "region": 30,
+      "code": "WS",
+      "long_code": "WSM",
+      "number": "882",
+      "name": "Samoa",
+      "name_de": "Samoa",
+      "name_en": "Samoa",
+      "name_es": "Samoa",
+      "name_fr": "Samoa",
+      "name_pt": "Samoa",
+      "name_ru": "Самоа",
+      "name_zh": "萨摩亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 245,
+    "fields": {
+      "is_enabled": false,
+      "region": 19,
+      "code": "YE",
+      "long_code": "YEM",
+      "number": "887",
+      "name": "ﺍﻟﺠﻤﻬﻮﺭﯾّﺔ اليمنية",
+      "name_de": "Jemen",
+      "name_en": "Yemen",
+      "name_es": "Yemen",
+      "name_fr": "Yémen",
+      "name_pt": "Iémen/Iêmen",
+      "name_ru": "Йемен",
+      "name_zh": "也门"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 246,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "YT",
+      "long_code": "MYT",
+      "number": "175",
+      "name": "Mayotte",
+      "name_de": "Mayotte",
+      "name_en": "Mayotte",
+      "name_es": "Mayotte",
+      "name_fr": "Mayotte",
+      "name_pt": "Mayotte",
+      "name_ru": "Майотта",
+      "name_zh": "马约特"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 247,
+    "fields": {
+      "is_enabled": false,
+      "region": 4,
+      "code": "ZA",
+      "long_code": "ZAF",
+      "number": "710",
+      "name": "South Africa / Suid-Afrika / Ningizimu Afrika / Afrika-Borwa",
+      "name_de": "Südafrika",
+      "name_en": "South Africa",
+      "name_es": "Sudáfrica",
+      "name_fr": "Afrique du Sud",
+      "name_pt": "África do Sul",
+      "name_ru": "ЮАР",
+      "name_zh": "南非"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 248,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "ZM",
+      "long_code": "ZMB",
+      "number": "894",
+      "name": "Zambia",
+      "name_de": "Sambia",
+      "name_en": "Zambia",
+      "name_es": "Zambia",
+      "name_fr": "Zambie",
+      "name_pt": "Zâmbia",
+      "name_ru": "Замбия",
+      "name_zh": "赞比亚"
+    }
+  },
+  {
+    "model": "standards.Country",
+    "pk": 249,
+    "fields": {
+      "is_enabled": false,
+      "region": 7,
+      "code": "ZW",
+      "long_code": "ZWE",
+      "number": "716",
+      "name": "Zimbabwe",
+      "name_de": "Simbabwe",
+      "name_en": "Zimbabwe",
+      "name_es": "Zimbabue",
+      "name_fr": "Zimbabwe",
+      "name_pt": "Zimbabwe",
+      "name_ru": "Зимбабве",
+      "name_zh": "津巴布韦"
+    }
+  }
+]

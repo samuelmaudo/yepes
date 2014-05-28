@@ -1,0 +1,738 @@
+[
+  {
+    "model": "metrics.Platform",
+    "pk": 1,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 1,
+      "level": 0,
+      "parent": null,
+      "index": 1,
+      "name": "Windows CE",
+      "token": "(Windows CE|WCE)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 2,
+    "fields": {
+      "lft": 1,
+      "rght": 10,
+      "tree_id": 2,
+      "level": 0,
+      "parent": null,
+      "index": 2,
+      "name": "Windows Phone",
+      "token": "Windows Phone"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 3,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 2,
+      "level": 1,
+      "parent": 2,
+      "index": 1,
+      "name": "Windows Phone 8.0",
+      "token": "Windows Phone( OS)? 8.0",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 4,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 2,
+      "level": 1,
+      "parent": 2,
+      "index": 2,
+      "name": "Windows Phone 7.8",
+      "token": "Windows Phone( OS)? 7.8",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 5,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 2,
+      "level": 1,
+      "parent": 2,
+      "index": 3,
+      "name": "Windows Phone 7.5",
+      "token": "Windows Phone( OS)? 7.5",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 6,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 2,
+      "level": 1,
+      "parent": 2,
+      "index": 4,
+      "name": "Windows Phone 7.0",
+      "token": "(Windows Phone( OS)? 7.0|WP7)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 7,
+    "fields": {
+      "lft": 1,
+      "rght": 22,
+      "tree_id": 3,
+      "level": 0,
+      "parent": null,
+      "index": 3,
+      "name": "Windows",
+      "token": "Win"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 8,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 1,
+      "name": "Windows 8",
+      "token": "Windows NT 6.2"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 9,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 2,
+      "name": "Windows 7",
+      "token": "Windows NT 6.1"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 10,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 3,
+      "name": "Windows Vista",
+      "token": "Windows NT 6.0"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 11,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 4,
+      "name": "Windows Server 2003 / Windows XP x64 Edition",
+      "token": "Windows NT 5.2"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 12,
+    "fields": {
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 5,
+      "name": "Windows XP",
+      "token": "Windows NT 5.1"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 13,
+    "fields": {
+      "lft": 12,
+      "rght": 13,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 6,
+      "name": "Windows 2000",
+      "token": "Windows NT 5.0"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 14,
+    "fields": {
+      "lft": 14,
+      "rght": 15,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 7,
+      "name": "Windows NT",
+      "token": "Windows NT 4.0"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 15,
+    "fields": {
+      "lft": 16,
+      "rght": 17,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 8,
+      "name": "Windows Millennium Edition",
+      "token": "(Windows ME|Win 9x 4.90)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 16,
+    "fields": {
+      "lft": 18,
+      "rght": 19,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 9,
+      "name": "Windows 98",
+      "token": "(Windows 98|Win98)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 17,
+    "fields": {
+      "lft": 20,
+      "rght": 21,
+      "tree_id": 3,
+      "level": 1,
+      "parent": 7,
+      "index": 10,
+      "name": "Windows 95",
+      "token": "(Windows 95|Win95)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 18,
+    "fields": {
+      "lft": 1,
+      "rght": 12,
+      "tree_id": 4,
+      "level": 0,
+      "parent": null,
+      "index": 4,
+      "name": "OS X",
+      "token": "Macintosh"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 19,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 4,
+      "level": 1,
+      "parent": 18,
+      "index": 1,
+      "name": "OS X v10.8 (Mountain Lion)",
+      "token": "Mac OS X 10[_.]8",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 20,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 4,
+      "level": 1,
+      "parent": 18,
+      "index": 2,
+      "name": "OS X v10.7 (Lion)",
+      "token": "Mac OS X 10[_.]7",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 21,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 4,
+      "level": 1,
+      "parent": 18,
+      "index": 3,
+      "name": "OS X v10.6 (Snow Leopard)",
+      "token": "Mac OS X 10[_.]6",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 22,
+    "fields": {
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 4,
+      "level": 1,
+      "parent": 18,
+      "index": 4,
+      "name": "OS X v10.5 (Leopard)",
+      "token": "Mac OS X 10[_.]5",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 23,
+    "fields": {
+      "lft": 10,
+      "rght": 11,
+      "tree_id": 4,
+      "level": 1,
+      "parent": 18,
+      "index": 5,
+      "name": "OS X v10.4 (Tiger)",
+      "token": "Mac OS X 10[_.]4",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 24,
+    "fields": {
+      "lft": 1,
+      "rght": 34,
+      "tree_id": 5,
+      "level": 0,
+      "parent": null,
+      "index": 5,
+      "name": "Linux",
+      "token": "(Linux|Android)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 25,
+    "fields": {
+      "lft": 2,
+      "rght": 19,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 8,
+      "name": "Android",
+      "token": "Android"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 50,
+    "fields": {
+      "lft": 3,
+      "rght": 4,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 1,
+      "name": "Android Key Lime Pie",
+      "token": "Android 5.0"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 26,
+    "fields": {
+      "lft": 5,
+      "rght": 6,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 2,
+      "name": "Android Jellybean",
+      "token": "Android 4\\.[12]",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 27,
+    "fields": {
+      "lft": 7,
+      "rght": 8,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 3,
+      "name": "Android Ice Cream Sandwich",
+      "token": "Android 4.0"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 28,
+    "fields": {
+      "lft": 9,
+      "rght": 10,
+      "tree_id": 5,
+      "level": 4,
+      "parent": 25,
+      "index": 3,
+      "name": "Android Honeycomb",
+      "token": "Android 3"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 29,
+    "fields": {
+      "lft": 11,
+      "rght": 12,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 5,
+      "name": "Android Gingerbread",
+      "token": "Android 2.3"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 30,
+    "fields": {
+      "lft": 13,
+      "rght": 14,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 6,
+      "name": "Android Froyo",
+      "token": "Android 2.2"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 31,
+    "fields": {
+      "lft": 15,
+      "rght": 16,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 7,
+      "name": "Android Eclair",
+      "token": "Android 2\\.[01]",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 32,
+    "fields": {
+      "lft": 17,
+      "rght": 18,
+      "tree_id": 5,
+      "level": 2,
+      "parent": 25,
+      "index": 8,
+      "name": "Android Donut",
+      "token": "Android 1.6"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 33,
+    "fields": {
+      "lft": 20,
+      "rght": 21,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 9,
+      "name": "Ubuntu",
+      "token": "Ubuntu"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 34,
+    "fields": {
+      "lft": 22,
+      "rght": 23,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 10,
+      "name": "Mint",
+      "token": "Mint"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 35,
+    "fields": {
+      "lft": 24,
+      "rght": 25,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 11,
+      "name": "Mageia",
+      "token": "Mageia"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 36,
+    "fields": {
+      "lft": 26,
+      "rght": 27,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 12,
+      "name": "Fedora",
+      "token": "Fedora"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 37,
+    "fields": {
+      "lft": 28,
+      "rght": 29,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 13,
+      "name": "Debian",
+      "token": "Debian"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 38,
+    "fields": {
+      "lft": 30,
+      "rght": 31,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 14,
+      "name": "openSUSE",
+      "token": "SUSE"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 39,
+    "fields": {
+      "lft": 32,
+      "rght": 33,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 15,
+      "name": "Arch Linux",
+      "token": "Arch"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 40,
+    "fields": {
+      "lft": 34,
+      "rght": 35,
+      "tree_id": 5,
+      "level": 1,
+      "parent": 24,
+      "index": 16,
+      "name": "Chakra",
+      "token": "Chakra"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 41,
+    "fields": {
+      "lft": 1,
+      "rght": 8,
+      "tree_id": 6,
+      "level": 0,
+      "parent": null,
+      "index": 6,
+      "name": "BSD",
+      "token": "BSD"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 42,
+    "fields": {
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 6,
+      "level": 1,
+      "parent": 41,
+      "index": 17,
+      "name": "FreeBSD",
+      "token": "FreeBSD"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 43,
+    "fields": {
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 6,
+      "level": 1,
+      "parent": 41,
+      "index": 18,
+      "name": "OpenBSD",
+      "token": "OpenBSD"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 44,
+    "fields": {
+      "lft": 6,
+      "rght": 7,
+      "tree_id": 6,
+      "level": 1,
+      "parent": 41,
+      "index": 19,
+      "name": "NetBSD",
+      "token": "NetBSD"
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 45,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 7,
+      "level": 0,
+      "parent": null,
+      "index": 7,
+      "name": "Solaris",
+      "token": "(Sun ?OS|Solaris)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 46,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 8,
+      "level": 0,
+      "parent": null,
+      "index": 8,
+      "name": "Unix",
+      "token": "(Unix|X11)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 47,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 9,
+      "level": 0,
+      "parent": null,
+      "index": 9,
+      "name": "iOS",
+      "token": "i(Phone|Pod|Pad)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 48,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 10,
+      "level": 0,
+      "parent": null,
+      "index": 10,
+      "name": "BlackBerry",
+      "token": "(BlackBerry|RIM|BB[0-9]+)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 49,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 11,
+      "level": 0,
+      "parent": null,
+      "index": 11,
+      "name": "SymbianOS",
+      "token": "(Symb(ian|OS)|S(eries)?60)",
+      "regex": true
+    }
+  },
+  {
+    "model": "metrics.Platform",
+    "pk": 50,
+    "fields": {
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 12,
+      "level": 0,
+      "parent": null,
+      "index": 12,
+      "name": "Series 40",
+      "token": "S(eries)?40",
+      "regex": true
+    }
+  }
+]
