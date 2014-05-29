@@ -1,0 +1,502 @@
+[
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233001,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-AL",
+      "name": "Alabama"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233002,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-AK",
+      "name": "Alaska"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233003,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-AZ",
+      "name": "Arizona"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233004,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-AR",
+      "name": "Arkansas"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233005,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-CA",
+      "name": "California"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233006,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-CO",
+      "name": "Colorado"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233007,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-CT",
+      "name": "Connecticut"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233008,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-DE",
+      "name": "Delaware"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233009,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-FL",
+      "name": "Florida"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233010,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-GA",
+      "name": "Georgia"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233011,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-HI",
+      "name": "Hawaii"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233012,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-ID",
+      "name": "Idaho"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233013,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-IL",
+      "name": "Illinois"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233014,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-IN",
+      "name": "Indiana"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233015,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-IA",
+      "name": "Iowa"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233016,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-KS",
+      "name": "Kansas"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233017,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-KY",
+      "name": "Kentucky"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233018,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-LA",
+      "name": "Louisiana"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233019,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-ME",
+      "name": "Maine"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233020,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MD",
+      "name": "Maryland"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233021,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MA",
+      "name": "Massachusetts"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233022,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MI",
+      "name": "Michigan"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233023,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MN",
+      "name": "Minnesota"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233024,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MS",
+      "name": "Mississippi"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233025,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MO",
+      "name": "Missouri"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233026,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-MT",
+      "name": "Montana"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233027,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NE",
+      "name": "Nebraska"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233028,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NV",
+      "name": "Nevada"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233029,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NH",
+      "name": "New Hampshire"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233030,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NJ",
+      "name": "New Jersey"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233031,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NM",
+      "name": "New Mexico"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233032,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NY",
+      "name": "New York"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233033,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-NC",
+      "name": "North Carolina"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233034,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-ND",
+      "name": "North Dakota"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233035,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-OH",
+      "name": "Ohio"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233036,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-OK",
+      "name": "Oklahoma"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233037,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-OR",
+      "name": "Oregon"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233038,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-PA",
+      "name": "Pennsylvania"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233039,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-RI",
+      "name": "Rhode Island"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233040,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-SC",
+      "name": "South Carolina"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233041,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-SD",
+      "name": "South Dakota"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233042,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-TN",
+      "name": "Tennessee"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233043,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-TX",
+      "name": "Texas"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233044,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-UT",
+      "name": "Utah"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233045,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-VT",
+      "name": "Vermont"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233046,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-VA",
+      "name": "Virginia"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233047,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-WA",
+      "name": "Washington"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233048,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-WV",
+      "name": "West Virginia"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233049,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-WI",
+      "name": "Wisconsin"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 233050,
+    "fields": {
+      "is_enabled": true,
+      "country": 233,
+      "code": "US-WY",
+      "name": "Wyoming"
+    }
+  }
+]
