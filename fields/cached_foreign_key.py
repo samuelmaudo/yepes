@@ -65,7 +65,7 @@ class CachedForeignKey(models.ForeignKey):
         except ImproperlyConfigured:
             return None
         else:
-            return getattr(default, self.related_field.attname)
+            return getattr(default, self.related_field.attname, None)
 
     def south_field_triple(self):
         """
