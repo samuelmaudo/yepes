@@ -131,6 +131,60 @@ class BitFieldTest(test.TestCase):
         self.assertFalse(instance.flags.hex)
         self.assertFalse(instance.flags.oct)
 
+    def test_value_assignment(self):
+        instance = Model.objects.create(flags=0b0011)
+        self.assertTrue(instance.flags.bin)
+        self.assertIsInstance(instance.flags.bin, bool)
+        self.assertTrue(instance.flags.dec)
+        self.assertIsInstance(instance.flags.dec, bool)
+        self.assertFalse(instance.flags.hex)
+        self.assertIsInstance(instance.flags.hex, bool)
+        self.assertFalse(instance.flags.oct)
+        self.assertIsInstance(instance.flags.oct, bool)
+
+        value = instance.flags
+        value.oct = True
+        self.assertTrue(value.bin)
+        self.assertTrue(value.dec)
+        self.assertFalse(value.hex)
+        self.assertTrue(value.oct)
+
+        value.oct = False
+        self.assertTrue(value.bin)
+        self.assertTrue(value.dec)
+        self.assertFalse(value.hex)
+        self.assertFalse(value.oct)
+
+        value.hex = False
+        self.assertTrue(value.bin)
+        self.assertTrue(value.dec)
+        self.assertFalse(value.hex)
+        self.assertFalse(value.oct)
+
+        instance.flags.oct = True
+        self.assertTrue(instance.flags.bin)
+        self.assertTrue(instance.flags.dec)
+        self.assertFalse(instance.flags.hex)
+        self.assertTrue(instance.flags.oct)
+
+        instance.flags.oct = False
+        self.assertTrue(instance.flags.bin)
+        self.assertTrue(instance.flags.dec)
+        self.assertFalse(instance.flags.hex)
+        self.assertFalse(instance.flags.oct)
+
+        instance.flags.hex = False
+        self.assertTrue(instance.flags.bin)
+        self.assertTrue(instance.flags.dec)
+        self.assertFalse(instance.flags.hex)
+        self.assertFalse(instance.flags.oct)
+
+        instance.flags.bin = True
+        self.assertTrue(instance.flags.bin)
+        self.assertTrue(instance.flags.dec)
+        self.assertFalse(instance.flags.hex)
+        self.assertFalse(instance.flags.oct)
+
     def test_select(self):
         instance = Model.objects.create(flags='hex')
         self.assertFalse(Model.objects.filter(flags=Model.flags.bin).exists())

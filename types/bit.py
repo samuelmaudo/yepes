@@ -7,7 +7,8 @@ from django.utils.encoding import force_str, force_text
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
-from yepes.exceptions import MissingAttributeError
+from yepes.exceptions import MissingAttributeError, ReadOnlyObjectError
+from yepes.loading import get_model
 
 
 @python_2_unicode_compatible
@@ -20,10 +21,23 @@ class Bit(object):
         return self
 
     def __getattr__(self, name):
-        if name.startswith('_'):
-            raise MissingAttributeError(self, name)
+        if not (self._field is None or name.startswith('_')):
+            flag = getattr(self._field.flags, name)
+            return bool(self._value & flag._value)
         else:
-            return (self._value & getattr(self._field.flags, name))
+            raise MissingAttributeError(self, name)
+
+    def __setattr__(self, name, value):
+        if name.startswith('_'):
+            object.__setattr__(self, name, value)
+        elif self._field is not None:
+            flag = getattr(self._field.flags, name)
+            x = self._value
+            y = flag._value
+            z = (x | y) if value else ((x | y) ^ y)
+            object.__setattr__(self, '_value', z)
+        else:
+            raise ReadOnlyObjectError(self)
 
     def __repr__(self):
         args = (
@@ -47,8 +61,7 @@ class Bit(object):
     def __int__(self):
         return self._value
 
-    def __nonzero__(self):
-        return self.__bool__()
+    __nonzero__ = __bool__
 
     def __eq__(self, other):
         if self._field:
@@ -68,37 +81,25 @@ class Bit(object):
         if isinstance(other, Bit):
             assert other._field == self._field
             other = other._value
-        return self.__class__(other & self._value, self._field)
-
-    def __rand__(self, other):
-        if isinstance(other, Bit):
-            assert other._field == self._field
-            other = other._value
         return self.__class__(self._value & other, self._field)
+
+    __rand__ = __and__
 
     def __or__(self, other):
         if isinstance(other, Bit):
             assert other._field == self._field
             other = other._value
-        return self.__class__(other | self._value, self._field)
-
-    def __ror__(self, other):
-        if isinstance(other, Bit):
-            assert other._field == self._field
-            other = other._value
         return self.__class__(self._value | other, self._field)
+
+    __ror__ = __or__
 
     def __xor__(self, other):
         if isinstance(other, Bit):
             assert other._field == self._field
             other = other._value
-        return self.__class__(other ^ self._value, self._field)
-
-    def __rxor__(self, other):
-        if isinstance(other, Bit):
-            assert other._field == self._field
-            other = other._value
         return self.__class__(self._value ^ other, self._field)
+
+    __rxor__ = __xor__
 
     def __invert__(self):
         if self._field:
@@ -110,13 +111,12 @@ class Bit(object):
     def __getstate__(self):
         return {
             'app': self._field.model._meta.app_label,
-            'field': self._field.name,
             'model': self._field.model._meta.object_name,
+            'field': self._field.name,
             'value': force_text(self._value),
         }
 
     def __setstate__(self, state):
-        from yepes.loading import get_model
         model = get_model(state['app'], state['model'])
         self._field = model._meta.get_field(state['field'])
         self._value = int(state['value'])

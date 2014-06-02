@@ -24,6 +24,31 @@ class MissingAttributeError(AttributeError):
         self.attr_name = attr_name
 
 
+class ReadOnlyAttributeError(AttributeError):
+
+    def __init__(self, obj, attr_name):
+        args = (
+            obj.__class__.__name__,
+            attr_name,
+        )
+        msg = "'{0}.{1}' attribute cannot be assigned"
+        super(ReadOnlyAttributeError, self).__init__(msg.format(*args))
+        self.obj = obj
+        self.attr_name = attr_name
+
+
+class ReadOnlyObjectError(AttributeError):
+
+    def __init__(self, obj, attr_name):
+        args = (
+            obj.__class__.__name__,
+            attr_name,
+        )
+        msg = "'{0}' does not accept attribute assignment"
+        super(ReadOnlyObjectError, self).__init__(msg.format(*args))
+        self.obj = obj
+
+
 class UnexpectedTypeError(TypeError):
 
     def __init__(self, expected_type, received_type):

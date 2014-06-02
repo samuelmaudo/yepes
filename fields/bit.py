@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import division, unicode_literals
 
 import math
 
@@ -66,7 +66,7 @@ class BitField(models.BigIntegerField):
             raise TypeError('You must specify one or more choices.')
         super(BitField, self).__init__(verbose_name, name, **kwargs)
         self.flags = BitFieldFlags(self, choices)
-        self.int_fields = int(math.ceil(len(choices) / 63.0))
+        self.int_fields = int(math.ceil(len(choices) / 63))
         self.null = False
         self.validators = [MaxValueValidator(self.flags.get_max_value())]
 
@@ -365,7 +365,7 @@ class RelatedBitField(BitField):
         super(BitField, self).__init__(**kwargs)
         self.fake_rel = FakeRel(to, to_field, limit_choices_to)
         self.flags = RelatedBitFieldFlags(self)
-        self.int_fields = int(math.ceil(allowed_choices / 63.0))
+        self.int_fields = int(math.ceil(allowed_choices / 63))
 
     def contribute_to_class(self, cls, name):
         super(RelatedBitField, self).contribute_to_class(cls, name)
