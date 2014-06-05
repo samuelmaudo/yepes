@@ -366,12 +366,24 @@ class LazyModel(LazyObject):
         self.__dict__['_model_name'] = model_name
         super(LazyModel, self).__init__()
 
-    def __call__(self):
+    def __call__(self, *args, **kwargs):
         if self._wrapped is empty:
             self._setup()
-        return self._wrapped.__call__()
+        return self._wrapped.__call__(*args, **kwargs)
 
     def _setup(self):
         self._wrapped = get_model(self._app_label, self._model_name)
+
+
+class LazyModelManager(LazyObject):
+
+    def __init__(self, app_label, model_name):
+        self.__dict__['_app_label'] = app_label
+        self.__dict__['_model_name'] = model_name
+        super(LazyModelManager, self).__init__()
+
+    def _setup(self):
+        model = get_model(self._app_label, self._model_name)
+        self._wrapped = model._default_manager
 
 
