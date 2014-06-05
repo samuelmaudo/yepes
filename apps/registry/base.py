@@ -13,7 +13,7 @@ from django.utils import six
 from django.utils.encoding import force_bytes, force_text
 
 from yepes.apps.registry.utils import get_site
-from yepes.loading import get_model
+from yepes.loading import LazyModel
 
 __all__ = (
     'AlreadyRegisteredError', 'InvalidFieldError',
@@ -21,6 +21,9 @@ __all__ = (
     'Registry', 'registry',
     'REGISTRY_KEYS',
 )
+Entry = LazyModel('registry', 'Entry')
+LongEntry = LazyModel('registry', 'LongEntry')
+
 KEY_RE = re.compile(r'^[a-zA-Z][a-zA-Z_-]*[a-zA-Z]$')
 REGISTRY_KEYS = {}
 
@@ -145,12 +148,12 @@ class Registry(object):
 
     def get_model(self, field):
         if getattr(field, 'is_long', False):
-            return get_model('registry', 'LongEntry')
+            return LongEntry
         elif (hasattr(field, 'max_length')
                 and (not field.max_length or field.max_length > 255)):
-            return get_model('registry', 'LongEntry')
+            return LongEntry
         else:
-            return get_model('registry', 'Entry')
+            return Entry
 
     def get_raw(self, key, default=None):
         try:

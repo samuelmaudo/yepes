@@ -24,7 +24,6 @@ def autodiscover():
         except ImportError:
             pass
 
-
 from yepes.apps.registry.base import *
 autodiscover()
 

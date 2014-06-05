@@ -8,7 +8,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
 from yepes.exceptions import MissingAttributeError, ReadOnlyObjectError
-from yepes.loading import get_model
 
 
 @python_2_unicode_compatible
@@ -117,6 +116,7 @@ class Bit(object):
         }
 
     def __setstate__(self, state):
+        from yepes.loading import get_model
         model = get_model(state['app'], state['model'])
         self._field = model._meta.get_field(state['field'])
         self._value = int(state['value'])
