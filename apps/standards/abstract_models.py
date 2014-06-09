@@ -3,17 +3,21 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.apps.standards.managers import (
-    CountryManager,
-    CountrySubdivisionManager,
-    CurrencyManager,
-    LanguageManager,
-    RegionManager,
-)
-from yepes.apps.standards.model_mixins import Standard
-from yepes.model_mixins import Enableable, Nestable, ParentForeignKey
+from yepes import fields
+from yepes.loading import get_class
+from yepes.model_mixins import Enableable, Logged, Nestable, ParentForeignKey
+
+CountryManager = get_class('standards.managers', 'CountryManager')
+CountrySubdivisionManager = get_class('standards.managers', 'CountrySubdivisionManager')
+CurrencyManager = get_class('standards.managers', 'CurrencyManager')
+GeographicAreaLookupTable = get_class('standards.managers', 'GeographicAreaLookupTable')
+LanguageManager = get_class('standards.managers', 'LanguageManager')
+RegionManager = get_class('standards.managers', 'RegionManager')
+
+Standard = get_class('standards.model_mixins', 'Standard')
 
 
 class AbstractCountry(Enableable, Standard):
@@ -149,6 +153,106 @@ AbstractCurrency._meta.get_field('name', False).help_text = _(
 )
 
 
+class AbstractGeographicArea(Logged, Standard):
+
+    api_id = fields.KeyField(
+            unique=True,
+            verbose_name=_('API Id'))
+    description = models.TextField(
+            blank=True,
+            verbose_name=_('Description'))
+
+    included_countries = models.ManyToManyField(
+            'standards.Country',
+            related_name='areas_that_include_it',
+            verbose_name=_('Included Countries'))
+    excluded_countries = models.ManyToManyField(
+            'standards.Country',
+            related_name='areas_that_exclude_it',
+            verbose_name=_('Excluded Countries'))
+    included_subdivisions = models.ManyToManyField(
+            'standards.CountrySubdivision',
+            related_name='areas_that_include_it',
+            verbose_name=_('Included Subdivisions'))
+    excluded_subdivisions = models.ManyToManyField(
+            'standards.CountrySubdivision',
+            related_name='areas_that_exclude_it',
+            verbose_name=_('Excluded Subdivisions'))
+
+    cache = GeographicAreaLookupTable(
+            indexed_fields=[
+                'api_id',
+            ],
+            prefetch_related=[
+                'included_countries',
+                'excluded_countries',
+                'included_subdivisions',
+                'excluded_subdivisions',
+            ],
+            timeout=1200)
+
+    class Meta:
+        abstract = True
+        verbose_name = _('Geographic Area')
+        verbose_name_plural = _('Geographic Areas')
+
+    # CUSTOM METHODS
+
+    def contains_address(self, address):
+        """
+        Checks whether the given address is located within this area.
+        """
+        return self._proxy.contains_address(address)
+
+    def contains_country(self, country):
+        """
+        Checks whether the given country is located within this area.
+        """
+        return self._proxy.contains_country(country)
+
+    def contains_subdivision(self, subdivision):
+        """
+        Checks whether the given subdivision is located within this area.
+        """
+        return self._proxy.contains_subdivision(subdivision)
+
+    def includes_all_addresses(self):
+        """
+        Checks whether this area covers all addresses.
+        """
+        return self._proxy.includes_all_addresses()
+    includes_all_addresses.boolean = True
+    includes_all_addresses.short_description = _('Includes All Addresses?')
+
+    def includes_all_countries(self):
+        """
+        Checks whether this area covers all countries.
+        """
+        return self._proxy.includes_all_countries()
+    includes_all_countries.boolean = True
+    includes_all_countries.short_description = _('Includes All Countries?')
+
+    def includes_all_subdivisions(self):
+        """
+        Checks whether this area covers all country subdivisions.
+        """
+        return self._proxy.includes_all_subdivisions()
+    includes_all_subdivisions.boolean = True
+    includes_all_subdivisions.short_description = _('Includes All Subdivisions?')
+
+    # GRAPPELLI SETTINGS
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ('name__icontains', )
+
+    # PROPERTIES
+
+    @cached_property
+    def _proxy(self):
+        return self.__class__.cache.get(self.pk)
+
+
 class AbstractLanguage(Enableable, Standard):
 
     tag = models.CharField(
@@ -235,8 +339,8 @@ class AbstractRegion(Nestable, Standard):
     class Meta:
         abstract = True
         ordering = ['name']
-        verbose_name = _('Region')
-        verbose_name_plural = _('Regions')
+        verbose_name = _('Supranational Region')
+        verbose_name_plural = _('Supranational Regions')
 
     @staticmethod
     def autocomplete_search_fields():

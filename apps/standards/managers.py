@@ -2,10 +2,14 @@
 
 from django.db.models import F, Q
 
+from yepes.cache import LookupTable
+from yepes.loading import get_class
 from yepes.managers import (
     EnableableManager, EnableableQuerySet,
     NestableManager,
 )
+
+GeographicAreaProxy = get_class('standards.proxies', 'GeographicAreaProxy')
 
 
 class CountryManager(EnableableManager):
@@ -52,6 +56,13 @@ class CurrencyManager(EnableableManager):
             return self.get(number=code)
         else:
             return self.get(code=code)
+
+
+class GeographicAreaLookupTable(LookupTable):
+
+    def fetch_records(self):
+        qs = super(GeographicAreaLookupTable, self).fetch_records()
+        return [GeographicAreaProxy(zone) for zone in qs]
 
 
 class LanguageManager(EnableableManager):

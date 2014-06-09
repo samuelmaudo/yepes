@@ -33,18 +33,6 @@ class CountriesField(models.ManyToManyField):
         super(CountriesField, self).__init__(*args, **kwargs)
 
 
-class CountriesBitField(fields.RelatedBitField):
-
-    description = _('Binary relationship with Country model.')
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('to', 'standards.Country')
-        kwargs.setdefault('allowed_choices', 315)   # Five big integer fields
-        kwargs.setdefault('limit_choices_to', {'is_enabled': True})
-        kwargs.setdefault('verbose_name', _('Countries'))
-        super(CountriesBitField, self).__init__(*args, **kwargs)
-
-
 class CountrySubdivisionField(models.ForeignKey):
 
     description = _('Many-to-one relationship with CountrySubdivision model.')
@@ -69,19 +57,6 @@ class CountrySubdivisionsField(models.ManyToManyField):
         kwargs.setdefault('related_name', '%(app_label)s_%(class)s_related+')
         kwargs.setdefault('verbose_name', _('Subdivisions'))
         super(CountrySubdivisionsField, self).__init__(*args, **kwargs)
-
-
-class CountrySubdivisionsBitField(fields.RelatedBitField):
-
-    description = _('Binary relationship with CountrySubdivision model.')
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('to', 'standards.CountrySubdivision')
-        kwargs.setdefault('allowed_choices', 315)   # Five big integer fields
-        kwargs.setdefault('limit_choices_to', {'country__is_enabled': True,
-                                               'is_enabled': True})
-        kwargs.setdefault('verbose_name', _('Subdivisions'))
-        super(CountrySubdivisionsBitField, self).__init__(*args, **kwargs)
 
 
 class CurrencyField(models.ForeignKey):
@@ -109,16 +84,16 @@ class CurrenciesField(models.ManyToManyField):
         super(CurrenciesField, self).__init__(*args, **kwargs)
 
 
-class CurrenciesBitField(fields.RelatedBitField):
+class GeographicAreaField(fields.CachedForeignKey):
 
-    description = _('Binary relationship with Currency model.')
+    description = _('Many-to-one relationship with GeographicArea model.')
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('to', 'standards.Currency')
-        kwargs.setdefault('allowed_choices', 252) # Four big integer fields
-        kwargs.setdefault('limit_choices_to', {'is_enabled': True})
-        kwargs.setdefault('verbose_name', _('Currencies'))
-        super(CurrenciesBitField, self).__init__(*args, **kwargs)
+        kwargs.setdefault('to', 'standards.GeographicArea')
+        kwargs.setdefault('on_delete', models.PROTECT)
+        kwargs.setdefault('related_name', '%(app_label)s_%(class)s_related+')
+        kwargs.setdefault('verbose_name', _('Geographic Area'))
+        super(GeographicAreaField, self).__init__(*args, **kwargs)
 
 
 class LanguageField(models.ForeignKey):
@@ -146,18 +121,6 @@ class LanguagesField(models.ManyToManyField):
         super(LanguagesField, self).__init__(*args, **kwargs)
 
 
-class LanguagesBitField(fields.RelatedBitField):
-
-    description = _('Binary relationship with Language model.')
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('to', 'standards.Language')
-        kwargs.setdefault('allowed_choices', 189) # Three big integer fields
-        kwargs.setdefault('limit_choices_to', {'is_enabled': True})
-        kwargs.setdefault('verbose_name', _('Languages'))
-        super(LanguagesBitField, self).__init__(*args, **kwargs)
-
-
 class RegionField(models.ForeignKey):
 
     description = _('Many-to-one relationship with Region model.')
@@ -180,15 +143,4 @@ class RegionsField(models.ManyToManyField):
         kwargs.setdefault('related_name', '%(app_label)s_%(class)s_related+')
         kwargs.setdefault('verbose_name', _('Regions'))
         super(RegionsField, self).__init__(*args, **kwargs)
-
-
-class RegionsBitField(fields.RelatedBitField):
-
-    description = _('Binary relationship with Region model.')
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('to', 'standards.Region')
-        kwargs.setdefault('allowed_choices', 63) # One big integer field
-        kwargs.setdefault('verbose_name', _('Regions'))
-        super(RegionsBitField, self).__init__(*args, **kwargs)
 

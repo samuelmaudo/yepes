@@ -1,0 +1,13 @@
+[
+  {
+    "model": "standards.GeographicArea",
+    "pk": 1,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Global",
+      "api_id": "all",
+      "description": ""
+    }
+  }
+]
