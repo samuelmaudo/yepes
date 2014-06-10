@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db.models.base import ModelState
+from django.utils import six
 from django.utils.encoding import force_str, python_2_unicode_compatible
 from django.utils.functional import cached_property
 
@@ -28,8 +29,18 @@ class GeographicAreaProxy(object):
             for country
             in area.included_countries.all()
         )
+        self.included_country_codes = frozenset(
+            country.code
+            for country
+            in area.included_countries.all()
+        )
         self.excluded_countries = frozenset(
             country.pk
+            for country
+            in area.excluded_countries.all()
+        )
+        self.excluded_country_codes = frozenset(
+            country.code
             for country
             in area.excluded_countries.all()
         )
@@ -38,8 +49,18 @@ class GeographicAreaProxy(object):
             for subdivision
             in area.included_subdivisions.all()
         )
+        self.included_subdivision_codes = frozenset(
+            subdivision.code
+            for subdivision
+            in area.included_subdivisions.all()
+        )
         self.excluded_subdivisions = frozenset(
             subdivision.pk
+            for subdivision
+            in area.excluded_subdivisions.all()
+        )
+        self.excluded_subdivision_codes = frozenset(
+            subdivision.code
             for subdivision
             in area.excluded_subdivisions.all()
         )
@@ -88,61 +109,82 @@ class GeographicAreaProxy(object):
         """
         Checks whether the given country is located within this area.
         """
-        if country.pk in self.excluded_countries:
-            return False
+        if isinstance(country, six.string_types):
+            if country in self.excluded_country_codes:
+                return False
 
-        if country.pk in self.included_countries:
-            return True
+            if country in self.included_country_codes:
+                return True
 
-        if not self.included_countries:
-            return True
+            return (not self.included_country_codes)
         else:
-            return False
+            if country.pk in self.excluded_countries:
+                return False
+
+            if country.pk in self.included_countries:
+                return True
+
+            return not self.included_countries
 
     def contains_subdivision(self, subdivision):
         """
         Checks whether the given subdivision is located within this area.
         """
-        if subdivision.country_id in self.excluded_countries:
-            return False
-        if subdivision.pk in self.excluded_subdivisions:
-            return False
+        if isinstance(subdivision, six.string_types):
+            country = subdivision[:2]
 
-        if subdivision.country_id in self.included_countries:
-            return True
-        if subdivision.pk in self.included_subdivisions:
-            return True
+            if country in self.excluded_country_codes:
+                return False
+            if subdivision in self.excluded_subdivision_codes:
+                return False
 
-        if not (self.included_countries
-                or self.included_subdivisions):
-            return True
+            if country in self.included_country_codes:
+                return True
+            if subdivision in self.included_subdivision_codes:
+                return True
+
+            return not (self.included_country_codes
+                        or self.included_subdivision_codes)
         else:
-            return False
+            if subdivision.country_id in self.excluded_countries:
+                return False
+            if subdivision.pk in self.excluded_subdivisions:
+                return False
+
+            if subdivision.country_id in self.included_countries:
+                return True
+            if subdivision.pk in self.included_subdivisions:
+                return True
+
+            return not (self.included_countries
+                        or self.included_subdivisions)
 
     def includes_all_addresses(self):
         """
         Checks whether this area does not make any filter.
         """
-        return (not self.included_countries
-                and not self.excluded_countries
-                and not self.included_subdivisions
-                and not self.excluded_subdivisions)
+        return not (self.included_countries
+                    or self.excluded_countries
+                    or self.included_subdivisions
+                    or self.excluded_subdivisions)
 
     def includes_all_countries(self):
         """
         Checks whether this area does not make any filter.
         """
-        return (not self.included_countries
-                and not self.excluded_countries)
+        return not (self.included_countries
+                    or self.excluded_countries
+                    or self.included_subdivisions
+                    or self.excluded_subdivisions)
 
     def includes_all_subdivisions(self):
         """
         Checks whether this area does not make any filter.
         """
-        return (not self.included_countries
-                and not self.excluded_countries
-                and not self.included_subdivisions
-                and not self.excluded_subdivisions)
+        return not (self.included_countries
+                    or self.excluded_countries
+                    or self.included_subdivisions
+                    or self.excluded_subdivisions)
 
     # Need to pretend to be the wrapped class, for the sake of objects that
     # care about this (especially in equality tests).
