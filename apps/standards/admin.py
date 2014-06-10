@@ -10,6 +10,7 @@ from yepes.loading import get_model
 Country = get_model('standards', 'Country')
 CountrySubdivision = get_model('standards', 'CountrySubdivision')
 Currency = get_model('standards', 'Currency')
+GeographicArea = get_model('standards', 'GeographicArea')
 Language = get_model('standards', 'Language')
 Region = get_model('standards', 'Region')
 
@@ -152,6 +153,68 @@ class CurrencyAdmin(admin.EnableableMixin, admin.ModelAdmin):
     ]
 
 
+class GeographicAreaAdmin(admin.ModelAdmin):
+
+    autocomplete_lookup_fields = {
+        'fk':  [],
+        'm2m': ['excluded_countries', 'included_countries',
+                'excluded_subdivisions', 'included_subdivisions'],
+    }
+    fieldsets = [
+        (None, {
+            'fields': [
+                'name',
+                'api_id',
+                'description',
+            ],
+        }),
+        (_('Localized Names'), {
+            'classes': [
+                'grp-collapse',
+                'grp-closed',
+            ],
+            'fields': [
+                'name_en',
+                'name_fr',
+                'name_es',
+                'name_zh',
+                'name_ru',
+                'name_de',
+                'name_pt',
+            ],
+        }),
+        (_('Countries'), {
+            'classes': [
+                'grp-collapse',
+                'grp-closed',
+            ],
+            'fields': [
+                'included_countries',
+                'excluded_countries',
+            ],
+        }),
+        (_('Country Subdivisions'), {
+            'classes': [
+                'grp-collapse',
+                'grp-closed',
+            ],
+            'fields': [
+                'included_subdivisions',
+                'excluded_subdivisions',
+            ],
+        }),
+    ]
+    list_display = ['name']
+    ordering = ['name']
+    raw_id_fields = [
+        'excluded_countries',
+        'excluded_subdivisions',
+        'included_countries',
+        'included_subdivisions',
+    ]
+    search_fields = ['name']
+
+
 class LanguageAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
     change_list_filter_template = 'admin/filter_listing.html'
@@ -257,5 +320,6 @@ class RegionAdmin(admin.ModelAdmin):
 
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Currency, CurrencyAdmin)
+admin.site.register(GeographicArea, GeographicAreaAdmin)
 admin.site.register(Language, LanguageAdmin)
 admin.site.register(Region, RegionAdmin)
