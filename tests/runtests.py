@@ -13,7 +13,6 @@ from django.utils import six
 from django.utils._os import upath
 
 ALWAYS_INSTALLED_APPS = [
-    'easy_thumbnails',
     'mptt',
     'yepes',
 ]

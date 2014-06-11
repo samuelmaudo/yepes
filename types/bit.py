@@ -49,7 +49,7 @@ class Bit(object):
         if not self._field:
             return force_text(bin(self._value)[2:])
         elif not self._value:
-            return _('(All)')
+            return _('(None)')
         else:
             verbose_names = self._field.flags.iter_verbose_names(self._value)
             return ', '.join(force_text(n) for n in verbose_names)
