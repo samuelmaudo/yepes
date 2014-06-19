@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-13 12:09+0100\n"
-"PO-Revision-Date: 2014-02-12 16:17+0100\n"
+"POT-Creation-Date: 2014-06-19 11:43+0200\n"
+"PO-Revision-Date: 2014-06-19 13:26+0200\n"
 "Last-Translator: Radagast el Pardo\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: en\n"
@@ -17,180 +17,181 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: admin.py:50
+#: admin.py:52
 #, python-brace-format
 msgid "Delete selected {verbose_name_plural}"
 msgstr "Eliminar los {verbose_name_plural} seleccionados"
 
-#: admin.py:288 model_mixins/activatable.py:20
+#: admin.py:290 model_mixins/activatable.py:20
 msgid "Active"
 msgstr "Activo"
 
-#: admin.py:291 model_mixins/activatable.py:21
+#: admin.py:293 model_mixins/activatable.py:21
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: admin.py:295 admin.py:338 admin.py:375 model_mixins/activatable.py:28
+#: admin.py:297 admin.py:340 admin.py:377 apps/newsletters/admin.py:238
+#: apps/newsletters/admin.py:495 model_mixins/activatable.py:28
 #: model_mixins/displayable.py:35 model_mixins/enableable.py:26
 msgid "Status"
 msgstr "Estado"
 
-#: admin.py:302
+#: admin.py:304
 #, python-brace-format
 msgid "Activate \"{record}\""
 msgstr "Activar «{record}»"
 
-#: admin.py:303
+#: admin.py:305
 #, python-brace-format
 msgid "\"{record}\" has been successfully activated"
 msgstr "«{record}» ha sido activado correctamente"
 
-#: admin.py:304
+#: admin.py:306
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully activated"
 msgstr "{record_count} {verbose_name_plural} han sido activados correctamente"
 
-#: admin.py:305
+#: admin.py:307
 #, python-brace-format
 msgid "Activate selected {verbose_name_plural}"
 msgstr "Activar los {verbose_name_plural} seleccionados"
 
-#: admin.py:311
+#: admin.py:313
 #, python-brace-format
 msgid "Deactivate \"{record}\""
 msgstr "Desactivar «{record}»"
 
-#: admin.py:312
+#: admin.py:314
 #, python-brace-format
 msgid "\"{record}\" has been successfully deactivated"
 msgstr "«{record}» ha sido desactivado correctamente"
 
-#: admin.py:313
+#: admin.py:315
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully deactivated"
 msgstr ""
 "{record_count} {verbose_name_plural} han sido desactivados correctamente"
 
-#: admin.py:314
+#: admin.py:316
 #, python-brace-format
 msgid "Deactivate selected {verbose_name_plural}"
 msgstr "Desactivar los {verbose_name_plural} seleccionados"
 
-#: admin.py:325 model_mixins/displayable.py:26
+#: admin.py:327 model_mixins/displayable.py:26
 msgid "Draft"
 msgstr "Borrador"
 
-#: admin.py:328 model_mixins/displayable.py:28
+#: admin.py:330 apps/newsletters/admin.py:491 model_mixins/displayable.py:28
 msgid "Hidden"
 msgstr "Oculto"
 
-#: admin.py:331 model_mixins/displayable.py:27
+#: admin.py:333 apps/newsletters/admin.py:488 model_mixins/displayable.py:27
 msgid "Published"
 msgstr "Publicado"
 
-#: admin.py:334
+#: admin.py:336
 msgid "Not published"
 msgstr "No publicado"
 
-#: admin.py:344
+#: admin.py:346
 #, python-brace-format
 msgid "Hide \"{record}\""
 msgstr "Ocultar «{record}»"
 
-#: admin.py:345
+#: admin.py:347
 #, python-brace-format
 msgid "\"{record}\" has been successfully hidden"
 msgstr "«{record}» ha sido ocultado correctamente"
 
-#: admin.py:346
+#: admin.py:348
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully hidden"
 msgstr "{record_count} {verbose_name_plural} han sido ocultados correctamente"
 
-#: admin.py:347
+#: admin.py:349
 #, python-brace-format
 msgid "Hide selected {verbose_name_plural}"
 msgstr "Ocultar los {verbose_name_plural} seleccionados"
 
-#: admin.py:354
+#: admin.py:356
 #, python-brace-format
 msgid "Publish \"{record}\""
 msgstr "Publicar «{record}»"
 
-#: admin.py:355
+#: admin.py:357
 #, python-brace-format
 msgid "\"{record}\" has been successfully published"
 msgstr "«{record}» ha sido publicado correctamente"
 
-#: admin.py:356
+#: admin.py:358
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully published"
 msgstr "{record_count} {verbose_name_plural} han sido publicados correctamente"
 
-#: admin.py:357
+#: admin.py:359
 #, python-brace-format
 msgid "Publish selected {verbose_name_plural}"
 msgstr "Publicar los {verbose_name_plural} seleccionados"
 
-#: admin.py:368 model_mixins/enableable.py:18
+#: admin.py:370 model_mixins/enableable.py:18
 msgid "Enabled"
 msgstr "Habilitado"
 
-#: admin.py:371 model_mixins/enableable.py:19
+#: admin.py:373 model_mixins/enableable.py:19
 msgid "Disabled"
 msgstr "Inhabilitado"
 
-#: admin.py:381
+#: admin.py:383
 #, python-brace-format
 msgid "Disable \"{record}\""
 msgstr "Inhabilitar «{record}»"
 
-#: admin.py:382
+#: admin.py:384
 #, python-brace-format
 msgid "\"{record}\" has been successfully disabled"
 msgstr "«{record}» ha sido inhabilitado correctamente"
 
-#: admin.py:383
+#: admin.py:385
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully disabled"
 msgstr ""
 "{record_count} {verbose_name_plural} han sido inhabilitados correctamente"
 
-#: admin.py:384
+#: admin.py:386
 #, python-brace-format
 msgid "Disable selected {verbose_name_plural}"
 msgstr "Inhabilitar los {verbose_name_plural} seleccionados"
 
-#: admin.py:390
+#: admin.py:392
 #, python-brace-format
 msgid "Enable \"{record}\""
 msgstr "Habilitar «{record}»"
 
-#: admin.py:391
+#: admin.py:393
 #, python-brace-format
 msgid "\"{record}\" has been successfully enabled"
 msgstr "«{record}» ha sido habilitado correctamente"
 
-#: admin.py:392
+#: admin.py:394
 #, python-brace-format
 msgid "{record_count} {verbose_name_plural} has been successfully enabled"
 msgstr ""
 "{record_count} {verbose_name_plural} han sido habilitados correctamente"
 
-#: admin.py:393
+#: admin.py:395
 #, python-brace-format
 msgid "Enable selected {verbose_name_plural}"
 msgstr "Habilitar los {verbose_name_plural} seleccionados"
 
-#: admin.py:408
+#: admin.py:410
 msgid "Preview"
 msgstr "Vista previa"
 
-#: admin.py:436
+#: admin.py:438
 msgid "All"
 msgstr "Todos"
 
-#: admin.py:445
+#: admin.py:447
 msgid "None"
 msgstr "Ninguno"
 
@@ -210,24 +211,1253 @@ msgstr "Subdominio por defecto"
 msgid "Stop words"
 msgstr ""
 
-#: views.py:96
+#: views.py:100
 msgid "Cache Stats"
 msgstr "Estadísticas de la cache"
 
-#: views.py:240
+#: views.py:256
 #, python-brace-format
 msgid "No {verbose_name} found matching the query"
 msgstr "No se ha encontrado ningún {verbose_name} que coincida con la consulta"
 
-#: views.py:439
+#: views.py:455
 #, python-brace-format
 msgid "Empty list and '{class_name}.allow_empty' is False."
 msgstr ""
 "El listado está vacío y el valor de '{class_name}.allow_empty' es False."
 
-#: fields/guid.py:20
+#: apps/emails/__init__.py:5
+msgid "Emails"
+msgstr "Correos electrónicos"
+
+#: apps/emails/abstract_models.py:27 apps/emails/abstract_models.py:181
+#: apps/metrics/model_mixins.py:30 apps/newsletters/abstract_models.py:328
+#: apps/newsletters/abstract_models.py:389
+#: apps/newsletters/abstract_models.py:582
+#: apps/newsletters/abstract_models.py:630 apps/newsletters/admin.py:358
+#: apps/standards/abstract_models.py:358 apps/thumbnails/abstract_models.py:84
+#: apps/thumbnails/abstract_models.py:109
+msgid "Name"
+msgstr "Nombre"
+
+#: apps/emails/abstract_models.py:31
+msgid "Host"
+msgstr "Servidor"
+
+#: apps/emails/abstract_models.py:32
+msgid "Address of the SMTP server."
+msgstr "Dirección el servidor SMTP."
+
+#: apps/emails/abstract_models.py:35
+msgid "Port"
+msgstr "Puerto"
+
+#: apps/emails/abstract_models.py:38
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: apps/emails/abstract_models.py:41
+msgid "Password"
+msgstr "Contraseña"
+
+#: apps/emails/abstract_models.py:45
+msgid "Use TLS?"
+msgstr "¿Utilizar TLS?"
+
+#: apps/emails/abstract_models.py:46
+msgid "Whether to use a secure connection when talking to the SMTP server."
+msgstr "Si utilizar una conexión segura para comunicarse con el servidor SMTP."
+
+#: apps/emails/abstract_models.py:49
+msgid "Store Mails?"
+msgstr "¿Guardar los correos?"
+
+#: apps/emails/abstract_models.py:50
+msgid "Whether to store a copy of each sent mail."
+msgstr "Si guardar una copia de cada correo enviado."
+
+#: apps/emails/abstract_models.py:57 apps/newsletters/abstract_models.py:378
+msgid "E-mail Connection"
+msgstr "Conexión de correo"
+
+#: apps/emails/abstract_models.py:58
+msgid "Connections"
+msgstr "Conexiones"
+
+#: apps/emails/abstract_models.py:129 apps/metrics/abstract_models.py:121
+msgid "Date"
+msgstr "Fecha"
+
+#: apps/emails/abstract_models.py:133 apps/emails/abstract_models.py:269
+#: apps/newsletters/abstract_models.py:463 apps/newsletters/admin.py:525
+msgid "Sender"
+msgstr "Remitente"
+
+#: apps/emails/abstract_models.py:136
+msgid "Recipients"
+msgstr "Destinatarios"
+
+#: apps/emails/abstract_models.py:139
+msgid "Other Recipients"
+msgstr "Otros destinatarios"
+
+#: apps/emails/abstract_models.py:142
+msgid "Hidden Recipients"
+msgstr "Destinatarios ocultos"
+
+#: apps/emails/abstract_models.py:147 apps/emails/abstract_models.py:209
+#: apps/newsletters/abstract_models.py:277
+msgid "Subject"
+msgstr "Asunto"
+
+#: apps/emails/abstract_models.py:151 apps/emails/abstract_models.py:212
+#: apps/newsletters/abstract_models.py:280 apps/newsletters/admin.py:297
+msgid "HTML Version"
+msgstr "Versión HTML"
+
+#: apps/emails/abstract_models.py:154 apps/emails/abstract_models.py:215
+#: apps/newsletters/abstract_models.py:283 apps/newsletters/admin.py:303
+msgid "Plain Text Version"
+msgstr "Versión en texto plano"
+
+#: apps/emails/abstract_models.py:159 apps/newsletters/abstract_models.py:210
+msgid "Delivery"
+msgstr "Entrega"
+
+#: apps/emails/abstract_models.py:160 apps/newsletters/abstract_models.py:211
+#: apps/newsletters/admin.py:53
+msgid "Deliveries"
+msgstr "Entregas"
+
+#: apps/emails/abstract_models.py:164
+msgid "No subject"
+msgstr "Sin asunto"
+
+#: apps/emails/abstract_models.py:176
+msgid "Connection"
+msgstr "Conexión"
+
+#: apps/emails/abstract_models.py:185 apps/newsletters/abstract_models.py:399
+msgid "Sender's Name"
+msgstr "Nombre del remitente"
+
+#: apps/emails/abstract_models.py:188 apps/newsletters/abstract_models.py:402
+msgid "Sender's Address"
+msgstr "Dirección del remitente"
+
+#: apps/emails/abstract_models.py:192
+msgid "Recipient's Name"
+msgstr "Nombre del destinatario"
+
+#: apps/emails/abstract_models.py:196
+msgid "Recipient's Address"
+msgstr "Dirección del destinatario"
+
+#: apps/emails/abstract_models.py:197
+msgid "If field is blank, it will be populated when the message is sent."
+msgstr "Si se deja este campo en blanco, se rellenará al enviarse el mensaje."
+
+#: apps/emails/abstract_models.py:201 apps/newsletters/abstract_models.py:406
+msgid "Reply To Name"
+msgstr "Responder al nombre"
+
+#: apps/emails/abstract_models.py:205 apps/newsletters/abstract_models.py:410
+msgid "Reply To Address"
+msgstr "Responder a la dirección"
+
+#: apps/emails/abstract_models.py:220 apps/newsletters/abstract_models.py:37
+#: apps/newsletters/abstract_models.py:94
+#: apps/newsletters/abstract_models.py:143
+#: apps/newsletters/abstract_models.py:292
+#: apps/newsletters/abstract_models.py:476
+#: apps/newsletters/templates/admin/newsletters/message/dispatch.html:117
+msgid "Message"
+msgstr "Mensaje"
+
+#: apps/emails/abstract_models.py:221 apps/newsletters/abstract_models.py:293
+msgid "Messages"
+msgstr "Mensajes"
+
+#: apps/emails/abstract_models.py:251
+msgid "Recipient"
+msgstr "Destinatario"
+
+#: apps/emails/abstract_models.py:260 apps/newsletters/abstract_models.py:445
+#: apps/newsletters/admin.py:505
+msgid "Reply To"
+msgstr "Responder a"
+
+#: apps/emails/admin.py:27 apps/emails/admin.py:111
+#: apps/newsletters/admin.py:454
+msgid "Settings"
+msgstr "Ajustes"
+
+#: apps/emails/admin.py:69 apps/newsletters/abstract_models.py:64
+#: apps/newsletters/admin.py:79
+msgid "Body"
+msgstr "Cuerpo"
+
+#: apps/metrics/__init__.py:5
+msgid "Metrics"
+msgstr "Métricas"
+
+#: apps/metrics/abstract_models.py:26 apps/metrics/abstract_models.py:234
+msgid "Browser"
+msgstr "Navegador"
+
+#: apps/metrics/abstract_models.py:27
+msgid "Browsers"
+msgstr "Navegadores"
+
+#: apps/metrics/abstract_models.py:35
+msgid "Rendering Engine"
+msgstr "Motor de renderizado"
+
+#: apps/metrics/abstract_models.py:36
+msgid "Rendering Engines"
+msgstr "Motores de renderizado"
+
+#: apps/metrics/abstract_models.py:44 apps/metrics/abstract_models.py:244
+msgid "Platform"
+msgstr "Plataforma"
+
+#: apps/metrics/abstract_models.py:45
+msgid "Platforms"
+msgstr "Plataformas"
+
+#: apps/metrics/abstract_models.py:54 apps/metrics/abstract_models.py:216
+#: apps/metrics/abstract_models.py:301 apps/registry/abstract_models.py:17
+msgid "Site"
+msgstr "Sitio"
+
+#: apps/metrics/abstract_models.py:58
+msgid "Path Head"
+msgstr "Inicio de la ruta"
+
+#: apps/metrics/abstract_models.py:61
+msgid "Path Tail"
+msgstr "Final de la ruta"
+
+#: apps/metrics/abstract_models.py:65
+msgid "Query String"
+msgstr "Cadena de consulta"
+
+#: apps/metrics/abstract_models.py:73 apps/metrics/abstract_models.py:109
+#: apps/metrics/admin.py:77
+msgid "Page"
+msgstr "Página"
+
+#: apps/metrics/abstract_models.py:74 apps/metrics/admin.py:78
+msgid "Pages"
+msgstr "Páginas"
+
+#: apps/metrics/abstract_models.py:90
+msgid "Full Path"
+msgstr "Ruta completa"
+
+#: apps/metrics/abstract_models.py:94 apps/metrics/abstract_models.py:193
+msgid "Path"
+msgstr "Ruta"
+
+#: apps/metrics/abstract_models.py:105 apps/metrics/abstract_models.py:279
+msgid "Visit"
+msgstr "Visita"
+
+#: apps/metrics/abstract_models.py:113
+msgid "Previous Page ID"
+msgstr "Página anterior (ID)"
+
+#: apps/metrics/abstract_models.py:117
+msgid "Next Page ID"
+msgstr "Página siguiente (ID)"
+
+#: apps/metrics/abstract_models.py:119
+msgid "Status Code"
+msgstr "Código de estado"
+
+#: apps/metrics/abstract_models.py:123
+msgid "Load Time"
+msgstr "Tiempo de carga"
+
+#: apps/metrics/abstract_models.py:128
+msgid "Page View"
+msgstr "Página vista"
+
+#: apps/metrics/abstract_models.py:129 apps/metrics/abstract_models.py:256
+#: apps/metrics/abstract_models.py:272
+msgid "Page Views"
+msgstr "Páginas vistas"
+
+#: apps/metrics/abstract_models.py:144
+msgid "Next Page"
+msgstr "Página anterior"
+
+#: apps/metrics/abstract_models.py:156
+msgid "Previous Page"
+msgstr "Página siguiente"
+
+#: apps/metrics/abstract_models.py:168 apps/newsletters/abstract_models.py:241
+#: apps/newsletters/admin.py:283
+msgid "Domain"
+msgstr "Dominio"
+
+#: apps/metrics/abstract_models.py:173 apps/metrics/abstract_models.py:190
+#: apps/metrics/abstract_models.py:249
+msgid "Referrer"
+msgstr "Referente"
+
+#: apps/metrics/abstract_models.py:174
+msgid "Referrers"
+msgstr "Referentes"
+
+#: apps/metrics/abstract_models.py:199
+msgid "Referrer page"
+msgstr "Página referente"
+
+#: apps/metrics/abstract_models.py:200
+msgid "Referrer pages"
+msgstr "Páginas referentes"
+
+#: apps/metrics/abstract_models.py:220 apps/metrics/abstract_models.py:314
+msgid "Visitor"
+msgstr "Visitante"
+
+#: apps/metrics/abstract_models.py:239
+msgid "Engine"
+msgstr "Motor"
+
+#: apps/metrics/abstract_models.py:254
+msgid "Referrer Page"
+msgstr "Página referente"
+
+#: apps/metrics/abstract_models.py:259
+msgid "Start Date"
+msgstr "Fecha inicial"
+
+#: apps/metrics/abstract_models.py:262
+msgid "End Date"
+msgstr "Fecha final"
+
+#: apps/metrics/abstract_models.py:265
+msgid "User-Agent"
+msgstr "Agente de usuario"
+
+#: apps/metrics/abstract_models.py:280
+msgid "Visits"
+msgstr "Visitas"
+
+#: apps/metrics/abstract_models.py:292
+msgid "Rebound?"
+msgstr "¿Rebote?"
+
+#: apps/metrics/abstract_models.py:303
+msgid "Is Authenticated?"
+msgstr "¿Autenticado?"
+
+#: apps/metrics/abstract_models.py:307
+msgid "Visitor Key"
+msgstr "Clave del visitante"
+
+#: apps/metrics/abstract_models.py:315
+msgid "Visitors"
+msgstr "Visitantes"
+
+#: apps/metrics/admin.py:49
+msgid "View"
+msgstr "Vista"
+
+#: apps/metrics/admin.py:50
+msgid "Views"
+msgstr "Vistas"
+
+#: apps/metrics/model_mixins.py:22
+msgid "Parent"
+msgstr "Padre"
+
+#: apps/metrics/model_mixins.py:26 model_mixins/orderable.py:82
+msgid "Index"
+msgstr "Índice"
+
+#: apps/metrics/model_mixins.py:33
+msgid "Token"
+msgstr ""
+
+#: apps/metrics/model_mixins.py:34
+msgid "Used to check the User-Agent strings."
+msgstr "Se utiliza para comprobar las cadenas de agente de usuario."
+
+#: apps/metrics/model_mixins.py:37
+msgid "Regular Expression"
+msgstr "Expresión regular"
+
+#: apps/metrics/model_mixins.py:38
+msgid "Check this if your token is a regular expression."
+msgstr "Márcalo si tu token es una expresión regular."
+
+#: apps/metrics/registry.py:16
+msgid "Excluded Parameters"
+msgstr "Parámetros excluidos"
+
+#: apps/metrics/registry.py:23
+msgid "Record Page Views"
+msgstr "Registrar las vistas"
+
+#: apps/metrics/registry.py:30
+msgid "Record Visitors"
+msgstr "Registrar los visitantes"
+
+#: apps/metrics/registry.py:37
+msgid "Record Visits"
+msgstr "Registrar las visitas"
+
+#: apps/metrics/registry.py:44
+msgid "Tracked Request Methods"
+msgstr "Métodos de solicitud rastreados"
+
+#: apps/metrics/registry.py:52
+msgid "Untracked Paths"
+msgstr "Rutas no rastreadas"
+
+#: apps/metrics/registry.py:59
+msgid "Untracked Referrers"
+msgstr "Referentes no rastreados"
+
+#: apps/metrics/registry.py:99
+msgid "Untracked User-Agents"
+msgstr "Agentes de usuario no registrados"
+
+#: apps/metrics/registry.py:106
+msgid "Visit Timeout"
+msgstr "Duración máxima de una visita"
+
+#: apps/newsletters/__init__.py:5 apps/newsletters/abstract_models.py:425
+#: apps/newsletters/abstract_models.py:551
+msgid "Newsletters"
+msgstr "Boletines"
+
+#: apps/newsletters/abstract_models.py:41
+#: apps/newsletters/abstract_models.py:99
+#: apps/newsletters/abstract_models.py:148
+#: apps/newsletters/abstract_models.py:267
+#: apps/newsletters/abstract_models.py:424
+#: apps/newsletters/abstract_models.py:481
+#: apps/newsletters/abstract_models.py:655
+#: apps/newsletters/abstract_models.py:695 apps/newsletters/forms.py:104
+#: apps/newsletters/forms.py:123
+#: apps/newsletters/templates/admin/newsletters/message/dispatch.html:109
+msgid "Newsletter"
+msgstr "Boletín"
+
+#: apps/newsletters/abstract_models.py:47
+#: apps/newsletters/abstract_models.py:106
+#: apps/newsletters/abstract_models.py:153
+#: apps/newsletters/abstract_models.py:488
+#: apps/newsletters/abstract_models.py:568
+#: apps/newsletters/abstract_models.py:660
+#: apps/newsletters/abstract_models.py:700
+msgid "Subscriber"
+msgstr "Suscriptor"
+
+#: apps/newsletters/abstract_models.py:53
+#: apps/newsletters/abstract_models.py:113
+#: apps/newsletters/abstract_models.py:158
+#: apps/newsletters/abstract_models.py:250
+#: apps/newsletters/abstract_models.py:495
+#: apps/newsletters/abstract_models.py:537
+#: apps/newsletters/abstract_models.py:667
+#: apps/newsletters/abstract_models.py:707
+msgid "E-mail Domain"
+msgstr "Dominio de correo"
+
+#: apps/newsletters/abstract_models.py:57
+#: apps/newsletters/abstract_models.py:184
+msgid "Bounce Date"
+msgstr "Fecha del rebote"
+
+#: apps/newsletters/abstract_models.py:61
+msgid "Header"
+msgstr "Cabecera"
+
+#: apps/newsletters/abstract_models.py:69
+msgid "Bounce"
+msgstr "Rebote"
+
+#: apps/newsletters/abstract_models.py:70 apps/newsletters/admin.py:43
+msgid "Bounces"
+msgstr "Rebotes"
+
+#: apps/newsletters/abstract_models.py:89
+#: apps/newsletters/abstract_models.py:362
+msgid "Message Link"
+msgstr "Enlace"
+
+#: apps/newsletters/abstract_models.py:118
+#: apps/newsletters/abstract_models.py:204
+msgid "Click Date"
+msgstr "Fecha del clic"
+
+#: apps/newsletters/abstract_models.py:123
+msgid "Click"
+msgstr "Clic"
+
+#: apps/newsletters/abstract_models.py:124 apps/newsletters/admin.py:48
+msgid "Clicks"
+msgstr "Clics"
+
+#: apps/newsletters/abstract_models.py:163
+msgid "Estimated Date"
+msgstr "Fecha estimada"
+
+#: apps/newsletters/abstract_models.py:169
+msgid "Is Processed?"
+msgstr "¿Procesado?"
+
+#: apps/newsletters/abstract_models.py:174
+msgid "Effective Date"
+msgstr "Fecha efectiva"
+
+#: apps/newsletters/abstract_models.py:179
+msgid "Is Bounced?"
+msgstr "¿Rebotado?"
+
+#: apps/newsletters/abstract_models.py:189
+msgid "Is Opened?"
+msgstr "¿Abierto?"
+
+#: apps/newsletters/abstract_models.py:194
+#: apps/newsletters/abstract_models.py:500
+msgid "Open Date"
+msgstr "Fecha de apertura"
+
+#: apps/newsletters/abstract_models.py:199
+msgid "Is Clicked?"
+msgstr "¿Clicado?"
+
+#: apps/newsletters/abstract_models.py:218
+msgid "Response Time"
+msgstr "Tiempo de respuesta"
+
+#: apps/newsletters/abstract_models.py:245
+msgid "Is Trusted?"
+msgstr "¿Verificado?"
+
+#: apps/newsletters/abstract_models.py:251
+msgid "Domains"
+msgstr "Dominios"
+
+#: apps/newsletters/abstract_models.py:273
+#: apps/newsletters/abstract_models.py:323
+#: apps/newsletters/abstract_models.py:351
+#: apps/newsletters/abstract_models.py:384
+#: apps/newsletters/abstract_models.py:526 fields/guid.py:20
 msgid "Global Unique Identifier"
 msgstr "Identificador único global"
+
+#: apps/newsletters/abstract_models.py:288
+msgid "Is Sent?"
+msgstr "¿Enviado?"
+
+#: apps/newsletters/abstract_models.py:334
+msgid "Message Image"
+msgstr "Imagen"
+
+#: apps/newsletters/abstract_models.py:335
+msgid "Message Images"
+msgstr "Imágenes"
+
+#: apps/newsletters/abstract_models.py:357
+msgid "URL"
+msgstr ""
+
+#: apps/newsletters/abstract_models.py:363
+msgid "Message Links"
+msgstr "Enlaces"
+
+#: apps/newsletters/abstract_models.py:392
+#: apps/newsletters/abstract_models.py:633
+#: apps/newsletters/abstract_models.py:759
+#: apps/standards/abstract_models.py:163 model_mixins/metadata.py:34
+msgid "Description"
+msgstr "Descripción"
+
+#: apps/newsletters/abstract_models.py:395 model_mixins/displayable.py:77
+msgid "Is Published?"
+msgstr "¿Publicado?"
+
+#: apps/newsletters/abstract_models.py:414
+msgid "Return To Name"
+msgstr "Devolver al nombre"
+
+#: apps/newsletters/abstract_models.py:418
+msgid "Return To Address"
+msgstr "Devolver a la dirección"
+
+#: apps/newsletters/abstract_models.py:454 apps/newsletters/admin.py:515
+msgid "Return Path"
+msgstr "Devolver a"
+
+#: apps/newsletters/abstract_models.py:505
+msgid "Open"
+msgstr "Apertura"
+
+#: apps/newsletters/abstract_models.py:506 apps/newsletters/admin.py:58
+msgid "Opens"
+msgstr "Aperturas"
+
+#: apps/newsletters/abstract_models.py:532 apps/newsletters/admin.py:571
+#: apps/newsletters/forms.py:84 apps/newsletters/forms.py:115
+#: apps/newsletters/forms.py:126
+msgid "E-mail Address"
+msgstr "Dirección de correo"
+
+#: apps/newsletters/abstract_models.py:541 apps/newsletters/forms.py:88
+#: apps/newsletters/forms.py:107
+msgid "First Name"
+msgstr "Nombre"
+
+#: apps/newsletters/abstract_models.py:545 apps/newsletters/forms.py:92
+#: apps/newsletters/forms.py:111
+msgid "Last Name"
+msgstr "Apellidos"
+
+#: apps/newsletters/abstract_models.py:556 apps/newsletters/admin.py:653
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: apps/newsletters/abstract_models.py:563
+msgid "Score"
+msgstr "Puntuación"
+
+#: apps/newsletters/abstract_models.py:569 apps/newsletters/admin.py:63
+msgid "Subscribers"
+msgstr "Suscriptores"
+
+#: apps/newsletters/abstract_models.py:638
+msgid "Subscriber Tag"
+msgstr "Etiqueta"
+
+#: apps/newsletters/abstract_models.py:639 apps/newsletters/forms.py:74
+msgid "Subscriber Tags"
+msgstr "Etiquetas"
+
+#: apps/newsletters/abstract_models.py:672
+msgid "Subscription Date"
+msgstr "Fecha de suscripción"
+
+#: apps/newsletters/abstract_models.py:678
+msgid "Subscription"
+msgstr "Suscripción"
+
+#: apps/newsletters/abstract_models.py:679 apps/newsletters/admin.py:68
+msgid "Subscriptions"
+msgstr "Suscripciones"
+
+#: apps/newsletters/abstract_models.py:712
+msgid "Unsubscribe Date"
+msgstr "Fecha de desuscripción"
+
+#: apps/newsletters/abstract_models.py:718
+#: apps/newsletters/abstract_models.py:763
+msgid "Unsubscription Reason"
+msgstr "Motivo para desuscribirse"
+
+#: apps/newsletters/abstract_models.py:724
+msgid "Last Message"
+msgstr "Último mensaje"
+
+#: apps/newsletters/abstract_models.py:729
+msgid "Unsubscription"
+msgstr "Desuscripción"
+
+#: apps/newsletters/abstract_models.py:730 apps/newsletters/admin.py:73
+msgid "Unsubscriptions"
+msgstr "Desuscripciones"
+
+#: apps/newsletters/abstract_models.py:764
+msgid "Unsubscription Reasons"
+msgstr "Motivos para desuscribirse"
+
+#: apps/newsletters/admin.py:105
+msgid "Details"
+msgstr "Detalles"
+
+#: apps/newsletters/admin.py:183
+msgid "Timing"
+msgstr ""
+
+#: apps/newsletters/admin.py:223
+msgid "Bounced"
+msgstr "Rebotado"
+
+#: apps/newsletters/admin.py:226
+msgid "Clicked"
+msgstr "Clicado"
+
+#: apps/newsletters/admin.py:229
+msgid "Opened"
+msgstr "Abierto"
+
+#: apps/newsletters/admin.py:232
+msgid "Dispatched"
+msgstr "Enviado"
+
+#: apps/newsletters/admin.py:235
+msgid "Pending"
+msgstr "Pendiente"
+
+#: apps/newsletters/admin.py:280
+msgid "Trusted"
+msgstr "Verificado"
+
+#: apps/newsletters/admin.py:355
+msgid "Sent"
+msgstr "Enviado"
+
+#: apps/newsletters/admin.py:443
+msgid "Metadata"
+msgstr "Metadatos"
+
+#: apps/newsletters/admin.py:651
+msgid "No tag"
+msgstr "Ninguna etiqueta"
+
+#: apps/newsletters/admin.py:767
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#: apps/newsletters/forms.py:20
+msgid "is greather than or equal to"
+msgstr "es mayor o igual que"
+
+#: apps/newsletters/forms.py:21
+msgid "is greather than"
+msgstr "es mayor que"
+
+#: apps/newsletters/forms.py:22
+msgid "is equal to"
+msgstr "es igual que"
+
+#: apps/newsletters/forms.py:23
+msgid "is less than"
+msgstr "es menor que"
+
+#: apps/newsletters/forms.py:24
+msgid "is less than or equal to"
+msgstr "es menor o igual que"
+
+#: apps/newsletters/forms.py:30
+msgid "Dispatch From"
+msgstr "Enviar a partir de"
+
+#: apps/newsletters/forms.py:34
+msgid "Subscriber Score"
+msgstr "Puntuación"
+
+#: apps/newsletters/forms.py:49
+msgid "Subscriber Bounces"
+msgstr "Número de rebotes"
+
+#: apps/newsletters/forms.py:56
+msgid "Subscriber Clicks"
+msgstr "Número de clics"
+
+#: apps/newsletters/forms.py:63
+msgid "Subscriber Opens"
+msgstr "Número de aperturas"
+
+#: apps/newsletters/forms.py:71
+msgid "includes"
+msgstr "incluye"
+
+#: apps/newsletters/forms.py:72
+msgid "does not include"
+msgstr "no incluye"
+
+#: apps/newsletters/forms.py:134
+msgid "Reason"
+msgstr "Motivo"
+
+#: apps/newsletters/validators.py:34
+msgid "Enter a valid email address."
+msgstr "Introduce una dirección de correo válida."
+
+#: apps/newsletters/validators.py:46
+msgid "Enter a valid email domain."
+msgstr "Introduce un dominio de correo válido."
+
+#: apps/newsletters/validators.py:54
+msgid "Enter a valid email user."
+msgstr "Introduce un usuario de correo válido."
+
+#: apps/newsletters/view_mixins.py:44 apps/newsletters/view_mixins.py:88
+#: apps/newsletters/view_mixins.py:132 apps/newsletters/view_mixins.py:176
+#: apps/newsletters/view_mixins.py:220
+#, python-brace-format
+msgid "No {verbose_name} found matching the query."
+msgstr "Ningún {verbose_name} coincide con la búsqueda."
+
+#: apps/newsletters/view_mixins.py:49 apps/newsletters/view_mixins.py:93
+#: apps/newsletters/view_mixins.py:137 apps/newsletters/view_mixins.py:181
+#: apps/newsletters/view_mixins.py:225
+#, python-brace-format
+msgid "You must specify a {verbose_name}."
+msgstr "Debes especificar un {verbose_name}."
+
+#: apps/newsletters/views.py:57
+msgid "When and to whom do you want to send it?"
+msgstr "¿Cuándo y a quién se lo quieres enviar?"
+
+#: apps/newsletters/views.py:58
+msgid "Send Message"
+msgstr "Enviar mensaje"
+
+#: apps/newsletters/templates/admin/newsletters/message/change_form.html:11
+msgid "History"
+msgstr "Histórico"
+
+#: apps/newsletters/templates/admin/newsletters/message/change_form.html:12
+#: apps/newsletters/templates/admin/newsletters/message/dispatch.html:168
+msgid "Dispatch"
+msgstr "Enviar"
+
+#: apps/newsletters/templates/admin/newsletters/message/change_form.html:13
+#: model_mixins/slugged.py:33
+msgid "View on site"
+msgstr "Ver en el sitio"
+
+#: apps/newsletters/templates/admin/newsletters/message/dispatch.html:85
+#: templates/cache/stats.html:27
+msgid "Home"
+msgstr "Inicio"
+
+#: apps/newsletters/templates/admin/newsletters/message/dispatch.html:165
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: apps/registry/__init__.py:5
+msgid "Registry"
+msgstr "Registro"
+
+#: apps/registry/abstract_models.py:20 apps/thumbnails/abstract_models.py:35
+msgid "Key"
+msgstr "Clave"
+
+#: apps/registry/abstract_models.py:45 apps/registry/abstract_models.py:59
+msgid "Value"
+msgstr "Valor"
+
+#: apps/registry/abstract_models.py:50
+msgid "Entry"
+msgstr "Entrada"
+
+#: apps/registry/abstract_models.py:51
+msgid "Entries"
+msgstr "Entradas"
+
+#: apps/registry/abstract_models.py:64
+msgid "Long Entry"
+msgstr "Entrada larga"
+
+#: apps/registry/abstract_models.py:65
+msgid "Long Entries"
+msgstr "Entradas largas"
+
+#: apps/sitemaps/__init__.py:5
+msgid "Sitemaps"
+msgstr "Mapas del sitio"
+
+#: apps/standards/__init__.py:5
+msgid "Standards"
+msgstr "Estándares"
+
+#: apps/standards/abstract_models.py:28 apps/standards/fields.py:132
+msgid "Region"
+msgstr "Región"
+
+#: apps/standards/abstract_models.py:32 apps/standards/abstract_models.py:80
+#: apps/standards/abstract_models.py:110
+msgid "Code"
+msgstr "Código"
+
+#: apps/standards/abstract_models.py:33
+msgid "Specify 2-letter country code, for example \"ES\"."
+msgstr "Indica el código de 2 letras del país, por ejemplo «ES»."
+
+#: apps/standards/abstract_models.py:37
+msgid "Long Code"
+msgstr "Código largo"
+
+#: apps/standards/abstract_models.py:38
+msgid "Specify 3-letter country code, for example \"ESP\"."
+msgstr "Indica el código de 3 letras del país, por ejemplo «ESP»."
+
+#: apps/standards/abstract_models.py:42 apps/standards/abstract_models.py:115
+#: apps/standards/abstract_models.py:334
+msgid "Number"
+msgstr "Número"
+
+#: apps/standards/abstract_models.py:43
+msgid "Specify numeric country code, for example \"724\"."
+msgstr "Indica el código numérico del país, por ejemplo «724»."
+
+#: apps/standards/abstract_models.py:50 apps/standards/abstract_models.py:76
+#: apps/standards/fields.py:20
+msgid "Country"
+msgstr "País"
+
+#: apps/standards/abstract_models.py:51 apps/standards/abstract_models.py:128
+#: apps/standards/abstract_models.py:290 apps/standards/admin.py:186
+#: apps/standards/fields.py:32
+msgid "Countries"
+msgstr "Países"
+
+#: apps/standards/abstract_models.py:64
+msgid ""
+"You can find country names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/ISO_3166-1\">http://en.wikipedia.org/wiki/"
+"ISO_3166-1</a>"
+msgstr ""
+"Puedes encontrar los nombres de los países y sus códigos ISO aquí: <a target="
+"\"_blank\" href=\"http://es.wikipedia.org/wiki/ISO_3166-1\">http://es."
+"wikipedia.org/wiki/ISO_3166-1</a>"
+
+#: apps/standards/abstract_models.py:81
+msgid "Specify country subdivision code, for example \"ES-O\"."
+msgstr "Indica el código de la provincia, por ejemplo «ES-O»."
+
+#: apps/standards/abstract_models.py:88
+msgid "Country Subdivision"
+msgstr "Subdivisión de país"
+
+#: apps/standards/abstract_models.py:89 apps/standards/admin.py:196
+msgid "Country Subdivisions"
+msgstr "Subdivisiones de países"
+
+#: apps/standards/abstract_models.py:105
+msgid "Symbol"
+msgstr "Símbolo"
+
+#: apps/standards/abstract_models.py:106
+msgid "Specify currency symbol, for example \"€\"."
+msgstr "Indica el símbolo de la moneda, por ejemplo «€»."
+
+#: apps/standards/abstract_models.py:111
+msgid "Specify 3-letter currency code, for example \"EUR\"."
+msgstr "Indica el código de 3 letras de la moneda, por ejemplo «EUR»."
+
+#: apps/standards/abstract_models.py:116
+msgid "Specify numeric currency code, for example \"978\"."
+msgstr "Indica el código numérico de la moneda, por ejemplo «978»."
+
+#: apps/standards/abstract_models.py:122
+msgid "Decimals"
+msgstr "Decimales"
+
+#: apps/standards/abstract_models.py:123
+msgid "Number of digits after the decimal separator."
+msgstr "Número de dígitos después del separador decimal."
+
+#: apps/standards/abstract_models.py:129
+msgid "Countries using this currency."
+msgstr "Países que utilizan esta moneda."
+
+#: apps/standards/abstract_models.py:136 apps/standards/fields.py:71
+msgid "Currency"
+msgstr "Moneda"
+
+#: apps/standards/abstract_models.py:137 apps/standards/fields.py:83
+msgid "Currencies"
+msgstr "Monedas"
+
+#: apps/standards/abstract_models.py:149
+msgid ""
+"You can find currency names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/ISO_4217\">http://en.wikipedia.org/wiki/"
+"ISO_4217</a>"
+msgstr ""
+"Puedes encontrar los nombres de las monedas y sus códigos ISO aquí: <a "
+"target=\"_blank\" href=\"http://es.wikipedia.org/wiki/ISO_4217\">http://es."
+"wikipedia.org/wiki/ISO_4217</a>"
+
+#: apps/standards/abstract_models.py:160
+msgid "API Id"
+msgstr ""
+
+#: apps/standards/abstract_models.py:168
+msgid "Included Countries"
+msgstr "Países incluidos"
+
+#: apps/standards/abstract_models.py:172
+msgid "Excluded Countries"
+msgstr "Países excluidos"
+
+#: apps/standards/abstract_models.py:176
+msgid "Included Subdivisions"
+msgstr "Subdivisiones incluidos"
+
+#: apps/standards/abstract_models.py:180
+msgid "Excluded Subdivisions"
+msgstr "Subdivisiones excluidos"
+
+#: apps/standards/abstract_models.py:196 apps/standards/fields.py:95
+msgid "Geographic Area"
+msgstr "Área geográfica"
+
+#: apps/standards/abstract_models.py:197
+msgid "Geographic Areas"
+msgstr "Áreas geográficas"
+
+#: apps/standards/abstract_models.py:225
+msgid "Includes All Addresses?"
+msgstr "¿Incluye todas las direcciones?"
+
+#: apps/standards/abstract_models.py:233
+msgid "Includes All Countries?"
+msgstr "¿Incluye todos los países?"
+
+#: apps/standards/abstract_models.py:241
+msgid "Includes All Subdivisions?"
+msgstr "¿Incluye todas las subdivisiones?"
+
+#: apps/standards/abstract_models.py:261
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: apps/standards/abstract_models.py:262
+msgid ""
+"You can find an explanation about the language tags here: <a target=\"_blank"
+"\" href=\"http://www.w3.org/International/articles/language-tags/Overview.en."
+"php\">http://www.w3.org/International/articles/language-tags/Overview.en."
+"php</a>"
+msgstr ""
+"Puedes encontrar una explicación sobre las etiquetas de idiomas aquí: <a "
+"target=\"_blank\" href=\"http://www.w3.org/International/articles/language-"
+"tags/Overview.es.php\">http://www.w3.org/International/articles/language-"
+"tags/Overview.es.php</a>"
+
+#: apps/standards/abstract_models.py:270
+msgid "ISO 639-1"
+msgstr ""
+
+#: apps/standards/abstract_models.py:271
+msgid "Specify 2-letter language code, for example \"es\"."
+msgstr "Indica el código de 2 letras del idioma, por ejemplo «es»."
+
+#: apps/standards/abstract_models.py:276
+msgid "ISO 639-2"
+msgstr ""
+
+#: apps/standards/abstract_models.py:277 apps/standards/abstract_models.py:283
+msgid "Specify 3-letter language code, for example \"spa\"."
+msgstr "Indica el código de 3 letras del idioma, por ejemplo «spa»."
+
+#: apps/standards/abstract_models.py:282
+msgid "ISO 639-3"
+msgstr ""
+
+#: apps/standards/abstract_models.py:291
+msgid "Countries where this language is official."
+msgstr "Países donde este idioma es oficial."
+
+#: apps/standards/abstract_models.py:298 apps/standards/fields.py:108
+msgid "Language"
+msgstr "Idioma"
+
+#: apps/standards/abstract_models.py:299 apps/standards/fields.py:120
+msgid "Languages"
+msgstr "Idiomas"
+
+#: apps/standards/abstract_models.py:317
+msgid ""
+"You can find language names and ISO codes here: <a target=\"_blank\" href="
+"\"http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes\">http://en.wikipedia."
+"org/wiki/List_of_ISO_639-3_codes</a>"
+msgstr ""
+"Puedes encontrar los nombres de los idiomas y sus códigos ISO aquí: <a "
+"target=\"_blank\" href=\"http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes"
+"\">http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes</a>"
+
+#: apps/standards/abstract_models.py:330
+msgid "Parent Region"
+msgstr "Región superior"
+
+#: apps/standards/abstract_models.py:335
+msgid "Specify numeric region code, for example \"150\"."
+msgstr "Indica el código numérico de la región, por ejemplo «150»."
+
+#: apps/standards/abstract_models.py:342
+msgid "Supranational Region"
+msgstr "Región supranacional"
+
+#: apps/standards/abstract_models.py:343
+msgid "Supranational Regions"
+msgstr "Regiones supranacionales"
+
+#: apps/standards/abstract_models.py:360
+msgid ""
+"You can find region names and United Nations codes here: <a target=\"_blank"
+"\" href=\"http://en.wikipedia.org/wiki/UN_M.49\">http://en.wikipedia.org/"
+"wiki/UN_M.49</a>"
+msgstr ""
+"Puedes encontrar los nombres de las regiones y sus códigos de las Naciones "
+"Unidas aquí: <a target=\"_blank\" href=\"http://en.wikipedia.org/wiki/"
+"UN_M.49\">http://en.wikipedia.org/wiki/UN_M.49</a>"
+
+#: apps/standards/admin.py:39 apps/standards/fields.py:45
+msgid "Subdivision"
+msgstr "Subdivisión"
+
+#: apps/standards/admin.py:40 apps/standards/fields.py:58
+msgid "Subdivisions"
+msgstr "Subdivisiones"
+
+#: apps/standards/admin.py:57 apps/standards/admin.py:110
+#: apps/standards/admin.py:171 apps/standards/admin.py:232
+#: apps/standards/admin.py:292
+msgid "Localized Names"
+msgstr "Nombres localizados"
+
+#: apps/standards/admin.py:125 apps/standards/admin.py:247
+msgid "Additional Info"
+msgstr "Información adicional"
+
+#: apps/standards/fields.py:13
+msgid "Many-to-one relationship with Country model."
+msgstr ""
+
+#: apps/standards/fields.py:26
+msgid "Many-to-many relationship with Country model."
+msgstr ""
+
+#: apps/standards/fields.py:38
+msgid "Many-to-one relationship with CountrySubdivision model."
+msgstr ""
+
+#: apps/standards/fields.py:51
+msgid "Many-to-many relationship with CountrySubdivision model."
+msgstr ""
+
+#: apps/standards/fields.py:64
+msgid "Many-to-one relationship with Currency model."
+msgstr ""
+
+#: apps/standards/fields.py:77
+msgid "Many-to-many relationship with Currency model."
+msgstr ""
+
+#: apps/standards/fields.py:89
+msgid "Many-to-one relationship with GeographicArea model."
+msgstr ""
+
+#: apps/standards/fields.py:101
+msgid "Many-to-one relationship with Language model."
+msgstr ""
+
+#: apps/standards/fields.py:114
+msgid "Many-to-many relationship with Language model."
+msgstr ""
+
+#: apps/standards/fields.py:126
+msgid "Many-to-one relationship with Region model."
+msgstr ""
+
+#: apps/standards/fields.py:138
+msgid "Many-to-many relationship with Region model."
+msgstr ""
+
+#: apps/standards/fields.py:144
+msgid "Regions"
+msgstr "Regiones"
+
+#: apps/standards/model_mixins.py:42
+msgid "Native Name"
+msgstr "Nombre nativo"
+
+#: apps/standards/model_mixins.py:44
+msgid "German Name"
+msgstr "Nombre en alemán"
+
+#: apps/standards/model_mixins.py:46
+msgid "English Name"
+msgstr "Nombre en inglés"
+
+#: apps/standards/model_mixins.py:48
+msgid "Spanish Name"
+msgstr "Nombre en español"
+
+#: apps/standards/model_mixins.py:50
+msgid "French Name"
+msgstr "Nombre en francés"
+
+#: apps/standards/model_mixins.py:52
+msgid "Portuguese Name"
+msgstr "Nombre en portugués"
+
+#: apps/standards/model_mixins.py:54
+msgid "Russian Name"
+msgstr "Nombre en ruso"
+
+#: apps/standards/model_mixins.py:56
+msgid "Chinese Name"
+msgstr "Nombre en chino"
+
+#: apps/thumbnails/__init__.py:5 apps/thumbnails/abstract_models.py:119
+msgid "Thumbnails"
+msgstr "Miniaturas"
+
+#: apps/thumbnails/abstract_models.py:38
+msgid "Width"
+msgstr "Anchura"
+
+#: apps/thumbnails/abstract_models.py:40
+msgid "Height"
+msgstr "Altura"
+
+#: apps/thumbnails/abstract_models.py:46
+msgid "Filter"
+msgstr "Filtro"
+
+#: apps/thumbnails/abstract_models.py:50
+msgid "Blur"
+msgstr "Desenfoque"
+
+#: apps/thumbnails/abstract_models.py:56
+msgid "Format"
+msgstr "Formato"
+
+#: apps/thumbnails/abstract_models.py:60
+msgid "Quality"
+msgstr "Calidad"
+
+#: apps/thumbnails/abstract_models.py:67
+msgid "Thumbnail Configuration"
+msgstr "Configuración de miniaturas"
+
+#: apps/thumbnails/abstract_models.py:68
+msgid "Configurations"
+msgstr "Configuraciones"
+
+#: apps/thumbnails/abstract_models.py:87
+#: apps/thumbnails/abstract_models.py:112 model_mixins/logged.py:20
+msgid "Last Modified"
+msgstr "Última modificación"
+
+#: apps/thumbnails/abstract_models.py:92
+#: apps/thumbnails/abstract_models.py:105
+msgid "Source"
+msgstr "Original"
+
+#: apps/thumbnails/abstract_models.py:93
+msgid "Sources"
+msgstr "Originales"
+
+#: apps/thumbnails/abstract_models.py:118
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: fields/email.py:15
+msgid "Email address"
+msgstr "Dirección de correo"
 
 #: fields/guid.py:32
 msgid "Enter a valid value."
@@ -281,10 +1511,6 @@ msgstr "¿Borrador?"
 msgid "Is Hidden?"
 msgstr "¿Oculto?"
 
-#: model_mixins/displayable.py:77
-msgid "Is Published?"
-msgstr "¿Publicado?"
-
 #: model_mixins/illustrated.py:34
 msgid "Image"
 msgstr "Imagen"
@@ -301,10 +1527,6 @@ msgstr "Anchura de la imagen"
 msgid "Creation Date"
 msgstr "Fecha de creación"
 
-#: model_mixins/logged.py:20
-msgid "Last Modified"
-msgstr "Última modificación"
-
 #: model_mixins/metadata.py:29
 msgid "Title"
 msgstr "Título"
@@ -316,10 +1538,6 @@ msgid ""
 msgstr ""
 "Título opcional para utilizar en la etiqueta HTML «title». Si se deja en "
 "blanco, se utilizará el título principal."
-
-#: model_mixins/metadata.py:34
-msgid "Description"
-msgstr "Descripción"
 
 #: model_mixins/metadata.py:35
 msgid ""
@@ -341,13 +1559,9 @@ msgstr ""
 "Palabras clave opcionales para utilizar en la meta etiqueta «keywords». Si "
 "se deja en blanco, se extraerán de la descripción."
 
-#: model_mixins/orderable.py:67
-msgid "Index"
-msgstr "Índice"
-
 #: model_mixins/slugged.py:22
 msgid "Slug"
-msgstr ""
+msgstr "Nombre URL"
 
 #: model_mixins/slugged.py:23
 msgid ""
@@ -356,14 +1570,6 @@ msgid ""
 msgstr ""
 "Versión del título principal para utilizar en la URL. Normalmente, sólo "
 "contiene letras minúsculas, números y guiones."
-
-#: model_mixins/slugged.py:33
-msgid "View on site"
-msgstr "Ver en el sitio"
-
-#: templates/cache/stats.html:27
-msgid "Home"
-msgstr "Inicio"
 
 #: templates/cache/stats.html:36
 msgid "Analytics on the state of the cache engine."
@@ -409,9 +1615,9 @@ msgstr "Aciertos"
 msgid "Flush cache"
 msgstr "Vaciar cache"
 
-#: types/bit.py:39
-msgid "(All)"
-msgstr "(Todos)"
+#: types/bit.py:52
+msgid "(None)"
+msgstr "(Ninguno)"
 
 #: utils/humanize.py:36
 msgid "Next Monday"
@@ -488,3 +1694,6 @@ msgstr "El pasado sábado"
 #: utils/humanize.py:73
 msgid "Last Sunday"
 msgstr "El pasado domingo"
+
+#~ msgid "(All)"
+#~ msgstr "(Todos)"
