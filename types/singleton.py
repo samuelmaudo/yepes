@@ -5,6 +5,8 @@ try:
 except ImportError:
     import dummy_threading as threading
 
+from django.utils import six
+
 
 class SingletonMetaclass(type):
 
@@ -14,13 +16,16 @@ class SingletonMetaclass(type):
         sup = super(SingletonMetaclass, mcls)
         return sup.__new__(mcls, name, bases, namespace)
 
-    def __call__(cls, *args, **kw):
+
+@six.add_metaclass(SingletonMetaclass)
+class Singleton(object):
+
+    def __new__(cls, *args, **kwargs):
         cls.__lock__.acquire()
         try:
             if cls.__instance__ is None:
-                instance = cls.__new__(cls, *args, **kw)
-                instance.__init__(*args, **kw)
-                cls.__instance__ = instance
+                sup = super(Singleton, cls)
+                cls.__instance__ = sup.__new__(cls, *args, **kwargs)
         finally:
             cls.__lock__.release()
         return cls.__instance__

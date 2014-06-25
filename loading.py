@@ -9,10 +9,9 @@ import traceback
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.loading import cache as models_cache
-from django.utils import six
 from django.utils.functional import empty, LazyObject
 
-from yepes.types import SingletonMetaclass
+from yepes.types import Singleton
 
 __all__ = (
     'get_class', 'get_classes',
@@ -63,8 +62,7 @@ class UnavailableAppError(ImportError):
         return super(UnavailableAppError, self).__init__(msg.format(app_label))
 
 
-@six.add_metaclass(SingletonMetaclass)
-class ClassCache(object):
+class ClassCache(Singleton):
     """
     This class stores the labels and the fully qualified names (aka paths) of
     each installed app.

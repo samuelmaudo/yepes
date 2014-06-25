@@ -1,20 +1,16 @@
 # -*- coding:utf-8 -*-
 
-from django.utils import six
-
-from yepes.types.singleton import SingletonMetaclass
+from yepes.types.singleton import Singleton
 
 
-@six.add_metaclass(SingletonMetaclass)
-class UndefinedType(object):
+class UndefinedType(Singleton):
 
     __slots__ = ()
 
     def __bool__(self):
         return False
 
-    def __nonzero__(self):
-        return self.__bool__()
+    __nonzero__ = __bool__
 
     def __repr__(self):
         return 'Undefined'
