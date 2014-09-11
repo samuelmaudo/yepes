@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 
-from decimal import Decimal
 import operator
 import re
 
@@ -12,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from yepes.exceptions import MissingAttributeError
 from yepes.types.undefined import Undefined
+from yepes.utils.decimals import force_decimal
 
 __all__ = ('Formula', )
 
@@ -39,7 +39,7 @@ class Formula(object):
             super(Formula, self).__setattr__(name, value)
         else:
             if isinstance(value, (six.integer_types, float)):
-                value = Decimal(str(value))
+                value = force_decimal(value)
             self.variables[name] = value
 
     def __repr__(self):
@@ -87,9 +87,9 @@ class Formula(object):
         tokens = TOKENS_RE.findall(form)
         for i, token in enumerate(tokens):
             if DECIMAL_RE.match(token):
-                tokens[i] = Decimal(token)
+                tokens[i] = force_decimal(token)
             elif token in vars:
-                tokens[i] = Decimal(vars[token])
+                tokens[i] = force_decimal(vars[token])
             elif token == 'true':
                 tokens[i] = True
             elif token == 'false':

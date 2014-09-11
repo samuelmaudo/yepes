@@ -90,7 +90,7 @@
     "fields": {
       "is_enabled": true,
       "country": 68,
-      "code": "ES-AS",
+      "code": "ES-O",
       "name": "Asturias",
       "name_de": "Asturien",
       "name_en": "Asturias",
@@ -226,7 +226,7 @@
     "fields": {
       "is_enabled": true,
       "country": 68,
-      "code": "ES-CB",
+      "code": "ES-S",
       "name": "Cantabria",
       "name_de": "Kantabrien",
       "name_en": "Cantabria",
@@ -447,7 +447,7 @@
     "fields": {
       "is_enabled": true,
       "country": 68,
-      "code": "ES-RI",
+      "code": "ES-LO",
       "name": "La Rioja",
       "name_de": "La Rioja",
       "name_en": "La Rioja",
@@ -532,7 +532,7 @@
     "fields": {
       "is_enabled": true,
       "country": 68,
-      "code": "ES-MD",
+      "code": "ES-M",
       "name": "Madrid",
       "name_de": "Madrid",
       "name_en": "Madrid",
@@ -583,7 +583,7 @@
     "fields": {
       "is_enabled": true,
       "country": 68,
-      "code": "ES-MC",
+      "code": "ES-MU",
       "name": "Murcia",
       "name_de": "Murcia",
       "name_en": "Murcia",

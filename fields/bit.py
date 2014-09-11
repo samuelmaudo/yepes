@@ -420,7 +420,7 @@ class RelatedBitFieldFlags(object):
             if rel.limit_choices_to:
                 qs = qs.filter(**rel.limit_choices_to)
             self._queryset = qs
-        return self._queryset._clone()
+        return self._queryset.all()
 
     def iter_instances(self, filter=None):
         if filter:

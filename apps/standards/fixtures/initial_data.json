@@ -7,7 +7,17 @@
       "last_modified": "1986-09-25T12:00:00.000+02:00",
       "name": "Global",
       "api_id": "all",
-      "description": ""
+      "name_de": "Weltweit",
+      "name_en": "Global",
+      "name_es": "Global",
+      "name_fr": "Mondial",
+      "name_pt": "Mundial",
+      "name_ru": "Глобальный",
+      "name_zh": "全球",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": []
     }
   }
 ]

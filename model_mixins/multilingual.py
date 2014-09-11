@@ -134,10 +134,10 @@ class Multilingual(models.Model):
         if tag not in self._translations:
             Translation = get_model(self._meta.app_label,
                                     self._meta.translation)
-            translations = None
+            translation = None
             qs = Translation._default_manager.select_related()
             try:
-                translations = qs.get(model=self, language__tag=tag)
+                translation = qs.get(model=self, language__tag=tag)
             except ObjectDoesNotExist:
                 if (settings.MULTILINGUAL_FALL_BACK_TO_DEFAULT
                         and settings.MULTILINGUAL_DEFAULT
@@ -147,7 +147,7 @@ class Multilingual(models.Model):
                         or not settings.MULTILINGUAL_FAIL_SILENTLY):
                     raise TranslationDoesNotExist(self, tag)
 
-            self._translations[tag] = translations
+            self._translations[tag] = translation
 
         return self._translations[tag]
 

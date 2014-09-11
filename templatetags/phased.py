@@ -10,7 +10,7 @@ from django.utils.decorators import classonlymethod
 from django.utils.encoding import force_str, force_text
 from django.utils.text import Truncator
 
-from yepes.apps.phased.utils import (
+from yepes.utils.phased import (
     backup_csrf_token,
     flatten_context,
     pickle_context,

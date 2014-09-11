@@ -20,7 +20,7 @@ class LoggedSmtpBackend(SmtpBackend):
         """
         Sends the email message and keeps a copy in the database if no errors.
         """
-        if super(EmailBackend, self)._send(message):
+        if super(LoggedSmtpBackend, self)._send(message):
             delivery = Delivery()
             delivery.subject = message.subject
             delivery.sender = message.from_email

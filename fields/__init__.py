@@ -2,6 +2,7 @@
 
 from yepes.fields.bit import BitField, RelatedBitField
 from yepes.fields.cached_foreign_key import CachedForeignKey
+from yepes.fields.color import ColorField
 from yepes.fields.comma_separated import CommaSeparatedField
 from yepes.fields.compressed import CompressedTextField
 from yepes.fields.email import EmailField

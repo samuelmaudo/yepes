@@ -9,6 +9,7 @@ from django.utils.encoding import iri_to_uri
 from django.utils.functional import lazy
 
 from yepes.apps.registry import registry
+from yepes.conf import settings
 
 __all__ = ('build_full_url', 'full_reverse', 'full_reverse_lazy')
 
@@ -47,8 +48,8 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
         return iri_to_uri(location)
 
     if not scheme:
-        if registry.get('core:SSL_ENABLED', False):
-            for path in registry.get('core:SSL_PATHS', ()):
+        if settings.SSL_ENABLED:
+            for path in settings.SSL_PATHS:
                 if location.startswith(path):
                     scheme = 'https'
                     break
@@ -65,6 +66,7 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
         url = '{0}://{1}{2}'.format(scheme, domain, location)
 
     return iri_to_uri(url)
+
 
 def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
                  current_app=None, scheme=None, domain=None, subdomain=None):

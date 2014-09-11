@@ -1,0 +1,72 @@
+[
+  {
+    "model": "standards.GeographicArea",
+    "pk": 68001,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "España",
+      "api_id": "spain",
+      "included_countries": [68],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 68002,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "España peninsular",
+      "api_id": "spain_peninsula",
+      "included_countries": [68],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": [68009, 68016, 68028, 68034, 68041]
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 68003,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "España insular",
+      "api_id": "spain_islands",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [68009, 68016, 68028, 68034, 68041],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 68004,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "España europea",
+      "api_id": "spain_europe",
+      "included_countries": [68],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": [68016, 68028, 68034, 68041]
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 68005,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "España africana",
+      "api_id": "spain_africa",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [68016, 68028, 68034, 68041],
+      "excluded_subdivisions": []
+    }
+  }
+]

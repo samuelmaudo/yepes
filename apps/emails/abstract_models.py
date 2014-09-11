@@ -16,6 +16,7 @@ from yepes.cache import LookupTable
 from yepes.loading import get_model
 from yepes.model_mixins import Logged
 from yepes.utils import html2text
+from yepes.utils.functional import described_property
 
 
 @python_2_unicode_compatible
@@ -64,10 +65,11 @@ class AbstractConnection(Logged):
 
     def save(self, **kwargs):
         """
-        Saves the record. Take into account that this closes the network
-        connection if it was open.
+        Saves the record back to the database. Take into account that this
+        closes the network connection if it was open.
         """
         self.close()
+        self._connection = None
         super(AbstractConnection, self).save(**kwargs)
 
     # CUSTOM METHODS
@@ -79,7 +81,24 @@ class AbstractConnection(Logged):
         if self._connection is not None:
             self._connection.close()
 
-    def get_smtp_connection(self):
+    def open(self):
+        """
+        Ensures we have a connection to the email server. Returns whether or
+        not a new connection was required (True or False).
+        """
+        return self.smtp_connection.open()
+
+    def send_messages(self, email_messages):
+        """
+        Sends one or more EmailMessage objects and returns the number of email
+        messages sent.
+        """
+        return self.smtp_connection.send_messages(email_messages)
+
+    # PROPERTIES
+
+    @property
+    def smtp_connection(self):
         """
         Returns an instance of the SMTP email backend. This instance uses the
         authentication credentials set in the record to connect the SMTP server.
@@ -99,20 +118,6 @@ class AbstractConnection(Logged):
                 'use_tls': self.is_secure,
             })
         return self._connection
-
-    def open(self):
-        """
-        Ensures we have a connection to the email server. Returns whether or
-        not a new connection was required (True or False).
-        """
-        return self.get_smtp_connection().open()
-
-    def send_messsages(self, email_messages):
-        """
-        Sends one or more EmailMessage objects and returns the number of email
-        messages sent.
-        """
-        return self.get_smtp_connection().send_messsages(email_messages)
 
     # GRAPPELLI SETTINGS
 
@@ -170,7 +175,7 @@ class AbstractDelivery(models.Model):
 @python_2_unicode_compatible
 class AbstractMessage(Logged):
 
-    connection = models.ForeignKey(
+    connection = fields.CachedForeignKey(
             'Connection',
             related_name='messages',
             verbose_name=_('Connection'))
@@ -230,45 +235,7 @@ class AbstractMessage(Logged):
 
     # CUSTOM METHODS
 
-    def get_connection(self):
-        Connection = get_model('emails', 'Connection')
-        return Connection.cache.get(self.connection_id)
-
-    def get_recipient(self):
-        recipient_list = []
-        if self.recipient_address.strip():
-            name_list= self.recipient_name.split(',')
-            address_list = self.recipient_address.split(',')
-            for i, address in enumerate(address_list):
-                address = address.strip()
-                if len(name_list) > i:
-                    name = name_list[i].strip()
-                    recipient_list.append('"{0}" <{1}>'.format(name, address))
-                else:
-                    recipient_list.append(address)
-
-        return recipient_list
-    get_recipient.short_description = _('Recipient')
-
-    def get_reply_to(self):
-        if self.reply_to_name:
-            return '"{0}" <{1}>'.format(self.reply_to_name, self.reply_to_address)
-        elif self.reply_to_address:
-            return self.reply_to_address
-        else:
-            return None
-    get_reply_to.short_description = _('Reply To')
-
-    def get_sender(self):
-        if self.sender_name:
-            return '"{0}" <{1}>'.format(self.sender_name, self.sender_address)
-        elif self.sender_address:
-            return self.sender_address
-        else:
-            return None
-    get_sender.short_description = _('Sender')
-
-    def render(self, context):
+    def render(self, context=None):
         if not isinstance(context, Context):
             context = Context(context)
 
@@ -277,7 +244,7 @@ class AbstractMessage(Logged):
             Template(self.text).render(context),
             self.sender,
             self.recipient,
-            connection=self.get_connection(),
+            connection=self.connection,
         )
         email.attach_alternative(
             Template(self.html).render(context),
@@ -288,7 +255,7 @@ class AbstractMessage(Logged):
 
         return email
 
-    def render_and_send(self, context, recipient_list, reply_to=None,
+    def render_and_send(self, recipient_list, reply_to=None, context=None,
                         connection=None):
         to = []
         for recipient in recipient_list:
@@ -319,15 +286,45 @@ class AbstractMessage(Logged):
             email.connection = connection
         email.send()
 
+    # PROPERTIES
+
+    @described_property(_('Recipient'), cached=True)
+    def recipient(self):
+        recipient_list = []
+        if self.recipient_address.strip():
+            name_list= self.recipient_name.split(',')
+            address_list = self.recipient_address.split(',')
+            for i, address in enumerate(address_list):
+                address = address.strip()
+                if len(name_list) > i:
+                    name = name_list[i].strip()
+                    recipient_list.append('"{0}" <{1}>'.format(name, address))
+                else:
+                    recipient_list.append(address)
+
+        return recipient_list
+
+    @described_property(_('Reply To'), cached=True)
+    def reply_to(self):
+        if self.reply_to_name:
+            return '"{0}" <{1}>'.format(self.reply_to_name, self.reply_to_address)
+        elif self.reply_to_address:
+            return self.reply_to_address
+        else:
+            return None
+
+    @described_property(_('Sender'), cached=True)
+    def sender(self):
+        if self.sender_name:
+            return '"{0}" <{1}>'.format(self.sender_name, self.sender_address)
+        elif self.sender_address:
+            return self.sender_address
+        else:
+            return None
+
     # GRAPPELLI SETTINGS
 
     @staticmethod
     def autocomplete_search_fields():
         return ('name__icontains', 'subject__icontains')
-
-    # PROPERTIES
-
-    recipient = property(get_recipient)
-    reply_to = property(get_reply_to)
-    sender = property(get_sender)
 

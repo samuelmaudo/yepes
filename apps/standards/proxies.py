@@ -8,6 +8,7 @@ from django.utils.encoding import force_str, python_2_unicode_compatible
 from django.utils.functional import cached_property
 
 from yepes.conf import settings
+from yepes.exceptions import MissingAttributeError
 from yepes.loading import get_model
 from yepes.apps.standards.model_mixins import NAME_RE
 
@@ -20,9 +21,9 @@ class GeographicAreaProxy(object):
         self.id = self.pk = area.pk
         self.api_id = area.api_id
         self.name = area.name
-        for attr in area.__dict__:
-            if NAME_RE.search(attr) is not None:
-                getattr(self, attr, area.__dict__[attr])
+        for attr_name, attr_value in six.iteritems(area.__dict__):
+            if attr_name.startswith('_name_'):
+                setattr(self, attr_name, attr_value)
 
         self.included_countries = frozenset(
             country.pk
@@ -65,6 +66,22 @@ class GeographicAreaProxy(object):
             in area.excluded_subdivisions.all()
         )
 
+    def __getattr__(self, attr_name):
+        if NAME_RE.search(attr_name) is None:
+            raise MissingAttributeError(self, attr_name)
+
+        name = self.__dict__.get(''.join(('_', attr_name)))
+        if name:
+            return name
+
+        fallback = settings.STANDARDS_FALLBACK_TRANSLATION
+        if fallback != 'native':
+            name = self.__dict__.get(''.join(('_name_', fallback)))
+            if name:
+                return name
+
+        return self.name
+
     def __repr__(self):
         args = (
             self.__class__.__name__,
@@ -72,18 +89,22 @@ class GeographicAreaProxy(object):
         )
         return force_str("<{0}: '{1}'>".format(*args))
 
+    def __setattr__(self, attr_name, attr_value):
+        if attr_name.startswith('_') or NAME_RE.search(attr_name) is None:
+            super(GeographicAreaProxy, self).__setattr__(attr_name, attr_value)
+        else:
+            self.__dict__[''.join(('_', attr_name))] = attr_value
+
     def __str__(self):
         if settings.STANDARDS_DEFAULT_TRANSLATION == 'native':
             return self.name
+
         if settings.STANDARDS_DEFAULT_TRANSLATION == 'locale':
             language = translation.get_language()
         else:
             language = settings.STANDARDS_DEFAULT_TRANSLATION
-        try:
-            return getattr(self, 'name_{0}'.format(language[:2]))
-        except AttributeError:
-            fallback = settings.STANDARDS_FALLBACK_TRANSLATION
-            return getattr(self, 'name_{0}'.format(fallback))
+
+        return getattr(self, ''.join(('name_', language[:2])))
 
     def contains_address(self, address):
         """

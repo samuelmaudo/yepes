@@ -92,5 +92,6 @@ class MetaData(models.Model):
         title = strip_tags(title)
         if len(title) > max_length:
             title = title[:max_length] + end_text
+
         return title
 

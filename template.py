@@ -380,7 +380,7 @@ class SingleObjectMixin(object):
         Get the queryset to look an object up against.
         """
         if self.queryset is not None:
-            return self.queryset._clone()
+            return self.queryset.all()
         elif self.model is not None:
             return self.model._default_manager.get_queryset()
         else:

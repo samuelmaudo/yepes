@@ -62,7 +62,7 @@ class GeographicAreaLookupTable(LookupTable):
 
     def fetch_records(self):
         qs = super(GeographicAreaLookupTable, self).fetch_records()
-        return [GeographicAreaProxy(zone) for zone in qs]
+        return [GeographicAreaProxy(area) for area in qs]
 
 
 class LanguageManager(EnableableManager):

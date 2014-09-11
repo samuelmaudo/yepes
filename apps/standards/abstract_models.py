@@ -164,18 +164,22 @@ class AbstractGeographicArea(Logged, Standard):
 
     included_countries = models.ManyToManyField(
             'standards.Country',
+            blank=True,
             related_name='areas_that_include_it',
             verbose_name=_('Included Countries'))
     excluded_countries = models.ManyToManyField(
             'standards.Country',
+            blank=True,
             related_name='areas_that_exclude_it',
             verbose_name=_('Excluded Countries'))
     included_subdivisions = models.ManyToManyField(
             'standards.CountrySubdivision',
+            blank=True,
             related_name='areas_that_include_it',
             verbose_name=_('Included Subdivisions'))
     excluded_subdivisions = models.ManyToManyField(
             'standards.CountrySubdivision',
+            blank=True,
             related_name='areas_that_exclude_it',
             verbose_name=_('Excluded Subdivisions'))
 

@@ -119,8 +119,13 @@ class BounceAdmin(admin.ModelAdmin):
         'subscriber',
         'date',
     ]
-    raw_id_fields = ['subscriber', 'message']
-    search_fields = ['subscriber__email_address']
+    raw_id_fields = [
+        'subscriber',
+        'message',
+    ]
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def get_queryset(self, request):
         qs = super(BounceAdmin, self).get_queryset(request)
@@ -155,7 +160,9 @@ class ClickAdmin(admin.ModelAdmin):
         'subscriber',
         'date',
     ]
-    search_fields = ['subscriber__email_address']
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def get_queryset(self, request):
         qs = super(ClickAdmin, self).get_queryset(request)
@@ -214,7 +221,9 @@ class DeliveryAdmin(admin.ModelAdmin):
         'process_date',
         'subscriber',
     ]
-    search_fields = ['subscriber__email_address']
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def admin_status(self, obj):
         pattern = '<span style="color:{0}">{1}</span>'
@@ -265,9 +274,15 @@ class DomainAdmin(StatisticsMixin, admin.ModelAdmin):
         'admin_click_count',
         'admin_bounce_count',
     ]
-    list_filter = ['is_trusted']
-    readonly_fields = ['name']
-    search_fields = ['name']
+    list_filter = [
+        'is_trusted',
+    ]
+    readonly_fields = [
+        'name',
+    ]
+    search_fields = [
+        'name',
+    ]
 
     def admin_name(self, obj):
         if not obj.is_trusted:
@@ -338,11 +353,21 @@ class MessageAdmin(StatisticsMixin, admin.ModelAdmin):
         'admin_click_count',
         'admin_bounce_count',
     ]
-    list_filter = ['newsletter']
-    prepopulated_fields = {'slug': ('subject', )}
-    raw_id_fields = ['newsletter']
-    readonly_fields = ['guid']
-    search_fields = ['subject']
+    list_filter = [
+        'newsletter',
+    ]
+    prepopulated_fields = {
+        'slug': ('subject', ),
+    }
+    raw_id_fields = [
+        'newsletter',
+    ]
+    readonly_fields = [
+        'guid',
+    ]
+    search_fields = [
+        'subject',
+    ]
 
     def admin_subject(self, obj):
         if not obj.is_sent:
@@ -397,8 +422,12 @@ class MessageImageAdmin(admin.IllustratedMixin, admin.ModelAdmin):
         'admin_image',
         'name',
     ]
-    readonly_fields = ['guid']
-    search_fields = ['name']
+    readonly_fields = [
+        'guid',
+    ]
+    search_fields = [
+        'name',
+    ]
 
 
 class MessageLinkAdmin(StatisticsMixin, admin.ReadOnlyMixin, admin.ModelAdmin):
@@ -420,7 +449,9 @@ class MessageLinkAdmin(StatisticsMixin, admin.ReadOnlyMixin, admin.ModelAdmin):
         'guid',
         'url',
     ]
-    search_fields = ['url']
+    search_fields = [
+        'url',
+    ]
 
     def get_queryset(self, request):
         qs = super(MessageLinkAdmin, self).get_queryset(request)
@@ -476,10 +507,18 @@ class NewsletterAdmin(StatisticsMixin, admin.ModelAdmin):
         'admin_is_published',
         'index',
     ]
-    list_editable = ['index']
-    readonly_fields = ['guid']
+    list_editable = [
+        'index',
+    ]
+    list_max_show_all = 100
+    list_per_page = 50
+    readonly_fields = [
+        'guid',
+    ]
     prepopulated_fields = {'slug': ('name', )}
-    search_fields = ['name']
+    search_fields = [
+        'name',
+    ]
 
     def admin_is_published(self, obj):
         pattern = '<span style="color:{0}">{1}</span>'
@@ -554,7 +593,9 @@ class OpenAdmin(admin.ModelAdmin):
         'subscriber',
         'date',
     ]
-    search_fields = ['subscriber__email_address']
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def get_queryset(self, request):
         qs = super(OpenAdmin, self).get_queryset(request)
@@ -613,8 +654,14 @@ class SubscriberAdmin(admin.EnableableMixin, admin.ModelAdmin):
         'email_domain',
         'tags',
     ]
-    raw_id_fields = ['tags']
-    readonly_fields = ['guid']
+    list_max_show_all = 100
+    list_per_page = 50
+    raw_id_fields = [
+        'tags',
+    ]
+    readonly_fields = [
+        'guid',
+    ]
     search_fields = [
         'email_address',
         'first_name',
@@ -676,7 +723,9 @@ class SubscriberTagAdmin(StatisticsMixin, admin.ModelAdmin):
         'name',
         'admin_subscriber_count',
     ]
-    search_fields = ['name']
+    search_fields = [
+        'name',
+    ]
 
     def get_queryset(self, request):
         qs = super(SubscriberTagAdmin, self).get_queryset(request)
@@ -705,7 +754,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
         'newsletter',
         'date',
     ]
-    search_fields = ['subscriber__email_address']
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def get_queryset(self, request):
         qs = super(SubscriptionAdmin, self).get_queryset(request)
@@ -743,7 +794,9 @@ class UnsubscriptionAdmin(admin.ModelAdmin):
         'reason',
         'last_message',
     ]
-    search_fields = ['subscriber__email_address']
+    search_fields = [
+        'subscriber__email_address',
+    ]
 
     def get_queryset(self, request):
         qs = super(UnsubscriptionAdmin, self).get_queryset(request)
@@ -779,8 +832,12 @@ class UnsubscriptionReasonAdmin(StatisticsMixin, admin.ModelAdmin):
         'admin_unsubscription_count',
         'index',
     ]
-    list_editable = ['index']
-    readonly_fields = ['admin_unsubscription_count']
+    list_editable = [
+        'index',
+    ]
+    readonly_fields = [
+        'admin_unsubscription_count',
+    ]
 
     def get_queryset(self, request):
         qs = super(UnsubscriptionReasonAdmin, self).get_queryset(request)

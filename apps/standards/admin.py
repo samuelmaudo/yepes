@@ -15,14 +15,73 @@ Language = get_model('standards', 'Language')
 Region = get_model('standards', 'Region')
 
 
+class CountrySubdivisionAdmin(admin.EnableableMixin, admin.ModelAdmin):
+
+    autocomplete_lookup_fields = {
+        'fk':  ['country'],
+        'm2m': [],
+    }
+    fieldsets = [
+        (None, {
+            'fields': [
+                'country',
+                'name',
+                'code',
+                'is_enabled',
+            ],
+        }),
+        (_('Localized Names'), {
+            'classes': [
+                'grp-collapse',
+                'grp-closed',
+            ],
+            'fields': [
+                'name_en',
+                'name_fr',
+                'name_es',
+                'name_zh',
+                'name_ru',
+                'name_de',
+                'name_pt',
+            ],
+        }),
+    ]
+    list_display = [
+        'name',
+        'code',
+    ]
+    list_editable = [
+        'code',
+    ]
+    list_filter = [
+        'is_enabled',
+    ]
+    raw_id_fields = [
+        'country',
+    ]
+    search_fields = [
+        'name',
+        'code',
+    ]
+
+
 class CountrySubdivisionInline(admin.StackedInline):
 
+    classes = ['grp-collapse', 'grp-closed']
     fieldsets = [
         (None, {
             'fields': [
                 'is_enabled',
                 'name',
                 'code',
+            ],
+        }),
+        (_('Localized Names'), {
+            'classes': [
+                'grp-collapse',
+                'grp-closed',
+            ],
+            'fields': [
                 'name_en',
                 'name_fr',
                 'name_es',
@@ -42,16 +101,19 @@ class CountrySubdivisionInline(admin.StackedInline):
 
 class CountryAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
-    change_list_filter_template = 'admin/filter_listing.html'
+    autocomplete_lookup_fields = {
+        'fk':  ['region'],
+        'm2m': [],
+    }
     fieldsets = [
         (None, {
             'fields': [
+                'region',
                 'name',
                 'code',
                 'long_code',
                 'number',
                 'is_enabled',
-                'region',
             ],
         }),
         (_('Localized Names'), {
@@ -86,6 +148,9 @@ class CountryAdmin(admin.EnableableMixin, admin.ModelAdmin):
         'is_enabled',
         'region',
     ]
+    raw_id_fields = [
+        'region',
+    ]
     search_fields = [
         'name',
         'code',
@@ -96,7 +161,10 @@ class CountryAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
 class CurrencyAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
-    change_list_filter_template = 'admin/filter_listing.html'
+    autocomplete_lookup_fields = {
+        'fk':  [],
+        'm2m': ['countries'],
+    }
     fieldsets = [
         (None, {
             'fields': [
@@ -146,6 +214,9 @@ class CurrencyAdmin(admin.EnableableMixin, admin.ModelAdmin):
     list_filter = [
         'is_enabled',
     ]
+    raw_id_fields = [
+        'countries',
+    ]
     search_fields = [
         'name',
         'code',
@@ -157,8 +228,10 @@ class GeographicAreaAdmin(admin.ModelAdmin):
 
     autocomplete_lookup_fields = {
         'fk':  [],
-        'm2m': ['excluded_countries', 'included_countries',
-                'excluded_subdivisions', 'included_subdivisions'],
+        'm2m': [
+            'excluded_countries', 'included_countries',
+            'excluded_subdivisions', 'included_subdivisions',
+        ],
     }
     fieldsets = [
         (None, {
@@ -204,20 +277,32 @@ class GeographicAreaAdmin(admin.ModelAdmin):
             ],
         }),
     ]
-    list_display = ['name']
-    ordering = ['name']
+    list_display = [
+        'name',
+        'api_id',
+        'includes_all_addresses',
+    ]
+    ordering = [
+        'name',
+    ]
     raw_id_fields = [
         'excluded_countries',
         'excluded_subdivisions',
         'included_countries',
         'included_subdivisions',
     ]
-    search_fields = ['name']
+    search_fields = [
+        'name',
+        'api_id',
+    ]
 
 
 class LanguageAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
-    change_list_filter_template = 'admin/filter_listing.html'
+    autocomplete_lookup_fields = {
+        'fk':  [],
+        'm2m': ['countries'],
+    }
     fieldsets = [
         (None, {
             'fields': [
@@ -270,6 +355,9 @@ class LanguageAdmin(admin.EnableableMixin, admin.ModelAdmin):
     list_filter = [
         'is_enabled',
     ]
+    raw_id_fields = [
+        'countries',
+    ]
     search_fields = [
         'name',
         'tag',
@@ -281,12 +369,16 @@ class LanguageAdmin(admin.EnableableMixin, admin.ModelAdmin):
 
 class RegionAdmin(admin.ModelAdmin):
 
+    autocomplete_lookup_fields = {
+        'fk':  ['parent'],
+        'm2m': [],
+    }
     fieldsets = [
         (None, {
             'fields': [
+                'parent',
                 'name',
                 'number',
-                'parent',
             ],
         }),
         (_('Localized Names'), {
@@ -312,6 +404,9 @@ class RegionAdmin(admin.ModelAdmin):
     list_editable = [
         'number',
     ]
+    raw_id_fields = [
+        'parent',
+    ]
     search_fields = [
         'name',
         'number',
@@ -319,6 +414,7 @@ class RegionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Country, CountryAdmin)
+admin.site.register(CountrySubdivision, CountrySubdivisionAdmin)
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(GeographicArea, GeographicAreaAdmin)
 admin.site.register(Language, LanguageAdmin)

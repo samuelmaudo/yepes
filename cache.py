@@ -267,6 +267,9 @@ class LookupTable(object):
         with self._lock.reader():
             return [cache.get(k, default) for k in keys]
 
+    def has_default(self):
+        return (self.default_from_registry is not Undefined)
+
     def populate(self):
         self.clear()
         with self._lock.writer():

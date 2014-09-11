@@ -38,14 +38,12 @@ class ClientIpMiddleware(object):
         ``HttpResponseForbidden`` object.
 
         """
-        request.client_ip = None
         banned_addresses = registry.get('core:BANNED_IP_ADDRESSES', ())
         client_addresses = COMMA_RE.split('{0},{1},{2}'.format(
             get_meta_data(request, 'HTTP_X_FORWARDED_FOR'),
             get_meta_data(request, 'HTTP_X_REAL_IP'),
             get_meta_data(request, 'REMOTE_ADDR'),
         ))
-
         for address in client_addresses:
             if not address:
                 continue
@@ -60,11 +58,10 @@ class ClientIpMiddleware(object):
 
             if address in banned_addresses:
                 return HttpResponseForbidden()
-
-            if request.client_ip is None:
+            else:
                 request.client_ip = address
-
-        if request.client_ip is None:
+                break
+        else:
             request.client_ip = '127.0.0.1'
 
 
@@ -81,8 +78,6 @@ class ClientLocationMiddleware(object):
         from yepes.utils.geoip import geoip
 
         information = geoip.city(request.client_ip)
-        information.update(geoip.provider(request.client_ip))
-
         if not information.get('country_code'):
             information.update(geoip.country(request.client_ip))
 

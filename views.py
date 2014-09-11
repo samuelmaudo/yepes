@@ -323,18 +323,24 @@ class ListView(MultipleObjectTemplateResponseMixin,
         return context
 
     def get_allowed_page_sizes(self):
-        return self.paginate_by
+        if self.paginate_by is None:
+            return []
+        elif is_iterable(self.paginate_by):
+            return [int(size) for size in self.paginate_by]
+        else:
+            return [int(self.paginate_by)]
 
     def get_page_number(self):
-        return (self.kwargs.get(self.page_kwarg)
-                or self.request.GET.get(self.page_kwarg)
-                or 1)
+        return int(self.kwargs.get(self.page_kwarg)
+                   or self.request.GET.get(self.page_kwarg)
+                   or 1)
 
     def get_page_size(self):
-        return (self.kwargs.get('paginate_by')
-                or self.kwargs.get('page_size')
-                or self.request.GET.get('paginate_by')
-                or self.request.GET.get('page_size'))
+        return int(self.kwargs.get('paginate_by')
+                   or self.kwargs.get('page_size')
+                   or self.request.GET.get('paginate_by')
+                   or self.request.GET.get('page_size')
+                   or 0)
 
     def get_paginate_by(self, queryset=None):
         """
@@ -342,17 +348,10 @@ class ListView(MultipleObjectTemplateResponseMixin,
         """
         if self._paginate_by is Undefined:
             allowed_sizes = self.get_allowed_page_sizes()
-            if allowed_sizes is None:
+            if not allowed_sizes:
                 self._paginate_by = None
             else:
-
-                if is_iterable(allowed_sizes):
-                    allowed_sizes = [int(size) for size in allowed_sizes]
-                else:
-                    allowed_sizes [int(allowed_sizes)]
-
                 page_size = self.get_page_size()
-                page_size = int(page_size) if page_size else None
                 if page_size and page_size in allowed_sizes:
                     self._paginate_by = page_size
                 else:

@@ -29,16 +29,16 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
         if instance is None:
             return self
 
-        try:
-            rel_obj = getattr(instance, self.cache_name)
-        except AttributeError:
-            values = self.field.get_local_related_value(instance)
-            if None in values:
+        rel_id = getattr(instance, self.field.attname, None)
+        rel_obj = getattr(instance, self.cache_name, None)
+        if rel_id is None:
+            if rel_obj is not None:
                 rel_obj = None
-            else:
-                rel_obj = self.related_lookup_table.get(*values)
-
-            setattr(instance, self.cache_name, rel_obj)
+                setattr(instance, self.cache_name, rel_obj)
+        else:
+            if rel_obj is None or rel_id != rel_obj.pk:
+                rel_obj = self.related_lookup_table.get(rel_id)
+                setattr(instance, self.cache_name, rel_obj)
 
         if rel_obj is None and not self.field.null:
             try:
@@ -49,6 +49,9 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
                     self.field.name,
                 )
                 raise self.RelatedObjectDoesNotExist(msg)
+            else:
+                setattr(instance, self.field.attname, rel_obj.pk)
+                setattr(instance, self.cache_name, rel_obj)
 
         return rel_obj
 
@@ -60,12 +63,14 @@ class CachedForeignKey(models.ForeignKey):
         setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
 
     def get_default(self):
-        try:
+        if self.rel.to.cache.has_default():
             default = self.rel.to.cache.get_default()
-        except ImproperlyConfigured:
-            return None
-        else:
             return getattr(default, self.related_field.attname, None)
+        else:
+            return None
+
+    def has_default(self):
+        return self.rel.to.cache.has_default()
 
     def south_field_triple(self):
         """

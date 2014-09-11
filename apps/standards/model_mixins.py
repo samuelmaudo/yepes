@@ -70,17 +70,17 @@ class Standard(models.Model):
         if NAME_RE.search(attr_name) is None:
             raise MissingAttributeError(self, attr_name)
 
-        try:
-            return self.__dict__[''.join(('_', attr_name))]
-        except KeyError:
-            fallback = settings.STANDARDS_FALLBACK_TRANSLATION
-            if fallback != 'native':
-                try:
-                    return self.__dict__[''.join(('_name_', fallback))]
-                except KeyError:
-                    pass
+        name = self.__dict__.get(''.join(('_', attr_name)))
+        if name:
+            return name
 
-            return self.name
+        fallback = settings.STANDARDS_FALLBACK_TRANSLATION
+        if fallback != 'native':
+            name = self.__dict__.get(''.join(('_name_', fallback)))
+            if name:
+                return name
+
+        return self.name
 
     def __setattr__(self, attr_name, attr_value):
         if (attr_name.startswith('_')

@@ -24,6 +24,16 @@ class cached_property(object):
         obj.__dict__[self.function.__name__] = value
 
 
+class class_property(property):
+
+    def __get__(self, obj, objtype=None):
+        if objtype is None:
+            objtype = type(obj)
+        if self.fget is None:
+            raise AttributeError('unreadable attribute')
+        return self.fget(objtype)
+
+
 def described_property(description, allow_tags=False,
                        boolean=False, cached=False):
     """

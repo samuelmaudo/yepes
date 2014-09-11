@@ -130,13 +130,28 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'subject',
-        'sender',
-        'recipient',
+        'admin_sender',
+        'admin_recipient',
     ]
     search_fields = [
         'name',
         'subject',
     ]
+
+    def admin_recipient(self, obj):
+        return ', '.join(obj.recipient) if obj.recipient else ''
+    admin_recipient.admin_order_field = 'recipient_address'
+    admin_recipient.short_description = _('Recipient')
+
+    def admin_reply_to(self, obj):
+        return obj.reply_to or ''
+    admin_reply_to.admin_order_field = 'reply_to_address'
+    admin_reply_to.short_description = _('Reply To')
+
+    def admin_sender(self, obj):
+        return obj.sender or ''
+    admin_sender.admin_order_field = 'sender_address'
+    admin_sender.short_description = _('Sender')
 
 
 admin.site.register(Connection, ConnectionAdmin)

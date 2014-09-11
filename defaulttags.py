@@ -208,13 +208,13 @@ class FullUrlTag(AssignTag):
                                        scheme=scheme, domain=domain,
                                        subdomain=subdomain)
                 except NoReverseMatch:
-                    if not self.output_name:
+                    if not self.target_var:
                         # Re-raise the original exception, not the one with
                         # the path relative to the project. This makes a
                         # better error message.
                         raise e
             else:
-                if not self.output_name:
+                if not self.target_var:
                     raise e
 
         return url

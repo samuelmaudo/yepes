@@ -1,0 +1,72 @@
+[
+  {
+    "model": "standards.GeographicArea",
+    "pk": 115001,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Europa",
+      "api_id": "europe",
+      "name_de": "Europa",
+      "name_en": "Europe",
+      "name_es": "Europa",
+      "name_fr": "Europe",
+      "name_pt": "Europa",
+      "name_ru": "Европа",
+      "name_zh": "欧洲",
+      "included_countries": [1, 6, 12, 15, 17, 20, 22, 36, 43, 57, 56, 59, 64,
+                             68, 70, 74, 75, 77, 81, 83, 89, 98, 100, 102, 104,
+                             109, 110, 111, 129, 133, 134, 135, 138, 139, 140,
+                             144, 153, 166, 167, 179, 184, 189, 190, 191, 197,
+                             200, 201, 202, 204, 230, 236],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": [68016, 68028, 68034, 68041]
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 115002,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Unio Europaea",
+      "api_id": "european_union",
+      "name_de": "Europäische Union",
+      "name_en": "European Union",
+      "name_es": "Unión Europea",
+      "name_fr": "Union européenne",
+      "name_pt": "União Europeia",
+      "name_ru": "União Europeia",
+      "name_zh": "欧洲联盟",
+      "included_countries": [12, 20, 22, 55, 56, 57, 59, 64, 68, 70, 75, 77,
+                             89, 98, 100, 102, 110, 133, 134, 135, 153, 166,
+                             179, 184, 189, 197, 200, 202],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 115003,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Zona euronis",
+      "api_id": "eurozone",
+      "name_de": "Eurozone",
+      "name_en": "Eurozone",
+      "name_es": "Eurozona",
+      "name_fr": "Zone euro",
+      "name_pt": "Zona Euro",
+      "name_ru": "Еврозона",
+      "name_zh": "欧元区",
+      "included_countries": [12, 20, 55, 57, 64, 68, 70, 75, 89, 134, 135, 153,
+                             166, 184, 200, 202],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": [68016, 68028, 68034, 68041]
+    }
+  }
+]

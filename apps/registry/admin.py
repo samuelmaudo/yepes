@@ -80,7 +80,7 @@ class EntryAdmin(admin.ModelAdmin):
         return EntryForm
 
     def get_object(self, request, key):
-        for entry in self.queryset(request):
+        for entry in self.get_queryset(request):
             if entry.key == key:
                 return entry
 

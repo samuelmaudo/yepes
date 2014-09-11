@@ -3,12 +3,15 @@
 from __future__ import unicode_literals
 
 import imp
+import operator
 import sys
 import traceback
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.loading import cache as models_cache
+from django.utils import six
+from django.utils.encoding import force_str, python_2_unicode_compatible
 from django.utils.functional import empty, LazyObject
 
 from yepes.types import Singleton
@@ -348,13 +351,29 @@ class LazyClass(LazyObject):
         self.__dict__['_class_name'] = class_name
         super(LazyClass, self).__init__()
 
-    def __call__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__call__()
-
     def _setup(self):
         self._wrapped = get_class(self._module_path, self._class_name)
+
+    def __call__(self, *args, **kwargs):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__call__(*args, **kwargs)
+
+    @property
+    def __class__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__class__
+
+    def __instancecheck__(self, instance):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__instancecheck__(instance)
+
+    def __subclasscheck__(self, subclass):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__subclasscheck__(subclass)
 
 
 class LazyModel(LazyObject):
@@ -364,13 +383,29 @@ class LazyModel(LazyObject):
         self.__dict__['_model_name'] = model_name
         super(LazyModel, self).__init__()
 
+    def _setup(self):
+        self._wrapped = get_model(self._app_label, self._model_name)
+
     def __call__(self, *args, **kwargs):
         if self._wrapped is empty:
             self._setup()
         return self._wrapped.__call__(*args, **kwargs)
 
-    def _setup(self):
-        self._wrapped = get_model(self._app_label, self._model_name)
+    @property
+    def __class__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__class__
+
+    def __instancecheck__(self, instance):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__instancecheck__(instance)
+
+    def __subclasscheck__(self, subclass):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__subclasscheck__(subclass)
 
 
 class LazyModelManager(LazyObject):
@@ -384,4 +419,64 @@ class LazyModelManager(LazyObject):
         model = get_model(self._app_label, self._model_name)
         self._wrapped = model._default_manager
 
+    @property
+    def __class__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__class__
+
+
+@python_2_unicode_compatible
+class LazyModelObject(LazyObject):
+
+    def __bool__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return bool(self._wrapped)
+
+    def __eq__(self, other):
+        if self._wrapped is empty:
+            self._setup()
+        return operator.eq(self._wrapped, other)
+
+    # Because we have messed with __class__ below, we confuse pickle as to
+    # what class we are pickling. It also appears to stop __reduce__ from
+    # being called. So, we define __getstate__ in a way that cooperates with
+    # the way that pickle interprets this class.
+    def __getstate__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__dict__
+
+    def __hash__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return hash(self._wrapped)
+
+    def __ne__(self, other):
+        if self._wrapped is empty:
+            self._setup()
+        return operator.ne(self._wrapped, other)
+
+    __nonzero__ = __bool__
+
+    def __repr__(self):
+        try:
+            text = six.text_type(self)
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            text = '[Bad Unicode data]'
+        return force_str('<{0}: {1}>'.format(self.__class__.__name__, text))
+
+    def __str__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return six.text_type(self._wrapped)
+
+    # Need to pretend to be the wrapped class, for the sake of objects that
+    # care about this (especially in equality tests).
+    @property
+    def __class__(self):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped.__class__
 

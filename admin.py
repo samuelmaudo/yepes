@@ -297,19 +297,23 @@ class ActivatableMixin(object):
     admin_active_status.short_description = _('Status')
 
     def make_active(self, request, queryset):
-        affected_rows = queryset.update(active_status=Activatable.ACTIVE)
-        queryset.filter(active_from=None).update(active_from=timezone.now())
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(active_status=Activatable.ACTIVE)
+        qs.filter(active_from=None).update(active_from=timezone.now())
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Activate "{record}"'),
             user_message=_('"{record}" has been successfully activated'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully activated'))
     make_active.short_description = _('Activate selected {verbose_name_plural}')
 
     def make_inactive(self, request, queryset):
-        affected_rows = queryset.update(active_status=Activatable.INACTIVE)
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(active_status=Activatable.INACTIVE)
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Deactivate "{record}"'),
             user_message=_('"{record}" has been successfully deactivated'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully deactivated'))
@@ -340,19 +344,23 @@ class DisplayableMixin(object):
     admin_publish_status.short_description = _('Status')
 
     def make_hidden(self, request, queryset):
-        affected_rows = queryset.update(publish_status=Displayable.HIDDEN)
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(publish_status=Displayable.HIDDEN)
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Hide "{record}"'),
             user_message=_('"{record}" has been successfully hidden'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully hidden'))
     make_hidden.short_description = _('Hide selected {verbose_name_plural}')
 
     def make_published(self, request, queryset):
-        affected_rows = queryset.update(publish_status=Displayable.PUBLISHED)
-        queryset.filter(publish_from=None).update(publish_from=timezone.now())
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(publish_status=Displayable.PUBLISHED)
+        qs.filter(publish_from=None).update(publish_from=timezone.now())
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Publish "{record}"'),
             user_message=_('"{record}" has been successfully published'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully published'))
@@ -377,18 +385,22 @@ class EnableableMixin(object):
     admin_enable_status.short_description = _('Status')
 
     def make_disabled(self, request, queryset):
-        affected_rows = queryset.update(is_enabled=Enableable.DISABLED)
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(is_enabled=Enableable.DISABLED)
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Disable "{record}"'),
             user_message=_('"{record}" has been successfully disabled'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully disabled'))
     make_disabled.short_description = _('Disable selected {verbose_name_plural}')
 
     def make_enabled(self, request, queryset):
-        affected_rows = queryset.update(is_enabled=Enableable.ENABLED)
+        qs = queryset.all()
+        qs.query.aggregates.clear()
+        affected_rows = qs.update(is_enabled=Enableable.ENABLED)
         self.report_change(
-            request, queryset, affected_rows,
+            request, qs, affected_rows,
             log_message=_('Enable "{record}"'),
             user_message=_('"{record}" has been successfully enabled'),
             user_message_plural=_('{record_count} {verbose_name_plural} has been successfully enabled'))
@@ -403,7 +415,8 @@ class IllustratedMixin(object):
         pattern = (
           '<img src="{0}" style="border-radius:3px;'
                                ' max-height:60px;'
-                               ' max-width:60px">')
+                               ' max-width:60px">'
+        )
         image = getattr(obj, self.image_field)
         return format_html(pattern, image.url)
     admin_image.allow_tags = True
@@ -463,20 +476,20 @@ class NestableFieldListFilter(FieldListFilter):
                 self.level_indicator * obj.get_level_number(),
                 smart_text(obj))
 
-    def has_output(self):
-        choices_count = len(self.objects)
-        if ((isinstance(self.field, RelatedObject) and self.field.field.null)
-                    or (hasattr(self.field, 'rel') and self.field.null)):
-            choices_count += 1
-        return choices_count > 1
-
-    def queryset(self, request, queryset):
+    def get_queryset(self, request, queryset):
         if self.lookup_val_isnull:
             return queryset.filter(**{self.lookup_kwarg_isnull: True})
         elif self.lookup_val is not None:
             obj = self.other_model._default_manager.get(pk=self.lookup_val)
             objects = obj.get_descendants(include_self=True)
             return queryset.filter(**{self.lookup_kwarg: objects})
+
+    def has_output(self):
+        choices_count = len(self.objects)
+        if ((isinstance(self.field, RelatedObject) and self.field.field.null)
+                    or (hasattr(self.field, 'rel') and self.field.null)):
+            choices_count += 1
+        return choices_count > 1
 
 FieldListFilter.register(
         lambda f: (

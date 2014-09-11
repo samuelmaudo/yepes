@@ -7,7 +7,8 @@ from optparse import make_option
 
 from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import NoArgsCommand
-from django.utils import six, timezone
+from django.utils import six
+from django.utils import timezone
 
 from yepes.apps.newsletters.utils import prerender, render
 from yepes.loading import get_model
@@ -49,7 +50,7 @@ class Command(NoArgsCommand):
 
             self.prerendered_messages = {}
 
-            newsletters = []
+            newsletters = {}
             for delivery in pending_deliveries:
 
                 message = self.get_prerendered_message(delivery)
@@ -89,8 +90,7 @@ class Command(NoArgsCommand):
                     newsletters[delivery.newsletter].append(email)
 
             for newsletter, emails in six.iteritems(newsletters):
-                connection = newsletter.get_connection()
-                connection.send_messages(emails)
+                newsletter.connection.send_messages(emails)
 
             DeliveryManager.filter(
                 pk__in=pending_deliveries,

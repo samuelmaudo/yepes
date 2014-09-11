@@ -27,6 +27,7 @@ from yepes.model_mixins import (
 )
 from yepes.utils import html2text
 from yepes.utils.email import normalize_email
+from yepes.utils.functional import described_property
 
 
 class AbstractBounce(models.Model):
@@ -210,13 +211,6 @@ class AbstractDelivery(models.Model):
         verbose_name = _('Delivery')
         verbose_name_plural = _('Deliveries')
 
-    def get_response_time(self):
-        if self.proccess_date is None or self.open_date is None:
-            return None
-        else:
-            return self.open_date - self.proccess_date
-    get_response_time.short_description = _('Response Time')
-
     def save(self, **kwargs):
         if self.pk is None:
             if (self.domain_id is None
@@ -227,7 +221,14 @@ class AbstractDelivery(models.Model):
                 self.newsletter_id = self.message.newsletter_id
         super(AbstractDelivery, self).save(**kwargs)
 
-    response_time = property(get_response_time)
+    # PROPERTIES
+
+    @described_property(_('Response Time'))
+    def response_time(self):
+        if self.proccess_date is None or self.open_date is None:
+            return None
+        else:
+            return self.open_date - self.proccess_date
 
 
 @python_2_unicode_compatible
@@ -372,7 +373,7 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
     A regularly distributed publication to which subscribers can subscribe.
     """
 
-    connection = models.ForeignKey(
+    connection = fields.CachedForeignKey(
             'emails.Connection',
             related_name='newsletters',
             verbose_name=_('E-mail Connection'))
@@ -417,7 +418,7 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
             max_length=127,
             verbose_name=_("Return To Address"))
 
-    object = NewsletterManager()
+    objects = NewsletterManager()
 
     class Meta:
         abstract = True
@@ -431,40 +432,34 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
     def autocomplete_search_fields():
         return ('name__icontains', )
 
-    def get_connection(self):
-        Connection = get_model('emails', 'Connection')
-        return Connection.cache.get(self.connection_id)
+    # PROPERTIES
 
-    def get_reply_to(self):
+    @described_property(_('Reply To'))
+    def reply_to(self):
         if self.reply_to_name:
             return '"{0}" <{1}>'.format(self.reply_to_name, self.reply_to_address)
         elif self.reply_to_address:
             return self.reply_to_address
         else:
             return None
-    get_reply_to.short_description = _('Reply To')
 
-    def get_return_path(self):
+    @described_property(_('Return Path'))
+    def return_path(self):
         if self.return_path_name:
             return '"{0}" <{1}>'.format(self.return_path_name, self.return_path_address)
         elif self.return_path_address:
             return self.return_path_address
         else:
             return None
-    get_return_path.short_description = _('Return Path')
 
-    def get_sender(self):
+    @described_property(_('Sender'))
+    def sender(self):
         if self.sender_name:
             return '"{0}" <{1}>'.format(self.sender_name, self.sender_address)
         elif self.sender_address:
             return self.sender_address
         else:
             return None
-    get_sender.short_description = _('Sender')
-
-    reply_to = property(get_reply_to)
-    return_path = property(get_return_path)
-    sender = property(get_sender)
 
 
 class AbstractOpen(models.Model):
@@ -577,9 +572,7 @@ class AbstractSubscriber(Enableable, Logged):
                 'first_name__icontains',
                 'last_name__icontains')
 
-    def get_full_name(self):
-        return '{0} {1}'.format(self.first_name, self.last_name).strip()
-    get_full_name.short_description = _('Name')
+    # CUSTOM METHODS
 
     def is_subscribed_to(self, newsletter):
         return self.subscriptions.filter(newsletter=newsletter).exists()
@@ -618,7 +611,14 @@ class AbstractSubscriber(Enableable, Logged):
             }
             return self.unsubscriptions.create(**kwargs)
 
-    full_name = property(get_full_name)
+    # PROPERTIES
+
+    @described_property(_('Name'))
+    def full_name(self):
+        return ' '.join((
+            self.first_name,
+            self.last_name,
+        )).strip()
 
 
 @python_2_unicode_compatible
