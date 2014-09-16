@@ -54,11 +54,16 @@ class OrderableBase(ModelBase):
         if not opts.abstract and not opts.proxy:
 
             if not opts.ordering:
-                opts.ordering = ['index']
+                if filter_field is not None:
+                    opts.ordering = [filter_field, 'index']
+                else:
+                    opts.ordering = ['index']
 
             sort_field = opts.get_field('index')
             if filter_field is not None:
-                opts.index_together.append((filter_field, 'index'))
+                if (filter_field, 'index') not in opts.index_together:
+                    opts.index_together.append((filter_field, 'index'))
+
                 sort_field.db_index = False
             else:
                 sort_field.db_index = True

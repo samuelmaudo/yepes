@@ -19,7 +19,7 @@ __all__ = ('InvalidLanguageTag', 'Multilingual', 'TranslationDoesNotExist')
 options.DEFAULT_NAMES += ('translation', 'multilingual')
 
 LANGUAGE_TAG_RE = re.compile(r'^(?P<lang>[a-z]{2,3})(?P<extra>[-a-zA-Z]*)$')
-TRANSLATED_ATTRIBUTE_RE = re.compile(r'^(?P<attr>\w+?)_(?P<tag>[a-z_]{2,5})$')
+TRANSLATED_ATTRIBUTE_RE = re.compile(r'^(?P<attr>\w+?)_(?P<tag>[a-z]{2,3})$')
 
 
 class InvalidLanguageTag(ValueError):
@@ -50,32 +50,35 @@ class Multilingual(models.Model):
         name = models.CharField(max_length=16)
 
     class BookTranslation(models.Model):
-        language = models.ForeignKey("Language")
+        language = models.ForeignKey('Language')
         title = models.CharField(max_length=32)
         description = models.TextField()
-        model = models.ForeignKey("Book")
+        model = models.ForeignKey('Book')
 
     class Book(Multilingual):
-        ISBN = models.IntegerField()
+        isbn = models.IntegerField()
 
         class Meta:
             translation = 'BookTranslation'
             multilingual = ['title', 'description']
 
-    lang_en = Language(tag="en", name="English")
+    lang_en = Language(tag='en', name='English')
     lang_en.save()
-    lang_pl = Language(tag="pl", name="Polish")
+    lang_pl = Language(tag='pl', name='Polish')
     lang_pl.save()
-    book = Book(ISBN="1234567890")
+    book = Book()
+    book.isbn = 1234567890
     book.save()
     book_en = BookTranslation()
-    book_en.title = "Django for Dummies"
-    book_en.description = "Django described in simple words."
+    book_en.language = lang_en
+    book_en.title = 'Django for Dummies'
+    book_en.description = 'Django described in simple words.'
     book_en.model = book
     book_en.save()
     book_pl = BookTranslation()
-    book_pl.title = "Django dla Idiotow"
-    book_pl.description = "Django opisane w prostych slowach"
+    book_pl.language = lang_pl
+    book_pl.title = 'Django dla Idiotow'
+    book_pl.description = 'Django opisane w prostych slowach.'
     book_pl.model = book
     book_pl.save()
 
@@ -83,28 +86,28 @@ class Multilingual(models.Model):
     book.title_en
     'Django for Dummies'
     book.description_pl
-    'Django opisane w prostych slowach'
+    'Django opisane w prostych slowach.'
 
     """
     class Meta:
         abstract = True
 
     def __init__(self, *args, **kwargs):
-        super(Multilingual, self).__init__(*args, **kwargs)
-        self._language = get_language()[:2]
         self._translations = dict()
+        super(Multilingual, self).__init__(*args, **kwargs)
 
     def __getattr__(self, attr):
         if attr in self._meta.multilingual:
-            tag = self._language
+            tag = get_language()
             field = attr
         else:
             match = TRANSLATED_ATTRIBUTE_RE.search(attr)
             if (match is None
-                    or match.groups('attr') not in self._meta.multilingual):
+                    or match.group('attr') not in self._meta.multilingual):
                 raise MissingAttributeError(self, attr)
 
-            tag = match.groups('tag')
+            field = match.group('attr')
+            tag = match.group('tag')
 
         translation = self.get_translation(tag)
         if translation is None:
@@ -120,12 +123,6 @@ class Multilingual(models.Model):
         else:
             return match.group('lang')
 
-    def for_language(self, tag):
-        """
-        Sets the language for the translation fields of this object.
-        """
-        self._language = self.clean_language_tag(tag)
-
     def get_translation(self, tag):
         """
         Returns the translation object for given language ``tag``.
@@ -134,18 +131,20 @@ class Multilingual(models.Model):
         if tag not in self._translations:
             Translation = get_model(self._meta.app_label,
                                     self._meta.translation)
-            translation = None
-            qs = Translation._default_manager.select_related()
             try:
+                qs = Translation._default_manager.select_related()
                 translation = qs.get(model=self, language__tag=tag)
             except ObjectDoesNotExist:
+
+                if not settings.MULTILINGUAL_FAIL_SILENTLY:
+                    raise TranslationDoesNotExist(self, tag)
+
                 if (settings.MULTILINGUAL_FALL_BACK_TO_DEFAULT
                         and settings.MULTILINGUAL_DEFAULT
                         and tag != settings.MULTILINGUAL_DEFAULT):
                     return self.get_translation(settings.MULTILINGUAL_DEFAULT)
-                elif (settings.DEBUG
-                        or not settings.MULTILINGUAL_FAIL_SILENTLY):
-                    raise TranslationDoesNotExist(self, tag)
+                else:
+                    translation = None
 
             self._translations[tag] = translation
 

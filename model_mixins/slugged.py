@@ -18,7 +18,7 @@ class Slugged(models.Model):
 
     slug = fields.SlugField(
             max_length=63,
-            blank=True,
+            unique=True,
             verbose_name=_('Slug'),
             help_text=_('URL friendly version of the main title. '
                         'It is usually all lowercase and contains only letters, numbers and hyphens.'))
@@ -27,12 +27,6 @@ class Slugged(models.Model):
 
     class Meta:
         abstract = True
-
-    def onsite_link(self):
-        link = '<a href="{0}">{1}</a>'
-        return link.format(self.get_full_url(), _('View on site'))
-    onsite_link.allow_tags = True
-    onsite_link.short_description = ''
 
     def get_full_url(self):
         return build_full_url(self.get_absolute_url())
@@ -44,4 +38,11 @@ class Slugged(models.Model):
 
     def natural_key(self):
         return (self.slug, )
+
+    def onsite_link(self):
+        return '<a href="{0}">{1}</a>'.format(
+                self.get_full_url(),
+                _('View on site'))
+    onsite_link.allow_tags = True
+    onsite_link.short_description = ''
 

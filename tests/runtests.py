@@ -13,8 +13,10 @@ from django.utils import six
 from django.utils._os import upath
 
 ALWAYS_INSTALLED_APPS = [
+    'django.contrib.sites',
     'mptt',
     'yepes',
+    'yepes.apps.registry',
 ]
 
 RUNTESTS_DIR = os.path.abspath(os.path.dirname(upath(__file__)))

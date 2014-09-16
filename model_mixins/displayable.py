@@ -35,6 +35,7 @@ class Displayable(Slugged, MetaData):
             verbose_name=_('Status'))
     publish_from = models.DateTimeField(
             blank=True,
+            default=timezone.now,
             null=True,
             verbose_name=_('Publish From'),
             help_text=_("Won't be shown until this time."))
@@ -53,7 +54,7 @@ class Displayable(Slugged, MetaData):
     def clean(self):
         super(Displayable, self).clean()
         if (self.publish_from and self.publish_to
-                and self.publish_to < self.published_from):
+                and self.publish_to < self.publish_from):
             msg = _('End date cannot be earlier than starting date.')
             raise ValidationError(msg)
 
@@ -75,12 +76,4 @@ class Displayable(Slugged, MetaData):
                 and (self.publish_to is None or self.publish_to >= date))
     is_published.boolean = True
     is_published.short_description = _('Is Published?')
-
-    def save(self, **kwargs):
-        """
-        Set default for ``publish_from``.
-        """
-        if self.publish_from is None:
-            self.publish_from = timezone.now()
-        super(Displayable, self).save(**kwargs)
 

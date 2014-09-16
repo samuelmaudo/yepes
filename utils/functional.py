@@ -9,29 +9,24 @@ class cached_property(object):
     property cached on the instance.
     """
     def __init__(self, func):
-        self.function = func
+        self.fget = func
         self.__doc__ = func.__doc__
 
     def __get__(self, obj, objtype=None):
         if obj is None:
             return self
-
-        value = self.function(obj)
-        self.__set__(obj, value)
-        return value
-
-    def __set__(self, obj, value):
-        obj.__dict__[self.function.__name__] = value
+        else:
+            value = obj.__dict__[self.fget.__name__] = self.fget(obj)
+            return value
 
 
 class class_property(property):
 
     def __get__(self, obj, objtype=None):
-        if objtype is None:
-            objtype = type(obj)
-        if self.fget is None:
+        if obj is None:
+            return self.fget(objtype)
+        else:
             raise AttributeError('unreadable attribute')
-        return self.fget(objtype)
 
 
 def described_property(description, allow_tags=False,
