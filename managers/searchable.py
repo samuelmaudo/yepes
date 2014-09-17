@@ -41,64 +41,65 @@ def search_fields_to_dict(fields):
         return fields
 
 
-def prepare_word(term):
-    return force_text(term)
+class SearchableHelper(object):
 
+    #vowels_re = re.compile(r'[aeiouAEIOU][\u0300\u0301\u0302\u0308]?')
+    vowels_re = re.compile(r'[aàáâäAÀÁÀÄeèéêëEÈÉÊËiìíîïIÌÍÎÏoòóôöOÒÓÔÖuùúûüUÙÚÛÜ]')
 
-#def vowels_replace(matchobj):
-    #vowel = matchobj.group(0)
-    #if vowel.startswith('a'):
-        #return '[aàáâä]'
-    #if vowel.startswith('A'):
-        #return '[AÀÁÀÄ]'
-    #if vowel.startswith('e'):
-        #return '[eèéêë]'
-    #if vowel.startswith('E'):
-        #return '[EÈÉÊË]'
-    #if vowel.startswith('i'):
-        #return '[iìíîï]'
-    #if vowel.startswith('I'):
-        #return '[IÌÍÎÏ]'
-    #if vowel.startswith('o'):
-        #return '[oòóôö]'
-    #if vowel.startswith('O'):
-        #return '[OÒÓÔÖ]'
-    #if vowel.startswith('u'):
-        #return '[uùúûü]'
-    #if vowel.startswith('U'):
-        #return '[UÙÚÛÜ]'
-    #return vowel
+    @staticmethod
+    def clean_term(term):
+        return force_text(term)
 
+    @staticmethod
+    def prepare_field_lookup(field):
+        return r'{0}__iregex'.format(field)
 
-#VOWELS_RE = re.compile(r'[aeiou][\u0300\u0301\u0302\u0308]?', re.I)
+    @classmethod
+    def prepare_term(cls, term, engine):
+        term = cls.clean_term(term)
+        term = cls.vowels_re.sub(cls.vowels_replace, term)
+        if engine == 'postgresql':
+            template = r'\m{0}\M'
+        elif engine == 'mysql':
+            template = r'[[:<:]]{0}[[:>:]]'
+        elif engine == 'oracle':
+            template = r'(^|\W){0}(\W|$)'
+        elif engine == 'sqlite':
+            template = r'\b{0}\b'
+        else:
+            template = r'(^|[^[:alnum:]_]){0}([^[:alnum:]_]|$)'
 
+        return template.format(term)
 
-def vowels_replace(matchobj):
-    vowel = matchobj.group(0)
-    if vowel in 'aàáâä':
-        return '[aàáâä]'
-    elif vowel in 'AÀÁÀÄ':
-        return '[AÀÁÀÄ]'
-    elif vowel in 'eèéêë':
-        return '[eèéêë]'
-    elif vowel in 'EÈÉÊË':
-        return '[EÈÉÊË]'
-    elif vowel in 'iìíîï':
-        return '[iìíîï]'
-    elif vowel in 'IÌÍÎÏ':
-        return '[IÌÍÎÏ]'
-    elif vowel in 'oòóôö':
-        return '[oòóôö]'
-    elif vowel in 'OÒÓÔÖ':
-        return '[OÒÓÔÖ]'
-    elif vowel in 'uùúûü':
-        return '[uùúûü]'
-    elif vowel in 'UÙÚÛÜ':
-        return '[UÙÚÛÜ]'
-    return vowel
+    #@staticmethod
+    #def vowels_replace(matchobj):
+        #vowel = matchobj.group(0)
+        #if vowel.startswith(('a', 'A')):
+            #return '[aàáâäAÀÁÀÄ]'
+        #if vowel.startswith(('e', 'E')):
+            #return '[eèéêëEÈÉÊË]'
+        #if vowel.startswith(('i', 'I')):
+            #return '[iìíîïIÌÍÎÏ]'
+        #if vowel.startswith(('o', 'O')):
+            #return '[oòóôöOÒÓÔÖ]'
+        #if vowel.startswith(('u', 'U')):
+            #return '[uùúûüUÙÚÛÜ]'
+        #return vowel
 
-
-VOWELS_RE = re.compile(r'[aàáâäeèéêëiìíîïoòóôöuùúûü]', re.I)
+    @staticmethod
+    def vowels_replace(matchobj):
+        vowel = matchobj.group(0)
+        if vowel in 'aàáâäAÀÁÀÄ':
+            return '[aàáâäAÀÁÀÄ]'
+        elif vowel in 'eèéêëEÈÉÊË':
+            return '[eèéêëEÈÉÊË]'
+        elif vowel in 'iìíîïIÌÍÎÏ':
+            return '[iìíîïIÌÍÎÏ]'
+        elif vowel in 'oòóôöOÒÓÔÖ':
+            return '[oòóôöOÒÓÔÖ]'
+        elif vowel in 'uùúûüUÙÚÛÜ':
+            return '[uùúûüUÙÚÛÜ]'
+        return vowel
 
 
 class SearchableQuerySet(QuerySet):
@@ -109,12 +110,9 @@ class SearchableQuerySet(QuerySet):
     def __init__(self, *args, **kwargs):
         self._search_decorated = False
         self._search_fields = kwargs.pop('search_fields', {})
+        self._search_helper = kwargs.pop('search_helper', settings.SEARCH_HELPER)
         self._search_ordered = False
-        func = kwargs.pop('prepare_word', settings.SEARCH_PREPARE_WORD)
-        self._search_prepare_word = import_by_path(func)
         self._search_terms = set()
-        func = kwargs.pop('vowels_replace', settings.SEARCH_VOWELS_REPLACE)
-        self._search_vowels_replace = import_by_path(func)
         super(SearchableQuerySet, self).__init__(*args, **kwargs)
 
     def _clone(self, *args, **kwargs):
@@ -123,6 +121,7 @@ class SearchableQuerySet(QuerySet):
         """
         kwargs['_search_decorated'] = self._search_decorated
         kwargs['_search_fields'] = self._search_fields.copy()
+        kwargs['_search_helper'] = self._search_helper
         kwargs['_search_ordered'] = self._search_ordered
         kwargs['_search_terms'] = self._search_terms.copy()
         return super(SearchableQuerySet, self)._clone(*args, **kwargs)
@@ -207,6 +206,7 @@ class SearchableQuerySet(QuerySet):
         assert self.query.can_filter(), \
                'Cannot filter a query once a slice has been taken.'
 
+        helper = import_by_path(self._search_helper)
         queryset = self._clone()
         queryset._search_ordered = order_results
         queryset._search_decorated = order_results or decorate_results
@@ -287,28 +287,10 @@ class SearchableQuerySet(QuerySet):
         ### BUILD QUERYSET FILTER ###
 
         engine = connections[queryset.db].vendor
-        if engine == 'postgresql':
-            template = r'\m{0}\M'
-        elif engine == 'mysql':
-            template = r'[[:<:]]{0}[[:>:]]'
-        elif engine == 'oracle':
-            template = r'(^|\W){0}(\W|$)'
-        elif engine == 'sqlite':
-            template = r'\b{0}\b'
-        else:
-            template = r'(^|[^[:alnum:]_]){0}([^[:alnum:]_]|$)'
-
-        def prep_field_lookup(field):
-            return r'{0}__iregex'.format(field)
-
-        def prep_term(term):
-            term = queryset._search_prepare_word(term)
-            term = VOWELS_RE.sub(queryset._search_vowels_replace, term)
-            return template.format(term)
 
         # Filter the queryset combining each set of terms.
         field_lookups = [
-            prep_field_lookup(f)
+            helper.prepare_field_lookup(f)
             for f
             in six.iterkeys(queryset._search_fields)
         ]
@@ -317,19 +299,19 @@ class SearchableQuerySet(QuerySet):
         optional = []
         for t in terms:
             if t.startswith('-'):
-                term = prep_term(t[1:])
+                term = helper.prepare_term(t[1:], engine)
                 excluded.append(reduce(
                     iand,
                     [~Q(**{lookup: term}) for lookup in field_lookups]
                 ))
             elif t.startswith('+'):
-                term = prep_term(t[1:])
+                term = helper.prepare_term(t[1:], engine)
                 required.append(reduce(
                     ior,
                     [Q(**{lookup: term}) for lookup in field_lookups]
                 ))
             else:
-                term = prep_term(t)
+                term = helper.prepare_term(t, engine)
                 optional.append(reduce(
                     ior,
                     [Q(**{lookup: term}) for lookup in field_lookups]

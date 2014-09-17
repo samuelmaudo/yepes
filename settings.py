@@ -10,12 +10,11 @@ from django.utils.encoding import force_bytes
 
 # Built-in search engine #######################################################
 
+SEARCH_HELPER = 'yepes.managers.searchable.SearchableHelper'
 SEARCH_MAX_QUERY_LEN = 100
 SEARCH_MIN_QUERY_LEN = 3
 SEARCH_MIN_WORD_LEN = 3
-SEARCH_PREPARE_WORD = 'yepes.managers.searchable.prepare_word'
 SEARCH_RESULT_LIMIT = 1000
-SEARCH_VOWELS_REPLACE = 'yepes.managers.searchable.vowels_replace'
 
 
 # Mint cache ###################################################################
