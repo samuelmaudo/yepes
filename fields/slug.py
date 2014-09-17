@@ -66,7 +66,7 @@ class SlugField(models.CharField):
 
     def formfield(self, **kwargs):
         kwargs['required'] = False
-        super(SlugField, self).formfield(**kwargs)
+        return super(SlugField, self).formfield(**kwargs)
 
     def pre_save(self, model_instance, add):
         slug = super(SlugField, self).pre_save(model_instance, add)
