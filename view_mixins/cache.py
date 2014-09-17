@@ -13,8 +13,6 @@ from yepes.conf import settings
 from yepes.types import Undefined
 from yepes.utils.minifier import html_minifier
 
-__all__ = ('CacheMixin', 'CanonicalMixin', 'MessageMixin', 'ModelMixin')
-
 
 class CacheMixin(object):
 
@@ -76,75 +74,4 @@ class CacheMixin(object):
             return False
         else:
             return True
-
-
-class CanonicalMixin(object):
-
-    check_canonical = True
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.get_check_canonical(request):
-            canonical_path = self.get_canonical_url()
-            if self.request.path != canonical_path:
-                return HttpResponsePermanentRedirect(canonical_path)
-        return super(CanonicalMixin, self).dispatch(request, *args, **kwargs)
-
-    def get_canonical_url(self):
-        return self.get_object().get_absolute_url()
-
-    def get_check_canonical(self, request):
-        return self.check_canonical
-
-
-class MessageMixin(object):
-
-    leave_message = False
-    success_message = None
-
-    def get_leave_message(self, request):
-        return self.leave_message
-
-    def get_success_message(self, request):
-        if self.success_message:
-            return self.success_message
-        else:
-            msg = "No message to leave. Provide a ``success_message``."
-            raise ImproperlyConfigured(msg)
-
-    def send_success_message(self, request):
-        if self.get_leave_message(request):
-            msg = self.get_success_message(request)
-            messages.success(request, msg)
-
-
-class ModelMixin(object):
-
-    _model = Undefined
-
-    def get_model(self):
-        if self._model is Undefined:
-            # If a model has been explicitly provided, use it.
-            if getattr(self, 'model', None) is not None:
-                self._model = self.model
-
-            # If this view is operating on a single object, use the class
-            # of that object.
-            elif getattr(self, 'object', None) is not None:
-                self._model = self.object.__class__
-
-            # If this view is operating on a list of objects, try to get
-            # the model class from that.
-            elif (getattr(self, 'object_list', None) is not None
-                    and getattr(self, 'model', None) is not None):
-                self._model = self.object_list.model
-
-            # Try to get a queryset and extract the model class from that.
-            else:
-                qs = self.get_queryset()
-                if getattr(qs, 'model', None) is not None:
-                    self._model = qs.model
-                else:
-                    self._model = None
-
-        return self._model
 
