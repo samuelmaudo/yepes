@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponse
 from django.utils import six
 from django.utils.itercompat import is_iterable
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.views.generic.detail import (
     BaseDetailView,
     SingleObjectTemplateResponseMixin,
