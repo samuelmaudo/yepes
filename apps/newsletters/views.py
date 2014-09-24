@@ -12,6 +12,8 @@ from django.utils import six
 from django.utils.encoding import force_text
 from django.utils.itercompat import is_iterable
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
     RedirectView,
     TemplateView,
@@ -276,6 +278,10 @@ class MessageView(SubscriberMixin, MessageMixin, View):
         return html
 
 
+@decorate_view(
+    csrf_protect,
+    never_cache,
+)
 class ProfileView(SubscriberMixin, NewsletterMixin, MessageMixin, FormView):
     """
     Allows subscribers to change their preferences, including subscriptions.
@@ -345,6 +351,10 @@ class ResubscriptionView(SubscriberMixin, NewsletterMixin, TemplateView):
         return names
 
 
+@decorate_view(
+    csrf_protect,
+    never_cache,
+)
 class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
 
     form_class = SubscriptionForm
@@ -392,6 +402,10 @@ class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
         return names
 
 
+@decorate_view(
+    csrf_protect,
+    never_cache,
+)
 class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormView):
 
     form_class = UnsubscriptionForm
