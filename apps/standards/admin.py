@@ -404,6 +404,9 @@ class RegionAdmin(admin.ModelAdmin):
     list_editable = [
         'number',
     ]
+    list_filter = [
+        'parent',
+    ]
     raw_id_fields = [
         'parent',
     ]

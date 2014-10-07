@@ -22,13 +22,14 @@ from django.contrib.admin.util import (
 from django.db.models import F, Q
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.db.models.related import RelatedObject
+from django.template.response import SimpleTemplateResponse
 from django.utils import timezone
 from django.utils import six
 from django.utils.encoding import smart_bytes, smart_text
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.forms import PropertiesModelForm
+
 from yepes.model_mixins import (
     Activatable,
     Displayable,
@@ -54,16 +55,6 @@ delete_selected.short_description = _('Delete selected {verbose_name_plural}')
 
 class ModelAdmin(DjangoModelAdmin):
 
-    def changelist_view(self, request, *args, **kwargs):
-        response = super(ModelAdmin, self).changelist_view(request, *args, **kwargs)
-        response.template_name = self.get_change_list_template(request)
-        return response
-
-    def delete_view(self, request, *args, **kwargs):
-        response = super(ModelAdmin, self).delete_view(request, *args, **kwargs)
-        response.template_name = self.get_delete_confirmation_template(request)
-        return response
-
     def get_action_choices(self, request, default_choices=BLANK_CHOICE_DASH):
         # Change the string formatting operation to the ``str.format()`` method.
         choices = [] + default_choices
@@ -71,6 +62,7 @@ class ModelAdmin(DjangoModelAdmin):
         for func, name, description in six.itervalues(self.get_actions(request)):
             choice = (name, description.format(**model_verbose_names))
             choices.append(choice)
+
         return choices
 
     def get_actions(self, request):
@@ -82,46 +74,8 @@ class ModelAdmin(DjangoModelAdmin):
                 if (name != 'delete_selected'
                         or self.has_delete_permission(request)):
                     actions[name] = info
+
         return actions
-
-    def get_add_form_template(self, request):
-        return self.add_form_template
-
-    def get_change_form_template(self, request):
-        if self.change_form_template is not None:
-            template = self.change_form_template
-        else:
-            model = self.model._meta
-            template = [
-                'admin/{0}/{1}/change_form.html'.format(model.app_label, model.object_name.lower()),
-                'admin/{0}/change_form.html'.format(model.app_label),
-                'admin/change_form.html',
-            ]
-        return template
-
-    def get_change_list_template(self, request):
-        if self.change_list_template is not None:
-            template = self.change_list_template
-        else:
-            model = self.model._meta
-            template = [
-                'admin/{0}/{1}/change_list.html'.format(model.app_label, model.object_name.lower()),
-                'admin/{0}/change_list.html'.format(model.app_label),
-                'admin/change_list.html',
-            ]
-        return template
-
-    def get_delete_confirmation_template(self, request):
-        if self.delete_confirmation_template is not None:
-            template = self.delete_confirmation_template
-        else:
-            model = self.model._meta
-            template = [
-                'admin/{0}/{1}/delete_confirmation.html'.format(model.app_label, model.object_name.lower()),
-                'admin/{0}/delete_confirmation.html'.format(model.app_label),
-                'admin/delete_confirmation.html',
-            ]
-        return template
 
     def get_inline_instances(self, request, obj=None):
         sup = super(ModelAdmin, self)
@@ -133,46 +87,23 @@ class ModelAdmin(DjangoModelAdmin):
                 else:
                     fields = {f.name for f in inline.model._meta.fields}
                     fields.update(inline.readonly_fields)
-                if issubclass(inline.form, PropertiesModelForm):
-                    properties = [
-                        name
-                        for name, verbose_name
-                        in inline.form._meta.properties
-                    ]
-                    fields = set(fields) - set(properties)
+
                 inline.max_num = 0
                 inline.readonly_fields = list(fields)
+
         return inline_instances
 
     def get_readonly_fields(self, request, obj=None):
         if self.has_change_permission(request, obj, strict=True):
             return self.readonly_fields
+
         if self.declared_fieldsets:
             fields = flatten_fieldsets(self.declared_fieldsets)
         else:
             fields = {f.name for f in self.model._meta.fields}
             fields.update(self.readonly_fields)
-        if issubclass(self.form, PropertiesModelForm):
-            properties = [
-                name
-                for name, verbose_name
-                in self.form._meta.properties
-            ]
-            return list(set(fields) - set(properties))
-        else:
-            return list(fields)
 
-    def get_object_history_template(self, request):
-        if self.object_history_template is not None:
-            template = self.object_history_template
-        else:
-            model = self.model._meta
-            template = [
-                'admin/{0}/{1}/object_history.html'.format(model.app_label, model.object_name.lower()),
-                'admin/{0}/object_history.html'.format(model.app_label),
-                'admin/object_history.html',
-            ]
-        return template
+        return list(fields)
 
     # NOTE: Permission verification is an inexpensive task most of time.
     # However, I store permissions in cache because, if they change during
@@ -249,34 +180,19 @@ class ModelAdmin(DjangoModelAdmin):
         #return request.user.has_perm(app_label + '.' + view_permission)
         return True
 
-    def history_view(self, request, *args, **kwargs):
-        response = super(ModelAdmin, self).history_view(request, *args, **kwargs)
-        response.template_name = self.get_object_history_template(request)
-        return response
-
-    def render_change_form(self, request, context, add=False, *args, **kwargs):
-
-        template_name = None
-        if add:
-            template_name = self.get_add_form_template(request)
-        if template_name is None:
-            template_name = self.get_change_form_template(request)
-
-        response = super(ModelAdmin, self).render_change_form(request, context, add, *args, **kwargs)
-        response.template_name = template_name
-        return response
-
     def report_change(self, request, queryset, affected_rows,
-                            log_message, user_message, user_message_plural):
+                      log_message, user_message, user_message_plural):
         kwargs = model_format_dict(self.opts)
         for obj in queryset:
             self.log_change(request, obj, log_message.format(record=obj, **kwargs))
+
         if affected_rows == 1:
             kwargs['record'] = queryset.get()
             self.message_user(request, user_message.format(**kwargs))
         else:
             kwargs['record_count'] = affected_rows
             self.message_user(request, user_message_plural.format(**kwargs))
+
 
 
 class ActivatableMixin(object):
@@ -440,8 +356,7 @@ class NestableFieldListFilter(FieldListFilter):
                 '{0}__gt'.format(opts.right_attr): F(opts.left_attr) + 1,
             })
         self.objects = qs.order_by(opts.tree_id_attr, opts.left_attr)
-        super(NestableFieldListFilter, self).__init__(
-                field, request, params, model, model_admin, field_path)
+        super(NestableFieldListFilter, self).__init__(field, request, params, model, model_admin, field_path)
 
     def choices(self, cl):
         yield {
@@ -465,24 +380,11 @@ class NestableFieldListFilter(FieldListFilter):
                 'query_string': cl.get_query_string({
                     self.lookup_kwarg: smart_text(obj.pk),
                 }, [self.lookup_kwarg_isnull]),
-                'display': self.get_label(obj),
+                'display': self.label(obj),
             }
 
     def expected_parameters(self):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
-
-    def get_label(self, obj):
-        return '{0} {1}'.format(
-                self.level_indicator * obj.get_level_number(),
-                smart_text(obj))
-
-    def get_queryset(self, request, queryset):
-        if self.lookup_val_isnull:
-            return queryset.filter(**{self.lookup_kwarg_isnull: True})
-        elif self.lookup_val is not None:
-            obj = self.other_model._default_manager.get(pk=self.lookup_val)
-            objects = obj.get_descendants(include_self=True)
-            return queryset.filter(**{self.lookup_kwarg: objects})
 
     def has_output(self):
         choices_count = len(self.objects)
@@ -491,16 +393,30 @@ class NestableFieldListFilter(FieldListFilter):
             choices_count += 1
         return choices_count > 1
 
+    def label(self, obj):
+        return '{0} {1}'.format(
+                self.level_indicator * obj.get_level_number(),
+                smart_text(obj))
+
+    def queryset(self, request, queryset):
+        if self.lookup_val_isnull:
+            return queryset.filter(**{self.lookup_kwarg_isnull: True})
+        elif self.lookup_val is not None:
+            obj = self.other_model._default_manager.get(pk=self.lookup_val)
+            objects = obj.get_descendants(include_self=True)
+            return queryset.filter(**{self.lookup_kwarg: objects})
+
 FieldListFilter.register(
-        lambda f: (
-            bool(getattr(f, 'rel', None))
-                and issubclass(f.rel.to, Nestable)
-            or
-            isinstance(f, RelatedObject)
-                and issubclass(f.field.rel.to, Nestable)
-        ),
-        NestableFieldListFilter,
-        take_priority=True)
+    lambda f: (
+        bool(getattr(f, 'rel', None))
+            and issubclass(f.rel.to, Nestable)
+        or
+        isinstance(f, RelatedObject)
+            and issubclass(f.field.rel.to, Nestable)
+    ),
+    NestableFieldListFilter,
+    take_priority=True,
+)
 
 
 class OrderableForm(forms.ModelForm):
@@ -514,6 +430,7 @@ class OrderableForm(forms.ModelForm):
             'type': 'number',
         })
 
+
 class OrderableMixim(object):
     form = OrderableForm
     sortable_field_name = 'index'
@@ -525,10 +442,7 @@ class ReadOnlyMixin(object):
         return False
 
     def has_change_permission(self, request, obj=None, strict=False):
-        if strict:
-            return False
-        else:
-            return self.has_view_permission(request, obj)
+        return False if strict else self.has_view_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
         return False
