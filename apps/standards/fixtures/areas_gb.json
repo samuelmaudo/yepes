@@ -1,0 +1,86 @@
+[
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77001,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "United Kingdom",
+      "api_id": "united_kingdom",
+      "included_countries": [77],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77002,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Great Britain",
+      "api_id": "great_britain",
+      "included_countries": [77],
+      "excluded_countries": [],
+      "included_subdivisions": [],
+      "excluded_subdivisions": [77002]
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77003,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "England",
+      "api_id": "england",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [77001],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77004,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Northern Ireland",
+      "api_id": "northern_ireland",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [77002],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77005,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Scotland",
+      "api_id": "scotland",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [77003],
+      "excluded_subdivisions": []
+    }
+  },
+  {
+    "model": "standards.GeographicArea",
+    "pk": 77006,
+    "fields": {
+      "creation_date": "1986-09-25T12:00:00.000+02:00",
+      "last_modified": "1986-09-25T12:00:00.000+02:00",
+      "name": "Wales",
+      "api_id": "wales",
+      "included_countries": [],
+      "excluded_countries": [],
+      "included_subdivisions": [77004],
+      "excluded_subdivisions": []
+    }
+  }
+]

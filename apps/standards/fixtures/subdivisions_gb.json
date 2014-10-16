@@ -1,0 +1,70 @@
+[
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 77001,
+    "fields": {
+      "is_enabled": true,
+      "country": 77,
+      "code": "GB-ENG",
+      "name": "England",
+      "name_de": "England",
+      "name_en": "England",
+      "name_es": "Inglaterra",
+      "name_fr": "Angleterre",
+      "name_pt": "Inglaterra",
+      "name_ru": "Англия",
+      "name_zh": "英格兰"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 77002,
+    "fields": {
+      "is_enabled": true,
+      "country": 77,
+      "code": "GB-NIR",
+      "name": "Northern Ireland",
+      "name_de": "Nordirland",
+      "name_en": "Northern Ireland",
+      "name_es": "Irlanda del Norte",
+      "name_fr": "Irlande du Nord",
+      "name_pt": "Irlanda do Norte",
+      "name_ru": "Северная Ирландия",
+      "name_zh": "北爱尔兰"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 77003,
+    "fields": {
+      "is_enabled": true,
+      "country": 77,
+      "code": "GB-SCT",
+      "name": "Scotland",
+      "name_de": "Schottland",
+      "name_en": "Scotland",
+      "name_es": "Escocia",
+      "name_fr": "Écosse",
+      "name_pt": "Escócia",
+      "name_ru": "Шотландия",
+      "name_zh": "蘇格蘭"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 77004,
+    "fields": {
+      "is_enabled": true,
+      "country": 77,
+      "code": "GB-WLS",
+      "name": "Wales",
+      "name_de": "Wales",
+      "name_en": "Wales",
+      "name_es": "Gales",
+      "name_fr": "Pays de Galles",
+      "name_pt": "País de Gales",
+      "name_ru": "Уэльс",
+      "name_zh": "威尔士"
+    }
+  }
+]
