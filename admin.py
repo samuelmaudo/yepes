@@ -29,7 +29,6 @@ from django.utils.encoding import smart_bytes, smart_text
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-
 from yepes.model_mixins import (
     Activatable,
     Displayable,
