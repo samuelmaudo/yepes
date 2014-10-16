@@ -100,9 +100,10 @@ class LookupTable(object):
 
     _model_pk = Undefined
     _populated = False
-    default_from_registry = Undefined
+    default_from_registry = None
 
-    def __init__(self, indexed_fields=None, prefetch_related=(), timeout=None):
+    def __init__(self, indexed_fields=None, prefetch_related=(), timeout=None,
+                 default_from_registry=None):
         self._set_creation_counter()
         self._inherited = False
         self.indexed_fields = set()
@@ -111,6 +112,8 @@ class LookupTable(object):
             self.indexed_fields.discard('pk')
         self.prefetch_related = prefetch_related
         self.timeout = timeout or 600
+        if default_from_registry is not None:
+            self.default_from_registry = default_from_registry
 
     def __get__(self, obj, cls=None):
         if obj is not None:
@@ -242,7 +245,7 @@ class LookupTable(object):
             return cache.get(key, default)
 
     def get_default(self):
-        if self.default_from_registry is Undefined:
+        if self.default_from_registry is None:
             msg = ('{cls}.default_from_registry is undefined.'
                    ' Define {cls}.default_from_registry'
                    ' or override {cls}.get_default().')
@@ -268,7 +271,7 @@ class LookupTable(object):
             return [cache.get(k, default) for k in keys]
 
     def has_default(self):
-        return (self.default_from_registry is not Undefined)
+        return (self.default_from_registry is not None)
 
     def populate(self):
         self.clear()

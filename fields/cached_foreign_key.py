@@ -41,17 +41,11 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
                 setattr(instance, self.cache_name, rel_obj)
 
         if rel_obj is None and not self.field.null:
-            try:
-                rel_obj = self.related_lookup_table.get_default()
-            except ImproperlyConfigured:
-                msg = '{0} has no {1}.'.format(
-                    self.field.model.__name__,
-                    self.field.name,
-                )
-                raise self.RelatedObjectDoesNotExist(msg)
-            else:
-                setattr(instance, self.field.attname, rel_obj.pk)
-                setattr(instance, self.cache_name, rel_obj)
+            msg = '{0} has no {1}.'.format(
+                self.field.model.__name__,
+                self.field.name,
+            )
+            raise self.RelatedObjectDoesNotExist(msg)
 
         return rel_obj
 
@@ -63,14 +57,17 @@ class CachedForeignKey(models.ForeignKey):
         setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
 
     def get_default(self):
-        if self.rel.to.cache.has_default():
+        if self.has_default():
             default = self.rel.to.cache.get_default()
             return getattr(default, self.related_field.attname, None)
         else:
             return None
 
     def has_default(self):
-        return self.rel.to.cache.has_default()
+        if not self.null:
+            return self.rel.to.cache.has_default()
+        else:
+            return False
 
     def south_field_triple(self):
         """

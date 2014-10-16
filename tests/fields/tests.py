@@ -2,27 +2,52 @@
 
 from __future__ import unicode_literals
 
+from collections import Counter
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
 from django import test
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils import six
+from django.utils.unittest import skip
 
+from yepes.apps.registry import registry
+from yepes.apps.registry.fields import ModelChoiceField
 from yepes.tests.fields.models import (
     BitModel,
+    CachedForeignKeyModel,
+    CachedModel,
+    CachedModelWithDefaultValue,
+    ColoredModel,
+    CommaSeparatedModel,
     CompressedModel,
+    EmailModel,
     EncryptedModel,
     FlagModel,
     FormulaModel,
+    GuidModel,
+    KeyModel,
     LongBitModel,
     PickledModel,
     RelatedBitModel,
+    RichTextModel,
     SlugModel,
 )
-from yepes.types import Formula
+from yepes.types import Bit, Formula
+
+
+def skipUnlessMarkdown():
+    try:
+        try:
+            import markdown2 as markdown
+        except ImportError:
+            import markdown
+    except ImportError:
+        return skip('Markdown could not be imported.')
+    else:
+        return (lambda func: func)
 
 
 ascii_1 = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' \
@@ -464,9 +489,9 @@ class LongBitFieldTest(test.TestCase):
             obj.related_flags_4
 
     def test_int_fields_values(self):
-        value_1 = 9223372036854775808L    # 1 << 63
-        value_2 = 2147483648L             # 1 << 31
-        value_3 = 9223372039002259456L    # value_1 + value_2
+        value_1 = Bit(9223372036854775808L)    # 1 << 63
+        value_2 = Bit(2147483648L)             # 1 << 31
+        value_3 = Bit(9223372039002259456L)    # value_1 + value_2
 
         obj = LongBitModel()
         obj.flags = value_2
@@ -513,9 +538,9 @@ class LongBitFieldTest(test.TestCase):
         self.assertEqual(int(obj.related_flags), 2147483648L)
 
     def test_lookup(self):
-        value_1 = int('0b1'+'0'*63, 2)
-        value_2 = int('0b1'+'0'*31, 2)
-        value_3 = value_1 + value_2
+        value_1 = Bit(int('0b1'+'0'*63, 2))
+        value_2 = Bit(int('0b1'+'0'*31, 2))
+        value_3 = value_1 | value_2
         value_4 = 0
         obj = LongBitModel.objects.create(
             flags=value_2,
@@ -553,6 +578,193 @@ class LongBitFieldTest(test.TestCase):
             LongBitModel.objects.filter(related_flags=value_4),
             [],
         )
+
+
+class CachedForeignKeyTest(test.TestCase):
+
+    def test_custom_value(self):
+        value_1 = CachedModel.objects.create()
+        value_1 = CachedModel.cache.get(value_1.pk)
+
+        value_2 = CachedModelWithDefaultValue.objects.create()
+        value_2 = CachedModelWithDefaultValue.cache.get(value_2.pk)
+
+        record_1 = CachedForeignKeyModel.objects.create(
+            mandatory_key=value_1,
+            optional_key=value_1,
+            mandatory_key_with_default_value=value_2,
+            optional_key_with_default_value=value_2,
+        )
+        self.assertEqual(
+            record_1.mandatory_key.pk,
+            value_1.pk,
+        )
+        self.assertIs(
+            record_1.mandatory_key,
+            value_1,
+        )
+        self.assertEqual(
+            record_1.optional_key.pk,
+            value_1.pk,
+        )
+        self.assertIs(
+            record_1.optional_key,
+            value_1,
+        )
+        self.assertEqual(
+            record_1.mandatory_key_with_default_value.pk,
+            value_2.pk,
+        )
+        self.assertIs(
+            record_1.mandatory_key_with_default_value,
+            value_2,
+        )
+        self.assertEqual(
+            record_1.optional_key_with_default_value.pk,
+            value_2.pk,
+        )
+        self.assertIs(
+            record_1.optional_key_with_default_value,
+            value_2,
+        )
+
+        record_2 = CachedForeignKeyModel.objects.get(pk=record_1.pk)
+        self.assertEqual(
+            record_2.mandatory_key.pk,
+            value_1.pk,
+        )
+        self.assertIs(
+            record_2.mandatory_key,
+            value_1,
+        )
+        self.assertEqual(
+            record_2.optional_key.pk,
+            value_1.pk,
+        )
+        self.assertIs(
+            record_2.optional_key,
+            value_1,
+        )
+        self.assertEqual(
+            record_2.mandatory_key_with_default_value.pk,
+            value_2.pk,
+        )
+        self.assertIs(
+            record_2.mandatory_key_with_default_value,
+            value_2,
+        )
+        self.assertEqual(
+            record_2.optional_key_with_default_value.pk,
+            value_2.pk,
+        )
+        self.assertIs(
+            record_2.optional_key_with_default_value,
+            value_2,
+        )
+
+    def test_default_value(self):
+        default = CachedModelWithDefaultValue.objects.create()
+        default = CachedModelWithDefaultValue.cache.get(default.pk)
+        registry.register(
+            'tests:DEFAULT_CACHED_MODEL',
+            ModelChoiceField(
+                label = 'Default Cached Model',
+                model = 'fields.CachedModelWithDefaultValue',
+                required = True,
+        ))
+        registry['tests:DEFAULT_CACHED_MODEL'] = default
+
+        record_1 = CachedForeignKeyModel()
+        with self.assertRaises(ObjectDoesNotExist):
+            record_1.mandatory_key
+
+        self.assertIsNone(record_1.optional_key)
+        self.assertEqual(
+            record_1.mandatory_key_with_default_value.pk,
+            default.pk,
+        )
+        self.assertIs(
+            record_1.mandatory_key_with_default_value,
+            default,
+        )
+        self.assertIsNone(record_1.optional_key_with_default_value)
+
+        custom = CachedModel.objects.create()
+        custom = CachedModel.cache.get(custom.pk)
+        record_2 = CachedForeignKeyModel.objects.create(
+            mandatory_key=custom,
+        )
+        self.assertEqual(
+            record_2.mandatory_key.pk,
+            custom.pk,
+        )
+        self.assertIs(
+            record_2.mandatory_key,
+            custom,
+        )
+        self.assertIsNone(record_2.optional_key)
+        self.assertEqual(
+            record_2.mandatory_key_with_default_value.pk,
+            default.pk,
+        )
+        self.assertIs(
+            record_2.mandatory_key_with_default_value,
+            default,
+        )
+        self.assertIsNone(record_2.optional_key_with_default_value)
+
+
+class ColorFieldTest(test.TestCase):
+
+    def test_cleaning(self):
+        record = ColoredModel()
+        record.color = 'red'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.color = '#5DC1B9'
+        record.full_clean()
+        self.assertEqual(record.color, '#5DC1B9')
+        record.color = '#5dc1b9'
+        record.full_clean()
+        self.assertEqual(record.color, '#5DC1B9')
+        record.color = '5dc1b9'
+        record.full_clean()
+        self.assertEqual(record.color, '#5DC1B9')
+        record.color = '#fff'
+        record.full_clean()
+        self.assertEqual(record.color, '#FFFFFF')
+        record.color = 'fff'
+        record.full_clean()
+        self.assertEqual(record.color, '#FFFFFF')
+
+
+class CommaSeparatedFieldTest(test.TestCase):
+
+    def test_separation(self):
+        record_1 = CommaSeparatedModel()
+        record_1.default_separator = 'a, b, c'
+        record_1.custom_separator = 'a|b|c'
+        record_1.full_clean()
+        self.assertEqual(record_1.default_separator, ['a', 'b', 'c'])
+        self.assertEqual(record_1.custom_separator, ['a', 'b', 'c'])
+        record_1.full_clean()
+        self.assertEqual(record_1.default_separator, ['a', 'b', 'c'])
+        self.assertEqual(record_1.custom_separator, ['a', 'b', 'c'])
+        record_1.save()
+
+        record_2 = CommaSeparatedModel.objects.get(pk=record_1.pk)
+        self.assertEqual(record_2.default_separator, ['a', 'b', 'c'])
+        self.assertEqual(record_2.custom_separator, ['a', 'b', 'c'])
+
+        record_3 = CommaSeparatedModel()
+        record_3.default_separator = 'a, b, c'
+        record_3.custom_separator = 'a|b|c'
+        record_3.save()
+
+        record_4 = CommaSeparatedModel.objects.get(pk=record_3.pk)
+        self.assertEqual(record_4.default_separator, ['a', 'b', 'c'])
+        self.assertEqual(record_4.custom_separator, ['a', 'b', 'c'])
 
 
 class CompressedTextFieldTest(test.TestCase):
@@ -653,6 +865,21 @@ class CompressedTextFieldTest(test.TestCase):
         self.assertEqual(record_2.level_3, spanish_2)
         self.assertEqual(record_2.level_6, spanish_2)
         self.assertEqual(record_2.level_9, spanish_2)
+
+
+class EmailFieldTest(test.TestCase):
+
+    def test_cleaning(self):
+        record = EmailModel()
+        record.email = 'USER@DOMAIN.COM'
+        record.full_clean()
+        self.assertEqual(record.email, 'user@domain.com')
+        record.email = 'USER@domain.com'
+        record.full_clean()
+        self.assertEqual(record.email, 'USER@domain.com')
+        record.email = 'User@Domain.Com'
+        record.full_clean()
+        self.assertEqual(record.email, 'User@domain.com')
 
 
 class EncryptedTextFieldTest(test.TestCase):
@@ -874,6 +1101,40 @@ class FormulaFieldTest(test.TestCase):
             record.full_clean()
 
 
+class GuidFieldTest(test.TestCase):
+
+    def test_default_value(self):
+        default_guids = []
+        custom_guids = []
+        for i in range(10):
+            record = GuidModel()
+            self.assertRegexpMatches(record.default_charset, '^[0-9a-f]+$')
+            self.assertRegexpMatches(record.custom_charset, '^[z%,#8+ç@]+$')
+            default_guids.append(record.default_charset)
+            custom_guids.append(record.custom_charset)
+
+        counter = Counter(default_guids)
+        self.assertEqual(counter.most_common(1)[0][1], 1)
+        counter = Counter(custom_guids)
+        self.assertEqual(counter.most_common(1)[0][1], 1)
+
+
+class KeyFieldTest(test.TestCase):
+
+    def test_validation(self):
+        record = KeyModel()
+        record.key = 'variable'
+        record.full_clean()
+        record.key = 'variable_123'
+        record.full_clean()
+        record.key = '123_variable'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+        record.key = 'z%.# +ç@'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+
 class PickledObjectFieldTest(test.TestCase):
 
     def checkPickledField(self, field_name, obj):
@@ -972,6 +1233,36 @@ class PickledObjectFieldTest(test.TestCase):
         self.assertEqual(record_2.protocol_0, spanish_2)
         self.assertEqual(record_2.protocol_1, spanish_2)
         self.assertEqual(record_2.protocol_2, spanish_2)
+
+
+@skipUnlessMarkdown()
+class RichTextFieldTest(test.TestCase):
+
+    def test_markdown(self):
+        record = RichTextModel.objects.create(
+            text='This is **important.**',
+        )
+        self.assertEqual(
+            record.text,
+            'This is **important.**',
+        )
+        self.assertEqual(
+            record.text_html,
+            '<p>This is <strong>important.</strong></p>\n',
+        )
+
+    def test_processors(self):
+        record = RichTextModel.objects.create(
+            upper_text='This is **important.**',
+        )
+        self.assertEqual(
+            record.upper_text,
+            'This is **important.**',
+        )
+        self.assertEqual(
+            record.upper_text_html,
+            '<P>THIS IS <STRONG>IMPORTANT.</STRONG></P>\n',
+        )
 
 
 class SlugFieldTest(test.TestCase):

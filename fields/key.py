@@ -18,8 +18,9 @@ class KeyField(models.CharField):
         super(KeyField, self).__init__(*args, **kwargs)
         self.validators = [
             validators.RegexValidator(
-                re.compile('^[_a-zA-Z0-9]{{1,{0}}}$'.format(
-                                        self.max_length - 1)),
+                re.compile('^[a-zA-Z_][a-zA-Z0-9_]{{0,{0}}}$'.format(
+                    self.max_length - 2
+                )),
                 _('Enter a valid key.'))
         ]
 

@@ -24,26 +24,6 @@ __all__ = ('BitField', 'BitFieldDescriptor',
            'UnknownFlagError')
 
 
-def split_value(value):
-    value = bin(int(value))[2:]
-    pieces = list()
-    for i in xrange(0, len(value), 63):
-        if i > 0:
-            pieces.append(int(value[-(i+63):-i], 2))
-        else:
-            pieces.append(int(value[-63:], 2))
-
-    return pieces
-
-
-def join_value(pieces):
-    value = 0
-    for i, pc in enumerate(pieces):
-        value += pc << (i * 63)
-
-    return value
-
-
 class UnknownFlagError(ValueError):
 
     def __init__(self, field, value):
@@ -67,7 +47,6 @@ class BitField(models.BigIntegerField):
         super(BitField, self).__init__(verbose_name, name, **kwargs)
         self.flags = BitFieldFlags(self, choices)
         self.int_fields = int(math.ceil(len(choices) / 63))
-        self.null = False
         self.validators = [MaxValueValidator(self.flags.get_max_value())]
 
     def contribute_to_class(self, cls, name):
@@ -79,11 +58,11 @@ class BitField(models.BigIntegerField):
                     editable=False,
                     default=0,
                     blank=True,
-                    null=False,
+                    null=self.null,
                     db_column='{0}_{1}'.format(self.column, i),
                     verbose_name='{0} ({1})'.format(self.verbose_name, i),
                 )
-                counter += 0.001
+                counter -= 0.001
                 fld.creation_counter = counter
                 fld.contribute_to_class(cls, '{0}_{1}'.format(self.name, i))
 
@@ -122,14 +101,17 @@ class BitField(models.BigIntegerField):
             raise LookupTypeError(lookup_type)
 
     def get_db_prep_save(self, value, connection):
-        return split_value(value)[0]
+        value = models.Field.get_db_prep_save(self, value, connection)
+        return self.split_value(value)[0]
 
     def get_choices(self, *args, **kwargs):
         if self.__choices is None:
-            self.__choices = [(int(value), smart_text(name))
-                              for value, name
-                              in zip(self.flags.iter_values(),
-                                     self.flags.iter_verbose_names())]
+            self.__choices = [
+                (int(value), smart_text(name))
+                for value, name
+                in zip(self.flags.iter_values(),
+                       self.flags.iter_verbose_names())
+            ]
         return self.__choices
 
     def get_default(self):
@@ -148,7 +130,26 @@ class BitField(models.BigIntegerField):
             raise LookupTypeError(lookup_type)
 
     def get_prep_value(self, value):
-        return int(self.flags.get_value(value))
+        value = models.Field.get_prep_value(self, value)
+        return self.flags.get_value(value)
+
+    def join_value(self, pieces):
+        value = 0
+        for i, pc in enumerate(pieces):
+            value += pc << (i * 63)
+
+        return value
+
+    def split_value(self, value):
+        value = bin(int(value))[2:]
+        pieces = list()
+        for i in xrange(0, len(value), 63):
+            if i > 0:
+                pieces.append(int(value[-(i+63):-i], 2))
+            else:
+                pieces.append(int(value[-63:], 2))
+
+        return pieces
 
     def south_field_triple(self):
         """
@@ -178,14 +179,21 @@ class BitFieldDescriptor(object):
             '{0}_{1}'.format(field.name, i + 1)
             for i in xrange(field.int_fields)
         ]
+        self.cache_attr = field.name
+        self.first_attr = self.attrs[0]
 
     def __get__(self, obj, cls=None):
         if obj is not None:
-            value = join_value(
-                    obj.__dict__[attr]
-                    for attr in self.attrs)
-
-            return Bit(value, self.field)
+            if self.cache_attr not in obj.__dict__:
+                obj.__dict__[self.cache_attr] = Bit(
+                    self.field.join_value(
+                        obj.__dict__[attr]
+                        for attr
+                        in self.attrs
+                    ),
+                    self.field,
+                )
+            return obj.__dict__[self.cache_attr]
         elif cls is not None:
             return self.flags
         else:
@@ -196,17 +204,22 @@ class BitFieldDescriptor(object):
             msg = '`{0}` must be accessed via instance.'
             raise AttributeError(msg.format(self.field.name))
 
-        pieces = split_value(self.flags.get_value(value))
-        if (self.attrs[0] in obj.__dict__
-                or any((attr not in obj.__dict__) for attr in self.attrs[1:])
-                or all((obj.__dict__[attr] == 0) for attr in self.attrs[1:])):
+        if isinstance(value, six.integer_types):
+            if self.first_attr not in obj.__dict__:
+                # This is intended for quickly load values from database.
+                obj.__dict__[self.first_attr] = value
+            else:
+                raise TypeError('Bit fields do not accept integer values.')
+        else:
+            value = self.flags.get_value(value)
+            pieces = self.field.split_value(value)
             for i, attr in enumerate(self.attrs):
                 if i < len(pieces):
                     obj.__dict__[attr] = pieces[i]
                 else:
                     obj.__dict__[attr] = 0
-        else:
-            obj.__dict__[self.attrs[0]] = pieces[0]
+
+            obj.__dict__[self.cache_attr] = Bit(value, self.field)
 
 
 class BitFieldFlags(object):
@@ -324,7 +337,7 @@ class BitFieldQueryWrapper(object):
             if not self.value:
                 sql = '0'
             else:
-                sql = '({0}.{1} | {2:d})'.format(t, col, self.value)
+                sql = '({0}.{1} | {2})'.format(t, col, int(self.value))
         else:
             if not self.value:
                 conditions = ['0']
@@ -334,7 +347,7 @@ class BitFieldQueryWrapper(object):
                     conditions.append(cond.format(t, col))
                 sql = ' AND '.join(conditions)
             else:
-                values = split_value(self.value)
+                values = self.field.split_value(self.value)
 
                 cond = '({0}.{1} | {2})'
                 val = values[0]

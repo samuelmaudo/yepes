@@ -37,9 +37,7 @@ class GuidField(models.CharField):
                        for i in xrange(self.max_length))
 
     def get_default(self):
-        guid = super(GuidField, self).get_default()
-        if not guid:
-            guid = self.generate_guid()
+        guid = self.generate_guid()
 
         if self.unique:
             lookup = self.get_validator_unique_lookup_type()

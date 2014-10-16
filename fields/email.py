@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.core.validators import validate_email
+from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,7 +11,7 @@ from yepes.utils.email import normalize_email
 
 
 class EmailField(models.CharField):
-    default_validators = [validate_email]
+    default_validators = [validators.validate_email]
     description = _('Email address')
 
     def __init__(self, *args, **kwargs):

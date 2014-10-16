@@ -1,18 +1,29 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 
 from django.db import models
 from django.utils import six
 from django.utils.six.moves import xrange
 
+from yepes.cache import LookupTable
+
 from yepes.fields import (
     BitField,
+    CachedForeignKey,
+    ColorField,
+    CommaSeparatedField,
     CompressedTextField,
+    EmailField,
     EncryptedTextField,
     FormulaField,
+    GuidField,
+    KeyField,
     PickledObjectField,
     RelatedBitField,
+    RichTextField,
     SlugField,
 )
 
@@ -38,6 +49,53 @@ class BitModel(models.Model):
     __unicode__ = __str__
 
 
+class CachedForeignKeyModel(models.Model):
+
+    mandatory_key = CachedForeignKey(
+            'CachedModel',
+            blank=False,
+            null=False,
+            related_name='+')
+    optional_key = CachedForeignKey(
+            'CachedModel',
+            blank=True,
+            null=True,
+            related_name='+')
+
+    mandatory_key_with_default_value = CachedForeignKey(
+            'CachedModelWithDefaultValue',
+            blank=False,
+            null=False,
+            related_name='+')
+    optional_key_with_default_value = CachedForeignKey(
+            'CachedModelWithDefaultValue',
+            blank=True,
+            null=True,
+            related_name='+')
+
+
+class CachedModel(models.Model):
+
+    cache = LookupTable()
+
+
+class CachedModelWithDefaultValue(models.Model):
+
+    cache = LookupTable(
+            default_from_registry='tests:DEFAULT_CACHED_MODEL')
+
+
+class ColoredModel(models.Model):
+
+    color = ColorField()
+
+
+class CommaSeparatedModel(models.Model):
+
+    default_separator = CommaSeparatedField()
+    custom_separator = CommaSeparatedField(separator='|')
+
+
 class CompressedModel(models.Model):
 
     default = CompressedTextField()
@@ -47,6 +105,11 @@ class CompressedModel(models.Model):
             compression_level=6)
     level_9 = CompressedTextField(
             compression_level=9)
+
+
+class EmailModel(models.Model):
+
+    email = EmailField()
 
 
 class EncryptedModel(models.Model):
@@ -93,6 +156,17 @@ class FormulaModel(models.Model):
             variables=('x', 'y', 'z'))
 
 
+class GuidModel(models.Model):
+
+    default_charset = GuidField(unique=True)
+    custom_charset = GuidField(charset='z%,#8+ç@', unique=True)
+
+
+class KeyModel(models.Model):
+
+    key = KeyField()
+
+
 class LongBitModel(models.Model):
 
     FLAG_CHOICES = [
@@ -132,6 +206,12 @@ class RelatedBitModel(models.Model):
         return six.text_type(self.flags)
 
     __unicode__ = __str__
+
+
+class RichTextModel(models.Model):
+
+    text = RichTextField()
+    upper_text = RichTextField(processors=[lambda x: x.upper()])
 
 
 class SlugModel(models.Model):
