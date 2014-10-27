@@ -1,0 +1,177 @@
+{% extends 'admin/change_form.html' %}
+
+<!-- LOADING -->
+{% load i18n %}
+
+<!-- EXTRASTYLES -->
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+      p.errornote {
+        margin-bottom: 2px;
+        width: 940px;
+      }
+      .yps-table {
+        background: #f6f6f6;
+        margin-bottom: 2px;
+        width: 100%;
+      }
+      .yps-table td,
+      .yps-table th {
+        background: #f6f6f6;
+        border-bottom: 1px solid #e6e6e6;
+        border-left: 0 none;
+        border-right: 0 none;
+        border-top: 1px solid #ffffff;
+      }
+      .yps-table tr:first-child td,
+      .yps-table tr:first-child th {
+        border-top: 0 none;
+      }
+      .yps-table tr:last-child td,
+      .yps-table tr:last-child th {
+        border-bottom: 0 none;
+      }
+      .yps-table .yps-field-column {
+        width: 13.5%;
+      }
+      .yps-table .yps-update-column {
+        width: 6.5%;
+      }
+      .yps-table .yps-operation-column {
+        width: 18%;
+      }
+      .yps-table .yps-value-column {
+        width: 62%;
+      }
+      .yps-table .yps-description-column {
+        font-size: 12px;
+      }
+      .yps-table input[type="url"],
+      .yps-table input[type="email"],
+      .yps-table .vTextField,
+      .yps-table .vURLField,
+      .yps-table .vFileBrowseField,
+      .yps-table textarea,
+      .yps-table .vLargeTextField,
+      .yps-table .vXMLLargeTextField,
+      .grp-autocomplete-wrapper-m2m {
+        width: 515px;
+      }
+      .yps-table .mdEditorWindow {
+        height: 231px;
+        width: 503px;
+      }
+      .yps-table ul.radiolist.inline,
+      .yps-table ul.checkboxlist.inline,
+      .yps-table ul.radiolist.inline,
+      .yps-table ul.checkboxlist.inline {
+        max-width: 100%;
+      }
+    </style>
+{% endblock %}
+
+<!-- COLTYPE/BODYCLASS -->
+{% block bodyclass %}grp-delete-confirmation{% endblock %}
+{% block content-class %}{% endblock %}
+
+<!-- PAGE-TOOLS -->
+{% block page-tools %}
+{% endblock %}
+
+<!-- BREADCRUMBS -->
+{% block breadcrumbs %}
+    <ul class="grp-horizontal-list">
+      <li><a href="../../../">{% trans 'Home' %}</a></li>
+      <li><a href="../../">{{ app_label|capfirst|escape }}</a></li>
+      <li><a href="../">{{ opts.verbose_name_plural|capfirst }}</a></li>
+      <li>{{ title }}</li>
+    </ul>
+{% endblock %}
+
+<!-- OBJECT TOOLS -->
+{% block object-tools %}
+{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+    <form id="{{ opts.model_name }}_form" action="" method="post"{% if adminform.form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+      {% csrf_token %}
+      {{ adminform.form.management_form }}
+  {% if errors %}
+      <p class="errornote">{% if errors|length == 1 %}{% trans 'Please correct the error below.' %}{% else %}{% trans 'Please correct the errors below.' %}{% endif %}</p>
+      <ul class="errorlist">{% for error in adminform.form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  {% endif %}
+      <div class="g-d-c">
+  {% if errors or not operations %}
+
+        <div class="grp-group">
+          <h2>{% blocktrans %}Set the operations that you want to run:{% endblocktrans %}</h2>
+          <table class="yps-table">
+            <tr class="grp-row">
+              <td class="yps-field-column">{% trans 'Bulk update' %}</td>
+              <td><input id="id_bulk_update" name="bulk_update" type="checkbox"{% if bulk_update %} checked="checked"{% endif %} /><label class="vCheckboxLabel" for="id_bulk_update">{% trans 'If checked, use manager.update() instead of obj.save()' %}</label></td>
+            </tr>
+          </table>
+          <table class="yps-table">
+            <tr class="grp-row">
+              <th class="yps-field-column">{% trans 'Field name' %}</th>
+              <th class="yps-update-column">{% trans 'Update' %}</th>
+              <th class="yps-operation-column">{% trans 'Operation' %}</th>
+              <th class="yps-value-column">{% trans 'Value' %}</th>
+            </tr>
+    {% for row in adminform.form %}
+            <tr class="grp-row">
+              <td class="yps-field-column">{{ row.field.verbose_name }}</td>
+              <td class="yps-update-column{% if row.update.errors %} grp-errors{% endif %}">{{ row.update }}</td>
+              <td class="yps-operation-column{% if row.operation.errors %} grp-errors{% endif %}">{{ row.operation }}</td>
+              <td class="yps-value-column{% if row.value.errors %} grp-errors{% endif %}">{{ row.value }}{{ row.value.errors }}</td>
+            </tr>
+    {% endfor %}
+          </table>
+        </div>
+        <div id="submit" class="grp-module grp-submit-row grp-fixed-footer">
+          <ul>
+            <li class="grp-float-left">
+              <a href="../" class="grp-button grp-cancel-link">{% trans 'Cancel' %}</a>
+            </li>
+            <li class="submit-button-container">
+              <input type="submit" value="{% trans 'Update' %}" class="grp-button grp-default" />
+            </li>
+          </ul>
+        </div>
+
+  {% else %}
+
+        <div class="grp-group">
+          <h2>{% blocktrans %}Are you sure you want to run the selected operations?{% endblocktrans %}</h2>
+          <table class="yps-table">
+    {% for operation in operations %}
+            <tr class="grp-row">
+              <td class="yps-description-column">{{ operation.describe }}</td>
+            </tr>
+    {% endfor %}
+          </table>
+        </div>
+        <input type="hidden" name="bulk_update" value="{% if bulk_update %}yes{% else %}no{% endif %}" />
+        <input type="hidden" name="confirm_update" value="yes" />
+    {% for row in adminform.form %}
+        {{ row.update.as_hidden }}
+        {{ row.operation.as_hidden }}
+        {{ row.value.as_hidden }}
+    {% endfor %}
+        <div id="submit" class="grp-module grp-submit-row grp-fixed-footer">
+          <ul>
+            <li class="grp-float-left">
+              <a href="../" class="grp-button grp-cancel-link">{% trans 'Cancel' %}</a>
+            </li>
+            <li class="submit-button-container">
+              <input type="submit" value="{% trans "Yes, I'm sure" %}" class="grp-button grp-default" />
+            </li>
+          </ul>
+        </div>
+
+  {% endif %}
+      </div>
+    </form>
+{% endblock %}
