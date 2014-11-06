@@ -48,6 +48,11 @@ SSL_PATHS = ('/admin', '/cache', '/settings')
 SSL_PORT = 443
 
 
+# Tests ########################################################################
+
+TEST_RUNNER = 'yepes.utils.test.SugarDiscoverRunner'
+
+
 # Thumbnails ###################################################################
 
 THUMBNAIL_QUALITY = 90

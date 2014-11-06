@@ -38,4 +38,6 @@ PASSWORD_HASHERS = [
 
 SECRET_KEY = 'yepes_secret_key_for_running_tests'
 
+TEST_RUNNER = 'yepes.utils.test.SugarDiscoverRunner'
+
 USE_TZ = True
