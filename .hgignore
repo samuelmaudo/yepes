@@ -6,3 +6,5 @@ syntax:glob
 __pycache__
 MANIFEST
 backup/
+.kdev4/
+*.kdev4
