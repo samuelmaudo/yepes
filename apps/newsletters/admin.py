@@ -319,7 +319,8 @@ class MessageAdminForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'class': 'vLargeTextField',
             'style':'height:290px',
-        }))
+        }),
+        required=False)
 
     class Meta:
         model = Message
