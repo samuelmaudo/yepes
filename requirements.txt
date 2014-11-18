@@ -1,0 +1,12 @@
+Django<1.7
+django-aggregate-if
+django-grappelli<2.6
+django-mptt
+markdown2
+Pillow
+psycopg2
+pycrypto
+python-memcached
+pytz
+tablib
+Wand
