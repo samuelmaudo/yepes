@@ -15,7 +15,9 @@ from django.utils.unittest import skip
 
 from yepes.apps.registry import registry
 from yepes.apps.registry.fields import ModelChoiceField
-from yepes.tests.fields.models import (
+from yepes.types import Bit, Formula
+
+from .models import (
     BitModel,
     CachedForeignKeyModel,
     CachedModel,
@@ -35,7 +37,6 @@ from yepes.tests.fields.models import (
     RichTextModel,
     SlugModel,
 )
-from yepes.types import Bit, Formula
 
 
 def skipUnlessMarkdown():

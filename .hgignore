@@ -1,10 +1,11 @@
 syntax:glob
 
 *.egg-info
+*.kdev4
 *.pot
 *.py[co]
 __pycache__
-MANIFEST
-backup/
 .kdev4/
-*.kdev4
+backup/
+build/
+dist/

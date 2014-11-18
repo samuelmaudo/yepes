@@ -19,8 +19,6 @@ from django.utils import translation
 from django.views.generic import FormView, View
 
 from yepes.conf import settings
-from yepes.tests.view_mixins.models import Article
-from yepes.tests.view_mixins.forms import JsonMixinForm
 from yepes.view_mixins import (
     CacheMixin,
     CanonicalMixin,
@@ -28,6 +26,9 @@ from yepes.view_mixins import (
     MessageMixin,
     ModelMixin,
 )
+
+from .models import Article
+from .forms import JsonMixinForm
 
 @override_settings(CACHES={
     'default': {
