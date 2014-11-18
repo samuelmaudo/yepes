@@ -51,14 +51,14 @@ class ReadOnlyObjectError(AttributeError):
 
 class UnexpectedTypeError(TypeError):
 
-    def __init__(self, expected_type, received_type):
+    def __init__(self, expected_type, received_object):
         if not isinstance(expected_type, (tuple, list)):
             expected_type = (expected_type, )
         args = (
             ' or '.join(cls.__name__ for cls in expected_type),
-            received_type.__class__.__name__,
+            received_object.__class__.__name__,
         )
         msg = '{0} was expected, got {1}'
         super(UnexpectedTypeError, self).__init__(msg.format(*args))
         self.expected_type = expected_type
-        self.received_type = received_type
+        self.received_object = received_object

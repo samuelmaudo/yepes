@@ -26,10 +26,15 @@ class JsonResponse(HttpResponse):
     def __init__(self, data, encoder=json.JSONEncoder, indent=None, safe=True,
                  **kwargs):
         if safe and not isinstance(data, dict):
-            raise TypeError('In order to allow non-dict objects to be '
-                            'serialized set the safe parameter to False')
+            msg = (
+                'In order to allow non-dict objects to be'
+                ' serialized set the safe parameter to False'
+            )
+            raise TypeError(msg)
 
-        kwargs.setdefault('content_type', 'application/json; charset=utf-8')
+        if kwargs.get('content_type') is None:
+            kwargs['content_type'] = 'application/json; charset=utf-8'
+
         data = json.dumps(data, cls=encoder, indent=indent)
         super(JsonResponse, self).__init__(content=data, **kwargs)
 

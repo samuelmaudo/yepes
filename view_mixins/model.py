@@ -11,28 +11,30 @@ class ModelMixin(object):
 
     def get_model(self):
         if self._model is Undefined:
-            # If a model has been explicitly provided, use it.
-            if getattr(self, 'model', None) is not None:
+
+            try:
+                # If model has been explicitly provided, use it.
                 self._model = self.model
+            except AttributeError:
+                self._model = None
 
-            # If this view is operating on a single object, use the class
-            # of that object.
-            elif getattr(self, 'object', None) is not None:
-                self._model = self.object.__class__
-
-            # If this view is operating on a list of objects, try to get
-            # the model class from that.
-            elif (getattr(self, 'object_list', None) is not None
-                    and getattr(self, 'model', None) is not None):
-                self._model = self.object_list.model
-
-            # Try to get a queryset and extract the model class from that.
-            else:
-                qs = self.get_queryset()
-                if getattr(qs, 'model', None) is not None:
-                    self._model = qs.model
-                else:
-                    self._model = None
+            if self._model is None:
+                try:
+                    # If this view is operating on a single object, use the
+                    # class of that object.
+                    self._model = self.object.__class__
+                except AttributeError:
+                    try:
+                        # If this view is operating on a list of objects, try
+                        # to get the model class from that.
+                        self._model = self.object_list.model
+                    except AttributeError:
+                        try:
+                            # Try to get a queryset and extract the model class
+                            # from that.
+                            self._model = self.get_queryset().model
+                        except AttributeError:
+                            pass
 
         return self._model
 

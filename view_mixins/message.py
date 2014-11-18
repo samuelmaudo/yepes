@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
+from django.core.exceptions import ImproperlyConfigured
 
 
 class MessageMixin(object):
@@ -14,11 +15,11 @@ class MessageMixin(object):
         return self.leave_message
 
     def get_success_message(self, request):
-        if self.success_message:
-            return self.success_message
-        else:
+        if not self.success_message:
             msg = "No message to leave. Provide a ``success_message``."
             raise ImproperlyConfigured(msg)
+        else:
+            return self.success_message
 
     def send_success_message(self, request):
         if self.get_leave_message(request):

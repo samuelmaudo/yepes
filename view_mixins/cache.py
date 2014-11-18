@@ -16,16 +16,18 @@ from yepes.utils.minifier import html_minifier
 
 class CacheMixin(object):
 
-    delay_seconds = None
+    cache_alias = None
+    delay = None
     timeout = None
     use_cache = True
 
     def __init__(self, *args, **kwargs):
-        self._cache = get_mint_cache(settings.VIEW_CACHE_ALIAS, **{
-            'timeout': self.timeout or settings.VIEW_CACHE_SECONDS,
-            'delay': self.delay_seconds or settings.VIEW_CACHE_DELAY_SECONDS,
-        })
         super(CacheMixin, self).__init__(*args, **kwargs)
+        self._cache = get_mint_cache(
+            self.cache_alias or settings.VIEW_CACHE_ALIAS,
+            timeout=self.timeout or settings.VIEW_CACHE_SECONDS,
+            delay=self.delay or settings.VIEW_CACHE_DELAY_SECONDS,
+        )
 
     def get_cache_hash(self, request):
         return '{0}://{1}{2}'.format(
@@ -69,8 +71,8 @@ class CacheMixin(object):
 
     def get_use_cache(self, request):
         if (not self.use_cache
-                or request.user.is_staff
-                or request.method.upper() not in ('GET', 'HEAD')):
+                or request.method.upper() not in ('GET', 'HEAD')
+                or hasattr(request, 'user') and request.user.is_staff):
             return False
         else:
             return True

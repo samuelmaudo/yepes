@@ -67,21 +67,63 @@ class MintCache(object):
         self._timeout = timeout or settings.MINT_CACHE_SECONDS
         self._delay = delay or settings.MINT_CACHE_DELAY_SECONDS
 
-    def get(self, key):
+    def __contains__(self, key):
+        return self.has_key(key)
+
+    def add(self, key, value, timeout=None):
+        """
+        Stores a packed value in the cache if the key does not already exist.
+
+        Returns True if the value was stored, False otherwise.
+
+        """
+        if timeout is None:
+            timeout = self._timeout
+
+        refresh_time = timeout + time.time()
+        real_timeout = timeout + self._delay
+        packed_value = (value, refresh_time, False)
+        return self._cache.add(key, packed_value, real_timeout)
+
+    def clear(self):
+        """
+        Removes *all* values from the cache at once.
+        """
+        self._cache.clear()
+
+    def close(self, **kwargs):
+        """
+        Closes the cache connection.
+        """
+        self._cache.close(**kwargs)
+
+    def delete(self, key):
+        """
+        Deletes a key from the cache, failing silently.
+        """
+        self._cache.delete(key)
+
+    def get(self, key, default=None):
         """
         Retrieves the cache entry and checks its expiry time. If has past,
         puts the stale entry back into cache, and does not return it. This
         forces to refresh entry value.
         """
-        packed = self._cache.get(key)
-        if packed is None:
-            return None
+        packed_value = self._cache.get(key)
+        if packed_value is None:
+            return default
 
-        value, refresh_time, refreshed = packed
+        value, refresh_time, refreshed = packed_value
         if time.time() > refresh_time and not refreshed:
             self.set(key, value, self._delay, True)
         else:
             return value
+
+    def has_key(self, key):
+        """
+        Returns True if the key is in the cache and has not expired.
+        """
+        self._cache.has_key(key)
 
     def set(self, key, value, timeout=None, refreshed=False):
         """
@@ -92,8 +134,8 @@ class MintCache(object):
 
         refresh_time = timeout + time.time()
         real_timeout = timeout + self._delay
-        packed = (value, refresh_time, refreshed)
-        self._cache.set(key, packed, real_timeout)
+        packed_value = (value, refresh_time, refreshed)
+        self._cache.set(key, packed_value, real_timeout)
 
 
 class LookupTable(object):
