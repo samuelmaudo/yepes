@@ -1,0 +1,29 @@
+language: python
+
+python:
+  - '2.7'
+  - '3.2'
+  - '3.3'
+  - '3.4'
+
+services:
+  - memcached
+
+before_install:
+  - pip install -r requirements.txt
+
+install:
+  - python setup.py install
+
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+
+script:
+  - nosetests tests/runtests.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
+  - which python && coverage run --branch tests/runtests.py
+  - which python && coverage xml -o shippable/codecoverage/coverage.xml tests/runtests.py
+
+notifications:
+  email:
+    - samuelmaudo@gmail.com
