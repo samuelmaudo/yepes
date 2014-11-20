@@ -27,17 +27,17 @@ class SugarTestResult(TestResult):
     """
     dictionary = {
         'error': TERMINAL_COLORS['error'] + 'ERROR' + TERMINAL_COLORS['reset'],
-        'error_abbr': TERMINAL_COLORS['error'] + '⨯' + TERMINAL_COLORS['reset'],
+        'error_abbr': TERMINAL_COLORS['error'] + 'x' + TERMINAL_COLORS['reset'],
         'expected_failure': TERMINAL_COLORS['info'] + 'expected failure' + TERMINAL_COLORS['reset'],
-        'expected_failure_abbr': TERMINAL_COLORS['info'] + '⨯' + TERMINAL_COLORS['reset'],
+        'expected_failure_abbr': TERMINAL_COLORS['info'] + 'x' + TERMINAL_COLORS['reset'],
         'failure': TERMINAL_COLORS['error'] + 'FAIL' + TERMINAL_COLORS['reset'],
-        'failure_abbr': TERMINAL_COLORS['error'] + '⨯' + TERMINAL_COLORS['reset'],
+        'failure_abbr': TERMINAL_COLORS['error'] + 'x' + TERMINAL_COLORS['reset'],
         'skip': TERMINAL_COLORS['info'] + 'skipped {0!r}' + TERMINAL_COLORS['reset'],
         'skip_abbr': TERMINAL_COLORS['info'] + 's' + TERMINAL_COLORS['reset'],
         'success': TERMINAL_COLORS['success'] + 'ok' + TERMINAL_COLORS['reset'],
-        'success_abbr': TERMINAL_COLORS['success'] + '✓' + TERMINAL_COLORS['reset'],
+        'success_abbr': TERMINAL_COLORS['success'] + '.' + TERMINAL_COLORS['reset'],
         'unexpected_success': TERMINAL_COLORS['warning'] + 'unexpected success' + TERMINAL_COLORS['reset'],
-        'unexpected_success_abbr': TERMINAL_COLORS['warning'] + '✓' + TERMINAL_COLORS['reset'],
+        'unexpected_success_abbr': TERMINAL_COLORS['warning'] + '.' + TERMINAL_COLORS['reset'],
     }
     separator1 = '=' * 70
     separator2 = '-' * 70
