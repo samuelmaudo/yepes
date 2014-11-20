@@ -8,6 +8,8 @@ from django.utils import six
 
 from yepes.apps.registry import registry
 
+__all__ = ('override_registry', )
+
 
 class override_registry(object):
     """

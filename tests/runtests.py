@@ -54,9 +54,9 @@ def run_tests(verbosity=1, interactive=True, failfast=False, test_labels=(),
 
     state = setup(verbosity, test_labels)
     if with_xunit:
-        settings.TEST_RUNNER = 'yepes.test.XunitDiscoverRunner'
+        settings.TEST_RUNNER = 'yepes.test.xunit.XunitDiscoverRunner'
     elif not getattr(settings, 'TEST_RUNNER', None):
-        settings.TEST_RUNNER = 'yepes.test.SugarDiscoverRunner'
+        settings.TEST_RUNNER = 'yepes.test.sugar.SugarDiscoverRunner'
 
     TestRunner = get_runner(settings)
     test_runner = TestRunner(

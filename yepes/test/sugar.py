@@ -6,6 +6,8 @@ from unittest import TestResult, TextTestRunner
 
 from django.test.runner import DiscoverRunner
 
+__all__ = ('SugarDiscoverRunner', 'SugarTestResult', 'SugarTestRunner')
+
 TERMINAL_COLORS = {
     'error': '\033[1;91m',    # Bold, Light red
     'gray': '\033[90m',       # Dark gray

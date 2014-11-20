@@ -18,6 +18,8 @@ from yepes.test.sugar import (
     SugarTestRunner,
 )
 
+__all__ = ('XunitDiscoverRunner', 'XunitTestResult', 'XunitTestRunner')
+
 
 class XunitTestResult(SugarTestResult):
     """
