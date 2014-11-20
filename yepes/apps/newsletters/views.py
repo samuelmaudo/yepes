@@ -24,7 +24,7 @@ from aggregate_if import Count
 
 from yepes.apps.newsletters.utils import prerender, render
 from yepes.loading import get_class, get_model
-from yepes.views import decorate_view
+from yepes.utils.views import decorate_view
 from yepes.views import FormView, UpdateView
 
 Click = get_model('newsletters', 'Click')
