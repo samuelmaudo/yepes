@@ -34,11 +34,6 @@ TEMPLATES_DIR = 'templates'
 
 
 def get_test_modules():
-    from django.db.models.loading import get_apps
-    return [app.__name__.rsplit('.', 1)[0] for app in get_apps()]
-
-
-def get_test_modules():
     modules = []
     for entry_name in os.listdir(RUNTESTS_DIR):
         if ('.' not in entry_name
@@ -51,21 +46,27 @@ def get_test_modules():
     return modules
 
 
-def run_tests(verbosity, interactive, failfast, test_labels):
+def run_tests(verbosity=1, interactive=True, failfast=False, test_labels=(),
+              output_file=None, with_xunit=False):
+
     from django.conf import settings
     from django.test.utils import get_runner
 
     state = setup(verbosity, test_labels)
-    if not hasattr(settings, 'TEST_RUNNER'):
-        settings.TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+    if with_xunit:
+        settings.TEST_RUNNER = 'yepes.test.XunitDiscoverRunner'
+    elif not getattr(settings, 'TEST_RUNNER', None):
+        settings.TEST_RUNNER = 'yepes.test.SugarDiscoverRunner'
 
     TestRunner = get_runner(settings)
     test_runner = TestRunner(
         verbosity=verbosity,
         interactive=interactive,
         failfast=failfast,
+        output_file=output_file,
     )
     num_failures = test_runner.run_tests(test_labels or get_test_modules())
+
     teardown(state)
     return num_failures
 
@@ -165,16 +166,24 @@ if __name__ == '__main__':
              'output')
     parser.add_option(
         '--noinput', action='store_false', dest='interactive', default=True,
-        help='Tells Django to NOT prompt the user for input of any kind.')
+        help='Tells Yepes to NOT prompt the user for input of any kind.')
     parser.add_option(
         '--failfast', action='store_true', dest='failfast', default=False,
-        help='Tells Django to stop running the test suite after first failed '
+        help='Tells Yepes to stop running the test suite after first failed '
              'test.')
     parser.add_option(
         '--settings',
         help='Python path to settings module, e.g. "myproject.settings". If '
              'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
              'variable will be used.')
+    parser.add_option(
+        '--with-xunit', action='store_true', dest='with_xunit', default=False,
+        help='Tells Yepes to output test results in the standard XUnit XML'
+             ' format. Requires unittest-xml-reporting')
+    parser.add_option(
+        '--xunit-file', action='store', dest='xunit_file', default='testresults.xml',
+        help='Path to xml file to store the xunit report in. Default is'
+             ' testresults.xml in the working directory')
 
     options, args = parser.parse_args()
     if options.settings:
@@ -184,12 +193,14 @@ if __name__ == '__main__':
             os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
         options.settings = os.environ['DJANGO_SETTINGS_MODULE']
 
-    num_failures = run_tests(
-        int(options.verbosity),
-        options.interactive,
-        options.failfast,
-        args,
-    )
+    num_failures = run_tests(**{
+        'verbosity': int(options.verbosity),
+        'interactive': options.interactive,
+        'failfast': options.failfast,
+        'test_labels': args,
+        'output_file': options.xunit_file,
+        'with_xunit': options.with_xunit,
+    })
     if num_failures > 0:
         sys.exit(True)
 

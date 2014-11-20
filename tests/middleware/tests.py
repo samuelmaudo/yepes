@@ -24,8 +24,8 @@ from yepes.middleware.login_required import LoginRequiredMiddleware
 from yepes.middleware.phased_render import PhasedRenderMiddleware
 from yepes.middleware.ssl_redirect import SSLRedirectMiddleware
 from yepes.middleware.subdomains import SubdomainsMiddleware
+from yepes.test.decorators import override_registry
 from yepes.utils import phased
-from yepes.utils.test import override_registry
 
 
 def token_view(request):
