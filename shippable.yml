@@ -21,7 +21,10 @@ before_script:
   - mkdir -p shippable/codecoverage
 
 script:
-  - which python && coverage run --branch tests/runtests.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
+  - tests/runtests.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
+
+after_script:
+  - which python && coverage run --branch tests/runtests.py
   - which python && coverage xml -o shippable/codecoverage/coverage.xml tests/runtests.py
 
 notifications:
