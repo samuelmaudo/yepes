@@ -44,7 +44,7 @@ class JSONEncoder(DefaultJSONEncoder):
         try:
             o = o.to_decimal()
         except AttributeError:
-            return super(YepesJSONEncoder, self).default(o)
+            return super(JSONEncoder, self).default(o)
         else:
             return self.default_decimal(o)
 

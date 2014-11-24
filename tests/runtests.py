@@ -11,11 +11,11 @@ from django.utils import six
 from django.utils._os import upath
 
 ALWAYS_INSTALLED_APPS = [
-    'mptt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sites',
+    'mptt',
     'yepes',
     'yepes.apps.registry',
 ]

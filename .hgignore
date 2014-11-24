@@ -1,11 +1,12 @@
 syntax:glob
 
+*.coverage
 *.egg-info
 *.kdev4
 *.pot
 *.py[co]
 __pycache__
-.kdev4/
 backup/
 build/
 dist/
+htmlcov/
