@@ -48,16 +48,19 @@ class MetaData(models.Model):
             return self.meta_description
 
         description = ''
-        field_names = self._meta.get_all_field_names()
-        if 'description' in field_names:
-            description = self.description
-        if not description and 'excerpt' in field_names:
-            description = self.excerpt
-        if not description and 'content' in field_names:
-            description = self.content
-        if not description:
+        for field_name in ('description', 'excerpt', 'content'):
+            for field in self._meta.fields:
+                if field.name == field_name:
+                    if hasattr(field, 'html_field'):
+                        field = field.html_field
+                    description = getattr(self, field.name)
+                    if description:
+                        break
+        else:
             for field in self._meta.fields:
                 if isinstance(field, models.TextField):
+                    if hasattr(field, 'html_field'):
+                        field = field.html_field
                     description = getattr(self, field.name)
                     if description:
                         break
