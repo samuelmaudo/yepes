@@ -71,7 +71,6 @@ class BitField(models.BigIntegerField):
     def formfield(self, **kwargs):
         defaults = {
             'choices': self.get_choices(include_blank=False),
-            'coerce': int,
             'form_class': forms.BitField,
             'help_text': self.help_text,
             'label': capfirst(self.verbose_name),
@@ -159,6 +158,11 @@ class BitField(models.BigIntegerField):
         field_class = 'django.db.models.fields.BigIntegerField'
         args, kwargs = introspector(self)
         return (field_class, args, kwargs)
+
+    def to_python(self, value):
+        # Although the descriptor ensures valid values, is necessary to
+        # overwrite this method because the parent method coerces to ``int``.
+        return value
 
     def validate(self, value, model_instance):
         if value is None and not self.null:

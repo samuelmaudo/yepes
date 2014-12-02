@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.forms import TypedMultipleChoiceField
 
 from yepes.forms.widgets import BitWidget
+from yepes.types import Bit
 
 
 class BitField(TypedMultipleChoiceField):
@@ -14,6 +15,7 @@ class BitField(TypedMultipleChoiceField):
                 widget = BitWidget
         elif not issubclass(widget, BitWidget):
             widget = BitWidget
+        kwargs['coerce'] = Bit
         kwargs['widget'] = widget
         super(BitField, self).__init__(*args, **kwargs)
 
@@ -21,6 +23,7 @@ class BitField(TypedMultipleChoiceField):
         if self.required and not value:
             msg = self.error_messages['required']
             raise ValidationError(msg)
+
         for v in value:
             for key, verbose in self.choices:
                 if v == key:

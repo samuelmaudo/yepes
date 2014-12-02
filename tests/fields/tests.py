@@ -299,6 +299,27 @@ class BitFieldTest(test.TestCase):
         self.assertFalse(record.flags.hex)
         self.assertFalse(record.flags.oct)
 
+    def test_field_clean(self):
+        record = BitModel.objects.create(flags=0b0011)
+        self.assertTrue(record.flags.bin)
+        self.assertIsInstance(record.flags.bin, bool)
+        self.assertTrue(record.flags.dec)
+        self.assertIsInstance(record.flags.dec, bool)
+        self.assertFalse(record.flags.hex)
+        self.assertIsInstance(record.flags.hex, bool)
+        self.assertFalse(record.flags.oct)
+        self.assertIsInstance(record.flags.oct, bool)
+
+        record.clean_fields()
+        self.assertTrue(record.flags.bin)
+        self.assertIsInstance(record.flags.bin, bool)
+        self.assertTrue(record.flags.dec)
+        self.assertIsInstance(record.flags.dec, bool)
+        self.assertFalse(record.flags.hex)
+        self.assertIsInstance(record.flags.hex, bool)
+        self.assertFalse(record.flags.oct)
+        self.assertIsInstance(record.flags.oct, bool)
+
     def test_select(self):
         record = BitModel.objects.create(flags='hex')
         self.assertFalse(BitModel.objects.filter(flags=BitModel.flags.bin).exists())
