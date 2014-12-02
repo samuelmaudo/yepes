@@ -45,25 +45,26 @@ class MetaData(models.Model):
 
     def get_meta_description(self, max_words=30, end_text='...'):
         if self.meta_description:
-            return self.meta_description
-
-        description = ''
-        for field_name in ('description', 'excerpt', 'content'):
-            for field in self._meta.fields:
-                if field.name == field_name:
-                    if hasattr(field, 'html_field'):
-                        field = field.html_field
-                    description = getattr(self, field.name)
-                    if description:
-                        break
+            description = self.meta_description
         else:
-            for field in self._meta.fields:
-                if isinstance(field, models.TextField):
+            description = ''
+            fields = {fld.name: fld for fld in self._meta.fields}
+            for field_name in ('excerpt', 'description', 'content'):
+                if field_name in fields:
+                    field = fields[field_name]
                     if hasattr(field, 'html_field'):
                         field = field.html_field
                     description = getattr(self, field.name)
                     if description:
                         break
+            else:
+                for field in self._meta.fields:
+                    if isinstance(field, models.TextField):
+                        if hasattr(field, 'html_field'):
+                            field = field.html_field
+                        description = getattr(self, field.name)
+                        if description:
+                            break
 
         description = strip_tags(description)
         description = Truncator(description).words(max_words, end_text)
@@ -71,7 +72,7 @@ class MetaData(models.Model):
 
     def get_meta_keywords(self, max_words=10):
         if self.meta_keywords:
-            return ', '.join(self.meta_keywords)
+            return ', '.join(self.meta_keywords[:max_words])
 
         words = []
         words.extend(WORD_SEPARATORS_RE.split(self.get_meta_title().lower()) * 2)
@@ -83,18 +84,17 @@ class MetaData(models.Model):
 
     def get_meta_title(self, max_length=100, end_text='...'):
         if self.meta_title:
-            return self.meta_title
-
-        title = ''
-        field_names = self._meta.get_all_field_names()
-        if 'title' in field_names:
-            title = self.title
-        if not title and 'name' in field_names:
-            title = self.name
+            title = self.meta_title
+        else:
+            title = ''
+            field_names = self._meta.get_all_field_names()
+            for field_name in ('title', 'headline', 'name'):
+                if field_name in field_names:
+                    title = getattr(self, field_name)
+                    if title:
+                        break
 
         title = strip_tags(title)
-        if len(title) > max_length:
-            title = title[:max_length] + end_text
-
+        title = Truncator(title).chars(max_length, end_text)
         return title
 

@@ -58,11 +58,3 @@ class Activatable(models.Model):
     is_active.boolean = True
     is_active.short_description = _('Is Active?')
 
-    def save(self, **kwargs):
-        """
-        Set default for ``active_from``.
-        """
-        if self.active_from is None:
-            self.active_from = timezone.now()
-        super(Activatable, self).save(**kwargs)
-

@@ -22,7 +22,65 @@ from .models import (
     Language,
     Product,
     ProductVariant,
+    RichArticle,
+    Volcano,
 )
+
+
+class ActivatableTest(test.TestCase):
+
+    def setUp(self):
+        self.volcano_1 = Volcano.objects.create(
+            name='Luzon',
+            active_status=Volcano.ACTIVE,
+            active_from=None,
+            active_to=None,
+        )
+        self.volcano_2 = Volcano.objects.create(
+            name='Sulu',
+            active_status=Volcano.INACTIVE,
+            active_from=None,
+            active_to=None,
+        )
+        self.volcano_3 = Volcano.objects.create(
+            name='Visayas',
+            active_status=Volcano.ACTIVE,
+            active_from=datetime(2000, 1, 1, tzinfo=timezone.utc),
+            active_to=datetime(2004, 12, 31, tzinfo=timezone.utc),
+        )
+
+    def test_instance_methods(self):
+        self.assertTrue(self.volcano_1.is_active())
+        self.assertFalse(self.volcano_2.is_active())
+        self.assertFalse(self.volcano_3.is_active())
+
+        timestamp = datetime(1999, 12, 31, tzinfo=timezone.utc)
+        self.assertFalse(self.volcano_3.is_active(date=timestamp))
+
+        timestamp = datetime(2005, 1, 1, tzinfo=timezone.utc)
+        self.assertFalse(self.volcano_3.is_active(date=timestamp))
+
+        timestamp = datetime(2002, 6, 15, tzinfo=timezone.utc)
+        self.assertTrue(self.volcano_3.is_active(date=timestamp))
+
+    def test_manager_methods(self):
+        self.assertEqual(
+            list(Volcano.objects.active()),
+            [self.volcano_1]
+        )
+        self.assertEqual(
+            list(Volcano.objects.inactive()),
+            [self.volcano_2, self.volcano_3]
+        )
+        timestamp = datetime(2002, 6, 15, tzinfo=timezone.utc)
+        self.assertEqual(
+            list(Volcano.objects.active(date=timestamp)),
+            [self.volcano_1, self.volcano_3]
+        )
+        self.assertEqual(
+            list(Volcano.objects.inactive(date=timestamp)),
+            [self.volcano_2]
+        )
 
 
 class LoggedTest(test.TestCase):
@@ -58,30 +116,219 @@ class LoggedTest(test.TestCase):
 
 class MetaDataTest(test.TestCase):
 
-    def test_instance_methods(self):
-        article = Article()
-        article.title = 'Two Scoops of Django'
-        article.content = (
-            'This book is chock-full of material that will help you with'
-            ' your Django projects.\n'
-            'We’ll introduce you to various tips, tricks, patterns, code'
-            ' snippets, and techniques that we’ve picked up over the years.'
-            ' This book is a significant revision of the previous edition.'
+    maxDiff = None
+
+    def test_meta_attributes(self):
+        article = Article.objects.create(
+            meta_title='The Definitive Guide to Django',
+            meta_description=(
+                'Django, the Python-based equivalent to the Ruby on Rails web'
+                ' development framework, is hottest topics in web development.'
+                ' In _The Definitive Guide to Django: Web Development Done'
+                ' Right_, **Adrian Holovaty**, one of Django\'s creators, and'
+                ' Django lead developer **Jacob Kaplan-Moss** show you how'
+                ' they use this framework to create award-winning web sites.'
+            ),
+            meta_keywords=[
+                'Django', 'Definitive', 'Guide',
+                'Web', 'Development',
+            ],
+            title='Two Scoops of Django',
+            content=(
+                'This book is chock-full of material that will help you with'
+                ' your Django projects.\n'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
+                ' This book is a significant revision of the previous edition.'
+            ),
+        )
+        self.assertEqual(
+            article.get_meta_title(),
+            'The Definitive Guide to Django',
+        )
+        self.assertEqual(
+            article.get_meta_title(max_length=15, end_text='.....'),
+            'The Defini.....',
+        )
+        self.assertEqual(
+            article.get_meta_description(),
+            'Django, the Python-based equivalent to the Ruby on Rails web'
+            ' development framework, is hottest topics in web development.'
+            ' In _The Definitive Guide to Django: Web Development Done'
+            ' Right_, **Adrian Holovaty**,...',
+        )
+        self.assertEqual(
+            article.get_meta_description(max_words=5, end_text='......'),
+            'Django, the Python-based equivalent to......',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(),
+            'Django, Definitive, Guide, Web, Development',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(max_words=3),
+            'Django, Definitive, Guide',
+        )
+
+    def test_title_and_excerpt_fields(self):
+        article = RichArticle.objects.create(
+            title='The Definitive Guide to Django',
+            headline='Two Scoops of Django',
+            name='Two Scoops of Django',
+            excerpt=(
+                'Django, the Python-based equivalent to the Ruby on Rails web'
+                ' development framework, is hottest topics in web development.'
+                ' In _The Definitive Guide to Django: Web Development Done'
+                ' Right_, **Adrian Holovaty**, one of Django\'s creators, and'
+                ' Django lead developer **Jacob Kaplan-Moss** show you how'
+                ' they use this framework to create award-winning web sites.'
+            ),
+            description=(
+                'This book is chock-full of material that will help you with'
+                ' your Django projects.\n\n'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
+                ' This book is a significant revision of the previous edition.'
+            ),
+            content=(
+                'This book is chock-full of material that will help you with'
+                ' your Django projects.\n\n'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
+                ' This book is a significant revision of the previous edition.'
+            ),
+        )
+        self.assertEqual(
+            article.get_meta_title(),
+            'The Definitive Guide to Django',
+        )
+        self.assertEqual(
+            article.get_meta_title(max_length=15, end_text='.....'),
+            'The Defini.....',
+        )
+        self.assertEqual(
+            article.get_meta_description(),
+            'Django, the Python-based equivalent to the Ruby on Rails web'
+            ' development framework, is hottest topics in web development.'
+            ' In The Definitive Guide to Django: Web Development Done'
+            ' Right, Adrian Holovaty,...',
+        )
+        self.assertEqual(
+            article.get_meta_description(max_words=5, end_text='......'),
+            'Django, the Python-based equivalent to......',
+        )
+        registry['core:STOP_WORDS'] = (
+            'i', 'you', 'he', 'she', 'we', 'they',
+            'my', 'your', 'his', 'her', 'our', 'their',
+            'of',
+            'the',
+            'this', 'that',
+            'and', 'or', 'xor',
+            'is', 'are',
+            'have', 'has', 'had',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(),
+            'django, to, development,'
+            ' definitive, web, guide,'
+            ' in, on, right, based',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(max_words=3),
+            'django, to, development',
+        )
+
+    def test_headline_and_description_fields(self):
+        article = RichArticle.objects.create(
+            title='',
+            headline='The Definitive Guide to Django',
+            name='Two Scoops of Django',
+            excerpt='',
+            description=(
+                'Django, the Python-based equivalent to the Ruby on Rails web'
+                ' development framework, is hottest topics in web development.'
+                ' In _The Definitive Guide to Django: Web Development Done'
+                ' Right_, **Adrian Holovaty**, one of Django\'s creators, and'
+                ' Django lead developer **Jacob Kaplan-Moss** show you how'
+                ' they use this framework to create award-winning web sites.'
+            ),
+            content=(
+                'This book is chock-full of material that will help you with'
+                ' your Django projects.\n\n'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
+                ' This book is a significant revision of the previous edition.'
+            ),
+        )
+        self.assertEqual(
+            article.get_meta_title(),
+            'The Definitive Guide to Django',
+        )
+        self.assertEqual(
+            article.get_meta_title(max_length=15, end_text='.....'),
+            'The Defini.....',
+        )
+        self.assertEqual(
+            article.get_meta_description(),
+            'Django, the Python-based equivalent to the Ruby on Rails web'
+            ' development framework, is hottest topics in web development.'
+            ' In The Definitive Guide to Django: Web Development Done'
+            ' Right, Adrian Holovaty,...',
+        )
+        self.assertEqual(
+            article.get_meta_description(max_words=5, end_text='......'),
+            'Django, the Python-based equivalent to......',
+        )
+        registry['core:STOP_WORDS'] = (
+            'i', 'you', 'he', 'she', 'we', 'they',
+            'my', 'your', 'his', 'her', 'our', 'their',
+            'of',
+            'the',
+            'this', 'that',
+            'and', 'or', 'xor',
+            'is', 'are',
+            'have', 'has', 'had',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(),
+            'django, to, development,'
+            ' definitive, web, guide,'
+            ' in, on, right, based',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(max_words=3),
+            'django, to, development',
+        )
+
+    def test_name_and_content(self):
+        article = RichArticle.objects.create(
+            title='',
+            headline='',
+            name='Two Scoops of Django',
+            excerpt='',
+            description='',
+            content=(
+                'This book is chock-full of material that will help you with'
+                ' your Django projects.\n\n'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
+                ' This book is a significant revision of the previous edition.'
+            ),
         )
         self.assertEqual(
             article.get_meta_title(),
             'Two Scoops of Django',
         )
         self.assertEqual(
-            article.get_meta_title(max_length=10, end_text='......'),
-            'Two Scoops......',
+            article.get_meta_title(max_length=15, end_text='.....'),
+            'Two Scoops.....',
         )
         self.assertEqual(
             article.get_meta_description(),
             'This book is chock-full of material that will help you with'
             ' your Django projects.'
-            ' We’ll introduce you to various tips, tricks, patterns, code'
-            ' snippets, and techniques that we’ve picked up...',
+            ' We\'ll introduce you to various tips, tricks, patterns, code'
+            ' snippets, and techniques that we\'ve picked up...',
         )
         self.assertEqual(
             article.get_meta_description(max_words=5, end_text='......'),
@@ -100,8 +347,59 @@ class MetaDataTest(test.TestCase):
         self.assertEqual(
             article.get_meta_keywords(),
             'django, scoops, two, code,'
-            ' help, picked, we\u2019ve,'
-            ' chock, snippets, techniques',
+            ' help, picked, chock,'
+            ' snippets, techniques, to',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(max_words=3),
+            'django, scoops, two',
+        )
+
+    def test_rich_text_fields(self):
+        article = RichArticle.objects.create(
+            title='Two Scoops of Django',
+            content=(
+                'This book is chock-full of material that will help you with'
+                ' your [Django](https://www.djangoproject.com/) projects.\n\n'
+                'We\'ll introduce you to various _tips, tricks, patterns, code'
+                ' snippets,_ and _techniques_ that we\'ve picked up over the years.'
+                ' This book is a **significant revision** of the previous edition.'
+            ),
+        )
+        self.assertEqual(
+            article.get_meta_title(),
+            'Two Scoops of Django',
+        )
+        self.assertEqual(
+            article.get_meta_title(max_length=15, end_text='.....'),
+            'Two Scoops.....',
+        )
+        self.assertEqual(
+            article.get_meta_description(),
+            'This book is chock-full of material that will help you with'
+            ' your Django projects.'
+            ' We\'ll introduce you to various tips, tricks, patterns, code'
+            ' snippets, and techniques that we\'ve picked up...',
+        )
+        self.assertEqual(
+            article.get_meta_description(max_words=5, end_text='......'),
+            'This book is chock-full of......',
+        )
+        registry['core:STOP_WORDS'] = (
+            'i', 'you', 'he', 'she', 'we', 'they',
+            'my', 'your', 'his', 'her', 'our', 'their',
+            'of',
+            'the',
+            'this', 'that',
+            'and', 'or', 'xor',
+            'is', 'are',
+            'have', 'has', 'had',
+        )
+        self.assertEqual(
+            article.get_meta_keywords(),
+            'django, scoops, two, code,'
+            ' help, picked, chock,'
+            ' snippets, techniques, to',
         )
         self.assertEqual(
             article.get_meta_keywords(max_words=3),
@@ -606,18 +904,18 @@ class SearchableTest(test.TestCase):
             content=(
                 'This book is chock-full of material that will help you with'
                 ' your Django projects.\n'
-                'We’ll introduce you to various tips, tricks, patterns, code'
-                ' snippets, and techniques that we’ve picked up over the years.'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
                 ' This book is a significant revision of the previous edition.'
             ),
         )
         self.article_2 = Article.objects.create(
             title='The Django Book',
             content=(
-                'You’re reading _The Django Book_, first published in December'
+                'You\'re reading _The Django Book_, first published in December'
                 ' 2007 (and updated in 2009) by Apress as _The Definitive Guide'
                 ' to Django: Web Development Done Right_.\n\n'
-                'We’ve released this book freely for a couple of reasons.'
+                'We\'ve released this book freely for a couple of reasons.'
                 ' First, we love Django and we want it to be as accessible as'
                 ' possible. Many programmers learn their craft from'
                 ' well-written technical material, so we set out to create a'
@@ -632,12 +930,12 @@ class SearchableTest(test.TestCase):
         self.article_3 = Article.objects.create(
             title='The Definitive Guide to Django',
             content=(
-                'Django, the Python–based equivalent to the Ruby on Rails web'
+                'Django, the Python-based equivalent to the Ruby on Rails web'
                 ' development framework, is hottest topics in web development.'
                 ' In _The Definitive Guide to Django: Web Development Done'
-                ' Right_, **Adrian Holovaty**, one of Django’s creators, and'
-                ' Django lead developer **Jacob Kaplan–Moss** show you how'
-                ' they use this framework to create award–winning web sites.'
+                ' Right_, **Adrian Holovaty**, one of Django\'s creators, and'
+                ' Django lead developer **Jacob Kaplan-Moss** show you how'
+                ' they use this framework to create award-winning web sites.'
             ),
         )
         self.product_1 = Product.objects.create(
@@ -645,8 +943,8 @@ class SearchableTest(test.TestCase):
             description=(
                 'This book is chock-full of material that will help you with'
                 ' your Django projects.\n'
-                'We’ll introduce you to various tips, tricks, patterns, code'
-                ' snippets, and techniques that we’ve picked up over the years.'
+                'We\'ll introduce you to various tips, tricks, patterns, code'
+                ' snippets, and techniques that we\'ve picked up over the years.'
                 ' This book is a significant revision of the previous edition.'
             ),
         )
@@ -661,10 +959,10 @@ class SearchableTest(test.TestCase):
         self.product_2 = Product.objects.create(
             name='The Django Book',
             description=(
-                'You’re reading _The Django Book_, first published in December'
+                'You\'re reading _The Django Book_, first published in December'
                 ' 2007 (and updated in 2009) by Apress as _The Definitive Guide'
                 ' to Django: Web Development Done Right_.\n\n'
-                'We’ve released this book freely for a couple of reasons.'
+                'We\'ve released this book freely for a couple of reasons.'
                 ' First, we love Django and we want it to be as accessible as'
                 ' possible. Many programmers learn their craft from'
                 ' well-written technical material, so we set out to create a'
@@ -683,12 +981,12 @@ class SearchableTest(test.TestCase):
         self.product_3 = Product.objects.create(
             name='The Definitive Guide to Django',
             description=(
-                'Django, the Python–based equivalent to the Ruby on Rails web'
+                'Django, the Python-based equivalent to the Ruby on Rails web'
                 ' development framework, is hottest topics in web development.'
                 ' In _The Definitive Guide to Django: Web Development Done'
-                ' Right_, **Adrian Holovaty**, one of Django’s creators, and'
-                ' Django lead developer **Jacob Kaplan–Moss** show you how'
-                ' they use this framework to create award–winning web sites.'
+                ' Right_, **Adrian Holovaty**, one of Django\'s creators, and'
+                ' Django lead developer **Jacob Kaplan-Moss** show you how'
+                ' they use this framework to create award-winning web sites.'
             ),
         )
         self.variant_4 = self.product_3.variants.create(
