@@ -12,6 +12,8 @@ from yepes.fields.guid import GuidField
 from yepes.apps.thumbnails.fields import ImageField
 from yepes.fields.key import KeyField
 from yepes.fields.name import NameField
+from yepes.fields.phone_number import PhoneNumberField
 from yepes.fields.pickled import PickledObjectField
+from yepes.fields.postal_code import PostalCodeField
 from yepes.fields.rich_text import RichTextField
 from yepes.fields.slug import SlugField
