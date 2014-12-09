@@ -1157,6 +1157,17 @@ class KeyFieldTest(test.TestCase):
             record.full_clean()
 
 
+class NameFieldTest(test.TestCase):
+
+    def test_cleaning(self):
+        record = SlugModel(title='\tLorem  Ipsum\nDolor ')
+        record.full_clean()
+        self.assertEqual(
+            record.title,
+            'Lorem Ipsum Dolor',
+        )
+
+
 class PickledObjectFieldTest(test.TestCase):
 
     def checkPickledField(self, field_name, obj):

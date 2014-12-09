@@ -11,6 +11,7 @@ from yepes.fields.formula import FormulaField
 from yepes.fields.guid import GuidField
 from yepes.apps.thumbnails.fields import ImageField
 from yepes.fields.key import KeyField
+from yepes.fields.name import NameField
 from yepes.fields.pickled import PickledObjectField
 from yepes.fields.rich_text import RichTextField
 from yepes.fields.slug import SlugField

@@ -21,6 +21,7 @@ from yepes.fields import (
     FormulaField,
     GuidField,
     KeyField,
+    NameField,
     PickledObjectField,
     RelatedBitField,
     RichTextField,
@@ -135,7 +136,7 @@ class EncryptedModel(models.Model):
 
 class FlagModel(models.Model):
 
-    name = models.CharField(
+    name = NameField(
             max_length=31)
 
     class Meta:
@@ -216,7 +217,7 @@ class RichTextModel(models.Model):
 
 class SlugModel(models.Model):
 
-    title = models.CharField(
+    title = NameField(
             max_length=63)
     slug = SlugField(
             max_length=63)
