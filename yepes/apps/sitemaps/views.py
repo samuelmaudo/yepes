@@ -18,6 +18,7 @@ class SitemapView(CachedTemplateView):
 
     content_type = 'application/xml'
     sitemap_class = None
+    template_name = 'sitemap.xml'
     timeout = 86400
 
     def get_context_data(self, **context):
@@ -40,16 +41,6 @@ class SitemapView(CachedTemplateView):
 
     def get_sitemap_kwargs(self):
         return {}
-
-    def get_template_names(self):
-        templates = []
-        if isinstance(self.template_name, six.string_types):
-            templates.append(self.template_name)
-        elif is_iterable(self.template_name):
-            templates.extend(self.template_name)
-
-        templates.append('sitemap.xml')
-        return templates
 
     def get_use_cache(self, request):
         return (not request.user.is_staff)
@@ -76,6 +67,7 @@ class SitemapIndexView(CachedTemplateView):
 
     content_type = 'application/xml'
     sitemap_urls = None
+    template_name = 'sitemap_index.xml'
     timeout = 86400
 
     def get_context_data(self, **context):
@@ -99,16 +91,6 @@ class SitemapIndexView(CachedTemplateView):
                 urls.extend(url)
 
         return urls
-
-    def get_template_names(self):
-        templates = []
-        if isinstance(self.template_name, six.string_types):
-            templates.append(self.template_name)
-        elif is_iterable(self.template_name):
-            templates.extend(self.template_name)
-
-        templates.append('sitemap_index.xml')
-        return templates
 
     def get_use_cache(self, request):
         return (not request.user.is_staff)

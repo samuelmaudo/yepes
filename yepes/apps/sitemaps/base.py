@@ -18,7 +18,6 @@ class FullUrlSitemap(Sitemap):
     _prefix = None
 
     def get_urls(self, page=1, *args, **kwargs):
-
         if self.paginate:
             items = self.paginator.page(page).object_list
         elif page == 1:
@@ -31,8 +30,8 @@ class FullUrlSitemap(Sitemap):
                 'item': i,
                 'location': self._Sitemap__get('location', i),
                 'lastmod': self._Sitemap__get('lastmod', i, None),
-                'changefreq': self._Sitemap__get('changefreq', i, None),
-                'priority': six.text_type(self._Sitemap__get('priority', i, None) or ''),
+                'changefreq': self._Sitemap__get('changefreq', i, ''),
+                'priority': six.text_type(self._Sitemap__get('priority', i, '')),
             }
             for i
             in items
@@ -41,7 +40,7 @@ class FullUrlSitemap(Sitemap):
 
     def location(self, obj):
         """
-        Try to obtain the item location by calling ``obj.get_full_url()``.
+        Tries to obtain the item location by calling ``obj.get_full_url()``.
         """
         if not self.homogeneous:
             return obj.get_full_url()
