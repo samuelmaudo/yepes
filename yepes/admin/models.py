@@ -14,11 +14,8 @@ from django.db.models.fields import BLANK_CHOICE_DASH, FieldDoesNotExist
 from django.utils import six
 from django.utils.encoding import smart_bytes
 
-from yepes.admin import (
-    actions as yepes_actions,
-    operations as yepes_operations,
-)
-from yepes.admin.views import MassUpdateView
+from yepes.admin import actions, operations
+from yepes.admin.views import ExportView, ImportView, MassUpdateView
 
 
 class ModelAdmin(DjangoModelAdmin):
@@ -35,54 +32,59 @@ class ModelAdmin(DjangoModelAdmin):
 
     def get_actions(self, request):
         # Move admin site actions to the end.
-        actions = super(ModelAdmin, self).get_actions(request)
-        if actions:
+        acts = super(ModelAdmin, self).get_actions(request)
+        if acts:
             for name, func in self.admin_site.actions:
-                info = actions.pop(name)
+                info = acts.pop(name)
                 if (name != 'delete_selected'
                         or self.has_delete_permission(request)):
-                    actions[name] = info
+                    acts[name] = info
 
         if self.has_massupdate_permission(request):
-            actions['mass_update'] = (
-                yepes_actions.mass_update,
+            acts['mass_update'] = (
+                actions.mass_update,
                 'mass_update',
-                yepes_actions.mass_update.short_description,
+                actions.mass_update.short_description,
             )
-
-        return actions
+        if self.has_export_permission(request):
+            acts['export'] = (
+                actions.export,
+                'export',
+                actions.export.short_description,
+            )
+        return acts
 
     def get_field_operations(self, request, field):
-        operations = [yepes_operations.Set]
+        ops = [operations.Set]
         if not field.choices and field.rel is None:
             if field.null:
-                operations.append(
-                    yepes_operations.SetNull,
+                ops.append(
+                    operations.SetNull,
                 )
             if isinstance(field, models.CharField):
-                operations.extend([
-                    yepes_operations.Lower,
-                    yepes_operations.Upper,
-                    yepes_operations.Capitalize,
-                    yepes_operations.Title,
-                    yepes_operations.SwapCase,
-                    yepes_operations.Strip,
+                ops.extend([
+                    operations.Lower,
+                    operations.Upper,
+                    operations.Capitalize,
+                    operations.Title,
+                    operations.SwapCase,
+                    operations.Strip,
                 ])
             elif isinstance(field, (models.IntegerField,
                                     models.FloatField,
                                     models.DecimalField)):
-                operations.extend([
-                    yepes_operations.Add,
-                    yepes_operations.Sub,
-                    yepes_operations.Mul,
-                    yepes_operations.Div,
+                ops.extend([
+                    operations.Add,
+                    operations.Sub,
+                    operations.Mul,
+                    operations.Div,
                 ])
             elif isinstance(field, (models.BooleanField,
                                     models.NullBooleanField)):
-                operations.append(
-                    yepes_operations.Swap,
+                ops.append(
+                    operations.Swap,
                 )
-        return operations
+        return ops
 
     def get_formfields(self, request, unique=False, many_to_many=False, **kwargs):
         field_names = flatten_fieldsets(self.get_fieldsets(request))
@@ -156,6 +158,14 @@ class ModelAdmin(DjangoModelAdmin):
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
         urls = patterns('',
+            url(r'^export/$',
+                wrap(ExportView.as_view(model_admin=self)),
+                name='{0}_{1}_export'.format(*info),
+            ),
+            url(r'^import/$',
+                wrap(ImportView.as_view(model_admin=self)),
+                name='{0}_{1}_import'.format(*info),
+            ),
             url(r'^mass-update/$',
                 wrap(MassUpdateView.as_view(model_admin=self)),
                 name='{0}_{1}_massupdate'.format(*info),
@@ -221,6 +231,12 @@ class ModelAdmin(DjangoModelAdmin):
         app_label = self.opts.app_label
         delete_permission = self.opts.get_delete_permission()
         return request.user.has_perm(app_label + '.' + delete_permission)
+
+    def has_export_permission(self, request, obj=None):
+        return request.user.has_perm('export')
+
+    def has_import_permission(self, request, obj=None):
+        return request.user.has_perm('import')
 
     def has_massupdate_permission(self, request, obj=None):
         return request.user.has_perm('mass_update')
