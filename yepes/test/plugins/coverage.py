@@ -31,7 +31,6 @@ class Coverage(Plugin):
                 for package
                 in options.cover_packages
             ]
-            print self.includedPackages
             self.includeBranches = options.cover_branches
             self.erasePrevious = options.cover_erase
 
