@@ -3,6 +3,8 @@
 from __future__ import absolute_import, unicode_literals
 
 import coverage
+import inspect
+import os
 
 from yepes.test.plugins import Plugin
 
@@ -21,7 +23,15 @@ class Coverage(Plugin):
         if self.enabled:
             self.mute = int(options.verbosity) < 1
             self.showAll = int(options.verbosity) > 1
-            self.includedPackages = options.cover_packages
+            self.includedPackages = [
+                os.path.dirname(
+                    os.path.abspath(
+                        inspect.getsourcefile(
+                            __import__(package))))
+                for package
+                in options.cover_packages
+            ]
+            print self.includedPackages
             self.includeBranches = options.cover_branches
             self.erasePrevious = options.cover_erase
 

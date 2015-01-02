@@ -60,11 +60,11 @@ class TestProgram(object):
     def loadPlugins(self):
         plugins = []
         try:
-            from yepes.test.plugins import coverage
+            from yepes.test.plugins import sugar
         except ImportError:
             pass
         else:
-            plugins.append(coverage.Coverage())
+            plugins.append(sugar.Sugar())
         try:
             from yepes.test.plugins import xunit
         except ImportError:
@@ -72,11 +72,11 @@ class TestProgram(object):
         else:
             plugins.append(xunit.Xunit())
         try:
-            from yepes.test.plugins import sugar
+            from yepes.test.plugins import coverage
         except ImportError:
             pass
         else:
-            plugins.append(sugar.Sugar())
+            plugins.append(coverage.Coverage())
 
         return plugins
 

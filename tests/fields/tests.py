@@ -301,6 +301,10 @@ class BitFieldTest(test.TestCase):
 
     def test_field_clean(self):
         record = BitModel.objects.create(flags=0b0011)
+        self.assertEqual(record.flags, 0b0011)
+        self.assertEqual(record.flags, 3)
+        self.assertIsInstance(record.flags, Bit)
+
         self.assertTrue(record.flags.bin)
         self.assertIsInstance(record.flags.bin, bool)
         self.assertTrue(record.flags.dec)
@@ -311,6 +315,10 @@ class BitFieldTest(test.TestCase):
         self.assertIsInstance(record.flags.oct, bool)
 
         record.clean_fields()
+        self.assertEqual(record.flags, 0b0011)
+        self.assertEqual(record.flags, 3)
+        self.assertIsInstance(record.flags, Bit)
+
         self.assertTrue(record.flags.bin)
         self.assertIsInstance(record.flags.bin, bool)
         self.assertTrue(record.flags.dec)

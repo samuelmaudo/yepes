@@ -27,7 +27,7 @@ class Xunit(Plugin):
     There is an abbreviated version of what an XML test report might look like::
 
         <?xml version="1.0" encoding="UTF-8"?>
-        <testsuite name="unittest" tests="1" errors="1" failures="0" skipped="0"
+        <testsuite name="testsuite" tests="1" errors="1" failures="0" skipped="0"
                    time="3.012" timestamp="1986-09-25T12:00:00Z">
             <properties>
                 <property name="os.name" value="Linux"/>
@@ -227,10 +227,7 @@ class Xunit(Plugin):
             timestamp = timestamp[:-6] + 'Z'
 
         testsuite = etree.Element('testsuite', attrib={
-            'name': '.'.join((
-                self.__class__.__module__,
-                self.__class__.__name__,
-            )),
+            'name': 'testsuite',
             'tests': six.text_type(self.testsRun),
             'errors': six.text_type(self.errorCount),
             'failures': six.text_type(self.failureCount),

@@ -11,7 +11,6 @@ TERMINAL_COLORS = {
     'error': '\033[1;91m',    # Bold, Light red
     'gray': '\033[90m',       # Dark gray
     'reset': '\033[0m',       # Reset all attributes
-    'info': '\033[94m',       # Light blue
     'success': '\033[92m',    # Light green
     'warning': '\033[1;93m',  # Bold, Light yellow
 }
@@ -30,12 +29,12 @@ class Sugar(Plugin):
     dictionary = {
         'error': TERMINAL_COLORS['error'] + 'ERROR' + TERMINAL_COLORS['reset'],
         'error_abbr': TERMINAL_COLORS['error'] + 'x' + TERMINAL_COLORS['reset'],
-        'expected_failure': TERMINAL_COLORS['info'] + 'expected failure' + TERMINAL_COLORS['reset'],
-        'expected_failure_abbr': TERMINAL_COLORS['info'] + 'x' + TERMINAL_COLORS['reset'],
+        'expected_failure': TERMINAL_COLORS['success'] + 'expected failure' + TERMINAL_COLORS['reset'],
+        'expected_failure_abbr': TERMINAL_COLORS['success'] + 'x' + TERMINAL_COLORS['reset'],
         'failure': TERMINAL_COLORS['error'] + 'FAIL' + TERMINAL_COLORS['reset'],
         'failure_abbr': TERMINAL_COLORS['error'] + 'x' + TERMINAL_COLORS['reset'],
-        'skip': TERMINAL_COLORS['info'] + 'skipped {0!r}' + TERMINAL_COLORS['reset'],
-        'skip_abbr': TERMINAL_COLORS['info'] + 's' + TERMINAL_COLORS['reset'],
+        'skip': TERMINAL_COLORS['success'] + 'skipped {0!r}' + TERMINAL_COLORS['reset'],
+        'skip_abbr': TERMINAL_COLORS['success'] + 's' + TERMINAL_COLORS['reset'],
         'success': TERMINAL_COLORS['success'] + 'ok' + TERMINAL_COLORS['reset'],
         'success_abbr': TERMINAL_COLORS['success'] + '.' + TERMINAL_COLORS['reset'],
         'unexpected_success': TERMINAL_COLORS['warning'] + 'unexpected success' + TERMINAL_COLORS['reset'],
