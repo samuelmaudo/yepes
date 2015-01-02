@@ -113,7 +113,7 @@ class Xunit(Plugin):
         self.results.append(testcase)
 
     def addExpectedFailure(self, test, err):
-        self.addFailure(self, test, err)
+        self.addFailure(test, err)
 
     def addFailure(self, test, err):
         """
@@ -158,7 +158,7 @@ class Xunit(Plugin):
         self.results.append(testcase)
 
     def addUnexpectedSuccess(self, test):
-        self.addSuccess(self, test)
+        self.addSuccess(test)
 
     def configure(self, options, stream):
         """
