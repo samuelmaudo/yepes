@@ -7,4 +7,4 @@ Pillow
 pycrypto
 pytz
 tablib
-Wand
+Wand<0.3.8
