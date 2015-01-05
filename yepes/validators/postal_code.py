@@ -20,11 +20,14 @@ class PostalCodeValidator(BaseValidator):
 
     def __call__(self, value):
         value = smart_bytes(value)
-        alnum = len(re.findall(r'[a-zA-Z0-9]', value))
+        alpha = len(re.findall(r'[a-zA-Z]', value))
+        digit = len(re.findall(r'[0-9]', value))
+        alnum = alpha + digit
         hyphens = len(re.findall(r'\-', value))
         spaces = len(re.findall(r' ', value))
-        valid_chars = (alnum + hyphens + spaces)
+        valid_chars = alnum + hyphens + spaces
         if (len(value) != valid_chars
+                or digit < 1
                 or alnum < 3
                 or alnum > 11
                 or hyphens + spaces > (alnum / 2)):
