@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from yepes import forms
+
 
 class NameField(models.CharField):
 
@@ -13,6 +15,10 @@ class NameField(models.CharField):
             value = ' '.join(value.split())
 
         return value
+
+    def formfield(self, **kwargs):
+        kwargs.setdefault('form_class', forms.NameField)
+        return super(NameField, self).formfield(**kwargs)
 
     def south_field_triple(self):
         from south.modelsinspector import introspector

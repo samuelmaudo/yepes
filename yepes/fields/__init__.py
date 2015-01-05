@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from yepes.fields.alpha_numeric import AlphaNumericField
 from yepes.fields.bit import BitField, RelatedBitField
 from yepes.fields.cached_foreign_key import CachedForeignKey
 from yepes.fields.color import ColorField
