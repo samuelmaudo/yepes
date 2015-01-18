@@ -2,18 +2,16 @@
 
 from __future__ import unicode_literals
 
-from django.db import models
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes import managers
-from yepes.urlresolvers import build_full_url
+from yepes.model_mixins import Linked
 
 
-class Slugged(models.Model):
+class Slugged(Linked):
     """
-    Abstract model that handles auto-generating slugs.
+    Abstract model that handles auto-generating slugs. Inherits from `Linked`.
     """
 
     slug = fields.SlugField(
@@ -28,21 +26,6 @@ class Slugged(models.Model):
     class Meta:
         abstract = True
 
-    def get_full_url(self):
-        return build_full_url(self.get_absolute_url())
-
-    def get_link(self):
-        return mark_safe('<a href="{0}">{1}</a>'.format(
-                         self.get_absolute_url(),
-                         self))
-
     def natural_key(self):
         return (self.slug, )
-
-    def onsite_link(self):
-        return '<a href="{0}">{1}</a>'.format(
-                self.get_full_url(),
-                _('View on site'))
-    onsite_link.allow_tags = True
-    onsite_link.short_description = ''
 
