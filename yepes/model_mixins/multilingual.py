@@ -7,6 +7,7 @@ import re
 from django.db import models
 import django.db.models.options as options
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import six
 from django.utils.encoding import force_text
 from django.utils.translation import get_language
 
@@ -122,6 +123,31 @@ class Multilingual(models.Model):
             raise InvalidLanguageTag(tag)
         else:
             return match.group('lang')
+
+    def get_all_translations(self):
+        Translation = get_model(self._meta.app_label, self._meta.translation)
+
+        other_translations = Translation._default_manager.filter(
+            model=self
+        ).exclude(
+            language__tag__in=self._translations.keys()
+        ).select_related()
+
+        for translation in other_translations:
+            self._translations[translation.language.tag] = translation
+
+        tags = list(six.iterkeys(self._translations))
+        tags.sort()
+        return [self._translations[tag] for tag in tags]
+
+    def get_other_translations(self):
+        current_language_tag = self.clean_language_tag(get_language())
+        return [
+            translation
+            for translation
+            in self.get_all_translations()
+            if translation.language.tag != current_language_tag
+        ]
 
     def get_translation(self, tag):
         """

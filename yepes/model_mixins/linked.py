@@ -11,7 +11,7 @@ from yepes.urlresolvers import build_full_url
 
 class Linked(models.Model):
     """
-    Abstract model that adds support for full urls. It also adds two helper 
+    Abstract model that adds support for full urls. It also adds two helper
     methods to easily get object links.
     """
 
