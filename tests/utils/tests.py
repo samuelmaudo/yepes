@@ -6,6 +6,7 @@ from datetime import datetime
 from decimal import Decimal
 import random
 import sys
+import traceback
 
 from django import test
 from django.utils.unittest import skipIf
@@ -13,6 +14,7 @@ from django.utils.unittest import skipIf
 from yepes.utils import (
     decimals,
     email,
+    exceptions,
     formats,
     functional,
     html2text,
@@ -86,6 +88,36 @@ class EmailTest(test.SimpleTestCase):
             email.normalize_email('John.Smith@Example.Com'),
             'John.Smith@example.com',
         )
+
+
+class ExceptionsTest(test.SimpleTestCase):
+
+    maxDiff = None
+
+    def _raise_value_error(self):
+        raise ValueError('This is the original text')
+
+    def test_exception_chaining(self):
+        try:
+            try:
+                self._raise_value_error()
+            except:
+                error_type, error_value, error_traceback = sys.exc_info()
+                original_traceback_lines = traceback.format_exc(error_traceback).split('\n')
+
+                self.assertIs(error_type, ValueError)
+                self.assertEqual(str(error_value), 'This is the original text')
+
+                exceptions.raise_chained_exception(TypeError)
+        except:
+            error_type, error_value, error_traceback = sys.exc_info()
+            traceback_lines = traceback.format_exc(error_traceback).split('\n')
+
+            self.assertIs(error_type, TypeError)
+            self.assertEqual(str(error_value), 'This is the original text')
+            self.assertEqual(traceback_lines[3:-2], original_traceback_lines[1:-2])
+        else:
+            self.fail('No exception was raised')
 
 
 class FormatsTest(test.SimpleTestCase):
