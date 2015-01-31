@@ -95,9 +95,9 @@ class ExceptionsTest(test.SimpleTestCase):
     maxDiff = None
 
     def _raise_value_error(self):
-        raise ValueError('This is the original text')
+        raise ValueError('original text')
 
-    def test_exception_chaining(self):
+    def test_chain_exception_class(self):
         try:
             try:
                 self._raise_value_error()
@@ -106,7 +106,7 @@ class ExceptionsTest(test.SimpleTestCase):
                 original_traceback_lines = traceback.format_exc(error_traceback).split('\n')
 
                 self.assertIs(error_type, ValueError)
-                self.assertEqual(str(error_value), 'This is the original text')
+                self.assertEqual(str(error_value), 'original text')
 
                 exceptions.raise_chained_exception(TypeError)
         except:
@@ -114,7 +114,29 @@ class ExceptionsTest(test.SimpleTestCase):
             traceback_lines = traceback.format_exc(error_traceback).split('\n')
 
             self.assertIs(error_type, TypeError)
-            self.assertEqual(str(error_value), 'This is the original text')
+            self.assertEqual(str(error_value), 'original text')
+            self.assertEqual(traceback_lines[3:-2], original_traceback_lines[1:-2])
+        else:
+            self.fail('No exception was raised')
+
+    def test_chain_exception_instance(self):
+        try:
+            try:
+                self._raise_value_error()
+            except:
+                error_type, error_value, error_traceback = sys.exc_info()
+                original_traceback_lines = traceback.format_exc(error_traceback).split('\n')
+
+                self.assertIs(error_type, ValueError)
+                self.assertEqual(str(error_value), 'original text')
+
+                exceptions.raise_chained_exception(TypeError('new text'))
+        except:
+            error_type, error_value, error_traceback = sys.exc_info()
+            traceback_lines = traceback.format_exc(error_traceback).split('\n')
+
+            self.assertIs(error_type, TypeError)
+            self.assertEqual(str(error_value), 'new text')
             self.assertEqual(traceback_lines[3:-2], original_traceback_lines[1:-2])
         else:
             self.fail('No exception was raised')
