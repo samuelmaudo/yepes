@@ -2,11 +2,14 @@
 
 from __future__ import unicode_literals
 
+import fnmatch
+import itertools
 import logging
 import optparse
 import os
 import shutil
 import sys
+
 from unittest.runner import _WritelnDecorator as WriteLnDecorator
 
 from django.utils import six
@@ -98,15 +101,17 @@ class TestProgram(object):
         parser.add_option(
             '-v', '--verbosity', action='store', dest='verbosity', default='1',
             type='choice', choices=['0', '1', '2', '3'],
-            help='Verbosity level; 0=minimal output, 1=normal output, 2=all '
+            help='Verbosity level: 0=minimal output, 1=normal output, 2=all '
                  'output')
         parser.add_option(
+            '-e', '--exclude', action='append', dest='exclude',
+            help='Exclude tests whose label matches the given pattern.')
+        parser.add_option(
             '--noinput', action='store_false', dest='interactive', default=True,
-            help='Tells Yepes to NOT prompt the user for input of any kind.')
+            help='Whether NOT prompt the user for input of any kind.')
         parser.add_option(
             '--failfast', action='store_true', dest='failfast', default=False,
-            help='Tells Yepes to stop running the test suite after first failed '
-                 'test.')
+            help='Whether stop running the test suite after first failed test.')
         parser.add_option(
             '--settings',
             help='Python path to settings module, e.g. "myproject.settings". If '
@@ -114,7 +119,7 @@ class TestProgram(object):
                  'variable will be used.')
 
     def parseArgs(self, parser):
-        options, args = parser.parse_args()
+        options, testLabels = parser.parse_args()
         if options.settings:
             os.environ['DJANGO_SETTINGS_MODULE'] = options.settings
         else:
@@ -125,7 +130,7 @@ class TestProgram(object):
 
         os.environ['DJANGO_TEST_TEMP_DIR'] = self.tempDir
 
-        return (options, args)
+        return (options, testLabels)
 
     def removeTempDir(self):
         """
@@ -149,29 +154,56 @@ class TestProgram(object):
 
     def run(self):
         parser = self.makeParser()
-        options, args = self.parseArgs(parser)
+        options, testLabels = self.parseArgs(parser)
         stream = WriteLnDecorator(self.stream or sys.stderr)
         self.configurePlugins(options, stream)
-        return self.runTests(options, args)
+        return self.runTests(options, testLabels)
 
-    def runTests(self, options, args):
+    def runTests(self, options, testLabels):
         from django.conf import settings
 
         verbosity = int(options.verbosity)
-        interactive = options.interactive
-        failfast = options.failfast
-        testLabels = args or self.getTestModules()
+        availableTestLabels = self.getTestModules()
 
-        state = self.setup(verbosity, testLabels)
+        excludedTestLabels = set()
+        if options.exclude:
+            for pattern in options.exclude:
+                excludedTestLabels.update(
+                    fnmatch.filter(availableTestLabels, pattern))
+                
+        if not testLabels:
+            finalTestLabels = [
+                label
+                for label
+                in availableTestLabels
+                if label not in excludedTestLabels
+            ]
+        else:
+            finalTestLabels = list()
+            for pattern in testLabels:
+                if '.' not in pattern:
+                    finalTestLabels.extend(
+                        label
+                        for label
+                        in fnmatch.filter(availableTestLabels, pattern)
+                        if label not in excludedTestLabels
+                    )
+                else:
+                    pattern, path = pattern.split('.', 1)
+                    for label in fnmatch.filter(availableTestLabels, pattern):
+                        if label not in excludedTestLabels:
+                            finalTestLabels.append('.'.join((label, path)))
+
+        state = self.setup(verbosity, finalTestLabels)
 
         TestDiscover = self.getTestDiscover()
         discover = TestDiscover(
             verbosity=verbosity,
-            interactive=interactive,
-            failfast=failfast,
+            interactive=options.interactive,
+            failfast=options.failfast,
             plugins=self.plugins,
         )
-        failureCount = discover.run_tests(testLabels)
+        failureCount = discover.run_tests(finalTestLabels)
 
         self.teardown(state)
         return failureCount
