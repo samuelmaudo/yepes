@@ -14,7 +14,7 @@ from django.utils import six
 from django.utils.decorators import classonlymethod
 from django.utils.encoding import force_bytes, force_str, force_text
 from django.utils.http import urlquote
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range
 from django.utils.text import Truncator
 
 from yepes.conf import settings
@@ -256,7 +256,7 @@ class PaginationTag(InclusionTag):
             next_pages = num_pages - delimiter
 
         visible_page_range = list(
-            xrange(page_obj.number - previous_pages,
+            range(page_obj.number - previous_pages,
                    page_obj.number + next_pages))
 
         display_gaps = kwargs.pop('display_gaps', 'False')

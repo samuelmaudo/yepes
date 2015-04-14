@@ -2,15 +2,12 @@
 
 from base64 import b64decode, b64encode
 from copy import deepcopy
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
 
 from django.db import models
 from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 from django.utils import six
 from django.utils.encoding import force_bytes
+from django.utils.six.moves import cPickle as pickle
 
 from yepes.exceptions import LookupTypeError
 from yepes.utils.properties import cached_property

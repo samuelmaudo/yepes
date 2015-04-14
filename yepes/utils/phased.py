@@ -4,10 +4,6 @@ from __future__ import unicode_literals
 
 import base64
 import re
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
 
 from django.contrib.messages.storage.base import BaseStorage
 from django.http import HttpRequest
@@ -20,6 +16,7 @@ from django.template.context import BaseContext, RequestContext, Context
 from django.utils import six
 from django.utils.encoding import smart_bytes, smart_text
 from django.utils.functional import Promise, LazyObject
+from django.utils.six.moves import cPickle as pickle
 
 from yepes.conf import settings
 

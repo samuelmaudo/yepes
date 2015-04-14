@@ -11,7 +11,7 @@ from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.core.validators import MaxValueValidator, EMPTY_VALUES
 from django.utils import six
 from django.utils.encoding import smart_text
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range, zip
 from django.utils.text import capfirst
 
 from yepes import forms
@@ -53,7 +53,7 @@ class BitField(models.BigIntegerField):
         super(BitField, self).contribute_to_class(cls, name)
         if self.int_fields > 1:
             counter = self.creation_counter
-            for i in xrange(2, self.int_fields + 1):
+            for i in range(2, self.int_fields + 1):
                 fld = models.BigIntegerField(
                     editable=False,
                     default=0,
@@ -142,7 +142,7 @@ class BitField(models.BigIntegerField):
     def split_value(self, value):
         value = bin(int(value))[2:]
         pieces = list()
-        for i in xrange(0, len(value), 63):
+        for i in range(0, len(value), 63):
             if i > 0:
                 pieces.append(int(value[-(i+63):-i], 2))
             else:
@@ -181,7 +181,7 @@ class BitFieldDescriptor(object):
         self.flags = field.flags
         self.attrs = [
             '{0}_{1}'.format(field.name, i + 1)
-            for i in xrange(field.int_fields)
+            for i in range(field.int_fields)
         ]
         self.cache_attr = field.name
         self.first_attr = self.attrs[0]
@@ -346,7 +346,7 @@ class BitFieldQueryWrapper(object):
             if not self.value:
                 conditions = ['0']
                 cond = '{0}.{1} = 0'
-                for i in xrange(self.field.int_fields - 1):
+                for i in range(self.field.int_fields - 1):
                     col = qn('{0}_{1}'.format(self.field.column, i + 2))
                     conditions.append(cond.format(t, col))
                 sql = ' AND '.join(conditions)

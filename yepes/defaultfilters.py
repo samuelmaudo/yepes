@@ -2,7 +2,7 @@
 
 from django.template.base import Library
 from django.template.defaultfilters import stringfilter
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range
 
 from yepes.utils import htmlentities, unidecode
 
@@ -45,7 +45,7 @@ def roundlist(iterable, i):
             remaining = int(i - int(round(excess) or i))
         else:
             remaining = i
-        L.extend(None for i in xrange(remaining))
+        L.extend(None for i in range(remaining))
     return L
 
 

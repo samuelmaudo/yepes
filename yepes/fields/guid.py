@@ -7,7 +7,7 @@ import re
 
 from django.core import validators
 from django.db import models
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range
 from django.utils.translation import ugettext as _
 
 TOKEN_RE = '^[{0}]{{{1},{1}}}$'
@@ -34,7 +34,7 @@ class GuidField(models.CharField):
 
     def generate_guid(self):
         return ''.join(random.choice(self.charset)
-                       for i in xrange(self.max_length))
+                       for i in range(self.max_length))
 
     def get_default(self):
         guid = self.generate_guid()
@@ -42,7 +42,7 @@ class GuidField(models.CharField):
         if self.unique:
             lookup = self.get_validator_unique_lookup_type()
             qs = self.model._default_manager.get_queryset()
-            for i in xrange(63):
+            for i in range(63):
                 if qs.filter(**{lookup: guid}).exists():
                     guid = self.generate_guid()
                 else:

@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range
 
 from yepes.utils import slugify
 
@@ -38,7 +38,7 @@ class SlugField(models.CharField):
                 field: getattr(model_instance, field),
             })
 
-        for i in xrange(1, 64):
+        for i in range(1, 64):
             if i == 1:
                 slug = base_slug
             else:

@@ -116,7 +116,7 @@ class ExportView(View):
             ...
             >>> def test(max_digits, decimal_places):
             ...     error_count = 0
-            ...     for i in xrange(10 ** max_digits):
+            ...     for i in range(10 ** max_digits):
             ...         s = str(i)
             ...         if len(s) < decimal_places:
             ...             s = ('0' * (decimal_places - len(s))) + s
