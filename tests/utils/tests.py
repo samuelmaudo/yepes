@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import collections
 from datetime import datetime
 from decimal import Decimal
 import random
@@ -17,6 +18,7 @@ from yepes.utils import (
     exceptions,
     formats,
     html2text,
+    iterators,
     properties,
     slugify,
     unidecode,
@@ -161,6 +163,43 @@ class FormatsTest(test.SimpleTestCase):
             formats.permissive_date_format(datetime(2010, 3, 1, 12, 30), 'SHORT_DATETIME_FORMAT'),
             '03/01/2010 12:30 p.m.',
         )
+
+
+class IteratorsTest(test.SimpleTestCase):
+
+    def test_isplit(self):
+        result = iterators.isplit([1, 2, 3, 4, 5, 6, 7], 3)
+        self.assertIsInstance(result, collections.Iterator)
+        self.assertEqual(
+            list(result),
+            [[1, 2, 3], [4, 5, 6], [7]]
+        )
+        iterable = iter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.assertEqual(
+            iterators.isplit(iterable, 1).next(),
+            [1],
+        )
+        self.assertEqual(
+            iterators.isplit(iterable, 2).next(),
+            [2, 3],
+        )
+        self.assertEqual(
+            iterators.isplit(iterable, 3).next(),
+            [4, 5, 6],
+        )
+        self.assertEqual(
+            list(iterable),
+            [7, 8, 9, 10],
+        )
+
+    def test_split(self):
+        result = iterators.split([1, 2, 3, 4, 5, 6, 7], 3)
+        self.assertIsInstance(result, collections.MutableSequence)
+        self.assertEqual(
+            result,
+            [[1, 2, 3], [4, 5, 6], [7]]
+        )
+
 
 class PropertiesTest(test.SimpleTestCase):
 
