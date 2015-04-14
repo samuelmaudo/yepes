@@ -16,8 +16,8 @@ from yepes.utils import (
     email,
     exceptions,
     formats,
-    functional,
     html2text,
+    properties,
     slugify,
     unidecode,
 )
@@ -162,12 +162,12 @@ class FormatsTest(test.SimpleTestCase):
             '03/01/2010 12:30 p.m.',
         )
 
-class FunctionalTest(test.SimpleTestCase):
+class PropertiesTest(test.SimpleTestCase):
 
     def test_cached_property(self):
 
         class TestClass(object):
-            @functional.cached_property
+            @properties.cached_property
             def cached_property(self):
                 return random.random()
 
@@ -176,10 +176,26 @@ class FunctionalTest(test.SimpleTestCase):
         for i in range(10):
             self.assertEqual(obj.cached_property, first_value)
 
+        class TestClass(object):
+            def random_method(self):
+                return random.random()
+            cached_property = properties.cached_property(random_method, 'cached_property')
+
+        obj = TestClass()
+        first_value = obj.cached_property
+        for i in range(10):
+            self.assertEqual(obj.cached_property, first_value)
+
+        previous_values = []
+        for i in range(10):
+            value = obj.random_method()
+            self.assertNotIn(value, previous_values)
+            previous_values.append(value)
+
     def test_class_property(self):
 
         class TestClass(object):
-            @functional.class_property
+            @properties.class_property
             def class_property(self):
                 return 'Bilbo'
 
@@ -191,10 +207,10 @@ class FunctionalTest(test.SimpleTestCase):
     def test_described_property(self):
 
         class TestClass(object):
-            @functional.described_property('First Property')
+            @properties.described_property('First Property')
             def first_property(self):
                 return random.random()
-            @functional.described_property('Second Property', allow_tags=True, boolean=True, cached=True)
+            @properties.described_property('Second Property', allow_tags=True, boolean=True, cached=True)
             def second_property(self):
                 return random.random()
 
@@ -217,7 +233,7 @@ class FunctionalTest(test.SimpleTestCase):
 
         self.assertIsInstance(
             TestClass.second_property,
-            functional.cached_property,
+            properties.cached_property,
         )
         self.assertEqual(
             TestClass.second_property.fget.short_description,

@@ -5,12 +5,12 @@ from __future__ import unicode_literals
 from django.db.models.base import ModelState
 from django.utils import six
 from django.utils.encoding import force_str, python_2_unicode_compatible
-from django.utils.functional import cached_property
 
+from yepes.apps.standards.model_mixins import NAME_RE
 from yepes.conf import settings
 from yepes.exceptions import MissingAttributeError
 from yepes.loading import get_model
-from yepes.apps.standards.model_mixins import NAME_RE
+from yepes.utils.properties import cached_property
 
 
 @python_2_unicode_compatible

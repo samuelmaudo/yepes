@@ -7,10 +7,10 @@ from django.forms.fields import CharField, IntegerField
 from django.forms.forms import Form as BaseForm
 from django.forms.models import BaseModelFormSet
 from django.forms.widgets import HiddenInput
-from django.utils.functional import cached_property
 
 from yepes.apps.registry.base import registry, REGISTRY_KEYS
 from yepes.apps.registry.models import Entry
+from yepes.utils.properties import cached_property
 
 
 class EntryFormSet(BaseModelFormSet):

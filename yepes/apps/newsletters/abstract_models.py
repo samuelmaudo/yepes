@@ -27,7 +27,7 @@ from yepes.model_mixins import (
 )
 from yepes.utils import html2text
 from yepes.utils.email import normalize_email
-from yepes.utils.functional import described_property
+from yepes.utils.properties import described_property
 
 
 class AbstractBounce(models.Model):

@@ -7,10 +7,10 @@ from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 from django.db import models
 from django.utils import six
 from django.utils.encoding import force_bytes, force_text
-from django.utils.functional import cached_property
 
 from yepes.conf import settings
 from yepes.exceptions import LookupTypeError
+from yepes.utils.properties import cached_property
 
 __all__ = ('EncryptedTextField', 'InvalidLengthError', 'TooShortError')
 

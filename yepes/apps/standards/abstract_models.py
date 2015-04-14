@@ -3,12 +3,12 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes.loading import get_class
 from yepes.model_mixins import Enableable, Logged, Nestable, ParentForeignKey
+from yepes.utils.properties import cached_property
 
 CountryManager = get_class('standards.managers', 'CountryManager')
 CountrySubdivisionManager = get_class('standards.managers', 'CountrySubdivisionManager')

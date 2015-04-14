@@ -6,9 +6,9 @@ import zlib
 from django.db import models
 from django.utils import six
 from django.utils.encoding import force_bytes, force_text
-from django.utils.functional import cached_property
 
 from yepes.exceptions import LookupTypeError
+from yepes.utils.properties import cached_property
 
 
 @six.add_metaclass(models.SubfieldBase)

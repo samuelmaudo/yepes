@@ -243,9 +243,8 @@ else:
 
     import os
 
-    from django.utils.functional import cached_property
-
     from yepes.conf import settings
+    from yepes.utils.properties import cached_property
 
     __all__ = ('GeoIP2', )
 

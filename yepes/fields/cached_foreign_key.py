@@ -5,7 +5,8 @@ from __future__ import unicode_literals
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
-from django.utils.functional import cached_property
+
+from yepes.utils.properties import cached_property
 
 
 class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
