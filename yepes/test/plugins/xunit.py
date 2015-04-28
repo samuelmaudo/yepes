@@ -10,7 +10,7 @@ from time import time
 from django.utils import six
 from django.utils import timezone
 
-from yepes.test.plugins import Plugin
+from yepes.test.plugins.base import Plugin
 from yepes.test.utils import (
     format_class_name,
     format_exception_message,

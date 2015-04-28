@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import fnmatch
-import itertools
 import logging
 import optparse
 import os
@@ -43,11 +42,7 @@ class TestProgram(object):
             else:
                 configure(options, stream)
 
-    def getTestDiscover(self):
-        from yepes.test.discover import TestDiscover
-        return TestDiscover
-
-    def getTestModules(self):
+    def getAvailableTestLabels(self):
         modules = [
             dirName
             for dirName
@@ -58,7 +53,54 @@ class TestProgram(object):
                     and os.path.basename(dirName) not in self.subdirsToSkip
                     and not os.path.isfile(dirName))
         ]
+        modules.sort()
         return modules
+
+    def getTestDiscover(self):
+        from yepes.test.discover import TestDiscover
+        return TestDiscover
+
+    def getTestLabels(self, testLabels, options):
+        availableTestLabels = self.getAvailableTestLabels()
+
+        excludedTestLabels = set()
+        if options.exclude:
+            for pattern in options.exclude:
+                foundLabels = fnmatch.filter(availableTestLabels, pattern)
+                if not foundLabels:
+                    msg = "Failed to find test matching '{0}'"
+                    raise AttributeError(msg.format(pattern))
+
+                excludedTestLabels.update(foundLabels)
+
+        if not testLabels:
+            finalTestLabels = list(
+                label
+                for label
+                in availableTestLabels
+                if label not in excludedTestLabels
+            )
+        else:
+            finalTestLabels = list()
+            for pattern in testLabels:
+                if '.' in pattern:
+                    pattern, path = pattern.split('.', 1)
+                else:
+                    path = None
+
+                foundLabels = fnmatch.filter(availableTestLabels, pattern)
+                if not foundLabels:
+                    msg = "Failed to find test matching '{0}'"
+                    raise AttributeError(msg.format(pattern))
+
+                finalTestLabels.extend(
+                    label if path is None else '.'.join((label, path))
+                    for label
+                    in foundLabels
+                    if label not in excludedTestLabels
+                )
+
+        return finalTestLabels
 
     def loadPlugins(self):
         plugins = []
@@ -157,53 +199,21 @@ class TestProgram(object):
         options, testLabels = self.parseArgs(parser)
         stream = WriteLnDecorator(self.stream or sys.stderr)
         self.configurePlugins(options, stream)
-        return self.runTests(options, testLabels)
+        return self.runTests(testLabels, options, stream)
 
-    def runTests(self, options, testLabels):
-        from django.conf import settings
-
+    def runTests(self, testLabels, options, stream):
         verbosity = int(options.verbosity)
-        availableTestLabels = self.getTestModules()
-
-        excludedTestLabels = set()
-        if options.exclude:
-            for pattern in options.exclude:
-                excludedTestLabels.update(
-                    fnmatch.filter(availableTestLabels, pattern))
-                
-        if not testLabels:
-            finalTestLabels = [
-                label
-                for label
-                in availableTestLabels
-                if label not in excludedTestLabels
-            ]
-        else:
-            finalTestLabels = list()
-            for pattern in testLabels:
-                if '.' not in pattern:
-                    finalTestLabels.extend(
-                        label
-                        for label
-                        in fnmatch.filter(availableTestLabels, pattern)
-                        if label not in excludedTestLabels
-                    )
-                else:
-                    pattern, path = pattern.split('.', 1)
-                    for label in fnmatch.filter(availableTestLabels, pattern):
-                        if label not in excludedTestLabels:
-                            finalTestLabels.append('.'.join((label, path)))
-
+        finalTestLabels = self.getTestLabels(testLabels, options)
         state = self.setup(verbosity, finalTestLabels)
 
         TestDiscover = self.getTestDiscover()
-        discover = TestDiscover(
+        failureCount = TestDiscover(
             verbosity=verbosity,
             interactive=options.interactive,
             failfast=options.failfast,
             plugins=self.plugins,
-        )
-        failureCount = discover.run_tests(finalTestLabels)
+            stream=stream,
+        ).run_tests(finalTestLabels)
 
         self.teardown(state)
         return failureCount
@@ -255,27 +265,15 @@ class TestProgram(object):
         get_apps()
 
         # Load all the test model apps.
-        testModules = self.getTestModules()
-
-        # Reduce given test labels to just the app module path
-        testLabelsSet = set('.'.join(l.split('.')[:1]) for l in testLabels)
-
-        # If the module (or an ancestor) was named on the command line,
-        # or no modules were named (i.e., run all), import this module
-        # and add it to INSTALLED_APPS.
-        def foundInLabels(moduleLabel):
-            return any((moduleLabel == label # Exact match
-                        or moduleLabel.startswith(label + '.')) # Ancestor match
-                    for label
-                    in testLabelsSet)
-
-        for moduleLabel in testModules:
-            if not testLabels or foundInLabels(moduleLabel):
+        loadedTests = set()
+        for label in testLabels:
+            if label not in loadedTests:
+                loadedTests.add(label)
                 if verbosity >= 2:
-                    print('Importing application {0}'.format(moduleLabel))
-                module = load_app(moduleLabel)
-                if module and moduleLabel not in settings.INSTALLED_APPS:
-                    settings.INSTALLED_APPS.append(moduleLabel)
+                    print('Importing application {0}'.format(label))
+
+                module = load_app(label)
+                settings.INSTALLED_APPS.append(label)
 
         return state
 

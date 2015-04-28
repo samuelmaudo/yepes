@@ -14,7 +14,6 @@ class TestResult(BaseTestResult):
     """
     def __init__(self, stream, descriptions=None, verbosity=None, plugins=()):
         super(TestResult, self).__init__(stream, descriptions, verbosity)
-        self.stream = stream
         self.plugins = plugins
 
     def addError(self, test, err):

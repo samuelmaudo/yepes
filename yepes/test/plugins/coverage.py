@@ -3,10 +3,12 @@
 from __future__ import absolute_import, unicode_literals
 
 import coverage
-import inspect
 import os
+import pkgutil
 
-from yepes.test.plugins import Plugin
+from django.utils._os import upath
+
+from yepes.test.plugins.base import Plugin
 
 
 class Coverage(Plugin):
@@ -23,17 +25,23 @@ class Coverage(Plugin):
         if self.enabled:
             self.mute = int(options.verbosity) < 1
             self.showAll = int(options.verbosity) > 1
-            self.includedPackages = [
-                os.path.dirname(
-                    os.path.abspath(
-                        inspect.getsourcefile(
-                            __import__(package))))
-                for package
-                in options.cover_packages
-            ]
-            self.includeBranches = options.cover_branches
-            self.erasePrevious = options.cover_erase
 
+            if options.cover_packages:
+                packages = []
+                for name in options.cover_packages:
+                    pkg = pkgutil.get_loader(name)
+                    if pkg is None:
+                        msg = "Failed to find package '{0}'"
+                        raise AttributeError(msg.format(name))
+
+                    packages.append(os.path.abspath(upath(pkg.filename)))
+
+                self.includedPackages = packages
+            else:
+                self.includedPackages = None
+
+            self.erasePrevious = options.cover_erase
+            self.includeBranches = options.cover_branches
             if options.cover_html:
                 self.htmlDirName = options.cover_html_dir
             else:
@@ -45,18 +53,16 @@ class Coverage(Plugin):
                 self.xmlFileName = None
 
             self.coverageInstance = coverage.coverage(
-                data_suffix=None,
-                auto_data=False,
                 branch=self.includeBranches,
                 source=self.includedPackages,
             )
             if self.erasePrevious:
-                self.coverageInstance.combine()
                 self.coverageInstance.erase()
+            else:
+                self.coverageInstance.load()
 
             # Start measuring as soon as posible is necessary
             # to obtain a realistic coverage report.
-            self.coverageInstance.load()
             self.coverageInstance.start()
 
     def options(self, parser):

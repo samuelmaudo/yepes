@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from time import time
 
-from yepes.test.plugins import Plugin
+from yepes.test.plugins.base import Plugin
 from yepes.test.utils import format_traceback
 
 TERMINAL_COLORS = {
