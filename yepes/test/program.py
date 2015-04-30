@@ -264,16 +264,16 @@ class TestProgram(object):
         # Load all the self.alwaysInstalledApps.
         get_apps()
 
-        # Load all the test model apps.
-        loadedTests = set()
-        for label in testLabels:
-            if label not in loadedTests:
-                loadedTests.add(label)
-                if verbosity >= 2:
-                    print('Importing application {0}'.format(label))
+        # Reduce given test labels to just the app module path
+        appLabels = set(l.split('.', 1)[0] for l in testLabels)
 
-                module = load_app(label)
-                settings.INSTALLED_APPS.append(label)
+        # Load all the test model apps.
+        for label in appLabels:
+            if verbosity >= 2:
+                print('Importing application {0}'.format(label))
+
+            module = load_app(label)
+            settings.INSTALLED_APPS.append(label)
 
         return state
 
