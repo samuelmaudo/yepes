@@ -58,16 +58,16 @@ def format_traceback(exc_info, encoding='utf-8'):
     # expects an actual exception object). So we work around it, by doing
     # the work ourselves if ev is not an exception object.
     if isinstance(ev, BaseException):
-        return force_text(
-            ''.join(traceback.format_exception(ec, ev, tb)),
-            encoding,
-            errors='replace',
+        return ''.join(
+            force_text(line, encoding, errors='replace')
+            for line
+            in traceback.format_exception(ec, ev, tb)
         )
     else:
-        tb_data = force_text(
-            ''.join(traceback.format_tb(tb)),
-            encoding,
-            errors='replace',
+        tb_data = ''.join(
+            force_text(line, encoding, errors='replace')
+            for line
+            in traceback.format_tb(tb)
         )
         if not isinstance(ev, six.text_format):
             ev = force_text(repr(ev))
