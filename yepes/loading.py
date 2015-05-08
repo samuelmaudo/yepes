@@ -289,7 +289,7 @@ def get_model(app_label, model_name):
     return get_models(app_label, [model_name])[0]
 
 
-def get_models(app_label, model_names):
+def get_models(app_label=None, model_names=None):
     """
     Returns the models of the given app matching case-insensitive model names.
 
@@ -299,9 +299,12 @@ def get_models(app_label, model_names):
 
     Args:
 
-        app_label (str): Label of the app that contains the model.
+        app_label (str): Label of the app that contains the model. If None is
+                         passed, all models of all available apps will be
+                         returned.
 
-        model_names (list): Names of the models to be retrieved.
+        model_names (list): Names of the models to be retrieved. If None is
+                            passed, all models in the app will be returned.
 
     Returns:
 
@@ -315,31 +318,43 @@ def get_models(app_label, model_names):
 
     Raises:
 
-        MissingAppError: If no installed app matches the passed app label.
+        MissingAppError: If no installed app matches the given app label.
 
         UnavailableAppError: If app is not currently available.
 
-        MissingModelError: If one, or more, of the requested models cannot be
-                           found.
+        MissingModelError: If one of the requested models cannot be found.
 
     """
     models_cache._populate()
 
-    if app_label not in models_cache.app_labels:
-        raise MissingAppError(app_label)
-
-    if (models_cache.available_apps is not None
-            and app_label not in models_cache.available_apps):
-        raise UnavailableAppError
-
     found_models = []
-    for model_name in model_names:
-        try:
-            model = models_cache.app_models[app_label][model_name.lower()]
-        except KeyError:
-            raise MissingModelError(model_name, app_label)
+    if app_label is None:
+        for app_models in six.itervalues(models_cache.app_models):
+            found_models.extend(six.itervalues(app_models))
+    else:
+
+        if app_label not in models_cache.app_labels:
+            raise MissingAppError(app_label)
+
+        if (models_cache.available_apps is not None
+                and app_label not in models_cache.available_apps):
+            raise UnavailableAppError
+
+        if model_names is None:
+            try:
+                app_models = models_cache.app_models[app_label]
+            except KeyError:
+                pass  # App has no models.
+            else:
+                found_models.extend(six.itervalues(app_models))
         else:
-            found_models.append(model)
+            for model_name in model_names:
+                try:
+                    model = models_cache.app_models[app_label][model_name.lower()]
+                except KeyError:
+                    raise MissingModelError(model_name, app_label)
+                else:
+                    found_models.append(model)
 
     return found_models
 
