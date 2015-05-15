@@ -13,7 +13,7 @@ from yepes.loading import get_model
 
 
 class Command(BaseCommand):
-    help = ('Dumps all objects of the specified model.')
+    help = 'Dumps all objects of the specified model.'
 
     args = '<appname.ModelName>'
     option_list = BaseCommand.option_list + (

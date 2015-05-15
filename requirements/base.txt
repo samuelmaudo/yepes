@@ -6,5 +6,5 @@ markdown2
 Pillow
 pycrypto
 pytz
-tablib
+unicodecsv
 Wand<0.3.8

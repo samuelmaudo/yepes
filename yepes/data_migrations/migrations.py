@@ -24,8 +24,9 @@ class CustomDataMigration(object):
 
     fields = []
 
-    def __init__(self, model):
+    def __init__(self, model, ignore_missing_foreign_keys=False):
         self.model = model
+        self.ignore_missing_foreign_keys = ignore_missing_foreign_keys
 
     def export_data(self, file=None, serializer=None):
         serializer = self.get_serializer(serializer)
@@ -247,8 +248,9 @@ class DataMigration(CustomDataMigration):
 
     def __init__(self, model, fields=None, exclude=None,
                        use_natural_primary_keys=False,
-                       use_natural_foreign_keys=False):
-        super(DataMigration, self).__init__(model)
+                       use_natural_foreign_keys=False,
+                       ignore_missing_foreign_keys=False):
+        super(DataMigration, self).__init__(model, ignore_missing_foreign_keys)
         if not fields:
             self.selected_fields = None
         else:

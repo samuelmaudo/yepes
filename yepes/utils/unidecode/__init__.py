@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals
 
+from importlib import import_module
+
 from django.utils.encoding import force_text
-from django.utils.importlib import import_module
 
 CACHE = {}
 

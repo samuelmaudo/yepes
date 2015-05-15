@@ -14,7 +14,7 @@ from yepes.loading import get_model
 
 
 class Command(BaseCommand):
-    help = ('Loads all objects from the given file in the specified model.')
+    help = 'Loads all entries from the given file to the specified model.'
 
     args = '<appname.ModelName>'
     option_list = BaseCommand.option_list + (
@@ -59,6 +59,13 @@ class Command(BaseCommand):
             default=False,
             dest='natural_foreign',
             help='Use natural foreign keys if they are available.'),
+        make_option('--ignore-missing-keys',
+            action='store_true',
+            default=False,
+            dest='ignore_missing_keys',
+            help=('Ignores entries in the serialized data whose foreign '
+                  'keys point to objects that do not currently exist in '
+                  'the database.')),
     )
     requires_model_validation = True
 
@@ -71,6 +78,7 @@ class Command(BaseCommand):
         exclude = options['exclude'].split(',') if options['exclude'] else None
         use_natural_primary_keys = options['natural_primary']
         use_natural_foreign_keys = options['natural_foreign']
+        ignore_missing_foreign_keys = options['ignore_missing_keys']
         serializer_name = options['format']
         plan_name = options['plan']
         file_path = options['input']
@@ -103,9 +111,10 @@ class Command(BaseCommand):
             exclude,
             use_natural_primary_keys,
             use_natural_foreign_keys,
+            ignore_missing_foreign_keys,
         )
         with open(file_path, 'rb') as file:
             migration.import_data(file, serializer, plan, batch_size)
 
-        self.stdout.write('Objects were successfully imported.')
+        self.stdout.write('Entries were successfully imported.')
 

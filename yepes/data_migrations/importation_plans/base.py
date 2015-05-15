@@ -102,11 +102,12 @@ class ImportationPlan(object):
             raise UnableToUpdateError
 
     def prepare(self, batch):
-        if self.migration.natural_foreign_keys is not None:
-            for fld in self.migration.natural_foreign_keys:
+        m = self.migration
+        if m.natural_foreign_keys is not None:
+            for fld in m.natural_foreign_keys:
                 attr = fld.attname
                 path = fld.path
-                rel_field = self.migration.model_fields[fld][-1]
+                rel_field = m.model_fields[fld][-1]
                 rel_manager = rel_field.model._default_manager
                 keys = dict(
                     rel_manager.filter(**{
@@ -120,8 +121,21 @@ class ImportationPlan(object):
                         'pk',
                     )
                 )
-                for row in batch:
-                    row[attr] = keys[row.pop(path)]
+                if not m.ignore_missing_foreign_keys:
+                    for row in batch:
+                        row[attr] = keys[row.pop(path)]
+                else:
+                    erroneous_rows = []
+                    for i, row in enumerate(batch):
+                        try:
+                            value = keys[row.pop(path)]
+                        except KeyError:
+                            erroneous_rows.append(i)
+                        else:
+                            row[attr] = value
+
+                    for i in reversed(erroneous_rows):
+                        del batch[i]
 
         return batch
 
