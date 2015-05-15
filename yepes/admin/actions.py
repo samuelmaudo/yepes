@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.contrib import admin
+from django.contrib.admin import ACTION_CHECKBOX_NAME
 from django.contrib.admin.actions import delete_selected
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -12,34 +12,47 @@ from django.utils.translation import ugettext_lazy as _
 delete_selected.short_description = _('Delete selected {verbose_name_plural}')
 
 
-def export(modeladmin, request, queryset):
-    opts = modeladmin.model._meta
-    url_name = 'admin:{0}_{1}_export'.format(
-        opts.app_label,
-        opts.model_name,
-    )
-    url = reverse(url_name)
+def export_csv(modeladmin, request, queryset):
+    url_name = 'admin:{app_label}_{model_name}_exportcsv'
+    return _redirect_to(url_name, modeladmin, request, queryset)
+export_csv.short_description = _('Export selected {verbose_name_plural} as CSV')
 
-    if request.POST.get('select_across') not in ('true', '1'):
-        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        url += '?ids={0}'.format(','.join(selected))
 
-    return HttpResponseRedirect(url)
-export.short_description = _('Export selected {verbose_name_plural}')
+def export_json(modeladmin, request, queryset):
+    url_name = 'admin:{app_label}_{model_name}_exportjson'
+    return _redirect_to(url_name, modeladmin, request, queryset)
+export_json.short_description = _('Export selected {verbose_name_plural} as JSON')
+
+
+def export_tsv(modeladmin, request, queryset):
+    url_name = 'admin:{app_label}_{model_name}_exporttsv'
+    return _redirect_to(url_name, modeladmin, request, queryset)
+export_tsv.short_description = _('Export selected {verbose_name_plural} as TSV')
+
+
+def export_yaml(modeladmin, request, queryset):
+    url_name = 'admin:{app_label}_{model_name}_exportyaml'
+    return _redirect_to(url_name, modeladmin, request, queryset)
+export_yaml.short_description = _('Export selected {verbose_name_plural} as YAML')
 
 
 def mass_update(modeladmin, request, queryset):
+    url_name = 'admin:{app_label}_{model_name}_massupdate'
+    return _redirect_to(url_name, modeladmin, request, queryset)
+mass_update.short_description = _('Update selected {verbose_name_plural}')
+
+
+def _redirect_to(url_name, modeladmin, request, queryset):
     opts = modeladmin.model._meta
-    url_name = 'admin:{0}_{1}_massupdate'.format(
-        opts.app_label,
-        opts.model_name,
+    url_name = url_name.format(
+        app_label=opts.app_label,
+        model_name=opts.model_name,
     )
     url = reverse(url_name)
 
     if request.POST.get('select_across') not in ('true', '1'):
-        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        selected = request.POST.getlist(ACTION_CHECKBOX_NAME)
         url += '?ids={0}'.format(','.join(selected))
 
     return HttpResponseRedirect(url)
-mass_update.short_description = _('Update selected {verbose_name_plural}')
 

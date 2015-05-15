@@ -1,0 +1,11 @@
+[
+{"integer": 0, "integer_as_string": "0", "float": 0.0, "float_as_string": "0.0", "decimal": 0.0, "decimal_as_string": "0.0"},
+{"integer": 1, "integer_as_string": "1", "float": 0.1, "float_as_string": "0.1", "decimal": 0.01, "decimal_as_string": "0.01"},
+{"integer": 2, "integer_as_string": "2", "float": 0.2, "float_as_string": "0.2", "decimal": 0.02, "decimal_as_string": "0.02"},
+{"integer": 3, "integer_as_string": "3", "float": 0.3, "float_as_string": "0.3", "decimal": 0.03, "decimal_as_string": "0.03"},
+{"integer": "4", "integer_as_string": 4, "float": "0.4", "float_as_string": 0.4, "decimal": "0.04", "decimal_as_string": 0.04},
+{"integer": "5", "integer_as_string": 5, "float": "0.5", "float_as_string": 0.5, "decimal": "0.05", "decimal_as_string": 0.05},
+{"integer": "6", "integer_as_string": 6, "float": "0.6", "float_as_string": 0.6, "decimal": "0.06", "decimal_as_string": 0.06},
+{"integer": null, "integer_as_string": "", "float": null, "float_as_string": "", "decimal": null, "decimal_as_string": ""},
+{"integer": null, "integer_as_string": null, "float": null, "float_as_string": null, "decimal": null, "decimal_as_string": null}
+]

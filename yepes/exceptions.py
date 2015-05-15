@@ -3,6 +3,10 @@
 from __future__ import unicode_literals
 
 
+class LoadingError(ImportError):
+    pass
+
+
 class LookupTypeError(TypeError):
 
     def __init__(self, lookup_type):

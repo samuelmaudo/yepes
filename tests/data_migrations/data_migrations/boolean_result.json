@@ -1,0 +1,12 @@
+[
+{"boolean": true, "boolean_as_string": "True", "null_boolean": true, "null_boolean_as_string": "True"},
+{"boolean": true, "boolean_as_string": "True", "null_boolean": true, "null_boolean_as_string": "True"},
+{"boolean": true, "boolean_as_string": "True", "null_boolean": true, "null_boolean_as_string": "True"},
+{"boolean": true, "boolean_as_string": "True", "null_boolean": true, "null_boolean_as_string": "True"},
+{"boolean": false, "boolean_as_string": "False", "null_boolean": false, "null_boolean_as_string": "False"},
+{"boolean": false, "boolean_as_string": "False", "null_boolean": false, "null_boolean_as_string": "False"},
+{"boolean": false, "boolean_as_string": "False", "null_boolean": false, "null_boolean_as_string": "False"},
+{"boolean": false, "boolean_as_string": "False", "null_boolean": false, "null_boolean_as_string": "False"},
+{"boolean": true, "boolean_as_string": "True", "null_boolean": null, "null_boolean_as_string": null},
+{"boolean": false, "boolean_as_string": "False", "null_boolean": null, "null_boolean_as_string": null}
+]

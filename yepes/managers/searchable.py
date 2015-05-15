@@ -14,7 +14,7 @@ from django.db.models.query import QuerySet
 from django.utils import six
 from django.utils.encoding import force_text
 from django.utils.module_loading import import_by_path
-from django.utils.six.moves import zip
+from django.utils.six.moves import reduce, zip
 
 from yepes.apps.registry import registry
 from yepes.conf import settings

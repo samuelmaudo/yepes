@@ -1,0 +1,8 @@
+"date__datetime"	"date__year"	"date__month"	"date__day"	"datetime__date"	"datetime__time"	"datetime__year"	"datetime__month"	"datetime__day"	"datetime__hour"	"datetime__minute"	"datetime__second"	"datetime__microsecond"	"datetime__tzinfo"	"time__hour"	"time__minute"	"time__second"	"time__microsecond"	"time__tzinfo"
+"1986-09-25T00:00:00"	1986	9	25	"1986-09-25"	"14:00:34Z"	1986	9	25	14	0	34	0	"Z"	12	0	34	0	"\N"
+"1986-09-25T00:00:00"	1986	9	25	"1986-09-25"	"14:00:34.123Z"	1986	9	25	14	0	34	123456	"Z"	12	0	34	123456	"\N"
+"1986-09-25T00:00:00"	1986	9	25	"1986-09-25"	"12:00:34.123Z"	1986	9	25	12	0	34	123456	"Z"	12	0	34	123456	"\N"
+"1986-09-25T00:00:00"	1986	9	25	"1986-09-25"	"12:00:34.123Z"	1986	9	25	12	0	34	123456	"Z"	12	0	34	123456	"\N"
+"1986-09-25T00:00:00"	1986	9	25	"1986-09-25"	"16:30:34.123Z"	1986	9	25	16	30	34	123456	"Z"	12	0	34	123456	"\N"
+"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"
+"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"	"\N"

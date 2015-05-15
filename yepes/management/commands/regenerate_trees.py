@@ -44,7 +44,7 @@ class Command(BaseCommand):
                 with transaction.atomic():
                     model._tree_manager.rebuild()
 
-            self.stdout.write('All trees were successfully regenerated.')
+            self.stdout.write('Trees were successfully regenerated.')
         else:
             self.stdout.write('No tree was found.')
 

@@ -15,7 +15,14 @@ from django.utils import six
 from django.utils.encoding import smart_bytes
 
 from yepes.admin import actions, operations
-from yepes.admin.views import ExportView, ImportView, MassUpdateView
+from yepes.admin.views import (
+    CsvExportView,
+    JsonExportView,
+    TsvExportView,
+    YamlExportView,
+    MassUpdateView,
+)
+from yepes.data_migrations import serializers
 
 
 class ModelAdmin(DjangoModelAdmin):
@@ -40,18 +47,23 @@ class ModelAdmin(DjangoModelAdmin):
                         or self.has_delete_permission(request)):
                     acts[name] = info
 
+        def add_action(label):
+            action = getattr(actions, label)
+            acts[label] = (action, label, action.short_description)
+
         if self.has_massupdate_permission(request):
-            acts['mass_update'] = (
-                actions.mass_update,
-                'mass_update',
-                actions.mass_update.short_description,
-            )
+            add_action('mass_update')
+
         if self.has_export_permission(request):
-            acts['export'] = (
-                actions.export,
-                'export',
-                actions.export.short_description,
-            )
+            if serializers.has_serializer('csv'):
+                add_action('export_csv')
+            if serializers.has_serializer('json'):
+                add_action('export_json')
+            if serializers.has_serializer('tsv'):
+                add_action('export_tsv')
+            if serializers.has_serializer('yaml'):
+                add_action('export_yaml')
+
         return acts
 
     def get_field_operations(self, request, field):
@@ -158,13 +170,21 @@ class ModelAdmin(DjangoModelAdmin):
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
         urls = patterns('',
-            url(r'^export/$',
-                wrap(ExportView.as_view(model_admin=self)),
-                name='{0}_{1}_export'.format(*info),
+            url(r'^export-csv/$',
+                wrap(CsvExportView.as_view(model_admin=self)),
+                name='{0}_{1}_exportcsv'.format(*info),
             ),
-            url(r'^import/$',
-                wrap(ImportView.as_view(model_admin=self)),
-                name='{0}_{1}_import'.format(*info),
+            url(r'^export-json/$',
+                wrap(JsonExportView.as_view(model_admin=self)),
+                name='{0}_{1}_exportjson'.format(*info),
+            ),
+            url(r'^export-tsv/$',
+                wrap(TsvExportView.as_view(model_admin=self)),
+                name='{0}_{1}_exporttsv'.format(*info),
+            ),
+            url(r'^export-yaml/$',
+                wrap(YamlExportView.as_view(model_admin=self)),
+                name='{0}_{1}_exportyaml'.format(*info),
             ),
             url(r'^mass-update/$',
                 wrap(MassUpdateView.as_view(model_admin=self)),

@@ -1,0 +1,16 @@
+"text"	"char"
+0	0
+1234	1234
+a	a
+abcd	abcd
+abcd efgh	abcd efgh
+"abcd efgh
+ijkl"	"abcd efgh
+ijkl"
+"""Fix, Schwyz!"" quäkt Jürgen blöd vom Paß."	"""Fix, Schwyz!"" quäkt Jürgen blöd vom Paß."
+Fabio me exige, sin tapujos, que añada cerveza al whisky.	Fabio me exige, sin tapujos, que añada cerveza al whisky.
+Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälströn où brûlent les novæ.	Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälströn où brûlent les novæ.
+Luís argüía à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.	Luís argüía à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.
+Съешь еще этих мягких французских булок, да выпей чаю.	Съешь еще этих мягких французских булок, да выпей чаю.
+	
+\N	\N

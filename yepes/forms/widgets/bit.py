@@ -4,6 +4,7 @@ import operator
 
 from django.forms import CheckboxSelectMultiple
 from django.utils import six
+from django.utils.six.moves import reduce
 
 from yepes.types import Bit
 

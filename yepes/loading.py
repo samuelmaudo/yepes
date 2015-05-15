@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 import imp
 import operator
-import sys
-import traceback
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -14,7 +12,9 @@ from django.utils import six
 from django.utils.encoding import force_str, python_2_unicode_compatible
 from django.utils.functional import empty, LazyObject
 
+from yepes.exceptions import LoadingError
 from yepes.types import Singleton
+from yepes.utils.modules import get_module
 
 __all__ = (
     'get_class', 'get_classes',
@@ -22,14 +22,14 @@ __all__ = (
 )
 
 
-class MissingAppError(ImportError):
+class MissingAppError(LoadingError):
 
     def __init__(self, app_label):
         msg = "App with label '{0}' could not be found."
         return super(MissingAppError, self).__init__(msg.format(app_label))
 
 
-class MissingClassError(ImportError):
+class MissingClassError(LoadingError):
 
     def __init__(self, class_name, app_label):
         args = (
@@ -40,7 +40,7 @@ class MissingClassError(ImportError):
         return super(MissingClassError, self).__init__(msg.format(*args))
 
 
-class MissingModelError(ImportError):
+class MissingModelError(LoadingError):
 
     def __init__(self, model_name, app_label):
         args = (
@@ -51,14 +51,14 @@ class MissingModelError(ImportError):
         return super(MissingModelError, self).__init__(msg.format(*args))
 
 
-class MissingModuleError(ImportError):
+class MissingModuleError(LoadingError):
 
     def __init__(self, module_path):
         msg = "Module '{0}' could not be imported."
         return super(MissingModuleError, self).__init__(msg.format(module_path))
 
 
-class UnavailableAppError(ImportError):
+class UnavailableAppError(LoadingError):
 
     def __init__(self, app_label):
         msg = "App with label '{0}' is not available."
@@ -206,31 +206,10 @@ def get_classes(module_path, class_names):
 
         module_path_tokens[0] = path
         module_full_path = '.'.join(module_path_tokens)
-        try:
-            __import__(module_full_path)
-        except ImportError:
-            # There are two reasons why there is ``ImportError``:
-            # 1. The module does not exist at the specified path.
-            # 2. The path is right, but one of the module dependencies cannot
-            #    be imported.
-            #
-            # In the first case, the error is ignored and the search continues.
-            # But, in the second case, the error must be propagated for
-            # development purposes.
-            #
-            # ``ImportError`` does not provide easy way to distinguish those
-            # two cases. Fortunately, the traceback of the ``ImportError``
-            # starts at ``__import__`` statement. If the traceback has more
-            # than one entry, it means the path was correct and that is a
-            # subsequent dependence that generated the error.
-            error_type, error_value, error_traceback = sys.exc_info()
-            stack_trace_entries = traceback.extract_tb(error_traceback)
-            if len(stack_trace_entries) > 1:
-                raise
-            else:
-                continue
+        module = get_module(module_full_path, ignore_missing=True)
+        if module is None:
+            continue
 
-        module = sys.modules[module_full_path]
         module_found = True
 
         for class_name in class_names:

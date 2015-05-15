@@ -1,0 +1,17 @@
+- {char: '0', text: '0'}
+- {char: '1234', text: '1234'}
+- {char: a, text: a}
+- {char: abcd, text: abcd}
+- {char: abcd efgh, text: abcd efgh}
+- {char: 'abcd efgh
+
+    ijkl', text: 'abcd efgh
+
+    ijkl'}
+- {char: '"Fix, Schwyz!" quäkt Jürgen blöd vom Paß.', text: '"Fix, Schwyz!" quäkt Jürgen blöd vom Paß.'}
+- {char: 'Fabio me exige, sin tapujos, que añada cerveza al whisky.', text: 'Fabio me exige, sin tapujos, que añada cerveza al whisky.'}
+- {char: 'Le cœur déçu mais l''âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälströn où brûlent les novæ.', text: 'Le cœur déçu mais l''âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälströn où brûlent les novæ.'}
+- {char: 'Luís argüía à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.', text: 'Luís argüía à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.'}
+- {char: 'Съешь еще этих мягких французских булок, да выпей чаю.', text: 'Съешь еще этих мягких французских булок, да выпей чаю.'}
+- {char: '', text: ''}
+- {char: null, text: null}
