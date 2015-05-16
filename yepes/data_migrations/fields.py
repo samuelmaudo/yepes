@@ -9,7 +9,7 @@ import operator
 from django.core import files
 from django.utils import six
 from django.utils.dateparse import parse_date, parse_datetime, parse_time
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str, force_text, python_2_unicode_compatible
 from django.utils.functional import Promise
 from django.utils.timezone import utc as UTC
 from django.utils.translation import ugettext_lazy as _
@@ -32,6 +32,7 @@ __all__ = (
 ## ABSTRACT COLUMN #############################################################
 
 
+@python_2_unicode_compatible
 class Field(object):
 
     description = _('General')
@@ -59,10 +60,12 @@ class Field(object):
             return '{0} ({1})'.format(self.name, self.path)
 
     def __repr__(self):
-        return '<{0}.{1}: {2}>'.format(
-                self.__class__.__module__,
-                self.__class__.__name__,
-                self.__str__())
+        args = (
+            self.__class__.__module__,
+            self.__class__.__name__,
+            six.text_type(self),
+        )
+        return force_str('<{0}.{1}: {2}>'.format(*args))
 
     def clean(self, value):
         if isinstance(value, Promise):
