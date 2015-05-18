@@ -3,10 +3,6 @@
 from __future__ import unicode_literals
 
 
-class LoadingError(ImportError):
-    pass
-
-
 class LookupTypeError(TypeError):
 
     def __init__(self, lookup_type):
@@ -66,3 +62,4 @@ class UnexpectedTypeError(TypeError):
         super(UnexpectedTypeError, self).__init__(msg.format(*args))
         self.expected_type = expected_type
         self.received_object = received_object
+

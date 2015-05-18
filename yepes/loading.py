@@ -4,22 +4,33 @@ from __future__ import unicode_literals
 
 import imp
 import operator
+import sys
+import traceback
+import warnings
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.loading import cache as models_cache
 from django.utils import six
-from django.utils.encoding import force_str, python_2_unicode_compatible
-from django.utils.functional import empty, LazyObject
+from django.utils.encoding import force_str
+from django.utils.functional import empty, new_method_proxy
 
-from yepes.exceptions import LoadingError
 from yepes.types import Singleton
-from yepes.utils.modules import get_module
+from yepes.utils.compat import LazyObject
 
 __all__ = (
+    'LoadingError', 'MissingAppError', 'MissingClassError',
+    'MissingModelError', 'MissingModuleError', 'UnavailableAppError',
     'get_class', 'get_classes',
     'get_model', 'get_models',
+    'get_module',
+    'LazyClass',
+    'LazyModel', 'LazyModelManager', 'LazyModelObject',
 )
+
+
+class LoadingError(ImportError):
+    pass
 
 
 class MissingAppError(LoadingError):
@@ -279,11 +290,10 @@ def get_models(app_label=None, model_names=None):
     Args:
 
         app_label (str): Label of the app that contains the model. If None is
-                         passed, all models of all available apps will be
-                         returned.
+                passed, all models of all available apps will be returned.
 
         model_names (list): Names of the models to be retrieved. If None is
-                            passed, all models in the app will be returned.
+                passed, all models in the app will be returned.
 
     Returns:
 
@@ -338,6 +348,86 @@ def get_models(app_label=None, model_names=None):
     return found_models
 
 
+def get_module(module_path, ignore_missing=False, ignore_internal_errors=False):
+    """
+    Returns the module located at ``module_path``. If module had not been
+    previously imported, tries to import it and add it to ``sys.modules``.
+
+    This is similar to ``importlib.import_module()`` but this function allows
+    to ignore certain import errors.
+
+    Args:
+
+        module_path (str): Name of the module to be retrieved.
+
+        ignore_missing (bool): Whether ignore import errors when module is not
+                found at the specified path. Defaults to False.
+
+        ignore_internal_errors (bool): Whether ignore import errors when one of
+                the module dependencies cannot be imported. Also ignores syntax
+                errors and issues a warning when an error is ignored (this is
+                for development purposes). Defaults to False.
+
+    Returns:
+
+        The requested module or None if an error occurs.
+
+    Example:
+
+        >>> get_module('yepes')
+        <module 'yepes' from 'yepes/__init__.pyc'>
+
+    Raises:
+
+        MissingModuleError: If the requested module cannot be found and
+                ``ignore_missing`` is False.
+
+        ImportError: If a module dependency cannot be imported and
+                ``ignore_internal_errors`` is False.
+
+        SyntaxError: If module code has a syntax error and
+                ``ignore_internal_errors`` is False.
+
+    """
+    try:
+        __import__(module_path)
+    except ImportError as e:
+        """
+        There are two reasons why there is ``ImportError``:
+        1. The module does not exist at the specified path.
+        2. The path is right, but one of the module dependencies cannot be
+           imported.
+
+        ``ImportError`` does not provide easy way to distinguish those two
+        cases. Fortunately, the traceback of the ``ImportError`` starts at
+        ``__import__`` statement. If the traceback has more than one entry,
+        it means the path was correct and that is a subsequent dependence
+        that generated the error.
+
+        """
+        error_type, error_value, error_traceback = sys.exc_info()
+        stack_trace_entries = traceback.extract_tb(error_traceback)
+        if len(stack_trace_entries) <= 1:
+            if ignore_missing:
+                return None
+            else:
+                raise MissingModuleError(module_path)
+        else:
+            if ignore_internal_errors:
+                warnings.warn(str(e), ImportWarning, 2)
+                return None
+            else:
+                raise e
+    except SyntaxError as e:
+        if ignore_internal_errors:
+            warnings.warn(str(e), SyntaxWarning, 2)
+            return None
+        else:
+            raise e
+
+    return sys.modules[module_path]
+
+
 class LazyClass(LazyObject):
 
     def __init__(self, module_path, class_name):
@@ -348,16 +438,17 @@ class LazyClass(LazyObject):
     def _setup(self):
         self._wrapped = get_class(self._module_path, self._class_name)
 
+    def __repr__(self):
+        # We have to use type(self), not self.__class__, because the latter
+        # is proxied.
+        class_name = type(self).__name__
+        wrapped_class = (self._module_path, self._class_name)
+        return force_str('<{0}: {1}>'.format(class_name, '.'.join(wrapped_class)))
+
     def __call__(self, *args, **kwargs):
         if self._wrapped is empty:
             self._setup()
         return self._wrapped.__call__(*args, **kwargs)
-
-    @property
-    def __class__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__class__
 
     def __instancecheck__(self, instance):
         if self._wrapped is empty:
@@ -380,16 +471,17 @@ class LazyModel(LazyObject):
     def _setup(self):
         self._wrapped = get_model(self._app_label, self._model_name)
 
+    def __repr__(self):
+        # We have to use type(self), not self.__class__, because the latter
+        # is proxied.
+        class_name = type(self).__name__
+        wrapped_model = (self._app_label, self._model_name)
+        return force_str('<{0}: {1}>'.format(class_name, '.'.join(wrapped_model)))
+
     def __call__(self, *args, **kwargs):
         if self._wrapped is empty:
             self._setup()
         return self._wrapped.__call__(*args, **kwargs)
-
-    @property
-    def __class__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__class__
 
     def __instancecheck__(self, instance):
         if self._wrapped is empty:
@@ -404,73 +496,58 @@ class LazyModel(LazyObject):
 
 class LazyModelManager(LazyObject):
 
-    def __init__(self, app_label, model_name):
+    def __init__(self, app_label, model_name, manager_attr=None):
         self.__dict__['_app_label'] = app_label
         self.__dict__['_model_name'] = model_name
+        self.__dict__['_manager_attr'] = manager_attr
         super(LazyModelManager, self).__init__()
 
     def _setup(self):
         model = get_model(self._app_label, self._model_name)
-        self._wrapped = model._default_manager
-
-    @property
-    def __class__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__class__
-
-
-@python_2_unicode_compatible
-class LazyModelObject(LazyObject):
-
-    def __bool__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return bool(self._wrapped)
-
-    def __eq__(self, other):
-        if self._wrapped is empty:
-            self._setup()
-        return operator.eq(self._wrapped, other)
-
-    # Because we have messed with __class__ below, we confuse pickle as to
-    # what class we are pickling. It also appears to stop __reduce__ from
-    # being called. So, we define __getstate__ in a way that cooperates with
-    # the way that pickle interprets this class.
-    def __getstate__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__dict__
-
-    def __hash__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return hash(self._wrapped)
-
-    def __ne__(self, other):
-        if self._wrapped is empty:
-            self._setup()
-        return operator.ne(self._wrapped, other)
-
-    __nonzero__ = __bool__
+        if self._manager_attr is None:
+            self._wrapped = model._default_manager
+        else:
+            self._wrapped = getattr(model, self._manager_attr)
 
     def __repr__(self):
+        # We have to use type(self), not self.__class__, because the latter
+        # is proxied.
+        class_name = type(self).__name__
+        wrapped_manager = [self._app_label, self._model_name]
+        if self._manager_attr is not None:
+            wrapped_manager.append(self._manager_attr)
+
+        return force_str('<{0}: {1}>'.format(class_name, '.'.join(wrapped_manager)))
+
+
+class LazyModelObject(LazyObject):
+
+    def __init__(self, model, manager=None, **lookup_parameters):
+        self.__dict__['_model'] = model
+        self.__dict__['_manager'] = manager
+        self.__dict__['_lookup_parameters'] = lookup_parameters
+        super(LazyModelObject, self).__init__()
+
+    def _setup(self):
+        model = self._model
+        if isinstance(model, six.string_types):
+            model = get_model(*model.rsplit('.', 1))
+
+        if self._manager is None:
+            manager = model._default_manager
+        else:
+            manager = getattr(model, self._manager)
+
+        self._wrapped = manager.get(**self._lookup_parameters)
+
+    def __repr__(self):
+        # We have to use type(self), not self.__class__, because the latter
+        # is proxied.
+        class_name = type(self).__name__
         try:
-            text = six.text_type(self)
-        except (UnicodeEncodeError, UnicodeDecodeError):
-            text = '[Bad Unicode data]'
-        return force_str('<{0}: {1}>'.format(self.__class__.__name__, text))
+            wrapped_object = six.text_type(self)
+        except UnicodeError:
+            wrapped_object = '[Bad Unicode data]'
 
-    def __str__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return six.text_type(self._wrapped)
-
-    # Need to pretend to be the wrapped class, for the sake of objects that
-    # care about this (especially in equality tests).
-    @property
-    def __class__(self):
-        if self._wrapped is empty:
-            self._setup()
-        return self._wrapped.__class__
+        return force_str('<{0}: {1}>'.format(class_name, wrapped_object))
 

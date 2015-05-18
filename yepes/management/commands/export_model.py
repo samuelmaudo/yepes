@@ -8,8 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from yepes.data_migrations import DataMigration
 from yepes.data_migrations.serializers import get_serializer
-from yepes.exceptions import LoadingError
-from yepes.loading import get_model
+from yepes.loading import get_model, LoadingError
 
 
 class Command(BaseCommand):

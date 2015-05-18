@@ -5,8 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 
 from yepes.conf import settings
-from yepes.exceptions import LoadingError
-from yepes.utils.modules import get_module
+from yepes.loading import get_module, LoadingError
 
 BUILTIN_SERIALIZERS = {
     'csv': 'yepes.data_migrations.serializers.csv.CsvSerializer',
