@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import imp
-import operator
 import sys
 import traceback
 import warnings
@@ -13,7 +12,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models.loading import cache as models_cache
 from django.utils import six
 from django.utils.encoding import force_str
-from django.utils.functional import empty, new_method_proxy
+from django.utils.functional import empty
 
 from yepes.types import Singleton
 from yepes.utils.compat import LazyObject
