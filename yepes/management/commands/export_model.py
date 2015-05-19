@@ -2,9 +2,11 @@
 
 from __future__ import unicode_literals
 
+import os
 from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import six
 
 from yepes.data_migrations import DataMigration
 from yepes.data_migrations.serializers import get_serializer
@@ -82,10 +84,18 @@ class Command(BaseCommand):
             use_natural_foreign_keys,
         )
         if not file_path:
-            data = migration.export_data(serializer=serializer)
-            self.stdout.write(data.decode('utf8', 'replace'))
+            if six.PY3:
+                migration.export_data(self.stdout, serializer)
+            else:
+                data = migration.export_data(None, serializer)
+                self.stdout.write(data.decode('utf8', 'replace'))
         else:
+            directory = os.path.dirname(file_path)
+            if directory and not os.path.exists(directory):
+                os.makedirs(directory)
+
             with open(file_path, 'wb') as file:
                 migration.export_data(file, serializer)
+
             self.stdout.write('Objects were successfully exported.')
 

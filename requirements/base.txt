@@ -2,6 +2,7 @@ Django<1.7
 django-aggregate-if
 django-grappelli<2.6
 django-mptt
+geoip2
 markdown2
 Pillow
 pycrypto

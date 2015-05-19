@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import os
 from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
@@ -87,7 +88,9 @@ class Command(BaseCommand):
             raise CommandError("Model label must be like 'appname.ModelName'.")
 
         if not file_path:
-            raise CommandError("You must give an input file.")
+            raise CommandError('You must give an input file.')
+        elif not os.path.exists(file_path):
+            raise CommandError("File '{0}' does not exit.".format(file_path))
 
         try:
             model = get_model(*model_name.rsplit('.', 1))
