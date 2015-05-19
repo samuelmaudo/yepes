@@ -392,7 +392,7 @@ class MessageAdmin(StatisticsMixin, admin.ModelAdmin):
         return qs
 
     def get_urls(self):
-        info = (self.model._meta.app_label, self.model._meta.module_name)
+        info = (self.model._meta.app_label, self.model._meta.model_name)
         urls = patterns('',
             url(r'^(?P<pk>\d+)/dispatch/$',
                 self.admin_site.admin_view(DispatchView.as_view()),

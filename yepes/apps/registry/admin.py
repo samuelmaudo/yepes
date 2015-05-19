@@ -33,7 +33,7 @@ class ChangeList(BaseChangeList):
 
     def url_for_result(self, result):
         return reverse('admin:{0}_{1}_change'.format(self.opts.app_label,
-                                                     self.opts.module_name),
+                                                     self.opts.model_name),
                        args=(quote(result.key), ),
                        current_app=self.model_admin.admin_site.name)
 

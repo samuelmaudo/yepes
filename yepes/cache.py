@@ -209,8 +209,8 @@ class LookupTable(object):
 
     def _set_model(self, model):
         cache_name = '{0}.{1}.{2}'.format(
-            model._meta.module_name,
             model._meta.app_label,
+            model._meta.model_name,
             self._name,
         )
         self._cache = CACHES.setdefault(cache_name, SortedDict())
@@ -220,8 +220,8 @@ class LookupTable(object):
         self._indexes = {}
         for field_name in self.indexed_fields:
             cache_name = '{0}.{1}.{2}.{3}'.format(
-                model._meta.module_name,
                 model._meta.app_label,
+                model._meta.model_name,
                 self._name,
                 field_name,
             )

@@ -165,7 +165,7 @@ class DispatchView(UpdateView):
             names.extend(self.template_name)
 
         model = self.get_model()
-        info = (model._meta.app_label, model._meta.module_name)
+        info = (model._meta.app_label, model._meta.model_name)
         names.insert(-1, 'admin/{0}/{1}/dispatch.html'.format(*info))
         return names
 
