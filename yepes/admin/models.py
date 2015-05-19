@@ -38,14 +38,7 @@ class ModelAdmin(DjangoModelAdmin):
         return choices
 
     def get_actions(self, request):
-        # Move admin site actions to the end.
         acts = super(ModelAdmin, self).get_actions(request)
-        if acts:
-            for name, func in self.admin_site.actions:
-                info = acts.pop(name)
-                if (name != 'delete_selected'
-                        or self.has_delete_permission(request)):
-                    acts[name] = info
 
         def add_action(label):
             action = getattr(actions, label)
@@ -53,6 +46,14 @@ class ModelAdmin(DjangoModelAdmin):
 
         if self.has_massupdate_permission(request):
             add_action('mass_update')
+
+        if acts:
+            # Move admin site actions after mass_update.
+            for name, func in self.admin_site.actions:
+                info = acts.pop(name)
+                if (name != 'delete_selected'
+                        or self.has_delete_permission(request)):
+                    acts[name] = info
 
         if self.has_export_permission(request):
             if serializers.has_serializer('csv'):
