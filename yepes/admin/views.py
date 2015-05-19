@@ -2,20 +2,20 @@
 
 from __future__ import unicode_literals
 
+from tempfile import TemporaryFile
+from wsgiref.util import FileWrapper
+
 from django.contrib import messages
 from django.contrib.admin import helpers
-from django.core import files
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.db import models
-from django.http import HttpResponse
+from django.http import StreamingHttpResponse
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import FormView, View
 
 from yepes.admin.forms import MassUpdateFormSet, MassUpdateErrorList
 from yepes.data_migrations import QuerySetExportation
-from yepes.data_migrations.serializers import get_serializer
 from yepes.utils.views import decorate_view
 
 
@@ -40,9 +40,23 @@ class CsvExportView(View):
             return super(CsvExportView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        migration = QuerySetExportation(self.get_queryset())
-        data = migration.export_data(serializer=self.serializer_name)
-        return HttpResponse(data, content_type=self.content_type)
+        qs = self.get_queryset()
+        opts = qs.model._meta
+        temp_file = TemporaryFile()
+        migration = QuerySetExportation(qs)
+        migration.export_data(temp_file, self.serializer_name)
+        response = StreamingHttpResponse(
+            FileWrapper(temp_file),
+            content_type=self.content_type,
+        )
+        response['Content-Disposition'] = 'attachment; filename="{0}.{1}.{2}"'.format(
+            opts.app_label,
+            opts.object_name,
+            self.serializer_name,
+        )
+        response['Content-Length'] = temp_file.tell()
+        temp_file.seek(0)
+        return response
 
     def get_model_admin(self):
         return self.model_admin
