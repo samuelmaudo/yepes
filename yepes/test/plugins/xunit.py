@@ -7,8 +7,8 @@ from lxml import etree
 import platform
 from time import time
 
-from django.utils import six
 from django.utils import timezone
+from django.utils.encoding import force_text
 
 from yepes.test.plugins.base import Plugin
 from yepes.test.utils import (
@@ -228,10 +228,10 @@ class Xunit(Plugin):
 
         testsuite = etree.Element('testsuite', attrib={
             'name': 'testsuite',
-            'tests': six.text_type(self.testsRun),
-            'errors': six.text_type(self.errorCount),
-            'failures': six.text_type(self.failureCount),
-            'skipped': six.text_type(self.skippedCount),
+            'tests': force_text(self.testsRun),
+            'errors': force_text(self.errorCount),
+            'failures': force_text(self.failureCount),
+            'skipped': force_text(self.skippedCount),
             'time': '{0:.3f}'.format(time() - self.startTime),
             'timestamp': timestamp,
         })
@@ -263,10 +263,10 @@ class Xunit(Plugin):
             }),
         ])
         testsuite.extend(self.results)
-        outputfile.write(etree.tostring(
+        outputfile.write(force_text(etree.tostring(
             testsuite,
             encoding='UTF-8',
             pretty_print=True,
             xml_declaration=True,
-        ))
+        )))
 

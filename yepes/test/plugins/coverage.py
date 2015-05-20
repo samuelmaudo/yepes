@@ -6,6 +6,7 @@ import coverage
 import os
 import pkgutil
 
+from django.utils import six
 from django.utils._os import upath
 
 from yepes.test.plugins.base import Plugin
@@ -34,7 +35,12 @@ class Coverage(Plugin):
                         msg = "Failed to find package '{0}'"
                         raise AttributeError(msg.format(name))
 
-                    packages.append(os.path.abspath(upath(pkg.filename)))
+                    if six.PY2:
+                        file_name = pkg.filename
+                    else:
+                        file_name = pkg.name
+
+                    packages.append(os.path.abspath(upath(file_name)))
 
                 self.includedPackages = packages
             else:
