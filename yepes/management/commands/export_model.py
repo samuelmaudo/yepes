@@ -94,7 +94,7 @@ class Command(BaseCommand):
             if directory and not os.path.exists(directory):
                 os.makedirs(directory)
 
-            with open(file_path, 'wb') as file:
+            with open(file_path, 'w') as file:
                 migration.export_data(file, serializer)
 
             self.stdout.write('Objects were successfully exported.')

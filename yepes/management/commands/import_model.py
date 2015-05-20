@@ -115,7 +115,7 @@ class Command(BaseCommand):
             use_natural_foreign_keys,
             ignore_missing_foreign_keys,
         )
-        with open(file_path, 'rb') as file:
+        with open(file_path, 'r') as file:
             migration.import_data(file, serializer, plan, batch_size)
 
         self.stdout.write('Entries were successfully imported.')
