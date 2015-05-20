@@ -229,13 +229,13 @@ class MetaDataTest(test.TestCase):
         )
         self.assertEqual(
             article.get_meta_keywords(),
-            'django, to, development,'
-            ' definitive, web, guide,'
-            ' in, on, right, based',
+            'to, django, definitive, guide,'
+            ' web, development, in, python,'
+            ' based, equivalent',
         )
         self.assertEqual(
             article.get_meta_keywords(max_words=3),
-            'django, to, development',
+            'to, django, definitive',
         )
 
     def test_headline_and_description_fields(self):
@@ -291,13 +291,13 @@ class MetaDataTest(test.TestCase):
         )
         self.assertEqual(
             article.get_meta_keywords(),
-            'django, to, development,'
-            ' definitive, web, guide,'
-            ' in, on, right, based',
+            'to, django, definitive, guide,'
+            ' web, development, in, python'
+            ', based, equivalent',
         )
         self.assertEqual(
             article.get_meta_keywords(max_words=3),
-            'django, to, development',
+            'to, django, definitive',
         )
 
     def test_name_and_content(self):
@@ -346,13 +346,13 @@ class MetaDataTest(test.TestCase):
         )
         self.assertEqual(
             article.get_meta_keywords(),
-            'django, scoops, two, code,'
-            ' help, picked, chock,'
-            ' snippets, techniques, to',
+            'django, two, scoops, book,'
+            ' chock, full, material,'
+            ' will, help, with',
         )
         self.assertEqual(
             article.get_meta_keywords(max_words=3),
-            'django, scoops, two',
+            'django, two, scoops',
         )
 
     def test_rich_text_fields(self):
@@ -397,13 +397,13 @@ class MetaDataTest(test.TestCase):
         )
         self.assertEqual(
             article.get_meta_keywords(),
-            'django, scoops, two, code,'
-            ' help, picked, chock,'
-            ' snippets, techniques, to',
+            'django, two, scoops, book,'
+            ' chock, full, material,'
+            ' will, help, with',
         )
         self.assertEqual(
             article.get_meta_keywords(max_words=3),
-            'django, scoops, two',
+            'django, two, scoops',
         )
 
 

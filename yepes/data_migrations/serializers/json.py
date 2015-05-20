@@ -16,6 +16,7 @@ class JsonSerializer(Serializer):
         defaults = {
             'ensure_ascii': False,
             'indent': '',
+            'separators': (', ', ': '),
         }
         defaults.update(serializer_parameters)
         super(JsonSerializer, self).__init__(**defaults)

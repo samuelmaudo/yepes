@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import re
 
 from django.utils.encoding import force_text
-from django.utils.six import unichr
+from django.utils.six import unichr as chr
 
 __all__ = ('decode', 'encode')
 
@@ -506,9 +506,9 @@ ENTITIES_TO_CHARACTERS = {
 }
 def ENTITIES_REPLACEMENT(matchobj):
     if matchobj.group(1):
-        return unichr(int(matchobj.group(1), 16))
+        return chr(int(matchobj.group(1), 16))
     if matchobj.group(2):
-        return unichr(int(matchobj.group(2)))
+        return chr(int(matchobj.group(2)))
     try:
         return ENTITIES_TO_CHARACTERS[matchobj.group(3)]
     except KeyError:

@@ -6,7 +6,7 @@ from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 
 from django.db import models
 from django.utils import six
-from django.utils.six.moves import xrange
+from django.utils.six.moves import range
 
 from yepes.cache import LookupTable
 
@@ -172,7 +172,7 @@ class LongBitModel(models.Model):
 
     FLAG_CHOICES = [
         (i, bin(i)[2:])
-        for i in xrange(128)
+        for i in range(128)
     ]
     flags = BitField(
             choices=FLAG_CHOICES)

@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 from django import test
 from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.sites.models import Site
@@ -8,6 +10,7 @@ from django.http import HttpRequest, HttpResponse
 from django.template import RequestContext, Template
 from django.test.utils import override_settings
 from django.utils import translation
+from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import (
     csrf_exempt,
     requires_csrf_token,
@@ -247,13 +250,13 @@ class HtmlMinifierMiddlewareTest(test.SimpleTestCase):
         request = HttpRequest()
         response = HttpResponse(self.html_code)
         response_2 = self.middleware.process_response(request, response)
-        self.assertEqual(response_2.content, self.minified_html_code)
+        self.assertEqual(response_2.content, force_bytes(self.minified_html_code))
 
     def test_not_html(self):
         request = HttpRequest()
         response = HttpResponse(self.html_code, content_type='application/json')
         response_2 = self.middleware.process_response(request, response)
-        self.assertEqual(response_2.content, self.html_code)
+        self.assertEqual(response_2.content, force_bytes(self.html_code))
 
 
 class LocaleSubdomainsMiddlewareTest(test.SimpleTestCase):
@@ -330,13 +333,13 @@ class PhasedRenderMiddlewareTestCase(test.SimpleTestCase):
         request = HttpRequest()
         response = HttpResponse(self.first_render)
         response_2 = self.middleware.process_response(request, response)
-        self.assertEqual(response_2.content, self.second_render)
+        self.assertEqual(response_2.content, force_bytes(self.second_render))
 
     def test_not_html(self):
         request = HttpRequest()
         response = HttpResponse(self.first_render, content_type='application/json')
         response_2 = self.middleware.process_response(request, response)
-        self.assertEqual(response_2.content, self.first_render)
+        self.assertEqual(response_2.content, force_bytes(self.first_render))
 
 
 class SSLRedirectMiddlewareTest(test.SimpleTestCase):

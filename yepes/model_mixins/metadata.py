@@ -2,10 +2,12 @@
 
 from __future__ import unicode_literals
 
-from collections import Counter
+import collections
+import operator
 import re
 
 from django.db import models
+from django.utils import six
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -79,8 +81,17 @@ class MetaData(models.Model):
         words.extend(WORD_SEPARATORS_RE.split(self.get_meta_description().lower()))
 
         stop_words = registry['core:STOP_WORDS']
-        relevant_words = Counter(w for w in words if w and w not in stop_words)
-        return ', '.join(w for w, c in relevant_words.most_common(max_words))
+
+        # We do not use collections.Counter because we want to prioritize
+        # words that appears first in the text.
+        relevant_words = collections.OrderedDict()
+        for w in words:
+            if w and w not in stop_words:
+                relevant_words[w] = relevant_words.get(w, 0) + 1
+
+        relevant_words = [(w, c) for w,c in six.iteritems(relevant_words)]
+        relevant_words.sort(key=operator.itemgetter(1), reverse=True)
+        return ', '.join(w for w, c in relevant_words[:max_words])
 
     def get_meta_title(self, max_length=100, end_text='...'):
         if self.meta_title:

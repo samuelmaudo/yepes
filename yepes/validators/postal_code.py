@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.utils.encoding import smart_bytes
+from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators import BaseValidator
@@ -19,7 +19,7 @@ class PostalCodeValidator(BaseValidator):
     message = _('Enter a valid postal code.')
 
     def __call__(self, value):
-        value = smart_bytes(value)
+        value = smart_str(value)
         alpha = len(re.findall(r'[a-zA-Z]', value))
         digit = len(re.findall(r'[0-9]', value))
         alnum = alpha + digit

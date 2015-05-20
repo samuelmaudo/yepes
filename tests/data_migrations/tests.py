@@ -121,7 +121,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.csv')
         result_path = os.path.join(self.temp_dir, 'boolean_result.csv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -133,8 +133,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -142,7 +142,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         BooleanModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -154,8 +154,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -171,7 +171,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.json')
         result_path = os.path.join(self.temp_dir, 'boolean_result.json')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -183,8 +183,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -192,7 +192,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         BooleanModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -204,8 +204,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -222,7 +222,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.tsv')
         result_path = os.path.join(self.temp_dir, 'boolean_result.tsv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -234,8 +234,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -243,7 +243,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         BooleanModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -255,8 +255,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -272,7 +272,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.yaml')
         result_path = os.path.join(self.temp_dir, 'boolean_result.yaml')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -284,8 +284,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -293,7 +293,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         BooleanModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -305,8 +305,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.null_boolean, result[1])
                 self.assertEqual(obj.null_boolean_as_string, result[1])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -425,7 +425,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.csv')
         result_path = os.path.join(self.temp_dir, 'datetime_result.csv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -438,8 +438,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -447,7 +447,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         DateTimeModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -460,8 +460,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -472,8 +472,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.csv')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.csv')
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -489,7 +489,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.json')
         result_path = os.path.join(self.temp_dir, 'datetime_result.json')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -502,8 +502,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -511,7 +511,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         DateTimeModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -524,8 +524,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -536,8 +536,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.json')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.json')
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -554,7 +554,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.tsv')
         result_path = os.path.join(self.temp_dir, 'datetime_result.tsv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -567,8 +567,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -576,7 +576,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         DateTimeModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -589,8 +589,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -601,8 +601,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.tsv')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.tsv')
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -618,7 +618,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.yaml')
         result_path = os.path.join(self.temp_dir, 'datetime_result.yaml')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -631,8 +631,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -640,7 +640,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         DateTimeModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             with warnings.catch_warnings(record=True) as w:
                 warnings.filterwarnings('ignore', 'naive datetime')
@@ -653,8 +653,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.datetime, result[1])
                 self.assertEqual(obj.time, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -665,8 +665,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.yaml')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.yaml')
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -725,7 +725,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.csv')
         result_path = os.path.join(self.temp_dir, 'numeric_result.csv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -739,8 +739,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -748,7 +748,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         NumericModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -762,8 +762,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -779,7 +779,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.json')
         result_path = os.path.join(self.temp_dir, 'numeric_result.json')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -793,8 +793,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -802,7 +802,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         NumericModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -816,8 +816,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -834,7 +834,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.tsv')
         result_path = os.path.join(self.temp_dir, 'numeric_result.tsv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -848,8 +848,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -857,7 +857,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         NumericModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -871,8 +871,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -888,7 +888,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.yaml')
         result_path = os.path.join(self.temp_dir, 'numeric_result.yaml')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -902,8 +902,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -911,7 +911,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         NumericModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -925,8 +925,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.decimal, result[2])
                 self.assertEqual(obj.decimal_as_string, result[2])
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -981,7 +981,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'text_result.csv')
         result_path = os.path.join(self.temp_dir, 'text_result.csv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -991,8 +991,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -1000,7 +1000,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         TextModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -1010,8 +1010,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -1027,7 +1027,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'text_result.json')
         result_path = os.path.join(self.temp_dir, 'text_result.json')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -1037,8 +1037,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -1046,7 +1046,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         TextModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -1056,8 +1056,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -1074,7 +1074,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'text_result.tsv')
         result_path = os.path.join(self.temp_dir, 'text_result.tsv')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), import_serializer, DirectPlan)
 
@@ -1084,8 +1084,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=export_serializer)
                 self.assertEqual(
@@ -1093,7 +1093,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         TextModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, import_serializer, DirectPlan)
 
@@ -1103,8 +1103,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, export_serializer)
                 result_file.seek(0)
@@ -1120,7 +1120,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         expected_path = os.path.join(FIXTURES_DIR, 'text_result.yaml')
         result_path = os.path.join(self.temp_dir, 'text_result.yaml')
 
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), serializer, DirectPlan)
 
@@ -1130,8 +1130,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 result = migration.export_data(serializer=serializer)
                 self.assertEqual(
@@ -1139,7 +1139,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         TextModel.objects.all().delete()
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file, serializer, DirectPlan)
 
@@ -1149,8 +1149,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
                 self.assertEqual(obj.char, result)
                 self.assertEqual(obj.text, result)
 
-        with open(expected_path, 'rb') as expected_file:
-            with open(result_path, 'wb+') as result_file:
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
 
                 migration.export_data(result_file, serializer)
                 result_file.seek(0)
@@ -1513,7 +1513,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         self.assertEqual(migration.primary_key.path, 'name')
 
         source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='create')
             result = migration.export_data()
@@ -1529,10 +1529,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='create')
                         migration.import_data(update_file.read(), plan='create')
@@ -1563,10 +1563,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='create')
                         migration.import_data(update_file.read(), plan='create')
@@ -1588,7 +1588,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         self.assertEqual(migration.primary_key.path, 'name')
 
         source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='bulk_create')
             result = migration.export_data()
@@ -1604,10 +1604,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='bulk_create')
                         migration.import_data(update_file.read(), plan='bulk_create')
@@ -1638,10 +1638,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='bulk_create')
                         migration.import_data(update_file.read(), plan='bulk_create')
@@ -1663,7 +1663,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         self.assertEqual(migration.primary_key.path, 'name')
 
         source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read())
             result = migration.export_data()
@@ -1679,10 +1679,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read())
                         migration.import_data(update_file.read())
@@ -1705,10 +1705,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read())
                         migration.import_data(update_file.read())
@@ -1722,7 +1722,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         self.assertEqual(migration.primary_key.path, 'name')
 
         source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='update_or_bulk_create')
             result = migration.export_data()
@@ -1738,10 +1738,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='update_or_bulk_create')
                         migration.import_data(update_file.read(), plan='update_or_bulk_create')
@@ -1764,10 +1764,10 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
         expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
-        with open(source_path, 'rb') as source_file:
-            with open(update_path, 'rb') as update_file:
-                with open(expected_path, 'rb') as expected_file:
-                    with open(result_path, 'wb+') as result_file:
+        with open(source_path, 'r') as source_file:
+            with open(update_path, 'r') as update_file:
+                with open(expected_path, 'r') as expected_file:
+                    with open(result_path, 'w+') as result_file:
 
                         migration.import_data(source_file.read(), plan='update_or_bulk_create')
                         migration.import_data(update_file.read(), plan='update_or_bulk_create')
@@ -2288,12 +2288,12 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
     def setUp(self):
         migration = BlogMigration(BlogModel)
         source_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
             migration.import_data(source_file.read(), plan='create')
 
         migration = BlogCategoryMigration(BlogCategoryModel)
         source_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
-        with open(source_path, 'rb') as source_file:
+        with open(source_path, 'r') as source_file:
             migration.import_data(source_file.read(), plan='direct')
 
     def test_all_fields(self):

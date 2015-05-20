@@ -29,9 +29,9 @@ class BitTest(test.SimpleTestCase):
 
     def test_comparison(self):
         self.assertEqual(Bit(0), Bit(0))
-        self.assertNotEquals(Bit(1), Bit(0))
+        self.assertNotEqual(Bit(1), Bit(0))
         self.assertEqual(Bit(0), 0)
-        self.assertNotEquals(Bit(1), 0)
+        self.assertNotEqual(Bit(1), 0)
 
     def test_and(self):
         self.assertEqual(1 & Bit(0), 0)

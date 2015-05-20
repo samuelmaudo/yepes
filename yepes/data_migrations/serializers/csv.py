@@ -45,7 +45,7 @@ class CsvSerializer(Serializer):
 
     def load(self, headers, file):
         reader = csv.reader(file, **self.serializer_parameters)
-        first_line = reader.next()
+        first_line = next(reader)
         if first_line == headers:
             return reader
 

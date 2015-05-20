@@ -45,7 +45,7 @@ class TooShortError(ValueError):
 @six.add_metaclass(models.SubfieldBase)
 class EncryptedTextField(models.BinaryField):
 
-    _pad = chr(0)
+    _pad = six.int2byte(0)
     _prefix = '[{(#'
     _suffix = '#)}]'
 

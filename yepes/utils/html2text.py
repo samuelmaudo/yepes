@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.utils.six import unichr
+from django.utils.six import unichr as chr
 from django.utils.six.moves import html_parser
 
 from yepes.utils.minifier import html_minifier
@@ -35,9 +35,9 @@ class Html2TextParser(html_parser.HTMLParser):
 
     def handle_charref(self, name):
         if name.startswith(('x', 'X')):
-            char = unichr(int(name[1:], 16))
+            char = chr(int(name[1:], 16))
         else:
-            char = unichr(int(name))
+            char = chr(int(name))
         if char is not None:
             self._append(char)
 

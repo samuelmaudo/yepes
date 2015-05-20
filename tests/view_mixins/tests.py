@@ -16,6 +16,7 @@ from django.core.exceptions import (
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 from django.utils import translation
+from django.utils.encoding import force_bytes
 from django.views.generic import FormView, View
 
 from yepes.conf import settings
@@ -46,7 +47,7 @@ class CacheMixinTest(test.SimpleTestCase):
     def assertResponseContentEqual(self, content, view, method, msg=None):
         req = getattr(self.request_factory, method)('/')
         resp = view(req)
-        self.assertEqual(content, resp.content, msg=msg)
+        self.assertEqual(force_bytes(content), resp.content, msg=msg)
 
     def test_get_request(self):
 
@@ -54,7 +55,7 @@ class CacheMixinTest(test.SimpleTestCase):
         class TestView(View):
             iterator = iter('abcdef')
             def get(self, request, *args, **kwargs):
-                return http.HttpResponse(self.iterator.next())
+                return http.HttpResponse(next(self.iterator))
 
         view = TestView.as_view()
         self.assertResponseContentEqual('a', view, 'get')
@@ -68,7 +69,7 @@ class CacheMixinTest(test.SimpleTestCase):
         class TestView(CacheMixin, View):
             iterator = iter('abcdef')
             def get(self, request, *args, **kwargs):
-                return http.HttpResponse(self.iterator.next())
+                return http.HttpResponse(next(self.iterator))
 
         view = TestView.as_view()
         self.assertResponseContentEqual('a', view, 'get')
@@ -84,7 +85,7 @@ class CacheMixinTest(test.SimpleTestCase):
         class TestView(View):
             iterator = iter('abcdef')
             def post(self, request, *args, **kwargs):
-                return http.HttpResponse(self.iterator.next())
+                return http.HttpResponse(next(self.iterator))
 
         view = TestView.as_view()
         self.assertResponseContentEqual('a', view, 'post')
@@ -98,7 +99,7 @@ class CacheMixinTest(test.SimpleTestCase):
         class TestView(CacheMixin, View):
             iterator = iter('abcdef')
             def post(self, request, *args, **kwargs):
-                return http.HttpResponse(self.iterator.next())
+                return http.HttpResponse(next(self.iterator))
 
         view = TestView.as_view()
         self.assertResponseContentEqual('a', view, 'post')
@@ -115,7 +116,7 @@ class CacheMixinTest(test.SimpleTestCase):
             iterator = iter('abcdef')
             timeout = 0.4
             def get(self, request, *args, **kwargs):
-                return http.HttpResponse(self.iterator.next())
+                return http.HttpResponse(next(self.iterator))
 
         view = TestView.as_view()
         self.assertResponseContentEqual('a', view, 'get')
@@ -172,7 +173,7 @@ class CanonicalMixinTest(test.SimpleTestCase):
 
         resp = view(self.request_factory.get(canonical_url))
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(article.title, resp.content)
+        self.assertEqual(force_bytes(article.title), resp.content)
 
 
 class JsonMixinTest(test.SimpleTestCase):
@@ -434,7 +435,7 @@ class JsonMixinTest(test.SimpleTestCase):
         view = TestView.as_view()
         resp = view(self.request_factory.get('/'))
         self.assertIn('html', resp['Content-Type'])
-        self.assertEqual(html_data, resp.content)
+        self.assertEqual(force_bytes(html_data), resp.content)
         self.assertEqual(200, resp.status_code)
 
         class TestView(JsonMixin, View):

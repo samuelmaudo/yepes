@@ -10,12 +10,13 @@ import sys
 import traceback
 
 from django import test
+from django.utils.six import unichr as chr
+from django.utils.six.moves import range
 from django.utils.unittest import skipIf
 
 from yepes.utils import (
     decimals,
     email,
-    exceptions,
     formats,
     html2text,
     iterators,
@@ -92,58 +93,6 @@ class EmailTest(test.SimpleTestCase):
         )
 
 
-class ExceptionsTest(test.SimpleTestCase):
-
-    maxDiff = None
-
-    def _raise_value_error(self):
-        raise ValueError('original text')
-
-    def test_chain_exception_class(self):
-        try:
-            try:
-                self._raise_value_error()
-            except:
-                error_type, error_value, error_traceback = sys.exc_info()
-                original_traceback_lines = traceback.format_exc(error_traceback).split('\n')
-
-                self.assertIs(error_type, ValueError)
-                self.assertEqual(str(error_value), 'original text')
-
-                exceptions.raise_chained_exception(TypeError)
-        except:
-            error_type, error_value, error_traceback = sys.exc_info()
-            traceback_lines = traceback.format_exc(error_traceback).split('\n')
-
-            self.assertIs(error_type, TypeError)
-            self.assertEqual(str(error_value), 'original text')
-            self.assertEqual(traceback_lines[3:-2], original_traceback_lines[1:-2])
-        else:
-            self.fail('No exception was raised')
-
-    def test_chain_exception_instance(self):
-        try:
-            try:
-                self._raise_value_error()
-            except:
-                error_type, error_value, error_traceback = sys.exc_info()
-                original_traceback_lines = traceback.format_exc(error_traceback).split('\n')
-
-                self.assertIs(error_type, ValueError)
-                self.assertEqual(str(error_value), 'original text')
-
-                exceptions.raise_chained_exception(TypeError('new text'))
-        except:
-            error_type, error_value, error_traceback = sys.exc_info()
-            traceback_lines = traceback.format_exc(error_traceback).split('\n')
-
-            self.assertIs(error_type, TypeError)
-            self.assertEqual(str(error_value), 'new text')
-            self.assertEqual(traceback_lines[3:-2], original_traceback_lines[1:-2])
-        else:
-            self.fail('No exception was raised')
-
-
 class FormatsTest(test.SimpleTestCase):
 
     def test_permissive_date_format(self):
@@ -176,15 +125,15 @@ class IteratorsTest(test.SimpleTestCase):
         )
         iterable = iter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.assertEqual(
-            iterators.isplit(iterable, 1).next(),
+            next(iterators.isplit(iterable, 1)),
             [1],
         )
         self.assertEqual(
-            iterators.isplit(iterable, 2).next(),
+            next(iterators.isplit(iterable, 2)),
             [2, 3],
         )
         self.assertEqual(
-            iterators.isplit(iterable, 3).next(),
+            next(iterators.isplit(iterable, 3)),
             [4, 5, 6],
         )
         self.assertEqual(
@@ -294,11 +243,11 @@ class SlugifyTest(test.SimpleTestCase):
 
     def test_usage(self):
         a = 'Ελληνικά'
-        b = b'-'.join((a, a))
-        c = b' - '.join((a, a))
+        b = '-'.join((a, a))
+        c = ' - '.join((a, a))
         self.checkSlug([
-            (b'xx x  - "#$@ x',
-             b'xx-x-x'),
+            ('xx x  - "#$@ x',
+             'xx-x-x'),
             ('Bän...g (bang)',
              'bän-g-bang'),
             (a,
@@ -307,12 +256,12 @@ class SlugifyTest(test.SimpleTestCase):
              b.lower()),
             (c,
              b.lower()),
-            (b'    a ',
-             b'a'),
-            (b'tags/',
-             b'tags'),
-            (b'holy_wars',
-             b'holy-wars'),
+            ('    a ',
+             'a'),
+            ('tags/',
+             'tags'),
+            ('holy_wars',
+             'holy-wars'),
 
             # Make sure we get a consistent result with decomposed chars:
             ('el ni\N{LATIN SMALL LETTER N WITH TILDE}o',
@@ -342,23 +291,23 @@ class UnidecodeTest(test.SimpleTestCase):
             self.assertEqual(unidecode(unicode), ascii)
 
     def test_ascii(self):
-        for n in xrange(0, 128):
+        for n in range(0, 128):
             self.assertEqual(
-                unidecode(unichr(n)),
-                unichr(n),
+                unidecode(chr(n)),
+                chr(n),
             )
 
     def test_bmp(self):
         # Just check that it doesn't throw an exception
-        for n in xrange(0, 0x10000):
-            unidecode(unichr(n))
+        for n in range(0, 0x10000):
+            unidecode(chr(n))
 
     def test_circled_latin(self):
         # 1 sequence of a-z
-        for n in xrange(0, 26):
+        for n in range(0, 26):
             self.assertEqual(
-                unidecode(unichr(0x24d0 + n)),
-                unichr(ord('a') + n),
+                unidecode(chr(0x24d0 + n)),
+                chr(ord('a') + n),
             )
 
     @skipIf(sys.maxunicode < 0x10000, 'Narrow build.')
@@ -367,12 +316,12 @@ class UnidecodeTest(test.SimpleTestCase):
         # undefined. We just count the undefined ones and don't check
         # positions.
         empty_count = 0
-        for n in xrange(0x1d400, 0x1d6a4):
-            a = unidecode(unichr(n))
+        for n in range(0x1d400, 0x1d6a4):
+            a = unidecode(chr(n))
             if n % 52 < 26:
-                b = unichr(ord('A') + n % 26)
+                b = chr(ord('A') + n % 26)
             else:
-                b = unichr(ord('a') + n % 26)
+                b = chr(ord('a') + n % 26)
             if not a:
                 empty_count += 1
             else:
@@ -383,10 +332,10 @@ class UnidecodeTest(test.SimpleTestCase):
     @skipIf(sys.maxunicode < 0x10000, 'Narrow build.')
     def test_mathematical_digits(self):
         # 5 consecutive sequences of 0-9
-        for n in xrange(0x1d7ce, 0x1d800):
+        for n in range(0x1d7ce, 0x1d800):
             self.assertEqual(
-                unidecode(unichr(n)),
-                unichr(ord('0') + (n-0x1d7ce) % 10),
+                unidecode(chr(n)),
+                chr(ord('0') + (n-0x1d7ce) % 10),
             )
 
     def test_usage(self):

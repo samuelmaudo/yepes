@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.utils.encoding import smart_bytes
+from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators import BaseValidator
@@ -19,7 +19,7 @@ class PhoneNumberValidator(BaseValidator):
     message = _('Enter a valid phone number.')
 
     def __call__(self, value):
-        value = smart_bytes(value)
+        value = smart_str(value)
         digits = len(re.findall(r'[0-9]', value))
         plus_sign = len(re.findall(r'^\+', value))
         hyphens = len(re.findall(r'\-', value))

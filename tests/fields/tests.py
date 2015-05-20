@@ -519,53 +519,53 @@ class LongBitFieldTest(test.TestCase):
             obj.related_flags_4
 
     def test_int_fields_values(self):
-        value_1 = Bit(9223372036854775808L)    # 1 << 63
-        value_2 = Bit(2147483648L)             # 1 << 31
-        value_3 = Bit(9223372039002259456L)    # value_1 + value_2
+        value_1 = Bit(9223372036854775808)    # 1 << 63
+        value_2 = Bit(2147483648)             # 1 << 31
+        value_3 = Bit(9223372039002259456)    # value_1 + value_2
 
         obj = LongBitModel()
         obj.flags = value_2
         obj.related_flags = value_3
-        self.assertEqual(obj.flags_1, 2147483648L)
-        self.assertEqual(obj.flags_2, 0L)
-        self.assertEqual(obj.flags_3, 0L)
-        self.assertEqual(int(obj.flags), 2147483648L)
-        self.assertEqual(obj.related_flags_1, 2147483648L)
-        self.assertEqual(obj.related_flags_2, 1L)
-        self.assertEqual(obj.related_flags_3, 0L)
-        self.assertEqual(int(obj.related_flags), 9223372039002259456L)
+        self.assertEqual(obj.flags_1, 2147483648)
+        self.assertEqual(obj.flags_2, 0)
+        self.assertEqual(obj.flags_3, 0)
+        self.assertEqual(int(obj.flags), 2147483648)
+        self.assertEqual(obj.related_flags_1, 2147483648)
+        self.assertEqual(obj.related_flags_2, 1)
+        self.assertEqual(obj.related_flags_3, 0)
+        self.assertEqual(int(obj.related_flags), 9223372039002259456)
 
         obj = LongBitModel(flags=value_2, related_flags=value_3)
-        self.assertEqual(obj.flags_1, 2147483648L)
-        self.assertEqual(obj.flags_2, 0L)
-        self.assertEqual(obj.flags_3, 0L)
-        self.assertEqual(int(obj.flags), 2147483648L)
-        self.assertEqual(obj.related_flags_1, 2147483648L)
-        self.assertEqual(obj.related_flags_2, 1L)
-        self.assertEqual(obj.related_flags_3, 0L)
-        self.assertEqual(int(obj.related_flags), 9223372039002259456L)
+        self.assertEqual(obj.flags_1, 2147483648)
+        self.assertEqual(obj.flags_2, 0)
+        self.assertEqual(obj.flags_3, 0)
+        self.assertEqual(int(obj.flags), 2147483648)
+        self.assertEqual(obj.related_flags_1, 2147483648)
+        self.assertEqual(obj.related_flags_2, 1)
+        self.assertEqual(obj.related_flags_3, 0)
+        self.assertEqual(int(obj.related_flags), 9223372039002259456)
 
         obj.save()
         obj = LongBitModel.objects.get()
-        self.assertEqual(obj.flags_1, 2147483648L)
-        self.assertEqual(obj.flags_2, 0L)
-        self.assertEqual(obj.flags_3, 0L)
-        self.assertEqual(int(obj.flags), 2147483648L)
-        self.assertEqual(obj.related_flags_1, 2147483648L)
-        self.assertEqual(obj.related_flags_2, 1L)
-        self.assertEqual(obj.related_flags_3, 0L)
-        self.assertEqual(int(obj.related_flags), 9223372039002259456L)
+        self.assertEqual(obj.flags_1, 2147483648)
+        self.assertEqual(obj.flags_2, 0)
+        self.assertEqual(obj.flags_3, 0)
+        self.assertEqual(int(obj.flags), 2147483648)
+        self.assertEqual(obj.related_flags_1, 2147483648)
+        self.assertEqual(obj.related_flags_2, 1)
+        self.assertEqual(obj.related_flags_3, 0)
+        self.assertEqual(int(obj.related_flags), 9223372039002259456)
 
         obj.flags = value_3
         obj.related_flags = value_2
-        self.assertEqual(obj.flags_1, 2147483648L)
-        self.assertEqual(obj.flags_2, 1L)
-        self.assertEqual(obj.flags_3, 0L)
-        self.assertEqual(int(obj.flags), 9223372039002259456L)
-        self.assertEqual(obj.related_flags_1, 2147483648L)
-        self.assertEqual(obj.related_flags_2, 0L)
-        self.assertEqual(obj.related_flags_3, 0L)
-        self.assertEqual(int(obj.related_flags), 2147483648L)
+        self.assertEqual(obj.flags_1, 2147483648)
+        self.assertEqual(obj.flags_2, 1)
+        self.assertEqual(obj.flags_3, 0)
+        self.assertEqual(int(obj.flags), 9223372039002259456)
+        self.assertEqual(obj.related_flags_1, 2147483648)
+        self.assertEqual(obj.related_flags_2, 0)
+        self.assertEqual(obj.related_flags_3, 0)
+        self.assertEqual(int(obj.related_flags), 2147483648)
 
     def test_lookup(self):
         value_1 = Bit(int('0b1'+'0'*63, 2))
