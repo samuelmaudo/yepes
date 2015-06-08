@@ -47,13 +47,13 @@ class ModelAdmin(DjangoModelAdmin):
         if self.has_massupdate_permission(request):
             add_action('mass_update')
 
-        if acts:
-            # Move admin site actions after mass_update.
-            for name, func in self.admin_site.actions:
-                info = acts.pop(name)
-                if (name != 'delete_selected'
-                        or self.has_delete_permission(request)):
-                    acts[name] = info
+        # Move admin site actions after mass_update.
+        for name, func in self.admin_site.actions:
+            info = acts.pop(name, None)
+            if (info is not None
+                    and (name != 'delete_selected'
+                            or self.has_delete_permission(request))):
+                acts[name] = info
 
         if self.has_export_permission(request):
             if serializers.has_serializer('csv'):
