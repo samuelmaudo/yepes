@@ -4,11 +4,11 @@ from __future__ import division, unicode_literals
 
 import math
 
+from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
+from django.core.validators import MaxValueValidator, EMPTY_VALUES
 from django.db import models
 from django.db.models import signals
 from django.db.models.fields.related import add_lazy_relation
-from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
-from django.core.validators import MaxValueValidator, EMPTY_VALUES
 from django.utils import six
 from django.utils.encoding import smart_text
 from django.utils.six.moves import range, zip
@@ -37,8 +37,8 @@ class UnknownFlagError(ValueError):
 
 class BitField(models.BigIntegerField):
 
-    choices = ()
-    __choices = None
+    choices = []
+    __choices = Undefined
     empty_strings_allowed = False
 
     def __init__(self, verbose_name=None, name=None, choices=None, **kwargs):
@@ -68,8 +68,17 @@ class BitField(models.BigIntegerField):
 
         setattr(cls, self.name, BitFieldDescriptor(self))
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(BitField, self).deconstruct()
+        path = path.replace('yepes.fields.bit', 'yepes.fields')
+        kwargs['choices'] = tuple(zip(
+            self.flags.iter_names(),
+            self.flags.iter_verbose_names(),
+        ))
+        return name, path, args, kwargs
+
     def formfield(self, **kwargs):
-        defaults = {
+        params = {
             'choices': self.get_choices(include_blank=False),
             'form_class': forms.BitField,
             'help_text': self.help_text,
@@ -78,17 +87,17 @@ class BitField(models.BigIntegerField):
         }
         if self.has_default():
             if callable(self.default):
-                defaults['initial'] = self.default
-                defaults['show_hidden_initial'] = True
+                params['initial'] = self.default
+                params['show_hidden_initial'] = True
             else:
-                defaults['initial'] = self.flags.get_value(self.get_default())
+                params['initial'] = self.flags.get_value(self.get_default())
 
-        defaults.update(kwargs)
-        form_class = defaults.pop('form_class')
+        params.update(kwargs)
+        form_class = params.pop('form_class')
         if not isinstance(form_class, forms.BitField):
             form_class = forms.BitField
 
-        return form_class(**defaults)
+        return form_class(**params)
 
     def get_db_prep_lookup(self, lookup_type, value, connection, prepared=False):
         if not prepared:
@@ -104,7 +113,7 @@ class BitField(models.BigIntegerField):
         return self.split_value(value)[0]
 
     def get_choices(self, *args, **kwargs):
-        if self.__choices is None:
+        if self.__choices is Undefined:
             self.__choices = [
                 (int(value), smart_text(name))
                 for value, name
@@ -149,15 +158,6 @@ class BitField(models.BigIntegerField):
                 pieces.append(int(value[-63:], 2))
 
         return pieces
-
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.BigIntegerField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
 
     def to_python(self, value):
         # Although the descriptor ensures valid values, is necessary to
@@ -228,8 +228,7 @@ class BitFieldDescriptor(object):
 
 class BitFieldFlags(object):
 
-    def __new__(cls, field, choices):
-        self = object.__new__(cls)
+    def __init__(self, field, choices):
         self._names = []
         self._verbose_names = []
         self._bits = []
@@ -241,7 +240,6 @@ class BitFieldFlags(object):
             self._bits.append(bit)
         self._field = field
         self._max_value = (2 ** (i + 1)) - 1
-        return self
 
     def __getattr__(self, name):
         if name.startswith('_'):
@@ -388,22 +386,29 @@ class RelatedBitField(BitField):
         super(RelatedBitField, self).contribute_to_class(cls, name)
         other = self.fake_rel.to
         if isinstance(other, six.string_types) or other._meta.pk is None:
-            target = other
             def resolve_related_class(field, model, cls):
                 rel = field.fake_rel
                 rel.to = model
                 rel.field_name = rel.field_name or model._meta.pk.name
-                signals.post_save.connect(field.flags.reset, rel.to)
-                signals.post_delete.connect(field.flags.reset, rel.to)
             add_lazy_relation(cls, self, other, resolve_related_class)
         else:
-            target = other._meta.db_table
             rel = self.fake_rel
             rel.field_name = rel.field_name or other._meta.pk.name
-            signals.post_save.connect(self.flags.reset, rel.to)
-            signals.post_delete.connect(self.flags.reset, rel.to)
 
-        #cls._meta.duplicate_targets[self.column] = (target, "m2m")
+    def deconstruct(self):
+        name, path, args, kwargs = super(BitField, self).deconstruct()
+        path = path.replace('yepes.fields.bit', 'yepes.fields')
+        kwargs['to'] = self.fake_rel.to
+        kwargs['to_field'] = self.fake_rel.field_name
+        kwargs['allowed_choices'] = self.int_fields * 63
+        kwargs['limit_choices_to'] = self.fake_rel.limit_choices_to
+        return name, path, args, kwargs
+
+    def get_choices(self, *args, **kwargs):
+        # Returns an instance of RelatedBitFieldChoices, a generator that uses
+        # field flags to generate choices. It resets field flags before begin
+        # choices generation.
+        return RelatedBitFieldChoices(self)
 
 
 class RelatedBitFieldFlags(object):
@@ -414,10 +419,8 @@ class RelatedBitFieldFlags(object):
     _values = Undefined
     _verbose_names = Undefined
 
-    def __new__(cls, field):
-        self = object.__new__(cls)
+    def __init__(self, field):
         self._field = field
-        return self
 
     def get_instance(self, value):
         if isinstance(value, six.string_types):
@@ -523,4 +526,17 @@ class RelatedBitFieldFlags(object):
         self._max_value = Undefined
         self._values = Undefined
         self._verbose_names = Undefined
+
+
+class RelatedBitFieldChoices(object):
+
+    def __init__(self, field):
+        self._field = field
+
+    def __iter__(self):
+        flags = self._field.flags
+        flags.reset()
+        choices = zip(flags.iter_values(), flags.iter_verbose_names())
+        for value, name in choices:
+            yield (int(value), smart_text(name))
 

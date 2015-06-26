@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import decimal
 import operator
 import re
 
@@ -12,6 +13,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from yepes.exceptions import MissingAttributeError
 from yepes.types.undefined import Undefined
 from yepes.utils.decimals import force_decimal
+from yepes.utils.properties import cached_property
 
 __all__ = ('Formula', )
 
@@ -23,6 +25,45 @@ VARIABLE_RE = re.compile(r'[_a-zA-Z][_a-zA-Z0-9]*')
 
 @python_2_unicode_compatible
 class Formula(object):
+
+    constants = {
+        'true': True,
+        'false': False,
+        'none': None,
+        'null': None,
+    }
+    unary_operators = {
+        '+': operator.pos,
+        '-': operator.neg,
+        'not': operator.not_,
+    }
+    binary_operators = {
+        '+': operator.add,
+        '-': operator.sub,
+        '*': operator.mul,
+        '**': operator.pow,
+        '^': operator.pow,
+        '/': operator.truediv,
+        '//': operator.floordiv,
+        '%': operator.mod,
+        '<': operator.lt,
+        '<=': operator.le,
+        '=': operator.eq,
+        '==': operator.eq,
+        '!=': operator.ne,
+        '<>': operator.ne,
+        '>': operator.gt,
+        '>=': operator.ge,
+        'and': (lambda a, b: a and b),
+        'or': (lambda a, b: a or b),
+    }
+
+    @cached_property
+    def keywords(self):
+        words = set(self.constants)
+        words.update(op for op in self.unary_operators if op.islower())
+        words.update(op for op in self.binary_operators if op.islower())
+        return words
 
     def __init__(self, formula):
         self.formula = force_text(formula).lower()
@@ -38,8 +79,6 @@ class Formula(object):
         if name.startswith('_') or name in ('formula', 'variables'):
             super(Formula, self).__setattr__(name, value)
         else:
-            if isinstance(value, (six.integer_types, float)):
-                value = force_decimal(value)
             self.variables[name] = value
 
     def __repr__(self):
@@ -52,7 +91,7 @@ class Formula(object):
     def __str__(self):
         return self.formula
 
-    def __boolean__(self):
+    def __bool__(self):
         return (len(self.formula) > 0)
 
     def __nonzero__(self):
@@ -62,18 +101,20 @@ class Formula(object):
         form = self.formula
         vars = self.variables.copy()
         vars.update(variables)
-
-        for var in vars:
-            if not VARIABLE_RE.match(var):
+        for name, value in six.iteritems(vars):
+            if not self.validate_variable(name):
                 msg = 'invalid variable name: "{0}"'
                 raise SyntaxError(msg.format(token))
+
+            if isinstance(value, (six.integer_types, float)):
+                vars[name] = force_decimal(value)
 
         def parentheses_replace(matchobj):
             inner_form = matchobj.group(1)
             inner_result = self._calculate(inner_form, vars)
             return six.text_type(inner_result).lower()
 
-        replaces = True
+        replaces = 1
         while replaces:
             form, replaces = PARENTHESES_RE.subn(parentheses_replace, form)
 
@@ -89,13 +130,9 @@ class Formula(object):
             if DECIMAL_RE.match(token):
                 tokens[i] = force_decimal(token)
             elif token in vars:
-                tokens[i] = force_decimal(vars[token])
-            elif token == 'true':
-                tokens[i] = True
-            elif token == 'false':
-                tokens[i] = False
-            elif token in ('none', 'null'):
-                tokens[i] = None
+                tokens[i] = vars[token]
+            elif token in self.constants:
+                tokens[i] = self.constants[token]
 
         def get_previous_value(current_pos):
             previous_pos = current_pos - 1
@@ -117,70 +154,62 @@ class Formula(object):
             if not isinstance(token, six.string_types):
                 continue
 
-            if token == '+':
+            if token in self.binary_operators:
                 try:
                     a = get_previous_value(i)
-                except SyntaxError:
-                    result = operator.pos(result)
+                except SyntaxError as error:
+                    if token in self.unary_operators:
+                        op = self.unary_operators[token]
+                        result = op(result)
+                    else:
+                        raise error
                 else:
-                    result = operator.add(a, result)
-            elif token == '-':
-                try:
-                    a = get_previous_value(i)
-                except SyntaxError:
-                    result = operator.neg(result)
-                else:
-                    result = operator.sub(a, result)
-            elif token == '*':
-                a = get_previous_value(i)
-                result = operator.mul(a, result)
-            elif token in ('**', '^'):
-                a = get_previous_value(i)
-                result = operator.pow(a, result)
-            elif token == '/':
-                a = get_previous_value(i)
-                result = operator.truediv(a, result)
-            elif token == '//':
-                a = get_previous_value(i)
-                result = operator.floordiv(a, result)
-            elif token == '%':
-                a = get_previous_value(i)
-                result = operator.mod(a, result)
-            elif token == '<':
-                a = get_previous_value(i)
-                result = operator.lt(a, result)
-            elif token == '<=':
-                a = get_previous_value(i)
-                result = operator.le(a, result)
-            elif token in ('==', '='):
-                a = get_previous_value(i)
-                result = operator.eq(a, result)
-            elif token in ('!=', '<>'):
-                a = get_previous_value(i)
-                result = operator.ne(a, result)
-            elif token == '>':
-                a = get_previous_value(i)
-                result = operator.gt(a, result)
-            elif token == '>=':
-                a = get_previous_value(i)
-                result = operator.ge(a, result)
-            elif token == 'not':
-                result = (not result)
-            elif token == 'and':
-                a = get_previous_value(i)
-                result = (a  and result)
-            elif token == 'or':
-                a = get_previous_value(i)
-                result = (a  or result)
-            elif VARIABLE_RE.search(token):
+                    op = self.binary_operators[token]
+                    result = op(a, result)
+
+            elif token in self.unary_operators:
+                op = self.unary_operators[token]
+                result = op(result)
+                continue
+            elif self.validate_variable(token):
                 msg = 'unknown variable: "{0}"'
                 raise SyntaxError(msg.format(token))
             else:
-                msg = 'unknown operator: "{0}"'
+                msg = 'unknown op: "{0}"'
                 raise SyntaxError(msg.format(token))
 
         if result is Undefined:
             raise SyntaxError('invalid syntax')
 
         return result
+
+    def test(self, *variables):
+        form = self.formula
+        if variables:
+            vars = {
+                var: decimal.Decimal('1')
+                for var
+                in variables
+            }
+        else:
+            tokens = TOKENS_RE.findall(form)
+            vars = {
+                token: decimal.Decimal('1')
+                for token
+                in tokens
+                if self.validate_variable(token)
+            }
+        self.calculate(**vars)
+
+    def validate(self, *variables):
+        try:
+            self.test(*variables)
+        except SyntaxError:
+            return False
+        else:
+            return True
+
+    def validate_variable(self, name):
+        return (VARIABLE_RE.search(name) is not None
+                and name not in self.keywords)
 

@@ -2,21 +2,28 @@
 
 from __future__ import unicode_literals
 
-from django.db import models
 from django.utils.six.moves import range
+from django.utils.translation import ugettext_lazy as _
 
+from yepes import forms
+from yepes.fields.char import CharField
 from yepes.utils import slugify
+from yepes.utils.deconstruct import clean_keywords
 
 
-class SlugField(models.CharField):
+class SlugField(CharField):
+
+    description = _('Slug')
 
     def __init__(self, *args, **kwargs):
         kwargs['blank'] = False
         kwargs.setdefault('db_index', True)
+        kwargs.setdefault('force_ascii', True)
         kwargs.setdefault('max_length', 63)
+        kwargs['normalize_spaces'] = False
         kwargs['null'] = False
+        kwargs['trim_spaces'] = False
 
-        self.force_ascii = kwargs.pop('force_ascii', True)
         self.unique_with_respect_to = kwargs.pop('unique_with_respect_to', None)
         if self.unique_with_respect_to is not None:
             kwargs['unique'] = False
@@ -52,26 +59,40 @@ class SlugField(models.CharField):
     def clean(self, value, model_instance):
         slug = self.to_python(value)
         if not slug:
-            slug = self.to_slug(model_instance)
-            if self.unique or self.unique_with_respect_to is not None:
-                slug = self.avoid_duplicates(slug, model_instance)
-        else:
-            slug = self.to_slug(slug)
-            if self.unique or self.unique_with_respect_to is not None:
-                slug = self.avoid_duplicates(slug, model_instance)
+            slug = self.to_python(model_instance)
+
+        if self.unique or self.unique_with_respect_to is not None:
+            slug = self.avoid_duplicates(slug, model_instance)
 
         self.validate(slug, model_instance)
         self.run_validators(slug)
         return slug
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(SlugField, self).deconstruct()
+        path = path.replace('yepes.fields.slug', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'db_index': True,
+            'force_ascii': True,
+            'max_length': 63,
+            'unique_with_respect_to': None,
+        }, immutables=[
+            'blank',
+            'normalize_spaces',
+            'null',
+            'trim_spaces',
+        ])
+        return name, path, args, kwargs
+
     def formfield(self, **kwargs):
-        kwargs['required'] = False
+        kwargs.setdefault('form_class', forms.SlugField)
+        kwargs.setdefault('required', False)
         return super(SlugField, self).formfield(**kwargs)
 
     def pre_save(self, model_instance, add):
         slug = super(SlugField, self).pre_save(model_instance, add)
         if not slug:
-            slug = self.to_slug(model_instance)
+            slug = self.to_python(model_instance)
             if self.unique or self.unique_with_respect_to is not None:
                 slug = self.avoid_duplicates(slug, model_instance)
 
@@ -79,15 +100,10 @@ class SlugField(models.CharField):
 
         return slug
 
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.CharField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
-
-    def to_slug(self, value):
-        return slugify(value, ascii=self.force_ascii)
+    def to_python(self, *args, **kwargs):
+        value = super(SlugField, self).to_python(*args, **kwargs)
+        if value:
+            return slugify(value)
+        else:
+            return value
 

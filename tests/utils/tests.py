@@ -16,7 +16,7 @@ from django.utils.unittest import skipIf
 
 from yepes.utils import (
     decimals,
-    email,
+    emails,
     formats,
     html2text,
     iterators,
@@ -80,17 +80,46 @@ class EmailTest(test.SimpleTestCase):
 
     def test_normalize_email(self):
         self.assertEqual(
-            email.normalize_email('john.smith@example.com'),
+            emails.normalize_email('john.smith@example.com'),
             'john.smith@example.com',
         )
         self.assertEqual(
-            email.normalize_email('JOHN.SMITH@EXAMPLE.COM'),
+            emails.normalize_email('JOHN.SMITH@EXAMPLE.COM'),
             'john.smith@example.com',
         )
         self.assertEqual(
-            email.normalize_email('John.Smith@Example.Com'),
+            emails.normalize_email('John.Smith@Example.Com'),
             'John.Smith@example.com',
         )
+
+    def test_validate_email(self):
+        # Valid and common.
+        self.assertTrue(emails.validate_email('niceandsimple@example.com'))
+        self.assertTrue(emails.validate_email('very.common@example.com'))
+        self.assertTrue(emails.validate_email('a.little.lengthy.but.fine@dept.example.com'))
+        self.assertTrue(emails.validate_email('disposable.style.email.with+symbol@example.com'))
+        self.assertTrue(emails.validate_email('other.email-with-dash@example.com'))
+        # Valid according to standard but uncommon.
+        self.assertFalse(emails.validate_email(r'"much.more unusual"@example.com'))
+        self.assertFalse(emails.validate_email(r'"very.unusual.@.unusual.com"@example.com'))
+        self.assertFalse(emails.validate_email(r'"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com'))
+        self.assertFalse(emails.validate_email(r'admin@mailserver1'))
+        self.assertFalse(emails.validate_email(r'jsmith@[192.168.2.1'))
+        self.assertFalse(emails.validate_email(r'jsmith@[IPv6:2001:db8::1]'))
+        self.assertFalse(emails.validate_email(r"#!$%&'*+-/=?^_`{}|~@example.org"))
+        self.assertFalse(emails.validate_email(r'"()<>[]:,;@\\\"!#$%&\'*+-/=?^_`{}| ~.a"@example.org'))
+        self.assertFalse(emails.validate_email(r'" "@example.org'))
+        self.assertFalse(emails.validate_email(r'üñîçøðé@example.com'))
+        self.assertFalse(emails.validate_email(r'üñîçøðé@üñîçøðé.com'))
+        # Not valid.
+        self.assertFalse(emails.validate_email(r'Abc.example.com'))
+        self.assertFalse(emails.validate_email(r'A@b@c@example.com'))
+        self.assertFalse(emails.validate_email(r'a"b(c)d,e:f;g<h>i[j\k]l@example.com'))
+        self.assertFalse(emails.validate_email(r'just"not"right@example.com'))
+        self.assertFalse(emails.validate_email(r'this is"not\allowed@example.com'))
+        self.assertFalse(emails.validate_email(r'this\ still\"not\\allowed@example.com'))
+        self.assertFalse(emails.validate_email(r'john..doe@example.com'))
+        self.assertFalse(emails.validate_email(r'john.doe@example..com'))
 
 
 class FormatsTest(test.SimpleTestCase):

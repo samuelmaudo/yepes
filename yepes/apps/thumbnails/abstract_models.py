@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.fields.key import KeyField
+from yepes.fields.key import IdentifierField
 from yepes.cache import LookupTable
 from yepes.model_mixins.logged import Logged
 
@@ -29,7 +29,7 @@ class AbstractConfiguration(Logged):
         ('PNG', 'PNG'),
         ('WEBP', 'WEBP'),
     )
-    key = KeyField(
+    key = IdentifierField(
             max_length=63,
             unique=True,
             verbose_name=_('Key'))

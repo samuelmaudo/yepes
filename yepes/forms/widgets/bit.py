@@ -2,14 +2,14 @@
 
 import operator
 
-from django.forms import CheckboxSelectMultiple
+from django.forms import widgets
 from django.utils import six
 from django.utils.six.moves import reduce
 
 from yepes.types import Bit
 
 
-class BitWidget(CheckboxSelectMultiple):
+class BitWidget(widgets.CheckboxSelectMultiple):
 
     def render(self, name, value, attrs=None, choices=()):
         value_set = set()

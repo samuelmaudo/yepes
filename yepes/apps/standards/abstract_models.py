@@ -155,7 +155,7 @@ AbstractCurrency._meta.get_field('name', False).help_text = _(
 
 class AbstractGeographicArea(Logged, Standard):
 
-    api_id = fields.KeyField(
+    api_id = fields.IdentifierField(
             unique=True,
             verbose_name=_('API Id'))
     description = models.TextField(

@@ -8,7 +8,7 @@ import unicodedata
 from django.utils.encoding import force_text
 from yepes.utils import unidecode
 
-RE_SPACES = re.compile(r' +')
+SPACES_RE = re.compile(r' +')
 
 
 def slugify(string, extra_characters='', ascii=False, lower=True, spaces=False):
@@ -38,9 +38,10 @@ def slugify(string, extra_characters='', ascii=False, lower=True, spaces=False):
 
     slug = ''.join(slug_tokens).strip()
     if spaces:
-        slug = RE_SPACES.sub(' ', slug)
+        slug = SPACES_RE.sub(' ', slug)
     else:
-        slug = RE_SPACES.sub('-', slug)
+        slug = SPACES_RE.sub('-', slug)
+
     if lower:
         slug = slug.lower()
 

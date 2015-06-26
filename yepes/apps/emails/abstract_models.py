@@ -37,7 +37,7 @@ class AbstractConnection(Logged):
     username = models.CharField(
             max_length=255,
             verbose_name=_('Username'))
-    password = fields.EncryptedTextField(
+    password = fields.EncryptedCharField(
             max_length=255,
             verbose_name=_('Password'))
 

@@ -2,10 +2,10 @@
 
 from __future__ import unicode_literals
 
-from django.forms.widgets import ClearableFileInput
+from django.forms import widgets
 
 
-class ImageWidget(ClearableFileInput):
+class ImageWidget(widgets.ClearableFileInput):
 
     template_with_clear = (
         '<span class="clearable-file-input">'

@@ -1,34 +1,46 @@
 # -*- coding:utf-8 -*-
 
-from django.core.exceptions import ValidationError
-from django.forms import TypedMultipleChoiceField
+from django.forms import ChoiceField, MultipleChoiceField
 
 from yepes.forms.widgets import BitWidget
 from yepes.types import Bit
+from yepes.utils.properties import cached_property
 
 
-class BitField(TypedMultipleChoiceField):
+class BitField(MultipleChoiceField):
 
-    def __init__(self, widget=BitWidget, *args, **kwargs):
-        if not isinstance(widget, type):
-            if not isinstance(widget, BitWidget):
-                widget = BitWidget
-        elif not issubclass(widget, BitWidget):
-            widget = BitWidget
-        kwargs['coerce'] = Bit
-        kwargs['widget'] = widget
-        super(BitField, self).__init__(*args, **kwargs)
+    def __init__(self, choices=(), widget=BitWidget, *args, **kwargs):
+        if isinstance(widget, type):
+            widget = widget()
+        if not isinstance(widget, BitWidget):
+            widget = BitWidget()
+        super(ChoiceField, self).__init__(*args, **kwargs)
+        self._choices = choices
+        self.widget = widget
 
-    def validate(self, value):
-        if self.required and not value:
-            msg = self.error_messages['required']
-            raise ValidationError(msg)
+    @cached_property
+    def choices(self):
+        # ``choices`` can be any iterable, but is necessary to convert it into
+        # a list because it will be consumed more than once.
+        #
+        # Django implementation calls list() when setting choices but this
+        # implementation allows for lazy evaluation of the iterable.
+        #
+        return list(self._choices)
 
-        for v in value:
-            for key, verbose in self.choices:
-                if v == key:
-                    break
-            else:
-                msg = self.error_messages['invalid_choice']
-                raise ValidationError(msg % {'value': v})
+    def to_python(self, value):
+        return Bit(value)
+
+    def valid_value(self, value):
+        for k, v in self.choices:
+            if isinstance(v, (list, tuple)):
+                # This is an optgroup, so look inside the group for options
+                for k2, v2 in v:
+                    if value == k2:
+                        return True
+
+            elif value == k:
+                return True
+
+        return False
 

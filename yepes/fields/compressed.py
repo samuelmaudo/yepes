@@ -3,16 +3,21 @@
 from base64 import b64decode, b64encode
 import zlib
 
+from django import forms
 from django.db import models
 from django.utils import six
 from django.utils.encoding import force_bytes, force_text
+from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
+from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
 @six.add_metaclass(models.SubfieldBase)
 class CompressedTextField(models.BinaryField):
+
+    description = _('Compressed text')
 
     _prefix = '({[#'
     _suffix = '#]})'
@@ -43,6 +48,20 @@ class CompressedTextField(models.BinaryField):
         bytes = zlib.decompress(force_bytes(bytes))
         return bytes.decode('utf8')
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(CompressedTextField, self).deconstruct()
+        path = path.replace('yepes.fields.compressed', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'compression_level': 6,
+            'editable': True,
+        })
+        return name, path, args, kwargs
+
+    def formfield(self, **kwargs):
+        kwargs.setdefault('widget', forms.Textarea)
+        kwargs.setdefault('max_length', self.max_length)
+        return super(CompressedTextField, self).formfield(**kwargs)
+
     def get_prep_lookup(self, lookup_type, value):
         if lookup_type == 'exact':
             return self.get_prep_value(value)
@@ -57,15 +76,6 @@ class CompressedTextField(models.BinaryField):
         else:
             return value
 
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.BinaryField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
-
     def to_python(self, value):
         if isinstance(value, six.binary_type):
             return self.decompress(value)
@@ -74,7 +84,7 @@ class CompressedTextField(models.BinaryField):
         elif (isinstance(value, six.text_type)
                 and value.startswith(self._prefix)
                 and value.endswith(self._suffix)):
-            return self.value_from_string()
+            return self.value_from_string(value)
         else:
             return value
 

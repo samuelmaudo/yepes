@@ -140,5 +140,5 @@ class ImportationPlan(object):
         return batch
 
     def run(self, batch):
-        raise NotImplemented('subclasses of ImportationPlan must override run() method')
+        raise NotImplementedError('Subclasses of ImportationPlan must override run() method')
 

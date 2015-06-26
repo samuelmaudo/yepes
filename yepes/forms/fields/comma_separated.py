@@ -11,11 +11,12 @@ from django.utils import six
 class CommaSeparatedField(forms.CharField):
 
     def __init__(self, *args, **kwargs):
-        separator = kwargs.pop('separator', ', ')
-        regex = '\s*{0}\s*'.format(re.escape(separator.strip()))
+        self.separator = kwargs.pop('separator', ', ')
+        self.separator_re = re.compile(
+            '\s*{0}\s*'.format(re.escape(self.separator.strip())),
+            re.UNICODE,
+        )
         super(CommaSeparatedField, self).__init__(*args, **kwargs)
-        self.separator_re = re.compile(regex, re.UNICODE)
-        self.separator = separator
 
     def clean(self, value):
         value = self.prepare_value(value)
@@ -40,8 +41,8 @@ class CommaSeparatedField(forms.CharField):
         """
         if not value:
             return ''
-        elif not isinstance(value, six.string_types):
-            return self.separator.join(value)
-        else:
+        elif isinstance(value, six.string_types):
             return value
+        else:
+            return self.separator.join(value)
 

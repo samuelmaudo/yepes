@@ -4,21 +4,39 @@ from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.fields.name import NameField
+from yepes import forms
+from yepes.fields.char import CharField
 from yepes.validators import PhoneNumberValidator
+from yepes.utils.deconstruct import clean_keywords
 
 
-class PhoneNumberField(NameField):
+class PhoneNumberField(CharField):
 
+    default_validators = [PhoneNumberValidator()]
     description = _('Generic phone number')
 
     def __init__(self, *args, **kwargs):
+        kwargs['force_lower'] = False
+        kwargs['force_upper'] = False
         kwargs.setdefault('max_length', 31)
-        kwargs.setdefault('validators', [PhoneNumberValidator()])
+        kwargs['normalize_spaces'] = True
+        kwargs['trim_spaces'] = False
         super(PhoneNumberField, self).__init__(*args, **kwargs)
 
-    def south_field_triple(self):
-        from south.modelsinspector import introspector
-        args, kwargs = introspector(self)
-        return ('yepes.fields.PhoneNumberField', args, kwargs)
+    def deconstruct(self):
+        name, path, args, kwargs = super(PhoneNumberField, self).deconstruct()
+        path = path.replace('yepes.fields.phone_number', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'max_length': 31,
+        }, immutables=[
+            'force_lower',
+            'force_upper',
+            'normalize_spaces',
+            'trim_spaces',
+        ])
+        return name, path, args, kwargs
+
+    def formfield(self, **kwargs):
+        kwargs.setdefault('form_class', forms.PhoneNumberField)
+        return super(PhoneNumberField, self).formfield(**kwargs)
 

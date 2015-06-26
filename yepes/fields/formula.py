@@ -2,60 +2,64 @@
 
 from __future__ import unicode_literals
 
-from django.db import models
-from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
+from yepes import forms
+from yepes.fields.char import CharField
 from yepes.types import Formula
+from yepes.utils.deconstruct import clean_keywords
+from yepes.validators import FormulaValidator
 
 
-class FormulaField(models.CharField):
+class FormulaField(CharField):
+
+    description = _('Formula')
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 255)
-        self.variables = frozenset(kwargs.pop('variables', ()))
+        kwargs.setdefault('normalize_spaces', False)
+        kwargs.setdefault('trim_spaces', True)
+        self.variables = list(kwargs.pop('variables', []))
         super(FormulaField, self).__init__(*args, **kwargs)
+        self.validators.append(FormulaValidator(self.variables))
 
     def contribute_to_class(self, cls, name):
         super(FormulaField, self).contribute_to_class(cls, name)
         setattr(cls, self.name, FormulaFieldDescriptor(self))
 
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.CharField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
+    def deconstruct(self):
+        name, path, args, kwargs = super(FormulaField, self).deconstruct()
+        path = path.replace('yepes.fields.formula', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'max_length': 255,
+            'normalize_spaces': False,
+            'trim_spaces': True,
+            'variables': [],
+        })
+        return name, path, args, kwargs
 
-    def validate(self, value, model_instance):
-        super(FormulaField, self).validate(value, model_instance)
-        if not value:
-            return
-        try:
-            f = Formula(value)
-            if self.variables:
-                f.calculate(**{v: 1 for v in self.variables})
-        except SyntaxError as e:
-            raise ValidationError('Invalid syntax: {0}'.format(e))
+    def formfield(self, **kwargs):
+        kwargs.setdefault('form_class', forms.FormulaField)
+        kwargs.setdefault('variables', self.variables)
+        return super(CharField, self).formfield(**kwargs)
 
 
 class FormulaFieldDescriptor(object):
 
     def __init__(self, field):
-        self.value = '{0}_value'.format(field.name)
+        self.cache_name = field.get_cache_name()
 
     def __get__(self, obj, cls=None):
         if obj is None:
             return self
         else:
-            return obj.__dict__[self.value]
+            return obj.__dict__[self.cache_name]
 
     def __set__(self, obj, value):
         if obj is None:
             raise AttributeError('Manager must be accessed via instance')
         elif value is None or isinstance(value, Formula):
-            obj.__dict__[self.value] = value
+            obj.__dict__[self.cache_name] = value
         else:
-            obj.__dict__[self.value] = Formula(value)
+            obj.__dict__[self.cache_name] = Formula(value)
 

@@ -13,16 +13,19 @@ from yepes.cache import LookupTable
 from yepes.fields import (
     BitField,
     CachedForeignKey,
+    CharField,
     ColorField,
     CommaSeparatedField,
     CompressedTextField,
     EmailField,
+    EncryptedCharField,
     EncryptedTextField,
     FormulaField,
     GuidField,
-    KeyField,
-    NameField,
+    IdentifierField,
+    PhoneNumberField,
     PickledObjectField,
+    PostalCodeField,
     RelatedBitField,
     RichTextField,
     SlugField,
@@ -136,7 +139,7 @@ class EncryptedModel(models.Model):
 
 class FlagModel(models.Model):
 
-    name = NameField(
+    name = CharField(
             max_length=31)
 
     class Meta:
@@ -163,9 +166,9 @@ class GuidModel(models.Model):
     custom_charset = GuidField(charset='z%,#8+ç@', unique=True)
 
 
-class KeyModel(models.Model):
+class IdentifierModel(models.Model):
 
-    key = KeyField()
+    key = IdentifierField()
 
 
 class LongBitModel(models.Model):
@@ -184,6 +187,11 @@ class LongBitModel(models.Model):
         ordering = ['id']
 
 
+class PhoneNumberModel(models.Model):
+
+    phone = PhoneNumberField()
+
+
 class PickledModel(models.Model):
 
     default = PickledObjectField()
@@ -193,6 +201,11 @@ class PickledModel(models.Model):
             protocol=1)
     protocol_2 = PickledObjectField(
             protocol=2)
+
+
+class PostalCodeModel(models.Model):
+
+    code = PostalCodeField()
 
 
 class RelatedBitModel(models.Model):
@@ -212,12 +225,14 @@ class RelatedBitModel(models.Model):
 class RichTextModel(models.Model):
 
     text = RichTextField()
-    upper_text = RichTextField(processors=[lambda x: x.upper()])
+    upper_text = RichTextField(
+            processors=[lambda x: x.upper()],
+            store_html=False)
 
 
 class SlugModel(models.Model):
 
-    title = NameField(
+    title = CharField(
             max_length=63)
     slug = SlugField(
             max_length=63)

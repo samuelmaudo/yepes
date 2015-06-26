@@ -3,17 +3,15 @@
 from __future__ import unicode_literals
 
 import random
-import re
 
-from django.core import validators
-from django.db import models
 from django.utils.six.moves import range
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
-TOKEN_RE = '^[{0}]{{{1},{1}}}$'
+from yepes.fields.char import CharField
+from yepes.utils.deconstruct import clean_keywords
 
 
-class GuidField(models.CharField):
+class GuidField(CharField):
 
     default_length = 12
     default_charset = '0123456789abcdef'
@@ -21,16 +19,34 @@ class GuidField(models.CharField):
 
     def __init__(self, *args, **kwargs):
         kwargs['blank'] = False
-        self.charset = kwargs.pop('charset', self.default_charset)
+        kwargs.setdefault('charset', self.default_charset)
         kwargs.setdefault('db_index', True)
+        kwargs['force_ascii'] = False
+        kwargs['force_lower'] = False
+        kwargs['force_upper'] = False
         kwargs.setdefault('max_length', self.default_length)
+        kwargs['normalize_spaces'] = False
         kwargs['null'] = False
+        kwargs['trim_spaces'] = True
         super(GuidField, self).__init__(*args, **kwargs)
-        self.validators = [
-            validators.RegexValidator(
-                re.compile(TOKEN_RE.format(self.charset, self.max_length)),
-                _('Enter a valid value.'))
-        ]
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(GuidField, self).deconstruct()
+        path = path.replace('yepes.fields.guid', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'charset': self.default_charset,
+            'db_index': True,
+            'max_length': self.default_length,
+        }, immutables=[
+            'blank',
+            'force_ascii',
+            'force_lower',
+            'force_upper',
+            'normalize_spaces',
+            'null',
+            'trim_spaces',
+        ])
+        return name, path, args, kwargs
 
     def generate_guid(self):
         return ''.join(random.choice(self.charset)
@@ -49,13 +65,4 @@ class GuidField(models.CharField):
                     break
 
         return guid
-
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.CharField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
 

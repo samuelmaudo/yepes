@@ -2,13 +2,13 @@
 
 from __future__ import unicode_literals
 
-from django.forms.widgets import Textarea
+from django.forms import widgets
 from django.forms.util import flatatt
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 
 
-class RichTextWidget(Textarea):
+class RichTextWidget(widgets.Textarea):
 
     class Media:
         css = {'all': ['rich_text/widget.css']}
@@ -21,15 +21,15 @@ class RichTextWidget(Textarea):
 
     def render(self, name, value, attrs=None):
         return format_html("""
-                <div class="mdEditorFrame">
-                  <div class="mdEditorWindow">
-                    <div class="mdEditorCanvas">
-                      <textarea{0}>\r\n{1}</textarea>
-                      <div class="mdEditorSeparator"></div>
-                      <div class="mdEditorPreview"></div>
-                    </div>
-                  </div>
-                </div>""",
-                flatatt(self.build_attrs(attrs, name=name)),
-                '' if value is None else force_text(value))
+            <div class="mdEditorFrame">
+              <div class="mdEditorWindow">
+                <div class="mdEditorCanvas">
+                  <textarea{0}>\r\n{1}</textarea>
+                  <div class="mdEditorSeparator"></div>
+                  <div class="mdEditorPreview"></div>
+                </div>
+              </div>
+            </div>""",
+            flatatt(self.build_attrs(attrs, name=name)),
+            force_text(value) if value is not None else '')
 

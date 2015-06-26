@@ -6,7 +6,6 @@ from django import forms
 from django.contrib.admin import widgets
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.apps.newsletters.validators import validate_email_address
 from yepes.forms import fields
 from yepes.loading import get_model
 
@@ -82,8 +81,7 @@ class ProfileForm(forms.Form):
 
     email_address = fields.EmailField(
             label=_('E-mail Address'),
-            max_length=120,
-            validators=[validate_email_address])
+            max_length=120)
     first_name = forms.CharField(
             label=_('First Name'),
             max_length=60,
@@ -113,8 +111,7 @@ class SubscriptionForm(forms.Form):
             required=False)
     email_address = fields.EmailField(
             label=_('E-mail Address'),
-            max_length=120,
-            validators=[validate_email_address])
+            max_length=120)
 
 
 class UnsubscriptionForm(forms.Form):
@@ -124,8 +121,7 @@ class UnsubscriptionForm(forms.Form):
             queryset=NewsletterManager.get_queryset())
     email_address = fields.EmailField(
             label=_('E-mail Address'),
-            max_length=120,
-            validators=[validate_email_address])
+            max_length=120)
 
 
 class UnsubscriptionReasonForm(forms.Form):

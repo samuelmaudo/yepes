@@ -39,7 +39,7 @@ class Serializer(object):
             return self.load(headers, source)
 
     def dump(self, headers, data, file):
-        raise NotImplemented('subclasses of Serializer must override dump() method')
+        raise NotImplementedError('Subclasses of Serializer must override dump() method')
 
     def dumps(self, headers, data):
         stream = cStringIO()
@@ -47,7 +47,7 @@ class Serializer(object):
         return stream.getvalue()
 
     def load(self, headers, file):
-        raise NotImplemented('subclasses of Serializer must override load() method')
+        raise NotImplementedError('Subclasses of Serializer must override load() method')
 
     def loads(self, headers, string):
         return self.load(headers, cStringIO(string))

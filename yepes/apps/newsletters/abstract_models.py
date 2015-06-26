@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import F, Q
 from django.utils import timezone
@@ -11,12 +12,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes.apps.registry import registry
-from yepes.apps.newsletters.validators import (
-    validate_email_address,
-    validate_email_domain,
-)
 from yepes.apps.newsletters.managers import NewsletterManager
-from yepes.loading import get_model
+from yepes.loading import LazyModelManager
 from yepes.model_mixins import (
     Enableable,
     Illustrated,
@@ -26,8 +23,12 @@ from yepes.model_mixins import (
     Slugged,
 )
 from yepes.utils import html2text
-from yepes.utils.email import normalize_email
+from yepes.utils.emails import normalize_email, validate_email
 from yepes.utils.properties import described_property
+from yepes.validators.email import DOMAIN_RE
+
+DeliveryManager = LazyModelManager('newsletters', 'Delivery')
+DomainManager = LazyModelManager('newsletters', 'Domain')
 
 
 class AbstractBounce(models.Model):
@@ -238,7 +239,7 @@ class AbstractDomain(models.Model):
             editable=False,
             max_length=63,
             unique=True,
-            validators=[validate_email_domain],
+            validators=[RegexValidator(DOMAIN_RE)],
             verbose_name=_('Domain'))
 
     is_trusted = models.BooleanField(
@@ -323,7 +324,7 @@ class AbstractMessageImage(Illustrated, Logged):
             unique=True,
             verbose_name=_('Global Unique Identifier'))
 
-    name = fields.KeyField(
+    name = fields.IdentifierField(
             unique=True,
             max_length=63,
             verbose_name=_('Name'))
@@ -523,7 +524,6 @@ class AbstractSubscriber(Enableable, Logged):
     email_address = fields.EmailField(
             max_length=127,
             unique=True,
-            validators=[validate_email_address],
             verbose_name=_('E-mail Address'))
     email_domain = models.ForeignKey(
             'Domain',
@@ -579,11 +579,11 @@ class AbstractSubscriber(Enableable, Logged):
 
     def set_email(self, address):
         address = normalize_email(address)
-        validate_email_address(address)
+        if not validate_email(address):
+            msg = "'{0}' is not a valid email address."
+            raise ValueError(msg.format(address))
 
-        Domain = get_model('newsletters', 'Domain')
-        DomainManager = Domain._default_manager
-        user, domain_name = address.rsplit('@', 1)
+        _, domain_name = address.rsplit('@', 1)
         domain, _ = DomainManager.get_or_create(name=domain_name)
 
         self.email_address = address
@@ -734,8 +734,7 @@ class AbstractUnsubscription(models.Model):
             if (self.last_message_id is None
                     and self.newsletter_id is not None
                     and self.subscriber_id is not None):
-                Delivery = get_model('newsletters', 'Delivery')
-                delivery = Delivery._default_manager.filter(
+                delivery = DeliveryManager.filter(
                     newsletter=self.newsletter_id,
                     subscriber=self.subscriber_id,
                 ).order_by(

@@ -9,6 +9,31 @@ from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 from yepes.utils.properties import cached_property
 
 
+class CachedForeignKey(models.ForeignKey):
+
+    def contribute_to_class(self, cls, name, virtual_only=False):
+        super(CachedForeignKey, self).contribute_to_class(cls, name, virtual_only=virtual_only)
+        setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(CachedForeignKey, self).deconstruct()
+        path = path.replace('yepes.fields.cached_foreign_key', 'yepes.fields')
+        return name, path, args, kwargs
+
+    def get_default(self):
+        if self.has_default():
+            default = self.rel.to.cache.get_default()
+            return getattr(default, self.related_field.attname, None)
+        else:
+            return None
+
+    def has_default(self):
+        if not self.null:
+            return self.rel.to.cache.has_default()
+        else:
+            return False
+
+
 class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
 
     @cached_property
@@ -49,33 +74,4 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
             raise self.RelatedObjectDoesNotExist(msg)
 
         return rel_obj
-
-
-class CachedForeignKey(models.ForeignKey):
-
-    def contribute_to_class(self, cls, name, virtual_only=False):
-        super(CachedForeignKey, self).contribute_to_class(cls, name, virtual_only=virtual_only)
-        setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
-
-    def get_default(self):
-        if self.has_default():
-            default = self.rel.to.cache.get_default()
-            return getattr(default, self.related_field.attname, None)
-        else:
-            return None
-
-    def has_default(self):
-        if not self.null:
-            return self.rel.to.cache.has_default()
-        else:
-            return False
-
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.ForeignKey'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
 

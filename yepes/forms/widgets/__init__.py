@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
 
-from .bit import BitWidget
-from .image import ImageWidget
-from .rich_text import RichTextWidget
+from yepes.forms.widgets.bit import BitWidget
+from yepes.forms.widgets.image import ImageWidget
+from yepes.forms.widgets.rich_text import RichTextWidget

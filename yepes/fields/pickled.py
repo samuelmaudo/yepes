@@ -8,8 +8,10 @@ from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 from django.utils import six
 from django.utils.encoding import force_bytes
 from django.utils.six.moves import cPickle as pickle
+from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
+from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
@@ -23,6 +25,8 @@ class PickledObjectField(models.BinaryField):
     fail, since pickle would now be generating a different string.
 
     """
+    description = _('Pickled object')
+
     _prefix = '{[(#'
     _suffix = '#)]}'
 
@@ -36,7 +40,6 @@ class PickledObjectField(models.BinaryField):
 
     def __init__(self, *args, **kwargs):
         self.protocol = kwargs.pop('protocol', 2)
-        kwargs.setdefault('editable', False)
         super(PickledObjectField, self).__init__(*args, **kwargs)
 
     def contribute_to_class(self, cls, name):
@@ -47,6 +50,14 @@ class PickledObjectField(models.BinaryField):
         # the taxes field of ``Order`` instances.
         super(PickledObjectField, self).contribute_to_class(cls, name)
         setattr(cls, self.name, SubfieldDescriptor(self))
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(PickledObjectField, self).deconstruct()
+        path = path.replace('yepes.fields.pickled', 'yepes.fields')
+        clean_keywords(self, kwargs, defaults={
+            'protocol': 2,
+        })
+        return name, path, args, kwargs
 
     def dump(self, obj):
         """
@@ -86,15 +97,6 @@ class PickledObjectField(models.BinaryField):
             return pickle.loads(force_bytes(bytes))
         else:
             return None
-
-    def south_field_triple(self):
-        """
-        Returns a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.BinaryField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
 
     def to_python(self, value):
         if isinstance(value, six.binary_type):

@@ -2,19 +2,30 @@
 
 from __future__ import unicode_literals
 
-from django import forms
-from django.core.validators import validate_email
+from django.forms import EmailInput
 
-from yepes.utils.email import normalize_email
+from yepes.forms.fields.char import CharField
+from yepes.utils.emails import normalize_email
+from yepes.validators import RestrictedEmailValidator
 
 
-class EmailField(forms.CharField):
-    widget = forms.EmailInput
-    default_validators = [validate_email]
+class EmailField(CharField):
 
-    def to_python(self, value):
-        if value in self.empty_values:
-            return ''
-        else:
+    default_validators = [RestrictedEmailValidator()]
+    widget = EmailInput
+
+    def __init__(self, *args, **kwargs):
+        kwargs['force_ascii'] = False
+        kwargs['force_lower'] = False
+        kwargs['force_upper'] = False
+        kwargs['normalize_spaces'] = False
+        kwargs['trim_spaces'] = False
+        super(EmailField, self).__init__(*args, **kwargs)
+
+    def to_python(self, *args, **kwargs):
+        value = super(EmailField, self).to_python(*args, **kwargs)
+        if value:
             return normalize_email(value)
+        else:
+            return value
 

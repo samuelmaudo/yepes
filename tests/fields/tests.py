@@ -17,6 +17,26 @@ from yepes.apps.registry import registry
 from yepes.apps.registry.fields import ModelChoiceField
 from yepes.types import Bit, Formula
 
+from .forms import (
+    BitForm,
+    CachedForeignKeyForm,
+    ColoredForm,
+    CommaSeparatedForm,
+    CompressedForm,
+    EmailForm,
+    EncryptedForm,
+    FlagForm,
+    FormulaForm,
+    GuidForm,
+    IdentifierForm,
+    LongBitForm,
+    PhoneNumberForm,
+    PickledForm,
+    PostalCodeForm,
+    RelatedBitForm,
+    RichTextForm,
+    SlugForm,
+)
 from .models import (
     BitModel,
     CachedForeignKeyModel,
@@ -30,9 +50,11 @@ from .models import (
     FlagModel,
     FormulaModel,
     GuidModel,
-    KeyModel,
+    IdentifierModel,
     LongBitModel,
+    PhoneNumberModel,
     PickledModel,
+    PostalCodeModel,
     RelatedBitModel,
     RichTextModel,
     SlugModel,
@@ -408,6 +430,7 @@ class RelatedBitFieldTest(test.TestCase):
         past = FlagModel.objects.create(name='Past')
         present = FlagModel.objects.create(name='Present')
         future = FlagModel.objects.create(name='Future')
+        RelatedBitModel.flags.reset()
         self.assertEqual(
             list(RelatedBitModel.flags.iter_values()),
             [0b100, 0b001, 0b010],
@@ -744,6 +767,17 @@ class CachedForeignKeyTest(test.TestCase):
         self.assertIsNone(record_2.optional_key_with_default_value)
 
 
+class CharFieldTest(test.TestCase):
+
+    def test_cleaning(self):
+        record = SlugModel(title='\tLorem  Ipsum\nDolor ')
+        record.full_clean()
+        self.assertEqual(
+            record.title,
+            'Lorem Ipsum Dolor',
+        )
+
+
 class ColorFieldTest(test.TestCase):
 
     def test_cleaning(self):
@@ -901,6 +935,13 @@ class EmailFieldTest(test.TestCase):
 
     def test_cleaning(self):
         record = EmailModel()
+        record.email = 'abc'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.email = 'user@domain.com'
+        record.full_clean()
+        self.assertEqual(record.email, 'user@domain.com')
         record.email = 'USER@DOMAIN.COM'
         record.full_clean()
         self.assertEqual(record.email, 'user@domain.com')
@@ -910,6 +951,9 @@ class EmailFieldTest(test.TestCase):
         record.email = 'User@Domain.Com'
         record.full_clean()
         self.assertEqual(record.email, 'User@domain.com')
+        record.email = '\tuser@domain.com  '
+        record.full_clean()
+        self.assertEqual(record.email, 'user@domain.com')
 
 
 class EncryptedTextFieldTest(test.TestCase):
@@ -1149,10 +1193,10 @@ class GuidFieldTest(test.TestCase):
         self.assertEqual(counter.most_common(1)[0][1], 1)
 
 
-class KeyFieldTest(test.TestCase):
+class IdentifierFieldTest(test.TestCase):
 
     def test_validation(self):
-        record = KeyModel()
+        record = IdentifierModel()
         record.key = 'variable'
         record.full_clean()
         record.key = 'variable_123'
@@ -1165,15 +1209,26 @@ class KeyFieldTest(test.TestCase):
             record.full_clean()
 
 
-class NameFieldTest(test.TestCase):
+class PhoneNumberFieldTest(test.TestCase):
 
     def test_cleaning(self):
-        record = SlugModel(title='\tLorem  Ipsum\nDolor ')
+        record = PhoneNumberModel()
+        record.phone = 'abc'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.phone = '+99 (9999) 9999 9999'
         record.full_clean()
-        self.assertEqual(
-            record.title,
-            'Lorem Ipsum Dolor',
-        )
+        self.assertEqual(record.phone, '+99 (9999) 9999 9999')
+        record.phone = '   +99 (9999) 9999 9999'
+        record.full_clean()
+        self.assertEqual(record.phone, '+99 (9999) 9999 9999')
+        record.phone = '+99 (9999) 9999 9999   '
+        record.full_clean()
+        self.assertEqual(record.phone, '+99 (9999) 9999 9999')
+        record.phone = '+99  (9999)  9999  9999'
+        record.full_clean()
+        self.assertEqual(record.phone, '+99 (9999) 9999 9999')
 
 
 class PickledObjectFieldTest(test.TestCase):
@@ -1274,6 +1329,31 @@ class PickledObjectFieldTest(test.TestCase):
         self.assertEqual(record_2.protocol_0, spanish_2)
         self.assertEqual(record_2.protocol_1, spanish_2)
         self.assertEqual(record_2.protocol_2, spanish_2)
+
+
+class PostalCodeFieldTest(test.TestCase):
+
+    def test_cleaning(self):
+        record = PostalCodeModel()
+        record.code = 'abc'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.code = '9999 AA'
+        record.full_clean()
+        self.assertEqual(record.code, '9999 AA')
+        record.code = '9999 aa'
+        record.full_clean()
+        self.assertEqual(record.code, '9999 AA')
+        record.code = '  9999 AA'
+        record.full_clean()
+        self.assertEqual(record.code, '9999 AA')
+        record.code = '9999 AA  '
+        record.full_clean()
+        self.assertEqual(record.code, '9999 AA')
+        record.code = '9999   AA'
+        record.full_clean()
+        self.assertEqual(record.code, '9999 AA')
 
 
 @skipUnlessMarkdown()
