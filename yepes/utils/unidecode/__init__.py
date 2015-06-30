@@ -35,7 +35,7 @@ def unidecode(string):
         codepoint = ord(char)
 
         if codepoint < 0x80: # Basic ASCII
-            tokens.append(str(char))
+            tokens.append(char)
             continue
 
         if codepoint > 0xeffff:
@@ -48,14 +48,14 @@ def unidecode(string):
             table = CACHE[section]
         except KeyError:
             try:
-                mod = import_module('.x{0:0>3x}'.format(section), __name__)
+                module = import_module('.x{0:0>3x}'.format(section), __name__)
             except ImportError:
                 CACHE[section] = None
                 continue   # No match: ignore this character and carry on.
             else:
-                CACHE[section] = table = mod.data
+                CACHE[section] = table = module.data
 
-        if table and len(table) > position:
+        if table is not None and position < len(table):
             tokens.append(table[position])
 
     return ''.join(tokens)
