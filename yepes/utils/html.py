@@ -5,33 +5,98 @@ from __future__ import unicode_literals
 import re
 
 from django.utils.six import unichr as chr
-from django.utils.six.moves import html_parser
+from django.utils.six.moves.html_parser import HTMLParser
 
-from yepes.utils.minifier import html_minifier
 from yepes.utils.htmlentities import ENTITIES_TO_CHARACTERS
 
-__all__ = ('html2text', )
+__all__ = ('close_tags', 'extract_text')
 
 BLANK_LINES_RE = re.compile(r'\n\s+\n')
 SPACES_RE = re.compile(r'\s+')
 
+SELF_CLOSING_TAGS = {
+    'area',
+    'base',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
+}
 
-class Html2TextParser(html_parser.HTMLParser):
 
+def close_tags(html):
+    """
+    Adds a closing tag for each unclosed tag in ``html``.
+    """
+    parser = OpenTagsParser()
+    parser.feed(html)
+    open_tags = parser.get_result()
+    return html + ''.join('</{0}>'.format(tag) for tag in open_tags)
+
+
+def extract_text(html):
+    """
+    Extracts plain text from given ``html``.
+
+    This function is similar to ``django.utils.html.strip_tags()`` but also
+    converts HTML entities into unicode characters.
+
+    """
+    parser = TextFragmentsParser()
+    parser.feed(html)
+    text = ''.join(parser.get_result())
+    return BLANK_LINES_RE.sub('\n\n', text).strip()
+
+
+class OpenTagsParser(HTMLParser):
+    """
+    HTMLParser that returns unclosed tags in reverse order.
+    """
     def __init__(self, *args, **kwargs):
-        html_parser.HTMLParser.__init__(self, *args, **kwargs)
+        HTMLParser.__init__(self, *args, **kwargs)
+        self.open_tags = []
+
+    def get_result(self):
+        return self.open_tags
+
+    def handle_endtag(self, tag):
+        try:
+            self.open_tags.remove(tag)
+        except ValueError:
+            pass
+
+    def handle_starttag(self, tag, attrs):
+        if tag not in SELF_CLOSING_TAGS:
+            self.open_tags.insert(0, tag)
+
+
+class TextFragmentsParser(HTMLParser):
+    """
+    HTMLParser that returns all pieces of text.
+    """
+    def __init__(self, *args, **kwargs):
+        HTMLParser.__init__(self, *args, **kwargs)
         self.is_idle = 0
         self.last_abbr = None
         self.last_link = None
-        self.text_tokens = []
+        self.text_fragments = []
 
     def _append(self, token):
         if not self.is_idle:
-            self.text_tokens.append(token)
+            self.text_fragments.append(token)
 
     def get_result(self):
-        text = ''.join(self.text_tokens)
-        return BLANK_LINES_RE.sub('\n\n', text).strip()
+        return self.text_fragments
 
     def handle_charref(self, name):
         if name.startswith(('x', 'X')):
@@ -94,10 +159,4 @@ class Html2TextParser(html_parser.HTMLParser):
             self._append('\n')
         elif tag in ('p', 'div', 'table'):
             self._append('\n\n')
-
-
-def html2text(html):
-    parser = Html2TextParser()
-    parser.feed(html_minifier.minify(html or ''))
-    return parser.get_result()
 

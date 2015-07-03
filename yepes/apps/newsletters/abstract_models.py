@@ -22,8 +22,8 @@ from yepes.model_mixins import (
     Orderable,
     Slugged,
 )
-from yepes.utils import html2text
 from yepes.utils.emails import normalize_email, validate_email
+from yepes.utils.html import extract_text
 from yepes.utils.properties import described_property
 from yepes.validators.email import DOMAIN_RE
 
@@ -311,7 +311,7 @@ class AbstractMessage(Logged, Slugged, MetaData):
 
     def save(self, **kwargs):
         if not self.text:
-            self.text = html2text(self.html)
+            self.text = extract_text(self.html)
         super(AbstractMessage, self).save(**kwargs)
 
 

@@ -10,7 +10,7 @@ from django.utils.six import unichr as chr
 __all__ = ('decode', 'encode')
 
 
-CHARACTERS_RE = re.compile(r'[^\s!-~]')
+CHARACTERS_RE = re.compile(r"[^\s!-%'-;=?-~]")  # Matches '&', '<', '>' and all non-ASCII characters.
 CHARACTERS_TO_ENTITIES = {
     'À': '&Agrave;',
     'Á': '&Aacute;',
@@ -132,6 +132,7 @@ CHARACTERS_TO_ENTITIES = {
     'ϒ': '&upsih;',
     'ϖ': '&piv;',
     '¡': '&iexcl;',
+    '&': '&amp;',
     '¢': '&cent;',
     '£': '&pound;',
     '¤': '&curren;',
@@ -230,7 +231,9 @@ CHARACTERS_TO_ENTITIES = {
     '≠': '&ne;',
     '≡': '&equiv;',
     '≤': '&le;',
+    '<': '&lt;',
     '≥': '&ge;',
+    '>': '&gt;',
     '⊂': '&sub;',
     '⊃': '&sup;',
     '⊄': '&nsub;',
@@ -384,6 +387,7 @@ ENTITIES_TO_CHARACTERS = {
     'upsih': 'ϒ',
     'piv': 'ϖ',
     'iexcl': '¡',
+    'amp': '&',
     'cent': '¢',
     'pound': '£',
     'curren': '¤',
@@ -482,7 +486,9 @@ ENTITIES_TO_CHARACTERS = {
     'ne': '≠',
     'equiv': '≡',
     'le': '≤',
+    'lt': '<',
     'ge': '≥',
+    'gt': '>',
     'sub': '⊂',
     'sup': '⊃',
     'nsub': '⊄',
@@ -517,14 +523,14 @@ def ENTITIES_REPLACEMENT(matchobj):
 
 def decode(string):
     """
-    Convert all HTML entities to their applicable characters.
+    Turns all HTML entities into their applicable characters.
     """
     return ENTITIES_RE.sub(ENTITIES_REPLACEMENT, force_text(string))
 
 
 def encode(string):
     """
-    Convert all applicable characters to HTML entities.
+    Turns all applicable characters into HTML entities.
     """
     return CHARACTERS_RE.sub(CHARACTERS_REPLACEMENT, force_text(string))
 

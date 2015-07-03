@@ -18,7 +18,8 @@ from yepes.utils import (
     decimals,
     emails,
     formats,
-    html2text,
+    html,
+    htmlentities,
     iterators,
     properties,
     slugify,
@@ -177,6 +178,63 @@ class IteratorsTest(test.SimpleTestCase):
             result,
             [[1, 2, 3], [4, 5, 6], [7]]
         )
+
+
+class HtmlTest(test.SimpleTestCase):
+
+    def test_close_tags(self):
+        self.assertEqual(
+            html.close_tags('<p><strong>Lorem fistrum</strong> pecador.'),
+            '<p><strong>Lorem fistrum</strong> pecador.</p>',
+        )
+        self.assertEqual(
+            html.close_tags('<p><em><strong>Te va a has&eacute; pupitaa mamaar.'),
+            '<p><em><strong>Te va a has&eacute; pupitaa mamaar.</strong></em></p>',
+        )
+        self.assertEqual(
+            html.close_tags('Est&#225; la cosa muy <strong><em>malar</strong>.'),
+            'Est&#225; la cosa muy <strong><em>malar</strong>.</em>',
+        )
+
+    def test_extract_text(self):
+        self.assertEqual(
+            html.extract_text('<p><strong>Lorem fistrum</strong> pecador.</p>'),
+            'Lorem fistrum pecador.',
+        )
+        self.assertEqual(
+            html.extract_text('<p><em>Te va a has&eacute; pupitaa mamaar.</em></p>'),
+            'Te va a hasé pupitaa mamaar.',
+        )
+        self.assertEqual(
+            html.extract_text('Est&#225; la cosa muy <strong><em>malar<strong>.'),
+            'Está la cosa muy malar.',
+        )
+
+
+class HtmlEntitiesTest(test.SimpleTestCase):
+
+    def test_decode(self):
+        self.assertEqual(htmlentities.decode('&lt;'), '<')
+        self.assertEqual(htmlentities.decode('&#60;'), '<')
+        self.assertEqual(htmlentities.decode('&euro;'), '€')
+        self.assertEqual(htmlentities.decode('&#8364;'), '€')
+        self.assertEqual(htmlentities.decode('&#x20AC;'), '€')
+        self.assertEqual(htmlentities.decode('&notin;'), '∉')
+        self.assertEqual(htmlentities.decode('&#8713;'), '∉')
+        self.assertEqual(htmlentities.decode('&Gamma;'), 'Γ')
+        self.assertEqual(htmlentities.decode('Γ'), 'Γ')
+        self.assertEqual(htmlentities.decode('&spades;'), '♠')
+        self.assertEqual(htmlentities.decode('&#9824;'), '♠')
+        self.assertEqual(htmlentities.decode('&#2384;'), 'ॐ')
+        self.assertEqual(htmlentities.decode('&#x950;'), 'ॐ')
+
+    def test_encode(self):
+        self.assertEqual(htmlentities.encode('<'), '&lt;')
+        self.assertEqual(htmlentities.encode('€'), '&euro;')
+        self.assertEqual(htmlentities.encode('∉'), '&notin;')
+        self.assertEqual(htmlentities.encode('Γ'), '&Gamma;')
+        self.assertEqual(htmlentities.encode('♠'), '&spades;')
+        self.assertEqual(htmlentities.encode('ॐ'), '&#2384;')
 
 
 class PropertiesTest(test.SimpleTestCase):

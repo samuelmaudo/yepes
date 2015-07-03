@@ -15,7 +15,7 @@ from yepes import fields
 from yepes.cache import LookupTable
 from yepes.loading import get_model
 from yepes.model_mixins import Logged
-from yepes.utils import html2text
+from yepes.utils.html import extract_text
 from yepes.utils.properties import described_property
 
 
@@ -230,7 +230,7 @@ class AbstractMessage(Logged):
 
     def save(self, **kwargs):
         if not self.text:
-            self.text = html2text(self.html)
+            self.text = extract_text(self.html)
         super(AbstractMessage, self).save(**kwargs)
 
     # CUSTOM METHODS
