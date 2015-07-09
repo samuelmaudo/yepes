@@ -93,9 +93,9 @@ class RichTextField(TextField):
         return text
 
     def save_form_data(self, instance, data):
-        super(RichTextField, self).pre_save(instance, data)
+        super(RichTextField, self).save_form_data(instance, data)
         if self.store_html:
-            html = self.generate_html(text)
+            html = self.generate_html(data)
             html_attr = self.html_field.name
             setattr(instance, html_attr, html)
 

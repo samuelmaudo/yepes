@@ -1756,6 +1756,65 @@ class RichTextFieldTest(test.TestCase):
             '<P>THIS IS <STRONG>IMPORTANT.</STRONG></P>\n',
         )
 
+    def test_saved_values(self):
+        record_1 = RichTextModel()
+        record_1.text = 'This is **important.**'
+        record_1.upper_text = 'This is **not** important.'
+        self.assertEqual(
+            record_1.text_html,
+            '',
+        )
+        self.assertEqual(
+            record_1.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IMPORTANT.</P>\n',
+        )
+        record_1.save()
+        self.assertEqual(
+            record_1.text_html,
+            '<p>This is <strong>important.</strong></p>\n',
+        )
+        self.assertEqual(
+            record_1.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IMPORTANT.</P>\n',
+        )
+        record_2 = RichTextModel.objects.get(pk=record_1.pk)
+        self.assertEqual(
+            record_2.text_html,
+            '<p>This is <strong>important.</strong></p>\n',
+        )
+        self.assertEqual(
+            record_2.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IMPORTANT.</P>\n',
+        )
+        record_2.text = 'This is **irrelevant.**'
+        record_2.upper_text = 'This is **not** irrelevant.'
+        self.assertEqual(
+            record_2.text_html,
+            '<p>This is <strong>important.</strong></p>\n',
+        )
+        self.assertEqual(
+            record_2.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IRRELEVANT.</P>\n',
+        )
+        record_2.save()
+        self.assertEqual(
+            record_2.text_html,
+            '<p>This is <strong>irrelevant.</strong></p>\n',
+        )
+        self.assertEqual(
+            record_2.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IRRELEVANT.</P>\n',
+        )
+        record_3 = RichTextModel.objects.get(pk=record_2.pk)
+        self.assertEqual(
+            record_3.text_html,
+            '<p>This is <strong>irrelevant.</strong></p>\n',
+        )
+        self.assertEqual(
+            record_3.upper_text_html,
+            '<P>THIS IS <STRONG>NOT</STRONG> IRRELEVANT.</P>\n',
+        )
+
 
 class SlugFieldTest(test.TestCase):
 
