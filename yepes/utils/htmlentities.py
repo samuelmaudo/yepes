@@ -10,7 +10,7 @@ from django.utils.six import unichr as chr
 __all__ = ('decode', 'encode')
 
 
-CHARACTERS_RE = re.compile(r"[^\s!-%'-;=?-~]")  # Matches '&', '<', '>' and all non-ASCII characters.
+CHARACTERS_RE = re.compile(r"[^\s!#$%'-;=?-~]")  # Matches '"', '&', '<', '>' and all non-ASCII characters.
 CHARACTERS_TO_ENTITIES = {
     'À': '&Agrave;',
     'Á': '&Aacute;',
@@ -131,6 +131,7 @@ CHARACTERS_TO_ENTITIES = {
     'ϑ': '&thetasym;',
     'ϒ': '&upsih;',
     'ϖ': '&piv;',
+    '"': '&quot;',
     '¡': '&iexcl;',
     '&': '&amp;',
     '¢': '&cent;',
@@ -254,6 +255,14 @@ CHARACTERS_TO_ENTITIES = {
     '♣': '&clubs;',
     '♥': '&hearts;',
     '♦': '&diams;',
+    '\u00a0': '&nbsp;',
+    '\u2002': '&ensp;',
+    '\u2003': '&emsp;',
+    '\u2009': '&thinsp;',
+    '\u200c': '&zwnj;',
+    '\u200d': '&zwj;',
+    '\u200e': '&lrm;',
+    '\u200f': '&rlm;',
 }
 def CHARACTERS_REPLACEMENT(matchobj):
     try:
@@ -386,6 +395,7 @@ ENTITIES_TO_CHARACTERS = {
     'thetasym': 'ϑ',
     'upsih': 'ϒ',
     'piv': 'ϖ',
+    'quot': '"',
     'iexcl': '¡',
     'amp': '&',
     'cent': '¢',
@@ -509,6 +519,14 @@ ENTITIES_TO_CHARACTERS = {
     'clubs': '♣',
     'hearts': '♥',
     'diams': '♦',
+    'nbsp': '\u00a0',
+    'ensp': '\u2002',
+    'emsp': '\u2003',
+    'thinsp': '\u2009',
+    'zwnj': '\u200c',
+    'zwj': '\u200d',
+    'lrm': '\u200e',
+    'rlm': '\u200f',
 }
 def ENTITIES_REPLACEMENT(matchobj):
     if matchobj.group(1):
