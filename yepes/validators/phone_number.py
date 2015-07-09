@@ -9,6 +9,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators.base import Validator
 
+CLOSE_PARENTHESES = re.compile(r'\)')
+DIGITS_RE = re.compile(r'[0-9]')
+HYPHENS_RE = re.compile(r'-')
+OPEN_PARENTHESES = re.compile(r'\((?!\))')
+PLUS_SIGN_RE = re.compile(r'\A\+')
+SLASHES = re.compile(r'/')
+SPACES_RE = re.compile(r' ')
+
 
 class PhoneNumberValidator(Validator):
     """
@@ -18,20 +26,20 @@ class PhoneNumberValidator(Validator):
 
     def validate(self, value):
         value = force_text(value)
-        digits = len(re.findall(r'[0-9]', value))
-        plus_sign = len(re.findall(r'^\+', value))
-        hyphens = len(re.findall(r'\-', value))
-        spaces = len(re.findall(r' ', value))
-        open_parentheses = len(re.findall(r'\((?!\))', value))
-        close_parentheses = len(re.findall(r'\)', value))
-        slashes = len(re.findall(r'/', value))
+        digits = len(DIGITS_RE.findall(value))
+        plus_sign = len(PLUS_SIGN_RE.findall(value))
+        hyphens = len(HYPHENS_RE.findall(value))
+        spaces = len(SPACES_RE.findall(value))
+        open_parentheses = len(OPEN_PARENTHESES.findall(value))
+        close_parentheses = len(CLOSE_PARENTHESES.findall(value))
+        slashes = len(SLASHES.findall(value))
         return (
             len(value) == (digits + plus_sign + hyphens + spaces
                            + open_parentheses + close_parentheses
                            + slashes)
             and digits >= 3
             and digits <= (15 if not plus_sign else 14)
-            and hyphens + spaces <= (digits / 2)
+            and hyphens + spaces <= digits / 2
             and open_parentheses == close_parentheses
             and open_parentheses <= 1
             and close_parentheses <= 1

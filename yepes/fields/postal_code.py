@@ -26,9 +26,9 @@ class PostalCodeField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(PostalCodeField, self).deconstruct()
         path = path.replace('yepes.fields.postal_code', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'max_length': 15,
-        }, immutables=[
+        }, constants=[
             'force_lower',
             'force_upper',
             'normalize_spaces',

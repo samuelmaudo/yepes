@@ -28,9 +28,9 @@ class EmailField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(EmailField, self).deconstruct()
         path = path.replace('yepes.fields.email', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'max_length': 63,
-        }, immutables=[
+        }, constants=[
             'force_ascii',
             'force_lower',
             'force_upper',

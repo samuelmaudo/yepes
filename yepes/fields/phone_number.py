@@ -26,9 +26,9 @@ class PhoneNumberField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(PhoneNumberField, self).deconstruct()
         path = path.replace('yepes.fields.phone_number', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'max_length': 31,
-        }, immutables=[
+        }, constants=[
             'force_lower',
             'force_upper',
             'normalize_spaces',

@@ -7,12 +7,12 @@ import collections
 from django.utils import six
 
 
-def clean_keywords(obj, keywords, defaults=None, overrides=None, immutables=None):
-    if defaults is not None:
+def clean_keywords(obj, keywords, variables=None, constants=None, overrides=None):
+    if variables is not None:
         if overrides is None:
             overrides = {}
 
-        for name, default in six.iteritems(defaults):
+        for name, default in six.iteritems(variables):
             discard = True
             value = getattr(self, overrides.get(name, name))
             if value is not default:
@@ -29,7 +29,7 @@ def clean_keywords(obj, keywords, defaults=None, overrides=None, immutables=None
             if discard:
                 keywords.pop(name, None)
 
-    if immutables is not None:
-        for name in immutables:
+    if constants is not None:
+        for name in constants:
             keywords.pop(name, None)
 

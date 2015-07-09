@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators.base import Validator
 
-KEY_RE = re.compile('^[a-zA-Z_][a-zA-Z0-9_]*$')
+KEY_RE = re.compile('\A[A-Z_][A-Z0-9_]*\Z', re.IGNORECASE)
 
 
 class IdentifierValidator(Validator):

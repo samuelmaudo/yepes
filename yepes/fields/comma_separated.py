@@ -4,26 +4,28 @@ from __future__ import unicode_literals
 
 import re
 
-from django.db import models
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import forms
+from yepes.fields.calculated import CalculatedSubfield
+from yepes.fields.char import CharField
 from yepes.utils.deconstruct import clean_keywords
 
 
-@six.add_metaclass(models.SubfieldBase)
-class CommaSeparatedField(models.CharField):
+class CommaSeparatedField(CalculatedSubfield, CharField):
 
     description = _('Comma-separated strings')
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 255)
+        kwargs['normalize_spaces'] = False
         self.separator = kwargs.pop('separator', ', ')
         self.separator_re = re.compile(
             '\s*{0}\s*'.format(re.escape(self.separator.strip())),
             re.UNICODE,
         )
+        kwargs['trim_spaces'] = False
         super(CommaSeparatedField, self).__init__(*args, **kwargs)
 
     def clean(self, value, model_instance):
@@ -35,10 +37,13 @@ class CommaSeparatedField(models.CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(CommaSeparatedField, self).deconstruct()
         path = path.replace('yepes.fields.comma_separated', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'max_length': 255,
             'separator': ', ',
-        })
+        }, constants=[
+            'normalize_spaces',
+            'trim_spaces',
+        ])
         return name, path, args, kwargs
 
     def formfield(self, **kwargs):

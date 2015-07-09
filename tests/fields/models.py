@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import division, unicode_literals
+
+from collections import defaultdict
+from decimal import Decimal as dec
 
 from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 
@@ -11,25 +14,34 @@ from django.utils.six.moves import range
 from yepes.cache import LookupTable
 
 from yepes.fields import (
+    BigIntegerField,
     BitField,
+    BooleanField,
     CachedForeignKey,
     CharField,
     ColorField,
     CommaSeparatedField,
     CompressedTextField,
+    DecimalField,
     EmailField,
     EncryptedCharField,
     EncryptedTextField,
+    FloatField,
     FormulaField,
     GuidField,
     IdentifierField,
+    IntegerField,
+    NullBooleanField,
     PhoneNumberField,
     PickledObjectField,
     PostalCodeField,
     RelatedBitField,
     RichTextField,
     SlugField,
+    SmallIntegerField,
+    TextField,
 )
+from yepes.model_mixins import Calculated
 
 
 class BitModel(models.Model):
@@ -51,6 +63,12 @@ class BitModel(models.Model):
         return six.text_type(self.flags)
 
     __unicode__ = __str__
+
+
+class BooleanModel(models.Model):
+
+    boolean = BooleanField()
+    null_boolean = NullBooleanField()
 
 
 class CachedForeignKeyModel(models.Model):
@@ -89,6 +107,47 @@ class CachedModelWithDefaultValue(models.Model):
             default_from_registry='tests:DEFAULT_CACHED_MODEL')
 
 
+CALCULATOR_CALLS = defaultdict(int)
+
+class CalculatedModel(Calculated):
+
+    boolean = BooleanField(calculated=True)
+    char = CharField(calculated=True, max_length=10)
+    decimal = DecimalField(calculated=True, max_digits=10, decimal_places=4)
+    float = FloatField(calculated=True)
+    integer = IntegerField(calculated=True)
+    null_boolean = NullBooleanField(calculated=True)
+    pickled_object = PickledObjectField(calculated=True)
+
+    def calculate_boolean(self):
+        CALCULATOR_CALLS['boolean'] += 1
+        return bool(self.pk % 2 == 0)
+
+    def calculate_char(self):
+        CALCULATOR_CALLS['char'] += 1
+        return 'even' if self.pk % 2 == 0 else 'odd'
+
+    def calculate_decimal(self):
+        CALCULATOR_CALLS['decimal'] += 1
+        return dec('{0:.4}'.format(self.pk / 7))
+
+    def calculate_float(self):
+        CALCULATOR_CALLS['float'] += 1
+        return float(self.pk / 7)
+
+    def calculate_integer(self):
+        CALCULATOR_CALLS['integer'] += 1
+        return int(self.pk // 7)
+
+    def calculate_null_boolean(self):
+        CALCULATOR_CALLS['null_boolean'] += 1
+        return bool(self.pk % 2 == 0)
+
+    def calculate_pickled_object(self):
+        CALCULATOR_CALLS['pickled_object'] += 1
+        return dec('{0:.4}'.format(self.pk / 7)).as_tuple()
+
+
 class ColoredModel(models.Model):
 
     color = ColorField()
@@ -109,6 +168,23 @@ class CompressedModel(models.Model):
             compression_level=6)
     level_9 = CompressedTextField(
             compression_level=9)
+
+
+class DecimalModel(models.Model):
+
+    decimal = DecimalField(
+        max_digits=6,
+        decimal_places=2)
+    null_decimal = DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True)
+    positive_decimal = DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        min_value=0,
+        max_value=100)
 
 
 class EmailModel(models.Model):
@@ -151,6 +227,13 @@ class FlagModel(models.Model):
     __unicode__ = __str__
 
 
+class FloatModel(models.Model):
+
+    float = FloatField()
+    null_float = FloatField(blank=True, null=True)
+    positive_float = FloatField(min_value=0.0, max_value=100.0)
+
+
 class FormulaModel(models.Model):
 
     permissive_formula = FormulaField(
@@ -169,6 +252,21 @@ class GuidModel(models.Model):
 class IdentifierModel(models.Model):
 
     key = IdentifierField()
+
+
+class IntegerModel(models.Model):
+
+    integer = IntegerField()
+    null_integer = IntegerField(blank=True, null=True)
+    positive_integer = IntegerField(min_value=0, max_value=100)
+
+    big_integer = BigIntegerField()
+    null_big_integer = BigIntegerField(blank=True, null=True)
+    positive_big_integer = BigIntegerField(min_value=0, max_value=100)
+
+    small_integer = SmallIntegerField()
+    null_small_integer = SmallIntegerField(blank=True, null=True)
+    positive_small_integer = SmallIntegerField(min_value=0, max_value=100)
 
 
 class LongBitModel(models.Model):
@@ -250,4 +348,10 @@ class SlugModel(models.Model):
         return self.title
 
     __unicode__ = __str__
+
+
+class TextModel(models.Model):
+
+    text = TextField(blank=True)
+    limited_text = TextField(min_length=10, max_length=50)
 

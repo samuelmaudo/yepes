@@ -13,9 +13,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.conf import settings
 from yepes.exceptions import LookupTypeError
+from yepes.fields.calculated import CalculatedSubfield
 from yepes.fields.char import CharField
+from yepes.forms import CharField as CharFormField
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
+from yepes.validators import CharSetValidator
 
 __all__ = ('EncryptedCharField', 'EncryptedTextField',
            'InvalidLengthError', 'TooShortError')
@@ -47,8 +50,7 @@ class TooShortError(ValueError):
         super(TooShortError, self).__init__(msg)
 
 
-@six.add_metaclass(models.SubfieldBase)
-class EncryptedTextField(models.BinaryField):
+class EncryptedTextField(CalculatedSubfield, models.BinaryField):
 
     description = _('Encrypted text')
 
@@ -72,16 +74,29 @@ class EncryptedTextField(models.BinaryField):
     def __init__(self, *args, **kwargs):
         self.cipher = kwargs.pop('cipher', AES)
         editable = kwargs.pop('editable', True)
+        self.min_length = kwargs.pop('min_length', None)
         self.secret_key = kwargs.pop('secret_key', None)
         super(EncryptedTextField, self).__init__(*args, **kwargs)
-        self.editable = editable
+        self.editable = editable  # BinaryField sets editable == False
+        if self.min_length is not None:
+            self.validators.append(MinLengthValidator(self.min_length))
+
+    def check(self, **kwargs):
+        errors = super(EncryptedTextField, self).check(**kwargs)
+        errors.extend(self._check_max_length_attribute(**kwargs))
+        errors.extend(self._check_min_length_attribute(**kwargs))
+        return errors
+
+    #_check_max_length_attribute = CharField._check_max_length_attribute
+    _check_min_length_attribute = CharField._check_min_length_attribute
 
     def deconstruct(self):
         name, path, args, kwargs = super(EncryptedTextField, self).deconstruct()
         path = path.replace('yepes.fields.encrypted', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'cipher': AES,
             'editable': True,
+            'min_length': None,
             'secret_key': None,
         })
         return name, path, args, kwargs
@@ -97,7 +112,9 @@ class EncryptedTextField(models.BinaryField):
         return self._cipher.encrypt(bytes)
 
     def formfield(self, **kwargs):
+        kwargs.setdefault('form_class', forms.CharField)
         kwargs.setdefault('widget', forms.Textarea)
+        kwargs.setdefault('min_length', self.min_length)
         kwargs.setdefault('max_length', self.max_length)
         return super(EncryptedTextField, self).formfield(**kwargs)
 
@@ -160,31 +177,60 @@ class EncryptedTextField(models.BinaryField):
 
 class EncryptedCharField(EncryptedTextField):
 
+    description = _('Encrypted string')
+
     def __init__(self, *args, **kwargs):
-        self.min_length = kwargs.pop('min_length', None)
+        self.charset = kwargs.pop('charset', None)
+        self.force_ascii = kwargs.pop('force_ascii', False)
+        self.force_lower = kwargs.pop('force_lower', False)
+        self.force_upper = kwargs.pop('force_upper', False)
+        self.normalize_spaces = kwargs.pop('normalize_spaces', True)
+        self.trim_spaces = kwargs.pop('trim_spaces', False)
         super(EncryptedCharField, self).__init__(*args, **kwargs)
-        if self.min_length is not None:
-            self.validators.append(MinLengthValidator(self.min_length))
-
-    def check(self, **kwargs):
-        errors = super(EncryptedCharField, self).check(**kwargs)
-        errors.extend(self._check_max_length_attribute(**kwargs))
-        errors.extend(self._check_min_length_attribute(**kwargs))
-        return errors
-
-    #_check_max_length_attribute = CharField._check_max_length_attribute
-    _check_min_length_attribute = CharField._check_min_length_attribute
+        if self.charset is not None:
+            self.validators.append(CharSetValidator(self.charset))
 
     def deconstruct(self):
         name, path, args, kwargs = super(EncryptedCharField, self).deconstruct()
-        clean_keywords(self, kwargs, defaults={
-            'min_length': None,
+        clean_keywords(self, kwargs, variables={
+            'charset': None,
+            'force_ascii': False,
+            'force_lower': False,
+            'force_upper': False,
+            'normalize_spaces': True,
+            'trim_spaces': False,
         })
         return (name, path, args, kwargs)
 
     def formfield(self, **kwargs):
-        kwargs.setdefault('widget', forms.TextInput)
-        kwargs.setdefault('min_length', self.min_length)
-        kwargs.setdefault('max_length', self.max_length)
-        return super(EncryptedCharField, self).formfield(**kwargs)
+        params = {
+            'form_class': CharFormField,
+            'widget': forms.TextInput,
+            'charset': self.charset,
+            'force_ascii': self.force_ascii,
+            'force_lower': self.force_lower,
+            'force_upper': self.force_upper,
+            'normalize_spaces': self.normalize_spaces,
+            'trim_spaces': self.trim_spaces,
+        }
+        params.update(kwargs)
+        return super(EncryptedCharField, self).formfield(**params)
+
+    def to_python(self, *args, **kwargs):
+        value = super(EncryptedCharField, self).to_python(*args, **kwargs)
+        if value:
+            if self.force_ascii:
+                value = unidecode(value)
+
+            if self.force_lower:
+                value = value.lower()
+            elif self.force_upper:
+                value = value.upper()
+
+            if self.normalize_spaces:
+                value = ' '.join(value.split())
+            elif self.trim_spaces:
+                value = value.strip()
+
+        return value
 

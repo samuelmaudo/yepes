@@ -10,3 +10,4 @@ from yepes.forms.fields.identifier import IdentifierField
 from yepes.forms.fields.phone_number import PhoneNumberField
 from yepes.forms.fields.postal_code import PostalCodeField
 from yepes.forms.fields.slug import SlugField
+from yepes.forms.fields.text import TextField

@@ -27,7 +27,7 @@ class ColorField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(ColorField, self).deconstruct()
         path = path.replace('yepes.fields.color', 'yepes.fields')
-        clean_keywords(self, kwargs, immutables=[
+        clean_keywords(self, kwargs, constants=[
             'force_ascii',
             'force_lower',
             'force_upper',

@@ -4,18 +4,21 @@ from __future__ import unicode_literals
 
 import re
 
-from django import forms
 from django.utils import six
 
+from yepes.forms.fields.char import CharField
 
-class CommaSeparatedField(forms.CharField):
+
+class CommaSeparatedField(CharField):
 
     def __init__(self, *args, **kwargs):
+        kwargs['normalize_spaces'] = False
         self.separator = kwargs.pop('separator', ', ')
         self.separator_re = re.compile(
             '\s*{0}\s*'.format(re.escape(self.separator.strip())),
             re.UNICODE,
         )
+        kwargs['trim_spaces'] = True
         super(CommaSeparatedField, self).__init__(*args, **kwargs)
 
     def clean(self, value):

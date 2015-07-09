@@ -30,7 +30,7 @@ class FormulaField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(FormulaField, self).deconstruct()
         path = path.replace('yepes.fields.formula', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'max_length': 255,
             'normalize_spaces': False,
             'trim_spaces': True,

@@ -27,12 +27,12 @@ class IdentifierField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(IdentifierField, self).deconstruct()
         path = path.replace('yepes.fields.key', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'db_index': True,
             'max_length': 31,
             'min_length': 1,
             'unique': True,
-        }, immutables=[
+        }, constants=[
             'normalize_spaces',
             'trim_spaces',
         ])

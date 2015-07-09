@@ -9,6 +9,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators.base import Validator
 
+LETTERS_RE = re.compile(r'[A-Z]', re.IGNORECASE)
+DIGITS_RE = re.compile(r'[0-9]')
+HYPHENS_RE = re.compile(r'-')
+SPACES_RE = re.compile(r' ')
+
 
 class PostalCodeValidator(Validator):
     """
@@ -18,17 +23,17 @@ class PostalCodeValidator(Validator):
 
     def validate(self, value):
         value = force_text(value)
-        alpha = len(re.findall(r'[a-zA-Z]', value))
-        digit = len(re.findall(r'[0-9]', value))
-        alnum = alpha + digit
-        hyphens = len(re.findall(r'\-', value))
-        spaces = len(re.findall(r' ', value))
-        valid_chars = alnum + hyphens + spaces
+        letters = len(LETTERS_RE.findall(value))
+        digits = len(DIGITS_RE.findall(value))
+        letters_and_digits = letters + digits
+        hyphens = len(HYPHENS_RE.findall(value))
+        spaces = len(SPACES_RE.findall(value))
+        hyphens_and_spaces = hyphens + spaces
         return (
-            len(value) == (alnum + hyphens + spaces)
-            and digit >= 1
-            and alnum >= 3
-            and alnum <= 11
-            and hyphens + spaces <= (alnum / 2)
+            len(value) == letters_and_digits + hyphens_and_spaces
+            and digits >= 1
+            and letters_and_digits >= 3
+            and letters_and_digits <= 11
+            and hyphens_and_spaces <= letters_and_digits / 2
         )
 

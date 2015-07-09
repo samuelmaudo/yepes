@@ -10,12 +10,13 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import forms
+from yepes.fields.calculated import CalculatedField
 from yepes.utils import unidecode
 from yepes.utils.deconstruct import clean_keywords
 from yepes.validators import CharSetValidator
 
 
-class CharField(models.CharField):
+class CharField(CalculatedField, models.CharField):
 
     description = _('String')
 
@@ -41,29 +42,24 @@ class CharField(models.CharField):
     def _check_min_length_attribute(self, **kwargs):
         if self.min_length is None:
             return []
-
-        try:
-            min_length = int(self.min_length)
-            if min_length <= 0:
-                raise ValueError()
-        except (TypeError, ValueError):
+        elif (not isinstance(self.min_length, six.integer_types)
+                or self.min_length <= 0):
             return [
                 checks.Error(
                     "'min_length' must be None or a positive integer.",
                     hint=None,
                     obj=self,
-                    id='yepes.E001',
+                    id='yepes.E111',
                 )
             ]
-                
-        if (self.max_length is not None
+        elif (isinstance(self.max_length, six.integer_types)
                 and self.max_length < self.min_length):
             return [
                 checks.Error(
                     "'min_length' cannot be greater than 'max_length'.",
                     hint="Decrease 'min_length' or increase 'max_length'.",
                     obj=self,
-                    id='yepes.E002',
+                    id='yepes.E112',
                 )
             ]
         else:
@@ -72,7 +68,7 @@ class CharField(models.CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(CharField, self).deconstruct()
         path = path.replace('yepes.fields.char', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'charset': None,
             'force_ascii': False,
             'force_lower': False,
@@ -90,6 +86,7 @@ class CharField(models.CharField):
             'force_ascii': self.force_ascii,
             'force_lower': self.force_lower,
             'force_upper': self.force_upper,
+            'max_length': self.max_length,
             'min_length': self.min_length,
             'normalize_spaces': self.normalize_spaces,
             'trim_spaces': self.trim_spaces,

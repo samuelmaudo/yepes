@@ -9,15 +9,19 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.validators.base import Validator
 
-DOMAIN_RE = re.compile(r"""^
-    (?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+
-    (?:[a-z]{2,6})
-$""", re.VERBOSE | re.IGNORECASE)
+DOMAIN_RE = re.compile(r"""
+    \A
+    (?:[A-Z0-9]+(?:-[A-Z0-9]+)*\.)+
+    (?:[A-Z]{2,6})
+    \Z
+""", re.VERBOSE | re.IGNORECASE)
 
-USER_RE = re.compile(r"""^
-    [a-z0-9]+
-    (?:[-_.+~'][a-z0-9]+)*
-$""", re.VERBOSE | re.IGNORECASE)
+USER_RE = re.compile(r"""
+    \A
+    [A-Z0-9]+
+    (?:[-_.+~'][A-Z0-9]+)*
+    \Z
+""", re.VERBOSE | re.IGNORECASE)
 
 
 class RestrictedEmailValidator(Validator):

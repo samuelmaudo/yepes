@@ -8,10 +8,10 @@ try:
 except ImportError:
     import markdown
 
-from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import forms
+from yepes.fields.text import TextField
 from yepes.utils.deconstruct import clean_keywords
 
 EMPTY_RE = re.compile(r'^\s*<(p|div)>\s*</\1>\s*$')
@@ -30,7 +30,7 @@ class HtmlGeneratorDescriptor(object):
             return self.html_generator(getattr(obj, self.text_attr))
 
 
-class RichTextField(models.TextField):
+class RichTextField(TextField):
 
     description = _('Rich text')
 
@@ -47,7 +47,7 @@ class RichTextField(models.TextField):
         if not self.store_html:
             setattr(cls, html_attr, HtmlGeneratorDescriptor(self))
         elif self.html_field is None:
-            self.html_field = models.TextField(
+            self.html_field = TextField(
                 editable=False,
                 blank=True,
                 null=False,
@@ -60,7 +60,7 @@ class RichTextField(models.TextField):
     def deconstruct(self):
         name, path, args, kwargs = super(RichTextField, self).deconstruct()
         path = path.replace('yepes.fields.rich_text', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'processors': (),
             'store_html': True,
         })

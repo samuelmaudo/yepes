@@ -25,7 +25,7 @@ class CharSetValidator(LimitedValidator):
 
     def __init__(self, charset, message=None):
         self.limit_value = force_text(charset)
-        self.regex = re.compile('^[{0}]*$'.format(
+        self.regex = re.compile('\A[{0}]*\Z'.format(
             re.escape(self.limit_value).replace('\\-', '-')
         ))
         super(LimitedValidator, self).__init__(message)

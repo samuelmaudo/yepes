@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import division, unicode_literals
 
 from collections import Counter
+from decimal import Decimal as dec
 try:
     import cPickle as pickle
 except ImportError:
@@ -19,16 +20,20 @@ from yepes.types import Bit, Formula
 
 from .forms import (
     BitForm,
+    BooleanForm,
     CachedForeignKeyForm,
     ColoredForm,
     CommaSeparatedForm,
     CompressedForm,
+    DecimalForm,
     EmailForm,
     EncryptedForm,
     FlagForm,
+    FloatForm,
     FormulaForm,
     GuidForm,
     IdentifierForm,
+    IntegerForm,
     LongBitForm,
     PhoneNumberForm,
     PickledForm,
@@ -36,21 +41,27 @@ from .forms import (
     RelatedBitForm,
     RichTextForm,
     SlugForm,
+    TextForm,
 )
 from .models import (
     BitModel,
+    BooleanModel,
     CachedForeignKeyModel,
     CachedModel,
     CachedModelWithDefaultValue,
+    CalculatedModel,
     ColoredModel,
     CommaSeparatedModel,
     CompressedModel,
+    DecimalModel,
     EmailModel,
     EncryptedModel,
     FlagModel,
+    FloatModel,
     FormulaModel,
     GuidModel,
     IdentifierModel,
+    IntegerModel,
     LongBitModel,
     PhoneNumberModel,
     PickledModel,
@@ -58,7 +69,9 @@ from .models import (
     RelatedBitModel,
     RichTextModel,
     SlugModel,
+    TextModel,
 )
+from .models import CALCULATOR_CALLS
 
 
 def skipUnlessMarkdown():
@@ -767,6 +780,174 @@ class CachedForeignKeyTest(test.TestCase):
         self.assertIsNone(record_2.optional_key_with_default_value)
 
 
+class CalculatedFieldTest(test.TestCase):
+
+    def test_descriptor(self):
+        record_1 = CalculatedModel()
+        record_1.pk = 0
+        self.assertEqual(
+            record_1.boolean,
+            bool(record_1.pk % 2 == 0),
+        )
+        self.assertEqual(
+            record_1.char,
+            'even' if record_1.pk % 2 == 0 else 'odd',
+        )
+        self.assertEqual(
+            record_1.decimal,
+            dec('{0:.4}'.format(record_1.pk / 7)),
+        )
+        self.assertEqual(
+            record_1.float,
+            float(record_1.pk / 7),
+        )
+        self.assertEqual(
+            record_1.integer,
+            int(record_1.pk // 7),
+        )
+        self.assertEqual(
+            record_1.null_boolean,
+            bool(record_1.pk % 2 == 0),
+        )
+        self.assertEqual(
+            record_1.pickled_object,
+            dec('{0:.4}'.format(record_1.pk / 7)).as_tuple(),
+        )
+        record_2 = CalculatedModel.objects.create(pk=1)
+        self.assertEqual(
+            record_2.boolean,
+            bool(record_2.pk % 2 == 0),
+        )
+        self.assertEqual(
+            record_2.char,
+            'even' if record_2.pk % 2 == 0 else 'odd',
+        )
+        self.assertEqual(
+            record_2.decimal,
+            dec('{0:.4}'.format(record_2.pk / 7)),
+        )
+        self.assertEqual(
+            record_2.float,
+            float(record_2.pk / 7),
+        )
+        self.assertEqual(
+            record_2.integer,
+            int(record_2.pk // 7),
+        )
+        self.assertEqual(
+            record_2.null_boolean,
+            bool(record_2.pk % 2 == 0),
+        )
+        self.assertEqual(
+            record_2.pickled_object,
+            dec('{0:.4}'.format(record_2.pk / 7)).as_tuple(),
+        )
+
+    def test_saved_values(self):
+        manager = CalculatedModel.objects
+        record = manager.create(pk=1)
+        self.assertEqual(record.boolean, False)
+        self.assertTrue(manager.filter(boolean=False).exists())
+        self.assertEqual(record.char, 'odd')
+        self.assertTrue(manager.filter(char='odd').exists())
+        self.assertEqual(record.decimal, dec('0.1429'))
+        self.assertTrue(manager.filter(decimal=dec('0.1429')).exists())
+        self.assertEqual(record.float, 0.14285714285714285)
+        self.assertTrue(manager.filter(float=0.14285714285714285).exists())
+        self.assertEqual(record.integer, 0)
+        self.assertTrue(manager.filter(integer=0).exists())
+        self.assertEqual(record.null_boolean, False)
+        self.assertTrue(manager.filter(null_boolean=False).exists())
+        self.assertEqual(record.pickled_object, dec('0.1429').as_tuple())
+        self.assertTrue(manager.filter(pickled_object=dec('0.1429').as_tuple()).exists())
+
+    def test_calculator_calls(self):
+        CALCULATOR_CALLS.clear()
+        record_1 = CalculatedModel(pk=1)
+        self.assertEqual(len(CALCULATOR_CALLS), 0)
+        self.assertEqual(record_1.boolean, False)
+        self.assertEqual(len(CALCULATOR_CALLS), 1)
+        self.assertEqual(CALCULATOR_CALLS['boolean'], 1)
+        self.assertEqual(record_1.boolean, False)
+        self.assertEqual(record_1.boolean, False)
+        self.assertEqual(record_1.boolean, False)
+        self.assertEqual(len(CALCULATOR_CALLS), 1)
+        self.assertEqual(CALCULATOR_CALLS['boolean'], 1)
+        self.assertEqual(record_1.char, 'odd')
+        self.assertEqual(len(CALCULATOR_CALLS), 2)
+        self.assertEqual(CALCULATOR_CALLS['char'], 1)
+        self.assertEqual(record_1.char, 'odd')
+        self.assertEqual(record_1.char, 'odd')
+        self.assertEqual(record_1.char, 'odd')
+        self.assertEqual(len(CALCULATOR_CALLS), 2)
+        self.assertEqual(CALCULATOR_CALLS['char'], 1)
+        self.assertEqual(record_1.decimal, dec('0.1429'))
+        self.assertEqual(len(CALCULATOR_CALLS), 3)
+        self.assertEqual(CALCULATOR_CALLS['decimal'], 1)
+        self.assertEqual(record_1.decimal, dec('0.1429'))
+        self.assertEqual(record_1.decimal, dec('0.1429'))
+        self.assertEqual(record_1.decimal, dec('0.1429'))
+        self.assertEqual(len(CALCULATOR_CALLS), 3)
+        self.assertEqual(CALCULATOR_CALLS['decimal'], 1)
+        self.assertEqual(record_1.float, 0.14285714285714285)
+        self.assertEqual(len(CALCULATOR_CALLS), 4)
+        self.assertEqual(CALCULATOR_CALLS['float'], 1)
+        self.assertEqual(record_1.float, 0.14285714285714285)
+        self.assertEqual(record_1.float, 0.14285714285714285)
+        self.assertEqual(record_1.float, 0.14285714285714285)
+        self.assertEqual(len(CALCULATOR_CALLS), 4)
+        self.assertEqual(CALCULATOR_CALLS['float'], 1)
+        self.assertEqual(record_1.integer, 0)
+        self.assertEqual(len(CALCULATOR_CALLS), 5)
+        self.assertEqual(CALCULATOR_CALLS['integer'], 1)
+        self.assertEqual(record_1.integer, 0)
+        self.assertEqual(record_1.integer, 0)
+        self.assertEqual(record_1.integer, 0)
+        self.assertEqual(len(CALCULATOR_CALLS), 5)
+        self.assertEqual(CALCULATOR_CALLS['integer'], 1)
+        self.assertEqual(record_1.null_boolean, False)
+        self.assertEqual(len(CALCULATOR_CALLS), 6)
+        self.assertEqual(CALCULATOR_CALLS['null_boolean'], 1)
+        self.assertEqual(record_1.null_boolean, False)
+        self.assertEqual(record_1.null_boolean, False)
+        self.assertEqual(record_1.null_boolean, False)
+        self.assertEqual(len(CALCULATOR_CALLS), 6)
+        self.assertEqual(CALCULATOR_CALLS['null_boolean'], 1)
+        self.assertEqual(record_1.pickled_object, dec('0.1429').as_tuple())
+        self.assertEqual(record_1.pickled_object.exponent, -4)
+        self.assertEqual(len(CALCULATOR_CALLS), 7)
+        self.assertEqual(CALCULATOR_CALLS['pickled_object'], 1)
+        self.assertEqual(record_1.pickled_object, dec('0.1429').as_tuple())
+        self.assertEqual(record_1.pickled_object.exponent, -4)
+        self.assertEqual(record_1.pickled_object, dec('0.1429').as_tuple())
+        self.assertEqual(record_1.pickled_object.exponent, -4)
+        self.assertEqual(record_1.pickled_object, dec('0.1429').as_tuple())
+        self.assertEqual(record_1.pickled_object.exponent, -4)
+        self.assertEqual(len(CALCULATOR_CALLS), 7)
+        self.assertEqual(CALCULATOR_CALLS['pickled_object'], 1)
+        record_1.save()
+        self.assertEqual(len(CALCULATOR_CALLS), 7)
+        self.assertEqual(CALCULATOR_CALLS['boolean'], 2)
+        self.assertEqual(CALCULATOR_CALLS['char'], 2)
+        self.assertEqual(CALCULATOR_CALLS['decimal'], 2)
+        self.assertEqual(CALCULATOR_CALLS['float'], 2)
+        self.assertEqual(CALCULATOR_CALLS['integer'], 2)
+        self.assertEqual(CALCULATOR_CALLS['null_boolean'], 2)
+        self.assertEqual(CALCULATOR_CALLS['pickled_object'], 2)
+        CALCULATOR_CALLS.clear()
+        record_2 = CalculatedModel.objects.get(pk=1)
+        self.assertEqual(len(CALCULATOR_CALLS), 0)
+        self.assertEqual(record_2.boolean, False)
+        self.assertEqual(record_2.char, 'odd')
+        self.assertEqual(record_2.decimal, dec('0.1429'))
+        self.assertEqual(record_2.float, 0.14285714285714285)
+        self.assertEqual(record_2.integer, 0)
+        self.assertEqual(record_2.null_boolean, False)
+        self.assertEqual(record_2.pickled_object, dec('0.1429').as_tuple())
+        self.assertEqual(record_2.pickled_object.exponent, -4)
+        self.assertEqual(len(CALCULATOR_CALLS), 0)
+
+
 class CharFieldTest(test.TestCase):
 
     def test_cleaning(self):
@@ -929,6 +1110,74 @@ class CompressedTextFieldTest(test.TestCase):
         self.assertEqual(record_2.level_3, spanish_2)
         self.assertEqual(record_2.level_6, spanish_2)
         self.assertEqual(record_2.level_9, spanish_2)
+
+
+class DecimalFieldTest(test.TestCase):
+
+    def test_defaults(self):
+        record = DecimalModel()
+        self.assertEqual(record.decimal, dec('0'))
+        self.assertIsInstance(record.decimal, dec)
+        self.assertIsNone(record.null_decimal)
+        self.assertEqual(record.positive_decimal, dec('0'))
+        self.assertIsInstance(record.positive_decimal, dec)
+
+    def test_validators(self):
+        record = DecimalModel()
+
+        # DECIMAL
+        record.decimal = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.decimal = dec('10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.decimal = dec('-10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.decimal = dec('100.00')
+        record.full_clean()
+        record.decimal = dec('-100.00')
+        record.full_clean()
+
+        # NULL DECIMAL
+        record.null_decimal = None
+        record.full_clean()
+
+        record.null_decimal = dec('10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.null_decimal = dec('-10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.null_decimal = dec('100.00')
+        record.full_clean()
+        record.null_decimal = dec('-100.00')
+        record.full_clean()
+
+        # POSITIVE DECIMAL
+        record.positive_decimal = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_decimal = dec('10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_decimal = dec('-10000.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_decimal = dec('100.00')
+        record.full_clean()
+        record.positive_decimal = dec('-100.00')
+        with self.assertRaises(ValidationError):
+            record.full_clean()
 
 
 class EmailFieldTest(test.TestCase):
@@ -1121,6 +1370,50 @@ class EncryptedTextFieldTest(test.TestCase):
         #self.assertEqual(record_2.xor, spanish_2)
 
 
+class FloatFieldTest(test.TestCase):
+
+    def test_defaults(self):
+        record = FloatModel()
+        self.assertEqual(record.float, 0.0)
+        self.assertIsInstance(record.float, float)
+        self.assertIsNone(record.null_float)
+        self.assertEqual(record.positive_float, 0.0)
+        self.assertIsInstance(record.positive_float, float)
+
+    def test_validators(self):
+        record = FloatModel()
+
+        # FLOAT
+        record.float = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.float = 100.00
+        record.full_clean()
+        record.float = -100.00
+        record.full_clean()
+
+        # NULL FLOAT
+        record.null_float = None
+        record.full_clean()
+
+        record.null_float = 100.00
+        record.full_clean()
+        record.null_float = -100.00
+        record.full_clean()
+
+        # POSITIVE FLOAT
+        record.positive_float = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_float = 100.00
+        record.full_clean()
+        record.positive_float = -100.00
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+
 class FormulaFieldTest(test.TestCase):
 
     def test_permissive_formula(self):
@@ -1205,6 +1498,84 @@ class IdentifierFieldTest(test.TestCase):
         with self.assertRaises(ValidationError):
             record.full_clean()
         record.key = 'z%.# +ç@'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+
+class IntegerFieldTest(test.TestCase):
+
+    def test_defaults(self):
+        record = IntegerModel()
+        self.assertEqual(record.integer, 0)
+        self.assertIsInstance(record.integer, int)
+        self.assertIsNone(record.null_integer)
+        self.assertEqual(record.positive_integer, 0)
+        self.assertIsInstance(record.positive_integer, int)
+        self.assertEqual(record.big_integer, 0)
+        self.assertIsInstance(record.big_integer, int)
+        self.assertIsNone(record.null_big_integer)
+        self.assertEqual(record.positive_big_integer, 0)
+        self.assertIsInstance(record.positive_big_integer, int)
+        self.assertEqual(record.small_integer, 0)
+        self.assertIsInstance(record.small_integer, int)
+        self.assertIsNone(record.null_small_integer)
+        self.assertEqual(record.positive_small_integer, 0)
+        self.assertIsInstance(record.positive_small_integer, int)
+
+    def test_validators(self):
+        record = IntegerModel()
+
+        # INTEGER
+        record.integer = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        #record.integer = 10000
+        #with self.assertRaises(ValidationError):
+            #record.full_clean()
+
+        #record.integer = -10000
+        #with self.assertRaises(ValidationError):
+            #record.full_clean()
+
+        record.integer = 100
+        record.full_clean()
+        record.integer = -100
+        record.full_clean()
+
+        # NULL INTEGER
+        record.null_integer = None
+        record.full_clean()
+
+        #record.null_integer = 10000
+        #with self.assertRaises(ValidationError):
+            #record.full_clean()
+
+        #record.null_integer = -10000
+        #with self.assertRaises(ValidationError):
+            #record.full_clean()
+
+        record.null_integer = 100
+        record.full_clean()
+        record.null_integer = -100
+        record.full_clean()
+
+        # POSITIVE INTEGER
+        record.positive_integer = None
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_integer = 10000
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_integer = -10000
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+
+        record.positive_integer = 100
+        record.full_clean()
+        record.positive_integer = -100
         with self.assertRaises(ValidationError):
             record.full_clean()
 
@@ -1448,4 +1819,21 @@ class SlugFieldTest(test.TestCase):
         self.assertEqual(record.slug, 'lorem-ipsum')
         self.assertEqual(record.unique_slug, 'lorem-ipsum-4')
         self.assertEqual(record.relatively_unique_slug, 'lorem-ipsum-2')
+
+
+class TextFieldTest(test.TestCase):
+
+    def test_validators(self):
+        record = TextModel()
+        record.limited_text = ''
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+        record.limited_text = 'abcde'
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+        record.limited_text = 'abcde' * 20
+        with self.assertRaises(ValidationError):
+            record.full_clean()
+        record.limited_text = 'abcde' * 5
+        record.full_clean()
 

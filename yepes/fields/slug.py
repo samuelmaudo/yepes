@@ -71,12 +71,12 @@ class SlugField(CharField):
     def deconstruct(self):
         name, path, args, kwargs = super(SlugField, self).deconstruct()
         path = path.replace('yepes.fields.slug', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'db_index': True,
             'force_ascii': True,
             'max_length': 63,
             'unique_with_respect_to': None,
-        }, immutables=[
+        }, constants=[
             'blank',
             'normalize_spaces',
             'null',

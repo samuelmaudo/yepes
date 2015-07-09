@@ -4,18 +4,18 @@ from base64 import b64decode, b64encode
 from copy import deepcopy
 
 from django.db import models
-from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 from django.utils import six
 from django.utils.encoding import force_bytes
 from django.utils.six.moves import cPickle as pickle
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
+from yepes.fields.calculated import CalculatedSubfield
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
-class PickledObjectField(models.BinaryField):
+class PickledObjectField(CalculatedSubfield, models.BinaryField):
     """
     A field that accepts *any* python object and store it in the database.
 
@@ -42,19 +42,10 @@ class PickledObjectField(models.BinaryField):
         self.protocol = kwargs.pop('protocol', 2)
         super(PickledObjectField, self).__init__(*args, **kwargs)
 
-    def contribute_to_class(self, cls, name):
-        # Do not use ``models.SubfieldBase`` because when a model instance is
-        # saved for the first time, ``subclassing.Creator`` is called even if
-        # a subclass overrode the descriptor.
-        # This raises a weird error in ``CalculatedMixin`` subclasses such as
-        # the taxes field of ``Order`` instances.
-        super(PickledObjectField, self).contribute_to_class(cls, name)
-        setattr(cls, self.name, SubfieldDescriptor(self))
-
     def deconstruct(self):
         name, path, args, kwargs = super(PickledObjectField, self).deconstruct()
         path = path.replace('yepes.fields.pickled', 'yepes.fields')
-        clean_keywords(self, kwargs, defaults={
+        clean_keywords(self, kwargs, variables={
             'protocol': 2,
         })
         return name, path, args, kwargs

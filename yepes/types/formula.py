@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-import decimal
+from decimal import Decimal as dec
 import operator
 import re
 
@@ -17,7 +17,7 @@ from yepes.utils.properties import cached_property
 
 __all__ = ('Formula', )
 
-DECIMAL_RE = re.compile(r'([0-9]|[0-9]+[.][0-9]*|[.][0-9]+)')
+DECIMAL_RE = re.compile(r'([0-9]|[0-9]+[.,][0-9]*|[.,][0-9]+)')
 PARENTHESES_RE = re.compile(r'\(([^()]*)\)')
 TOKENS_RE = re.compile(r'([-]|[+]|[._a-zA-Z0-9]+|[^ ]+)')
 VARIABLE_RE = re.compile(r'[_a-zA-Z][_a-zA-Z0-9]*')
@@ -187,14 +187,14 @@ class Formula(object):
         form = self.formula
         if variables:
             vars = {
-                var: decimal.Decimal('1')
+                var: dec('1')
                 for var
                 in variables
             }
         else:
             tokens = TOKENS_RE.findall(form)
             vars = {
-                token: decimal.Decimal('1')
+                token: dec('1')
                 for token
                 in tokens
                 if self.validate_variable(token)
