@@ -10,13 +10,14 @@ from django.utils import six
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 
+from yepes import fields
 from yepes.conf import settings
 from yepes.exceptions import MissingAttributeError
 
 NAME_RE = re.compile(r'^name_[a-z]{2}$')
 
 
-class LocalizedNameField(models.CharField):
+class LocalizedNameField(fields.CharField):
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('blank', True)
@@ -36,7 +37,7 @@ class LocalizedNameField(models.CharField):
 @python_2_unicode_compatible
 class Standard(models.Model):
 
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=127,
             verbose_name=_('Native Name'))

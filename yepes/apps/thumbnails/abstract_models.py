@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from wand.image import FILTER_TYPES
 
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
@@ -34,29 +33,32 @@ class AbstractConfiguration(Logged):
             unique=True,
             verbose_name=_('Key'))
 
-    width = models.PositiveIntegerField(
+    width = fields.IntegerField(
+            min_value=0,
             verbose_name=_('Width'))
-    height = models.PositiveIntegerField(
+    height = fields.IntegerField(
+            min_value=0,
             verbose_name=_('Height'))
 
-    filter = models.CharField(
+    filter = fields.CharField(
             choices=FILTER_CHOICES,
             default='undefined',
             max_length=15,
             verbose_name=_('Filter'))
-    blur = models.FloatField(
+    blur = fields.FloatField(
             default=1.0,
-            validators=[MinValueValidator(0.0)],
+            min_value=0.0,
             verbose_name=_('Blur'))
 
-    format = models.CharField(
+    format = fields.CharField(
             choices=FORMAT_CHOICES,
             default='JPEG',
             max_length=15,
             verbose_name=_('Format'))
-    quality = models.IntegerField(
+    quality = fields.IntegerField(
             default=85,
-            validators=[MinValueValidator(1), MaxValueValidator(100)],
+            max_value=100,
+            min_value=1,
             verbose_name=_('Quality'))
 
     cache = LookupTable(['key'])
@@ -78,7 +80,7 @@ class AbstractConfiguration(Logged):
 @python_2_unicode_compatible
 class AbstractSource(models.Model):
 
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=255,
             verbose_name=_('Name'))
@@ -104,7 +106,7 @@ class AbstractThumbnail(models.Model):
             related_name='thumbnails',
             verbose_name=_('Source'))
 
-    name = models.CharField(
+    name = fields.CharField(
             max_length=255,
             verbose_name=_('Name'))
     last_modified = models.DateTimeField(

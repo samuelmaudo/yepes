@@ -26,18 +26,26 @@ class AbstractCountry(Enableable, Standard):
             'Region',
             related_name='countries',
             verbose_name=_('Region'))
-    code = models.CharField(
+    code = fields.CharField(
             unique=True,
+            charset='A-Z',
+            force_upper=True,
+            min_length=2,
             max_length=2,
             verbose_name=_('Code'),
             help_text=_('Specify 2-letter country code, for example "ES".'))
-    long_code = models.CharField(
+    long_code = fields.CharField(
             unique=True,
+            charset='A-Z',
+            force_upper=True,
+            min_length=3,
             max_length=3,
             verbose_name=_('Long Code'),
             help_text=_('Specify 3-letter country code, for example "ESP".'))
-    number = models.CharField(
+    number = fields.CharField(
             unique=True,
+            charset='0-9',
+            min_length=3,
             max_length=3,
             verbose_name=_('Number'),
             help_text=_('Specify numeric country code, for example "724".'))
@@ -74,8 +82,11 @@ class AbstractCountrySubdivision(Enableable, Standard):
             'Country',
             related_name='subdivisions',
             verbose_name=_('Country'))
-    code = models.CharField(
+    code = fields.CharField(
             unique=True,
+            charset='A-Z\-',
+            force_upper=True,
+            min_length=4,
             max_length=6,
             verbose_name=_('Code'),
             help_text=_('Specify country subdivision code, for example "ES-O".'))
@@ -99,26 +110,33 @@ class AbstractCountrySubdivision(Enableable, Standard):
 
 class AbstractCurrency(Enableable, Standard):
 
-    symbol = models.CharField(
+    symbol = fields.CharField(
             db_index=True,
+            force_upper=True,
             max_length=7,
             verbose_name=_('Symbol'),
             help_text=_('Specify currency symbol, for example "€".'))
-    code = models.CharField(
+    code = fields.CharField(
             unique=True,
+            charset='A-Z',
+            force_upper=True,
+            min_length=3,
             max_length=3,
             verbose_name=_('Code'),
             help_text=_('Specify 3-letter currency code, for example "EUR".'))
-    number = models.CharField(
+    number = fields.CharField(
             unique=True,
+            charset='0-9',
+            min_length=3,
             max_length=3,
             verbose_name=_('Number'),
             help_text=_('Specify numeric currency code, for example "978".'))
 
     # Additional info
-    decimals = models.PositiveSmallIntegerField(
+    decimals = fields.SmallIntegerField(
             default=2,
-            blank=True,
+            max_value=6,
+            min_value=0,
             verbose_name=_('Decimals'),
             help_text=_('Number of digits after the decimal separator.'))
     countries = models.ManyToManyField(
@@ -158,7 +176,7 @@ class AbstractGeographicArea(Logged, Standard):
     api_id = fields.IdentifierField(
             unique=True,
             verbose_name=_('API Id'))
-    description = models.TextField(
+    description = fields.TextField(
             blank=True,
             verbose_name=_('Description'))
 
@@ -259,29 +277,41 @@ class AbstractGeographicArea(Logged, Standard):
 
 class AbstractLanguage(Enableable, Standard):
 
-    tag = models.CharField(
+    tag = fields.CharField(
             unique=True,
+            charset='a-z',
+            force_lower=True,
+            min_length=2,
             max_length=3,
             verbose_name=_('Tag'),
             help_text=_('You can find an explanation about the language tags here: '
                         '<a target="_blank" href="http://www.w3.org/International/articles/language-tags/Overview.en.php">'
                         'http://www.w3.org/International/articles/language-tags/Overview.en.php'
                         '</a>'))
-    iso_639_1 = models.CharField(
+    iso_639_1 = fields.CharField(
             blank=True,
             db_index=True,
+            charset='a-z',
+            force_lower=True,
+            min_length=2,
             max_length=2,
             verbose_name=_('ISO 639-1'),
             help_text=_('Specify 2-letter language code, for example "es".'))
-    iso_639_2 = models.CharField(
+    iso_639_2 = fields.CharField(
             blank=True,
             db_index=True,
+            charset='a-z',
+            force_lower=True,
+            min_length=3,
             max_length=3,
             verbose_name=_('ISO 639-2'),
             help_text=_('Specify 3-letter language code, for example "spa".'))
-    iso_639_3 = models.CharField(
+    iso_639_3 = fields.CharField(
             blank=True,
             db_index=True,
+            charset='a-z',
+            force_lower=True,
+            min_length=3,
             max_length=3,
             verbose_name=_('ISO 639-3'),
             help_text=_('Specify 3-letter language code, for example "spa".'))
@@ -332,8 +362,10 @@ class AbstractRegion(Nestable, Standard):
             null=True,
             related_name='children',
             verbose_name=_('Parent Region'))
-    number = models.CharField(
+    number = fields.CharField(
             unique=True,
+            charset='0-9',
+            min_length=3,
             max_length=3,
             verbose_name=_('Number'),
             help_text=_('Specify numeric region code, for example "150".'))

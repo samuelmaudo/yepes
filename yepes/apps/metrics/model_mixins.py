@@ -8,6 +8,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from yepes import fields
 from yepes.apps.metrics.managers import ParameterManager
 from yepes.model_mixins import Nestable, ParentForeignKey
 
@@ -20,19 +21,20 @@ class Parameter(Nestable):
             null=True,
             related_name='children',
             verbose_name=_('Parent'))
-    index = models.PositiveIntegerField(
+    index = fields.IntegerField(
             null=True,
             blank=True,
+            min_value=0,
             verbose_name=_('Index'))
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=63,
             verbose_name=_('Name'))
-    token = models.CharField(
+    token = fields.CharField(
             max_length=255,
             verbose_name=_('Token'),
             help_text=_('Used to check the User-Agent strings.'))
-    regex = models.BooleanField(
+    regex = fields.BooleanField(
             default=False,
             verbose_name=_('Regular Expression'),
             help_text=_('Check this if your token is a regular expression.'))

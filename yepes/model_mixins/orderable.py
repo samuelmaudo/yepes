@@ -8,6 +8,7 @@ from django.db.models.base import ModelBase
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
+from yepes import fields
 from yepes.types import Undefined
 
 __all__ = ('Orderable', 'OrderableBase')
@@ -82,8 +83,9 @@ class Orderable(six.with_metaclass(OrderableBase, models.Model)):
 
     """
     # Do not set ``db_index`` here because ``order_with_respect_to``.
-    index = models.PositiveIntegerField(
+    index = fields.IntegerField(
             blank=True,
+            min_value=0,
             verbose_name=_('Index'))
 
     class Meta:

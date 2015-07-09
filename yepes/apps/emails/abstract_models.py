@@ -22,30 +22,31 @@ from yepes.utils.properties import described_property
 @python_2_unicode_compatible
 class AbstractConnection(Logged):
 
-    name = models.CharField(
+    name = fields.CharField(
             max_length=63,
             unique=True,
             verbose_name=_('Name'))
 
-    host = models.CharField(
+    host = fields.CharField(
             max_length=255,
             verbose_name=_('Host'),
             help_text = _('Address of the SMTP server.'))
-    port = models.IntegerField(
+    port = fields.IntegerField(
             default=25,
+            min_value=0,
             verbose_name=_('Port'))
-    username = models.CharField(
+    username = fields.CharField(
             max_length=255,
             verbose_name=_('Username'))
     password = fields.EncryptedCharField(
             max_length=255,
             verbose_name=_('Password'))
 
-    is_secure = models.BooleanField(
+    is_secure = fields.BooleanField(
             default=False,
             verbose_name=_('Use TLS?'),
             help_text=_('Whether to use a secure connection when talking to the SMTP server.'))
-    is_logged = models.BooleanField(
+    is_logged = fields.BooleanField(
             default=False,
             verbose_name=_('Store Mails?'),
             help_text=_('Whether to store a copy of each sent mail.'))
@@ -133,28 +134,28 @@ class AbstractDelivery(models.Model):
             auto_now_add=True,
             verbose_name=_('Date'))
 
-    sender = models.CharField(
+    sender = fields.CharField(
             max_length=255,
             verbose_name=_('Sender'))
-    recipients = models.TextField(
+    recipients = fields.TextField(
             blank=True,
             verbose_name=_('Recipients'))
-    other_recipients = models.TextField(
+    other_recipients = fields.TextField(
             blank=True,
             verbose_name=_('Other Recipients'))
-    hidden_recipients = models.TextField(
+    hidden_recipients = fields.TextField(
             blank=True,
             verbose_name=_('Hidden Recipients'))
 
-    subject = models.CharField(
+    subject = fields.CharField(
             blank=True,
             max_length=255,
             verbose_name=_('Subject'))
 
-    html = models.TextField(
+    html = fields.TextField(
             blank=True,
             verbose_name=_('HTML Version'))
-    text = models.TextField(
+    text = fields.TextField(
             blank=True,
             verbose_name=_('Plain Text Version'))
 
@@ -180,42 +181,42 @@ class AbstractMessage(Logged):
             related_name='messages',
             verbose_name=_('Connection'))
 
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=63,
             verbose_name=_('Name'))
 
-    sender_name = models.CharField(
+    sender_name = fields.CharField(
             max_length=127,
             verbose_name=_("Sender's Name"))
-    sender_address = models.CharField(
+    sender_address = fields.CharField(
             max_length=127,
             verbose_name=_("Sender's Address"))
-    recipient_name = models.CharField(
+    recipient_name = fields.CharField(
             blank=True,
             max_length=255,
             verbose_name=_("Recipient's Name"))
-    recipient_address = models.CharField(
+    recipient_address = fields.CharField(
             blank=True,
             max_length=255,
             verbose_name=_("Recipient's Address"),
             help_text=_('If field is blank, it will be populated when the message is sent.'))
-    reply_to_name = models.CharField(
+    reply_to_name = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Reply To Name"))
-    reply_to_address = models.CharField(
+    reply_to_address = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Reply To Address"))
 
-    subject = models.CharField(
+    subject = fields.CharField(
             max_length=255,
             verbose_name=_('Subject'))
 
-    html = models.TextField(
+    html = fields.TextField(
             verbose_name=_('HTML Version'))
-    text = models.TextField(
+    text = fields.TextField(
             blank=True,
             verbose_name=_('Plain Text Version'))
 

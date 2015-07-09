@@ -8,6 +8,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 
+from yepes import fields
 from yepes.apps.metrics.model_mixins import Parameter
 from yepes.apps.standards.fields import (
     CountryField,
@@ -52,14 +53,14 @@ class AbstractPage(models.Model):
             'sites.Site',
             related_name='pages',
             verbose_name=_('Site'))
-    path_head = models.CharField(
+    path_head = fields.CharField(
             blank=True,
             max_length=255,
             verbose_name=_('Path Head'))
-    path_tail = models.CharField(
+    path_tail = fields.CharField(
             max_length=63,
             verbose_name=_('Path Tail'))
-    query_string = models.CharField(
+    query_string = fields.CharField(
             blank=True,
             max_length=255,
             verbose_name=_('Query String'))
@@ -107,19 +108,19 @@ class AbstractPageView(models.Model):
             'metrics.Page',
             related_name='page_views',
             verbose_name=_('Page'))
-    previous_page_id = models.IntegerField(
+    previous_page_id = fields.IntegerField(
             blank=True,
             null=True,
             verbose_name=_('Previous Page ID'))
-    next_page_id = models.IntegerField(
+    next_page_id = fields.IntegerField(
             blank=True,
             null=True,
             verbose_name=_('Next Page ID'))
-    status_code = models.SmallIntegerField(
+    status_code = fields.SmallIntegerField(
             verbose_name=_('Status Code'))
     date = models.DateTimeField(
             verbose_name=_('Date'))
-    load_time = models.FloatField(
+    load_time = fields.FloatField(
             verbose_name=_('Load Time'))
 
     class Meta:
@@ -162,7 +163,7 @@ class AbstractPageView(models.Model):
 @python_2_unicode_compatible
 class AbstractReferrer(models.Model):
 
-    domain = models.CharField(
+    domain = fields.CharField(
             unique=True,
             max_length=63,
             verbose_name=_('Domain'))
@@ -188,7 +189,7 @@ class AbstractReferrerPage(models.Model):
             'metrics.Referrer',
             related_name='pages',
             verbose_name=_('Referrer'))
-    full_path = models.CharField(
+    full_path = fields.CharField(
             max_length=255,
             verbose_name=_('Path'))
 
@@ -252,7 +253,7 @@ class AbstractVisit(models.Model):
             null=True,
             related_name='visits',
             verbose_name=_('Referrer Page'))
-    page_count = models.SmallIntegerField(
+    page_count = fields.SmallIntegerField(
             verbose_name=_('Page Views'))
     start_date = models.DateTimeField(
             db_index=True,
@@ -260,7 +261,7 @@ class AbstractVisit(models.Model):
     end_date = models.DateTimeField(
             db_index=True,
             verbose_name=_('End Date'))
-    user_agent = models.CharField(
+    user_agent = fields.CharField(
             max_length=255,
             verbose_name=_('User-Agent'))
 
@@ -299,9 +300,9 @@ class AbstractVisitor(models.Model):
             'sites.Site',
             related_name='visitors',
             verbose_name=_('Site'))
-    is_authenticated = models.BooleanField(
+    is_authenticated = fields.BooleanField(
             verbose_name=_('Is Authenticated?'))
-    key = models.CharField(
+    key = fields.CharField(
             max_length=32,
             db_index=True,
             verbose_name=_('Visitor Key'))

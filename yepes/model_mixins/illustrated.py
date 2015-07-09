@@ -28,18 +28,20 @@ class Illustrated(models.Model):
     image = fields.ImageField(
             blank=True,
             max_length=127,
+            upload_to=image_upload_to,
             height_field='image_height',
             width_field='image_width',
-            upload_to=image_upload_to,
             verbose_name=_('Image'))
-    image_height = models.PositiveIntegerField(
-            editable=False,
+    image_height = fields.IntegerField(
             blank=True,
+            editable=False,
+            min_value=0,
             null=True,
             verbose_name=_('Image Height'))
-    image_width = models.PositiveIntegerField(
-            editable=False,
+    image_width = fields.IntegerField(
             blank=True,
+            editable=False,
+            min_value=0,
             null=True,
             verbose_name=_('Image Width'))
 

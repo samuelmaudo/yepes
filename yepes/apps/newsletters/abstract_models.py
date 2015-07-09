@@ -58,10 +58,10 @@ class AbstractBounce(models.Model):
             default=timezone.now,
             verbose_name=_('Bounce Date'))
 
-    header = models.TextField(
+    header = fields.TextField(
             blank=True,
             verbose_name=_('Header'))
-    body = models.TextField(
+    body = fields.TextField(
             blank=True,
             verbose_name=_('Body'))
 
@@ -164,7 +164,7 @@ class AbstractDelivery(models.Model):
             editable=False,
             verbose_name=_('Estimated Date'))
 
-    is_processed = models.BooleanField(
+    is_processed = fields.BooleanField(
             db_index=True,
             default=False,
             editable=False,
@@ -174,7 +174,7 @@ class AbstractDelivery(models.Model):
             editable=False,
             null=True,
             verbose_name=_('Effective Date'))
-    is_bounced = models.BooleanField(
+    is_bounced = fields.BooleanField(
             db_index=True,
             default=False,
             editable=False,
@@ -184,7 +184,7 @@ class AbstractDelivery(models.Model):
             editable=False,
             null=True,
             verbose_name=_('Bounce Date'))
-    is_opened = models.BooleanField(
+    is_opened = fields.BooleanField(
             db_index=True,
             default=False,
             editable=False,
@@ -194,7 +194,7 @@ class AbstractDelivery(models.Model):
             editable=False,
             null=True,
             verbose_name=_('Open Date'))
-    is_clicked = models.BooleanField(
+    is_clicked = fields.BooleanField(
             db_index=True,
             default=False,
             editable=False,
@@ -235,14 +235,14 @@ class AbstractDelivery(models.Model):
 @python_2_unicode_compatible
 class AbstractDomain(models.Model):
 
-    name = models.CharField(
+    name = fields.CharField(
             editable=False,
             max_length=63,
             unique=True,
             validators=[RegexValidator(DOMAIN_RE)],
             verbose_name=_('Domain'))
 
-    is_trusted = models.BooleanField(
+    is_trusted = fields.BooleanField(
             default=False,
             verbose_name=_('Is Trusted?'))
 
@@ -274,17 +274,17 @@ class AbstractMessage(Logged, Slugged, MetaData):
             unique=True,
             verbose_name=_('Global Unique Identifier'))
 
-    subject = models.CharField(
+    subject = fields.CharField(
             max_length=255,
             verbose_name=_('Subject'))
 
-    html = models.TextField(
+    html = fields.TextField(
             verbose_name=_('HTML Version'))
-    text = models.TextField(
+    text = fields.TextField(
             blank=True,
             verbose_name=_('Plain Text Version'))
 
-    is_sent = models.BooleanField(
+    is_sent = fields.BooleanField(
             default=False,
             editable=False,
             verbose_name=_('Is Sent?'))
@@ -385,36 +385,36 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
             unique=True,
             verbose_name=_('Global Unique Identifier'))
 
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=63,
             verbose_name=_('Name'))
     description = fields.RichTextField(
             blank=True,
             verbose_name=_('Description'))
-    is_published = models.BooleanField(
+    is_published = fields.BooleanField(
             default=True,
             verbose_name=_('Is Published?'))
 
-    sender_name = models.CharField(
+    sender_name = fields.CharField(
             max_length=127,
             verbose_name=_("Sender's Name"))
-    sender_address = models.CharField(
+    sender_address = fields.CharField(
             max_length=127,
             verbose_name=_("Sender's Address"))
-    reply_to_name = models.CharField(
+    reply_to_name = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Reply To Name"))
-    reply_to_address = models.CharField(
+    reply_to_address = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Reply To Address"))
-    return_path_name = models.CharField(
+    return_path_name = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Return To Name"))
-    return_path_address = models.CharField(
+    return_path_address = fields.CharField(
             blank=True,
             max_length=127,
             verbose_name=_("Return To Address"))
@@ -530,11 +530,11 @@ class AbstractSubscriber(Enableable, Logged):
             editable=False,
             related_name='subscribers',
             verbose_name=_('E-mail Domain'))
-    first_name = models.CharField(
+    first_name = fields.CharField(
             blank=True,
             max_length=63,
             verbose_name=_('First Name'))
-    last_name = models.CharField(
+    last_name = fields.CharField(
             blank=True,
             max_length=63,
             verbose_name=_('Last Name'))
@@ -550,7 +550,7 @@ class AbstractSubscriber(Enableable, Logged):
             related_name='subscribers',
             verbose_name=_('Tags'))
 
-    score = models.FloatField(
+    score = fields.FloatField(
             blank=True,
             db_index=True,
             default=2.0,
@@ -624,11 +624,11 @@ class AbstractSubscriber(Enableable, Logged):
 @python_2_unicode_compatible
 class AbstractSubscriberTag(Logged):
 
-    name = models.CharField(
+    name = fields.CharField(
             unique=True,
             max_length=63,
             verbose_name=_('Name'))
-    description = models.TextField(
+    description = fields.TextField(
             blank=True,
             verbose_name=_('Description'))
 
@@ -753,7 +753,7 @@ class AbstractUnsubscription(models.Model):
 @python_2_unicode_compatible
 class AbstractUnsubscriptionReason(Orderable):
 
-    description = models.CharField(
+    description = fields.CharField(
             max_length=255,
             verbose_name=_('Description'))
 
