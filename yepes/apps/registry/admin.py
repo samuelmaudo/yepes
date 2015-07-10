@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django.contrib.admin.views.main import ChangeList as BaseChangeList
 from django.contrib.admin.util import quote
 from django.contrib.sites.models import Site
@@ -9,7 +11,6 @@ from django.core.urlresolvers import reverse
 from django.forms.fields import CharField, IntegerField
 from django.forms.forms import Form as BaseForm
 from django.forms.widgets import HiddenInput
-from django.utils.datastructures import SortedDict
 
 from yepes import admin
 from yepes.apps.registry.base import registry, REGISTRY_KEYS
@@ -61,7 +62,7 @@ class EntryAdmin(admin.ModelAdmin):
         pass
 
     def get_actions(self, request):
-        return SortedDict()
+        return OrderedDict()
 
     def get_changelist(self, request, **kwargs):
         return ChangeList

@@ -2,9 +2,10 @@
 
 from __future__ import unicode_literals, with_statement
 
-import copy
-import time
-import weakref
+from collections import OrderedDict
+from copy import copy
+from time import time
+from weakref import ref as weakref
 
 from django.core.cache import get_cache
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
@@ -16,7 +17,6 @@ from django.db.models.manager import (
 )
 from django.db.models.signals import post_save, post_delete
 from django.utils import six
-from django.utils.datastructures import SortedDict
 from django.utils.synch import RWLock
 
 from yepes.apps.registry import registry
@@ -80,7 +80,7 @@ class MintCache(object):
         if timeout is None:
             timeout = self._timeout
 
-        refresh_time = timeout + time.time()
+        refresh_time = timeout + time()
         real_timeout = timeout + self._delay
         packed_value = (value, refresh_time, False)
         return self._cache.add(key, packed_value, real_timeout)
@@ -114,7 +114,7 @@ class MintCache(object):
             return default
 
         value, refresh_time, refreshed = packed_value
-        if time.time() > refresh_time and not refreshed:
+        if time() > refresh_time and not refreshed:
             self.set(key, value, self._delay, True)
         else:
             return value
@@ -132,7 +132,7 @@ class MintCache(object):
         if timeout is None:
             timeout = self._timeout
 
-        refresh_time = timeout + time.time()
+        refresh_time = timeout + time()
         real_timeout = timeout + self._delay
         packed_value = (value, refresh_time, refreshed)
         self._cache.set(key, packed_value, real_timeout)
@@ -166,14 +166,14 @@ class LookupTable(object):
 
     def _copy_to_model(self, model):
         assert issubclass(model, self.model)
-        mgr = copy.copy(self)
+        mgr = copy(self)
         mgr._set_creation_counter()
         mgr._set_model(model)
         mgr._inherited = True
         return mgr
 
     def _is_populated(self):
-        return (time.time() < self._info['expire_time'])
+        return (time() < self._info['expire_time'])
 
     def _maybe_populate(self):
         if not self._is_populated():
@@ -213,7 +213,7 @@ class LookupTable(object):
             model._meta.model_name,
             self._name,
         )
-        self._cache = CACHES.setdefault(cache_name, SortedDict())
+        self._cache = CACHES.setdefault(cache_name, OrderedDict())
         self._info = CACHE_INFO.setdefault(cache_name, {'expire_time': 0})
         self._lock = LOCKS.setdefault(cache_name, RWLock())
 
@@ -227,7 +227,7 @@ class LookupTable(object):
             )
             self._indexes[field_name] = CACHES.setdefault(cache_name, {})
 
-        self._model_ref = weakref.ref(model)
+        self._model_ref = weakref(model)
 
     def all(self):
         self._maybe_populate()
@@ -323,7 +323,7 @@ class LookupTable(object):
                 for field, index in six.iteritems(self._indexes):
                     index[getattr(record, field)] = record
 
-            self._info['expire_time'] = time.time() + self.timeout
+            self._info['expire_time'] = time() + self.timeout
 
     @property
     def model(self):
