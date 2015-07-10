@@ -18,7 +18,7 @@
   <p><img src="{{ source.url }}" width="{{ source.width }}" height="{{ source.height }}" alt="source"></p>
 {% load thumbnails %}
 {% for config in configuration_list %}
-  {% get_thumbnail source config generate=True %}
+  {% get_thumbnail source config force_generation=True %}
   <h2>Thumbnail: {{ config.key }}</h2>
   <p>{{ thumbnail.name }}</p>
   <p><span class="shape" style="width:{{ config.width }}px; height:{{ config.height }}px">

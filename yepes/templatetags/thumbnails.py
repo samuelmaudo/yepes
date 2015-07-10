@@ -9,7 +9,7 @@ from yepes.template import AssignTag
 register = Library()
 
 
-## {% get_thumbnail source config[ generate][ as variable_name] %} #############
+## {% get_thumbnail source config[ force_generation][ as variable_name] %} #####
 
 
 class GetThumbnailTag(AssignTag):
@@ -22,10 +22,10 @@ class GetThumbnailTag(AssignTag):
     """
     target_var = 'thumbnail'
 
-    def process(self, source, config, generate=False):
+    def process(self, source, config, force_generation=False):
         if not source:
             return None
-        elif generate:
+        elif force_generation:
             return source.generate_thumbnail(config)
         else:
             return source.get_thumbnail(config)
