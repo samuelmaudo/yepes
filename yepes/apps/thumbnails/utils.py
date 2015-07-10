@@ -6,22 +6,20 @@ from django.utils import six
 
 from yepes.apps.thumbnails.exceptions import ConfigDoesNotExist
 from yepes.exceptions import UnexpectedTypeError
-from yepes.loading import get_model
+from yepes.loading import LazyModel
+
+Configuration = LazyModel('thumbnails', 'Configuration')
 
 
 def clean_config(value):
-
-    Configuration = get_model('thumbnails', 'Configuration')
-
     if isinstance(value, Configuration):
         return value
-
-    if isinstance(value, six.text_type):
+    elif isinstance(value, six.string_types):
         config = Configuration.cache.get(key=value)
         if config is None:
             raise ConfigDoesNotExist(value)
         else:
             return config
-
-    raise UnexpectedTypeError([Configuration, six.text_type], type(value))
+    else:
+        raise UnexpectedTypeError((Configuration, six.text_type), value)
 

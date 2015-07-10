@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Thumbnail Test</title>
+  <title>Thumbnails Test</title>
   <style>
     .shape {
       background:#FF0000;
@@ -12,17 +12,17 @@
   </style>
 </head>
 <body>
-  <h1>Thumbnail Test</h1>
+  <h1>Thumbnails Test</h1>
   <h2>Source</h2>
   <p>{{ source.name }}</p>
-  <p><img src="{{ source.url }}" width="{{ source.width }}" height="{{ source.height }}"></p>
+  <p><img src="{{ source.url }}" width="{{ source.width }}" height="{{ source.height }}" alt="source"></p>
 {% load thumbnails %}
 {% for config in configuration_list %}
-  {% get_thumbnail source config %}
+  {% get_thumbnail source config generate=True %}
   <h2>Thumbnail: {{ config.key }}</h2>
   <p>{{ thumbnail.name }}</p>
   <p><span class="shape" style="width:{{ config.width }}px; height:{{ config.height }}px">
-    <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
+    <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}" alt="{{ config.key }}">
   </span></p>
 {% endfor %}
 </body>

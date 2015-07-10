@@ -12,8 +12,10 @@ from django.db.models.fields.files import FieldFile
 from django.utils import timezone
 
 from yepes.apps.thumbnails.utils import clean_config
-from yepes.loading import get_model
+from yepes.loading import LazyModelManager
 from yepes.types import Undefined
+
+SourceManager = LazyModelManager('thumbnails', 'source')
 
 
 class ImageFile(File):
@@ -30,7 +32,6 @@ class ImageFile(File):
         self._width_cache = Undefined
 
     def _fetch_image_data(self):
-
         was_closed = self.closed
         if not was_closed:
             pos = self.tell()
@@ -41,7 +42,6 @@ class ImageFile(File):
         #       ``_get_image()`` takes care of open it.
         #
         self._get_image()
-
         if was_closed:
             self.close()
         else:
@@ -50,13 +50,11 @@ class ImageFile(File):
     def _get_format(self):
         if self._format_cache is Undefined:
             self._fetch_image_data()
-
         return self._format_cache
 
     def _get_height(self):
         if self._height_cache is Undefined:
             self._fetch_image_data()
-
         return self._height_cache
 
     def _get_image(self):
@@ -67,18 +65,13 @@ class ImageFile(File):
         function is called again.
 
         """
-        if self._image_cache is Undefined:
-            try:
-                img = Image(file=self)
-            except IOError:
-                img = None
-            self._set_image(img)
+        try:
+            self.open()  # Wand does not open the file before read it.
+        except IOError:
+            self._set_image(None)
         else:
-            # Wand does not open the file before read it.
-            try:
-                self.open()
-            except IOError:
-                self._set_image(None)
+            if self._image_cache is Undefined:
+                self._set_image(Image(file=self))
 
         return self._image_cache
 
@@ -346,10 +339,7 @@ class SourceFieldFile(FieldFile, SourceFile):
 
     def _get_source_record(self):
         if self._source_cache is Undefined:
-            Source = get_model('thumbnails', 'Source')
-            qs = Source._default_manager.get_queryset()
-            self._source_cache = qs.filter(name=self.name).first()
-
+            self._source_cache = SourceManager.filter(name=self.name).first()
         return self._source_cache
 
     def _get_thumbnail_records(self):
@@ -420,9 +410,7 @@ class SourceFieldFile(FieldFile, SourceFile):
         Saves the source file, also saving an instance of the ``Source`` model.
         """
         super(SourceFieldFile, self).save(*args, **kwargs)
-        Source = get_model('thumbnails', 'Source')
-        qs = Source._default_manager.get_queryset()
-        record, was_created = qs.get_or_create(name=self.name)
+        record, was_created = SourceManager.get_or_create(name=self.name)
         if not was_created:
             record.last_modified = timezone.now()
             record.save(update_fields=['last_modified'])

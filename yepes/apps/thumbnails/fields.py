@@ -6,6 +6,7 @@ from django.db.models.fields.files import ImageField as BaseImageField
 
 from yepes.apps.thumbnails.files import SourceFieldFile
 from yepes.forms.widgets import ImageWidget
+from yepes.utils.deconstruct import clean_keywords
 
 
 class ImageField(BaseImageField):
@@ -25,16 +26,15 @@ class ImageField(BaseImageField):
         self.thumbnail_storage = kwargs.pop('thumbnail_storage', None)
         super(ImageField, self).__init__(*args, **kwargs)
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(ImageField, self).deconstruct()
+        path = path.replace('yepes.apps.thumbnails', 'yepes')
+        clean_keywords(self, kwargs, variables={
+            'thumbnail_storage': None,
+        })
+        return name, path, args, kwargs
+
     def formfield(self, **kwargs):
         kwargs['widget'] = ImageWidget
         return super(ImageField, self).formfield(**kwargs)
-
-    def south_field_triple(self):
-        """
-        Return a suitable description of this field for South.
-        """
-        from south.modelsinspector import introspector
-        field_class = 'django.db.models.fields.files.ImageField'
-        args, kwargs = introspector(self)
-        return (field_class, args, kwargs)
 

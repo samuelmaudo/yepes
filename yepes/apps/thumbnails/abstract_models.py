@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes.cache import LookupTable
-from yepes.model_mixins.logged import Logged
+from yepes.model_mixins import Logged
 
 
 @python_2_unicode_compatible
