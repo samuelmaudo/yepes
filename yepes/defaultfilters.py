@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 from django.template.base import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.six.moves import range
@@ -22,7 +24,7 @@ def get(value, arg):
     except AttributeError:
         try:
             return value[arg]
-        except (AttributeError, KeyError):
+        except (AttributeError, KeyError, TypeError):
             return ''
 
 
@@ -61,17 +63,20 @@ def strip(value, arg=None):
     return value.strip(arg)
 
 
-@register.filter(is_safe=True)
+@register.filter(is_safe=False)
+@stringfilter
 def toascii(value):
     return unidecode(htmlentities.decode(value))
 
 
 @register.filter(is_safe=True)
+@stringfilter
 def toentities(value):
     return htmlentities.encode(value)
 
 
-@register.filter(is_safe=True)
+@register.filter(is_safe=False)
+@stringfilter
 def tounicode(value):
     return htmlentities.decode(value)
 

@@ -1,11 +1,16 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 from django.template.base import Library
 from django.template.context import Context
 
 from yepes.template import InclusionTag
 
 register = Library()
+
+
+## {% analytics_script[ site_id[ cookie_domain[ cookie_age[ cookie_name[ cookie_path[ use_cookies[ template]]]]]]] %} #####
 
 
 class AnalyticsScriptTag(InclusionTag):

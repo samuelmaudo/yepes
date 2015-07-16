@@ -9,7 +9,7 @@ from yepes.template import AssignTag
 register = Library()
 
 
-## {% get_thumbnail source config[ force_generation][ as variable_name] %} #####
+## {% get_thumbnail source config[ as variable_name] %} ########################
 
 
 class GetThumbnailTag(AssignTag):
@@ -21,6 +21,12 @@ class GetThumbnailTag(AssignTag):
 
     """
     target_var = 'thumbnail'
+
+    @classmethod
+    def get_syntax(cls, tag_name='tag_name'):
+        syntax = super(GetThumbnailTag, cls).get_syntax(tag_name)
+        # `force_generation` parameter is only for internal tests.
+        return syntax.replace('[ force_generation]', '')
 
     def process(self, source, config, force_generation=False):
         if not source:

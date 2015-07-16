@@ -127,7 +127,7 @@ class PrerenderedImageTag(SingleTag):
 register.tag('prerendered_image', PrerenderedImageTag.as_tag())
 
 
-## {% prerendered_link guid %} ##########################################################
+## {% prerendered_link guid %} #################################################
 
 
 class PrerenderedLinkTag(SingleTag):

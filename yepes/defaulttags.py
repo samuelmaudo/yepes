@@ -35,7 +35,7 @@ from yepes.utils.phased import (
 register = Library()
 
 
-## {% build_full_url location **kwargs[ as variable_name] %} ##################
+## {% build_full_url location **kwargs[ as variable_name] %} ###################
 
 
 class BuildFullUrlTag(AssignTag):
@@ -74,21 +74,15 @@ class CacheTag(DoubleTag):
     Each unique set of arguments will result in a unique cache entry.
 
     """
-    @classmethod
-    def get_syntax(cls, tag_name='tag_name'):
-        open_tag = '{{% {0} expire_time fragment_name *vary_on %}}'
-        close_tag = '{{% end{0} %}}'
-        return ''.join((open_tag, '...', close_tag)).format(tag_name)
-
     @classonlymethod
-    def parse_arguments(cls, parser, bits):
+    def parse_arguments(cls, parser, tag_name, bits):
         if len(bits) < 2:
-            raise TagSyntaxError(cls, cls.tag_name)
+            raise TagSyntaxError(cls, tag_name)
 
         fragment_name = bits.pop(1)
-        args, kwargs = super(CacheTag, cls).parse_arguments(parser, bits)
+        args, kwargs = super(CacheTag, cls).parse_arguments(parser, tag_name, bits)
         if kwargs:
-            raise TagSyntaxError(cls, cls.tag_name)
+            raise TagSyntaxError(cls, tag_name)
 
         args.insert(1, fragment_name)
         return (args, kwargs)
@@ -117,7 +111,7 @@ class CacheTag(DoubleTag):
 register.tag('cache', CacheTag.as_tag())
 
 
-## {% full_url view_name *args **kwargs[ as variable_name] %} #################
+## {% full_url view_name *args **kwargs[ as variable_name] %} ##################
 
 
 class FullUrlTag(AssignTag):
@@ -222,7 +216,7 @@ class FullUrlTag(AssignTag):
 register.tag('full_url', FullUrlTag.as_tag())
 
 
-## {% pagination[ paginator[ page_obj]] **kwargs %} ###########################
+## {% pagination[ paginator[ page_obj]] **kwargs %} ############################
 
 
 class PaginationTag(InclusionTag):
@@ -338,16 +332,16 @@ class PhasedTag(DoubleTag):
 
     @classmethod
     def get_syntax(cls, tag_name='tag_name'):
-        return '{{% {0}[ with *var_names] %}}'.format(tag_name)
+        return '{{% {0}[ with *var_names] %}}...{{% end{0} %}}'.format(tag_name)
 
     @classonlymethod
-    def parse_arguments(cls, parser, bits):
+    def parse_arguments(cls, parser, tag_name, bits):
         args = []
         kwargs = {}
         if bits:
 
             if len(bits) == 1 or bits[0] != 'with':
-                raise TagSyntaxError(cls, cls.tag_name)
+                raise TagSyntaxError(cls, tag_name)
 
             for var_name in bits[1:]:
                 if (var_name.startswith(('"', "'"))

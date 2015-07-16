@@ -31,7 +31,7 @@ TOKEN_LITERALS = {
 
 class TagSyntaxError(TemplateSyntaxError):
 
-    def __init__(self, tag, tag_name='tag_name'):
+    def __init__(self, tag, tag_name='<tag_name>'):
         msg = 'Correct syntax is {0}'.format(tag.get_syntax(tag_name))
         super(TagSyntaxError, self).__init__(msg)
 
@@ -125,6 +125,10 @@ class SingleTag(Node):
         return tag
 
     @classmethod
+    def get_process_arguments(cls):
+        return inspect.getargspec(cls.get_process_function())
+
+    @classmethod
     def get_process_function(cls):
         for base in cls.__mro__:
             func = base.__dict__.get('process')
@@ -141,30 +145,29 @@ class SingleTag(Node):
     @classmethod
     def get_syntax(cls, tag_name='tag_name'):
         syntax = []
-        func = inspect.getargspec(cls.get_process_function())
-        num_args = len(func.args)
-        num_defaults = len(func.defaults or ())
-        for i, arg_name in enumerate(func.args, 1):
-            if i == 1:
-                continue
-            j = num_args - i
-            if j >= num_defaults:
-                syntax.append(' {0}'.format(arg_name))
-            else:
-                syntax.append('[ {0}'.format(arg_name))
-                if j == 0:
-                    syntax.append(']' * num_defaults)
+        args, varargs, keywords, defaults = cls.get_process_arguments()
+        num_args = len(args)
+        num_defaults = len(defaults or ())
+        for i, arg_name in enumerate(args, 1):
+            if i > 1:
+                j = num_args - i
+                if j >= num_defaults:
+                    syntax.append(' {0}'.format(arg_name))
+                else:
+                    syntax.append('[ {0}'.format(arg_name))
+                    if j == 0:
+                        syntax.append(']' * num_defaults)
 
-        if func.varargs:
-            syntax.append(' *{0}'.format(func.varargs))
+        if varargs:
+            syntax.append(' *{0}'.format(varargs))
 
-        if func.keywords:
-            syntax.append(' **{0}'.format(func.keywords))
+        if keywords:
+            syntax.append(' **{0}'.format(keywords))
 
         return '{{% {0}{1} %}}'.format(tag_name, ''.join(syntax))
 
     @classonlymethod
-    def parse_arguments(cls, parser, bits):
+    def parse_arguments(cls, parser, tag_name, bits):
         args = []
         kwargs = {}
         for bit in bits:
@@ -186,7 +189,7 @@ class SingleTag(Node):
     def parse_token(cls, parser, token):
         bits = token.split_contents()
         tag_name = bits[0]
-        args, kwargs = cls.parse_arguments(parser, bits[1:])
+        args, kwargs = cls.parse_arguments(parser, tag_name, bits[1:])
         return {
             'tag_name': tag_name,
             'args': args,
@@ -234,7 +237,7 @@ class AssignTag(SingleTag):
             bits = bits[:-2]
 
         tag_name = bits[0]
-        args, kwargs = cls.parse_arguments(parser, bits[1:])
+        args, kwargs = cls.parse_arguments(parser, tag_name, bits[1:])
         return {
             'tag_name': tag_name,
             'args': args,
@@ -272,7 +275,7 @@ class DoubleTag(SingleTag):
     def parse_token(cls, parser, token):
         bits = token.split_contents()
         tag_name = bits[0]
-        args, kwargs = cls.parse_arguments(parser, bits[1:])
+        args, kwargs = cls.parse_arguments(parser, tag_name, bits[1:])
 
         if cls.literal_content:
             content = ''.join(cls.parse_literals(parser, tag_name))
@@ -334,7 +337,7 @@ class InclusionTag(SingleTag):
     def parse_token(cls, parser, token):
         bits = token.split_contents()
         tag_name = bits[0]
-        args, kwargs = cls.parse_arguments(parser, bits[1:])
+        args, kwargs = cls.parse_arguments(parser, tag_name, bits[1:])
 
         t = kwargs.pop('template', cls.template)
         if isinstance(t, Template):
