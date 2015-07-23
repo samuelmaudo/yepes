@@ -18,6 +18,12 @@ class TestProgram(object):
 
     def __init__(self, workingDir, tempDir, templatesDir, subdirsToSkip,
                  alwaysInstalledApps, stream=None):
+        if stream is None:
+            stream = sys.stderr
+
+        if not isinstance(stream, WriteLnDecorator):
+            stream = WriteLnDecorator(stream)
+
         self.alwaysInstalledApps = alwaysInstalledApps
         self.plugins = self.loadPlugins()
         self.stream = stream
@@ -26,7 +32,7 @@ class TestProgram(object):
         self.templatesDir = templatesDir
         self.workingDir = workingDir
 
-    def configurePlugins(self, options, stream):
+    def configurePlugins(self, options):
         """
         Configure the plugin and system, based on selected options.
 
@@ -40,7 +46,7 @@ class TestProgram(object):
             except AttributeError:
                 continue
             else:
-                configure(options, stream)
+                configure(options, self.stream)
 
     def getAvailableTestLabels(self):
         modules = [
@@ -185,7 +191,8 @@ class TestProgram(object):
             # characters.)
             shutil.rmtree(six.text_type(self.tempDir))
         except OSError:
-            print('Failed to remove temp directory: {0}'.format(self.tempDir))
+            msg = 'Failed to remove temp directory: {0}'
+            self.stream.writeln(msg.format(self.tempDir))
 
     def restoreSettings(self, settings, old_state):
         """
@@ -197,11 +204,10 @@ class TestProgram(object):
     def run(self):
         parser = self.makeParser()
         options, testLabels = self.parseArgs(parser)
-        stream = WriteLnDecorator(self.stream or sys.stderr)
-        self.configurePlugins(options, stream)
-        return self.runTests(testLabels, options, stream)
+        self.configurePlugins(options)
+        return self.runTests(testLabels, options)
 
-    def runTests(self, testLabels, options, stream):
+    def runTests(self, testLabels, options):
         verbosity = int(options.verbosity)
         finalTestLabels = self.getTestLabels(testLabels, options)
         state = self.setup(verbosity, finalTestLabels)
@@ -212,7 +218,7 @@ class TestProgram(object):
             interactive=options.interactive,
             failfast=options.failfast,
             plugins=self.plugins,
-            stream=stream,
+            stream=self.stream,
         ).run_tests(finalTestLabels)
 
         self.teardown(state)
@@ -268,9 +274,12 @@ class TestProgram(object):
         appLabels = set(l.split('.', 1)[0] for l in testLabels)
 
         # Load all the test model apps.
+        if verbosity >= 2:
+            self.stream.writeln('Importing applications ...')
+
         for label in appLabels:
             if verbosity >= 2:
-                print('Importing application {0}'.format(label))
+                self.stream.writeln('Importing application {0}'.format(label))
 
             module = load_app(label)
             settings.INSTALLED_APPS.append(label)

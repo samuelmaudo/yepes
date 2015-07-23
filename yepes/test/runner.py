@@ -21,18 +21,30 @@ class TestRunner(object):
 
     def __init__(self, stream=None, verbosity=1, failfast=False,
                  resultclass=None, plugins=()):
-        self.stream = WriteLnDecorator(stream or sys.stderr)
+        if stream is None:
+            stream = sys.stderr
+
+        if not isinstance(stream, WriteLnDecorator):
+            stream = WriteLnDecorator(stream)
+
+        self.stream = stream
         self.verbosity = verbosity
         self.failfast = failfast
         if resultclass is not None:
             self.resultclass = resultclass
+
         self.plugins = plugins
 
     def makeResult(self):
         return self.resultclass(
             stream=self.stream,
             verbosity=self.verbosity,
-            plugins=[p for p in self.plugins if p.enabled],
+            plugins=[
+                plugin
+                for plugin
+                in self.plugins
+                if plugin.enabled
+            ],
         )
 
     def run(self, test):
