@@ -98,7 +98,7 @@ class StaticFileView(View):
             return True
 
         matchobj = HTTP_IF_MODIFIED_SINCE_RE.search(header)
-        if mathobj is None:
+        if matchobj is None:
             return True
 
         try:

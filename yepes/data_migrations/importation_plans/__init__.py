@@ -23,7 +23,7 @@ class MissingPlanError(LoadingError):
 
     def __init__(self, plan_name):
         msg = "Importation plan '{0}' could not be found."
-        return super(MissingPlanError, self).__init__(msg.format(plan_name))
+        super(MissingPlanError, self).__init__(msg.format(plan_name))
 
 
 def get_plan(name):
@@ -44,7 +44,7 @@ def register_plan(name, path):
         _load_plans()
     plan_class = _import_plan(path)
     if plan_class is not None:
-        plans[name] = plan_class
+        _PLANS[name] = plan_class
 
 
 def _import_plan(path):

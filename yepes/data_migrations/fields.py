@@ -396,7 +396,7 @@ class FixedOffset(datetime.tzinfo):
             self.__name = name
 
     def dst(self, dt):
-        return ZERO
+        return datetime.timedelta(0)
 
     def tzname(self, dt):
         return self.__name

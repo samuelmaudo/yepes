@@ -48,9 +48,9 @@ def get_queryset(info):
 
 def get_site(site_id):
     try:
-        site = SITE_CACHE[self.site_id]
+        site = SITE_CACHE[site_id]
     except KeyError:
-        site = Site.objects.get(pk=self.site_id)
-        SITE_CACHE[self.site_id] = site
+        site = Site.objects.get(pk=site_id)
+        SITE_CACHE[site_id] = site
     return site
 

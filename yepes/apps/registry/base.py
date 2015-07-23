@@ -192,7 +192,7 @@ class Registry(object):
     @property
     def site(self):
         if self.site_id:
-            return get_site(site_id)
+            return get_site(self.site_id)
         else:
             return Site.objects.get_current()
 

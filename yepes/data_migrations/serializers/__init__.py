@@ -21,7 +21,7 @@ class MissingSerializerError(LoadingError):
 
     def __init__(self, serializer_name):
         msg = "Serializer '{0}' could not be found."
-        return super(MissingSerializerError, self).__init__(msg.format(serializer_name))
+        super(MissingSerializerError, self).__init__(msg.format(serializer_name))
 
 
 def serialize(format, headers, data, file=None, **parameters):
@@ -52,7 +52,7 @@ def register_serializer(name, path):
         _load_serializers()
     serializer_class = _import_serializer(path)
     if serializer_class is not None:
-        serializers[name] = serializer_class
+        _SERIALIZERS[name] = serializer_class
 
 
 def _import_serializer(path):

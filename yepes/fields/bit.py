@@ -4,7 +4,11 @@ from __future__ import division, unicode_literals
 
 import math
 
-from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
+from django.core.exceptions import (
+    ImproperlyConfigured,
+    ObjectDoesNotExist,
+    ValidationError,
+)
 from django.core.validators import MaxValueValidator, EMPTY_VALUES
 from django.db import models
 from django.db.models import signals
@@ -166,9 +170,9 @@ class BitField(models.BigIntegerField):
 
     def validate(self, value, model_instance):
         if value is None and not self.null:
-            raise exceptions.ValidationError(self.error_messages['null'])
+            raise ValidationError(self.error_messages['null'])
         if not self.blank and value in EMPTY_VALUES:
-            raise exceptions.ValidationError(self.error_messages['blank'])
+            raise ValidationError(self.error_messages['blank'])
 
     def value_to_string(self, obj):
         return int(self._get_val_from_obj(obj))

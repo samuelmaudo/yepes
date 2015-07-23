@@ -9,10 +9,12 @@ if DJANGO_VERSION >= (1, 8):
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import connection
 from django.db import models
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.conf import settings
 from yepes.fields.calculated import CalculatedField
+from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 

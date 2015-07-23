@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.db.models.base import ModelState
 from django.utils import six
+from django.utils import translation
 from django.utils.encoding import force_str, python_2_unicode_compatible
 
 from yepes.apps.standards.model_mixins import NAME_RE

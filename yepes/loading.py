@@ -36,7 +36,7 @@ class MissingAppError(LoadingError):
 
     def __init__(self, app_label):
         msg = "App with label '{0}' could not be found."
-        return super(MissingAppError, self).__init__(msg.format(app_label))
+        super(MissingAppError, self).__init__(msg.format(app_label))
 
 
 class MissingClassError(LoadingError):
@@ -47,7 +47,7 @@ class MissingClassError(LoadingError):
             app_label,
         )
         msg = "Class '{0}' could not be found in '{1}'."
-        return super(MissingClassError, self).__init__(msg.format(*args))
+        super(MissingClassError, self).__init__(msg.format(*args))
 
 
 class MissingModelError(LoadingError):
@@ -58,21 +58,21 @@ class MissingModelError(LoadingError):
             app_label,
         )
         msg = "Model '{0}' could not be found in '{1}'."
-        return super(MissingModelError, self).__init__(msg.format(*args))
+        super(MissingModelError, self).__init__(msg.format(*args))
 
 
 class MissingModuleError(LoadingError):
 
     def __init__(self, module_path):
         msg = "Module '{0}' could not be imported."
-        return super(MissingModuleError, self).__init__(msg.format(module_path))
+        super(MissingModuleError, self).__init__(msg.format(module_path))
 
 
 class UnavailableAppError(LoadingError):
 
     def __init__(self, app_label):
         msg = "App with label '{0}' is not available."
-        return super(UnavailableAppError, self).__init__(msg.format(app_label))
+        super(UnavailableAppError, self).__init__(msg.format(app_label))
 
 
 class ClassCache(Singleton):

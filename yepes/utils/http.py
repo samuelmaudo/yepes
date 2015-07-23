@@ -36,7 +36,7 @@ def urlquote(url, safe='/'):
     if six.PY3:
         return quote(url, safe)
     else:
-        return latin_to_unicode(quote(force_str(url), force_str(safe)))
+        return latin_to_unicode(quote(force_bytes(url), force_bytes(safe)))
 
 
 def urlquote_plus(url, safe='/'):
@@ -49,7 +49,7 @@ def urlquote_plus(url, safe='/'):
     if six.PY3:
         return quote_plus(url, safe)
     else:
-        return latin_to_unicode(quote_plus(force_str(url), force_str(safe)))
+        return latin_to_unicode(quote_plus(force_bytes(url), force_bytes(safe)))
 
 
 def urlunquote(quoted_url):

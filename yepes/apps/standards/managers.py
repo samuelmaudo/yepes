@@ -73,6 +73,6 @@ class LanguageManager(EnableableManager):
 
 class RegionManager(NestableManager):
 
-    def get_by_natural_key(self, tag):
+    def get_by_natural_key(self, number):
         return self.get(number=number)
 

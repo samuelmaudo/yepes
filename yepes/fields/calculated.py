@@ -8,6 +8,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 
 from yepes.types import Undefined
+from yepes.utils.deconstruct import clean_keywords
 
 
 class CalculatedField(object):
@@ -25,7 +26,7 @@ class CalculatedField(object):
 
     def _check_calculator(self):
         calculator_name = self.get_calculator_name()
-        calculator = getattr(obj, calculator_name, None)
+        calculator = getattr(self.model, calculator_name, None)
         if self.calculated and not callable(calculator):
             return [
                 checks.Error(

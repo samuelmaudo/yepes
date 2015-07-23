@@ -104,7 +104,7 @@ class Formula(object):
         for name, value in six.iteritems(vars):
             if not self.validate_variable(name):
                 msg = 'invalid variable name: "{0}"'
-                raise SyntaxError(msg.format(token))
+                raise SyntaxError(msg.format(name))
 
             if isinstance(value, (six.integer_types, float)):
                 vars[name] = force_decimal(value)

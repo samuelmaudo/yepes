@@ -16,6 +16,7 @@ from yepes.exceptions import LookupTypeError
 from yepes.fields.calculated import CalculatedSubfield
 from yepes.fields.char import CharField
 from yepes.forms import CharField as CharFormField
+from yepes.utils import unidecode
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 from yepes.validators import CharSetValidator

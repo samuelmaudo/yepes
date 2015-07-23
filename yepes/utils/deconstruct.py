@@ -14,7 +14,7 @@ def clean_keywords(obj, keywords, variables=None, constants=None, overrides=None
 
         for name, default in six.iteritems(variables):
             discard = True
-            value = getattr(self, overrides.get(name, name))
+            value = getattr(obj, overrides.get(name, name))
             if value is not default:
                 if not isinstance(default, collections.Iterable):
                     discard = False

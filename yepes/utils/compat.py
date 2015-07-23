@@ -8,10 +8,12 @@ if DJANGO_VERSION >= (1, 8):
     from django.utils.functional import LazyObject
 else:
 
+    import copy
     import operator
 
     from django.utils import six
     from django.utils.functional import empty, new_method_proxy
+    from django.utils.six.moves import copyreg
 
 
     class LazyObject(object):

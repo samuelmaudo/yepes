@@ -8,6 +8,7 @@ from django.db import models
 
 from yepes.conf import settings
 from yepes.fields.calculated import CalculatedField
+from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
