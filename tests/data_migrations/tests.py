@@ -8,8 +8,6 @@ from datetime import date, datetime, time
 from decimal import Decimal
 from itertools import chain
 import os
-import shutil
-import tempfile
 import warnings
 
 from django import test
@@ -30,6 +28,7 @@ from yepes.data_migrations.serializers.csv import CsvSerializer
 from yepes.data_migrations.serializers.json import JsonSerializer
 from yepes.data_migrations.serializers.tsv import TsvSerializer
 from yepes.data_migrations.serializers.yaml import YamlSerializer
+from yepes.test_mixins import TempDirMixin
 
 from .data_migrations import (
     AlphabetMigration,
@@ -58,22 +57,6 @@ MODULE_DIR = os.path.abspath(os.path.dirname(upath(__file__)))
 FIXTURES_DIR = os.path.join(MODULE_DIR, 'data_migrations')
 
 
-class TempDirMixin(object):
-
-    @classmethod
-    def setUpClass(cls):
-        super(TempDirMixin, cls).setUpClass()
-        cls.temp_dir = tempfile.mkdtemp(prefix='test_data_migrations_')
-
-    @classmethod
-    def tearDownClass(cls):
-        super(TempDirMixin, cls).tearDownClass()
-        try:
-            shutil.rmtree(six.text_type(cls.temp_dir))
-        except OSError:
-            self.stream.write('Failed to remove temp directory: {0}'.format(cls.temp_dir))
-
-
 class BooleanFieldsTests(TempDirMixin, test.TestCase):
 
     expectedResults = [
@@ -89,6 +72,7 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         (False, None),
     ]
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def test_data_migration(self):
         migration = BooleanMigration(BooleanModel)
@@ -328,6 +312,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         (None, None, None),
     ]
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def test_data_migrations(self):
         migration = DateTimeMigration(DateTimeModel)
@@ -689,6 +674,7 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         (None, None, None)
     ]
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def test_data_migration(self):
         migration = NumericMigration(NumericModel)
@@ -953,6 +939,7 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         None,
     ]
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def test_data_migration(self):
         migration = TextMigration(TextModel)
@@ -1442,6 +1429,7 @@ class ImportationPlansTests(test.TestCase):
 class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
 
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def test_data_migrations(self):
         migration = AuthorMigration(AuthorModel)
@@ -2284,8 +2272,10 @@ class ModelMigrationsTests(test.TestCase):
 class QuerySetExportationsTests(TempDirMixin, test.TestCase):
 
     maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
 
     def setUp(self):
+        super(QuerySetExportationsTests, self).setUp()
         migration = BlogMigration(BlogModel)
         source_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
         with open(source_path, 'r') as source_file:
