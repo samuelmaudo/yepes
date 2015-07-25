@@ -74,7 +74,7 @@ class AbstractConfiguration(Logged):
 
     @staticmethod
     def autocomplete_search_fields():
-        return ('host__icontains', )
+        return ('key__icontains', )
 
 
 @python_2_unicode_compatible

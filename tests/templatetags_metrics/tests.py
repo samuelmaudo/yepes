@@ -11,7 +11,7 @@ from yepes.test_mixins import TemplateTagsMixin
 
 class MetricTagsTest(TemplateTagsMixin, SimpleTestCase):
 
-    required_libraries = ['metrics']
+    requiredLibraries = ['metrics']
 
     def test_analytics_script_syntax(self):
         self.checkSyntax(

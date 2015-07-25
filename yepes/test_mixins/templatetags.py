@@ -14,7 +14,7 @@ TAG_NAME_RE = re.compile(r'^\{% ([_a-z]+)')
 
 class TemplateTagsMixin(object):
 
-    required_libraries = None
+    requiredLibraries = None
 
     def checkSyntax(self, tag_class, expected_syntax):
         tag_name = TAG_NAME_RE.search(expected_syntax).group(1)
@@ -36,8 +36,8 @@ class TemplateTagsMixin(object):
                 erroneous_args = ''.join(" 'acxz'" * (len(process.args)))
 
         template_code = ''
-        if self.required_libraries is not None:
-            for library in self.required_libraries:
+        if self.requiredLibraries is not None:
+            for library in self.requiredLibraries:
                 template_code += '{{% load {0} %}}\n'.format(library)
 
         template_code += '{{% {0}{1} %}}\n'.format(tag_name, erroneous_args)

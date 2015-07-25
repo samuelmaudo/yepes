@@ -21,7 +21,7 @@ from yepes.test_mixins import TemplateTagsMixin
 
 class NewsletterTagsTest(TemplateTagsMixin, SimpleTestCase):
 
-    required_libraries = ['newsletters']
+    requiredLibraries = ['newsletters']
 
     def test_image_url_syntax(self):
         self.checkSyntax(
