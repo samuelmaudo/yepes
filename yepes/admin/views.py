@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import FormView, View
 
 from yepes.admin.forms import MassUpdateFormSet, MassUpdateErrorList
-from yepes.data_migrations import QuerySetExportation
+from yepes.apps.data_migrations import QuerySetExportation
 from yepes.utils.views import decorate_view
 
 

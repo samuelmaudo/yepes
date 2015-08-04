@@ -7,7 +7,7 @@ from json import JSONDecoder, JSONEncoder
 from django.utils.six import PY3
 from django.utils.six.moves import zip
 
-from yepes.data_migrations.serializers.base import Serializer
+from yepes.apps.data_migrations.serializers.base import Serializer
 from yepes.types import Undefined
 
 class JsonSerializer(Serializer):

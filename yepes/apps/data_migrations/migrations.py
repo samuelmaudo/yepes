@@ -9,12 +9,12 @@ from django.db import transaction
 from django.utils import six
 from django.utils.six.moves import zip
 
-from yepes.data_migrations import fields
-from yepes.data_migrations import importation_plans
-from yepes.data_migrations import serializers
-from yepes.data_migrations.importation_plans.create import CreatePlan
-from yepes.data_migrations.importation_plans.update_or_create import UpdateOrCreatePlan
-from yepes.data_migrations.serializers.json import JsonSerializer
+from yepes.apps.data_migrations import fields
+from yepes.apps.data_migrations import importation_plans
+from yepes.apps.data_migrations import serializers
+from yepes.apps.data_migrations.importation_plans.create import CreatePlan
+from yepes.apps.data_migrations.importation_plans.update_or_create import UpdateOrCreatePlan
+from yepes.apps.data_migrations.serializers.json import JsonSerializer
 from yepes.types import Undefined
 from yepes.utils.iterators import isplit
 from yepes.utils.properties import cached_property

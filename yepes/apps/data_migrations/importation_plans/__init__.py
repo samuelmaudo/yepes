@@ -8,12 +8,12 @@ from yepes.conf import settings
 from yepes.loading import get_module, LoadingError
 
 BUILTIN_PLANS = {
-    'bulk_create': 'yepes.data_migrations.importation_plans.bulk_create.BulkCreatePlan',
-    'create': 'yepes.data_migrations.importation_plans.create.CreatePlan',
-    'direct': 'yepes.data_migrations.importation_plans.direct.DirectPlan',
-    'update': 'yepes.data_migrations.importation_plans.update.UpdatePlan',
-    'update_or_bulk_create': 'yepes.data_migrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
-    'update_or_create': 'yepes.data_migrations.importation_plans.update_or_create.UpdateOrCreatePlan',
+    'bulk_create': 'yepes.apps.data_migrations.importation_plans.bulk_create.BulkCreatePlan',
+    'create': 'yepes.apps.data_migrations.importation_plans.create.CreatePlan',
+    'direct': 'yepes.apps.data_migrations.importation_plans.direct.DirectPlan',
+    'update': 'yepes.apps.data_migrations.importation_plans.update.UpdatePlan',
+    'update_or_bulk_create': 'yepes.apps.data_migrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
+    'update_or_create': 'yepes.apps.data_migrations.importation_plans.update_or_create.UpdateOrCreatePlan',
 }
 
 _PLANS = None

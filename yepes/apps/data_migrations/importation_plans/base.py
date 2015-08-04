@@ -8,7 +8,7 @@ import operator
 from django.db.models import F, Q
 from django.utils.six.moves import reduce
 
-from yepes.data_migrations.exceptions import (
+from yepes.apps.data_migrations.exceptions import (
     UnableToCreateError,
     UnableToUpdateError,
 )

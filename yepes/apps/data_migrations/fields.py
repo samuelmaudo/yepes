@@ -14,7 +14,7 @@ from django.utils.functional import Promise
 from django.utils.timezone import utc as UTC
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.data_migrations import types
+from yepes.apps.data_migrations import types
 from yepes.exceptions import UnexpectedTypeError
 from yepes.utils.properties import cached_property
 
@@ -75,8 +75,8 @@ class Field(object):
     def deconstruct(self):
         cls = self.__class__
         path = '.'.join((cls.__module__, cls.__name__)).replace(
-            'yepes.data_migrations.fields',
-            'yepes.data_migrations',
+            'yepes.apps.data_migrations.fields',
+            'yepes.apps.data_migrations',
         )
         args = [self.path]
         kwargs = {}
