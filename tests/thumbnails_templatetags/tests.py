@@ -2,41 +2,25 @@
 
 from __future__ import unicode_literals
 
+import hashlib
 import os
-import tempfile
 
-from django.core.files.storage import FileSystemStorage
-from django.test import SimpleTestCase
+from django.test import TestCase
 from django.template import Context, Template
-from django.utils import six
-from django.utils._os import upath
 
-from yepes.apps.thumbnails.files import ImageFile, SourceFile
 from yepes.apps.thumbnails.models import Configuration
-from yepes.templatetags.thumbnails import GetThumbnailTag, MakeThumbnailTag
-from yepes.test_mixins import TempDirMixin, TemplateTagsMixin
+from yepes.apps.thumbnails.templatetags.thumbnails import (
+    GetThumbnailTag,
+    MakeThumbnailTag,
+)
+from yepes.apps.thumbnails.test_mixins import ThumbnailsMixin
+from yepes.test_mixins import TemplateTagsMixin
 
 
-class ThumbnailTagsTest(TempDirMixin, TemplateTagsMixin, SimpleTestCase):
+class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
 
     requiredLibraries = ['thumbnails']
-    tempDirPrefix = 'test_templatetags_'
-
-    def setUp(self):
-        super(ThumbnailTagsTest, self).setUp()
-        self.temp_storage = FileSystemStorage(self.temp_dir)
-        self.source_path = os.path.join(
-            os.path.dirname(upath(__file__)),
-            'static',
-            'wolf.jpg',
-        )
-        self.source_image = ImageFile(open(self.source_path, 'rb'))
-        self.source = SourceFile(self.source_image, 'static/wolf.jpg',
-                                 storage=self.temp_storage)
-
-    def tearDown(self):
-        super(ThumbnailTagsTest, self).tearDown()
-        self.source.close()
+    tempDirPrefix = 'test_thumbnails_templatetags_'
 
     def test_get_thumbnail_syntax(self):
         self.checkSyntax(
@@ -58,6 +42,13 @@ class ThumbnailTagsTest(TempDirMixin, TemplateTagsMixin, SimpleTestCase):
             width=100,
             height=50,
         )
+        salt = os.path.join('default', self.source.name)
+        salt = hashlib.md5(salt).hexdigest()[:6]
+        path = os.path.join(
+            self.temp_dir,
+            'thumbs',
+            'wolf_{0}.jpg'.format(salt),
+        )
         context = Context({
             'source': self.source
         })
@@ -66,28 +57,23 @@ class ThumbnailTagsTest(TempDirMixin, TemplateTagsMixin, SimpleTestCase):
             {% get_thumbnail source 'default' %}
             {{ thumbnail.path }}
         ''')
-        thumbnail_path = template.render(context).strip()
-        self.assertEqual(thumbnail_path, os.path.join(
-            self.temp_dir,
-            'static',
-            'thumbs',
-            'wolf.jpg.default.jpg',
-        ))
+        self.assertEqual(template.render(context).strip(), path)
 
     def test_make_thumbnail(self):
         context = Context({
             'source': self.source
         })
+        salt = os.path.join('w100_h50', self.source.name)
+        salt = hashlib.md5(salt).hexdigest()[:6]
+        path = os.path.join(
+            self.temp_dir,
+            'thumbs',
+            'wolf_{0}.jpg'.format(salt),
+        )
         template = Template('''
             {% load thumbnails %}
             {% make_thumbnail source 100 50 %}
             {{ thumbnail.path }}
         ''')
-        thumbnail_path = template.render(context).strip()
-        self.assertEqual(thumbnail_path, os.path.join(
-            self.temp_dir,
-            'static',
-            'thumbs',
-            'wolf.jpg.w100_h50.jpg',
-        ))
+        self.assertEqual(template.render(context).strip(), path)
 

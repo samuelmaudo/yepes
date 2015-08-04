@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import hashlib
 import os
 
 from wand.image import Image
@@ -72,13 +73,11 @@ class ImageFile(File):
         else:
             if self._image_cache is Undefined:
                 self._set_image(Image(file=self))
-
         return self._image_cache
 
     def _get_width(self):
         if self._width_cache is Undefined:
             self._fetch_image_data()
-
         return self._width_cache
 
     def _set_image(self, img):
@@ -320,16 +319,16 @@ class SourceFile(StoredImageFile):
 
         config = clean_config(config)
         path, source_name = os.path.split(self.name)
-        if config.format == 'JPEG':
-            if ('truecolor' in img.type
-                    and not img.alpha_channel):
-                extension = 'jpg'
-            else:
-                extension = 'png'
-        else:
+        source_name = os.path.splitext(source_name)[0]
+        salt = hashlib.md5(os.path.join(config.key, self.name)).hexdigest()[:6]
+        if config.format != 'JPEG':
             extension = config.format.lower()
+        elif 'truecolor' in img.type and not img.alpha_channel:
+            extension = 'jpg'
+        else:
+            extension = 'png'
 
-        thumb_name = '.'.join((source_name, config.key, extension))
+        thumb_name = '{0}_{1}.{2}'.format(source_name, salt, extension)
         return os.path.join(path, 'thumbs', thumb_name)
 
 

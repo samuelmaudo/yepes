@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.db.models.fields.files import ImageField as BaseImageField
+from django.db.models import ImageField as BaseImageField
 
 from yepes.apps.thumbnails.files import SourceFieldFile
 from yepes.forms.widgets import ImageWidget
