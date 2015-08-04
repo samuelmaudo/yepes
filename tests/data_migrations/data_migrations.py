@@ -65,6 +65,14 @@ class DateTimeEdgeMigration(migrations.CustomDataMigration):
     ]
 
 
+class FileMigration(migrations.CustomDataMigration):
+
+    fields = [
+        migrations.FileField('file'),
+        migrations.FileField('image'),
+    ]
+
+
 class NumericMigration(migrations.CustomDataMigration):
 
     fields = [
@@ -98,6 +106,7 @@ class AuthorMigration(migrations.CustomDataMigration):
 
     fields = [
         migrations.TextField('name'),
+        migrations.FileField('image'),
     ]
 
 

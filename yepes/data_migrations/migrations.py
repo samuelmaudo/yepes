@@ -287,6 +287,8 @@ class DataMigration(CustomDataMigration):
             field_class = fields.DateTimeField
         elif isinstance(model_field, models.DateField):
             field_class = fields.DateField
+        elif isinstance(model_field, models.FileField):
+            field_class = fields.FileField
         elif isinstance(model_field, models.FloatField):
             field_class = fields.FloatField
         elif isinstance(model_field, (models.IntegerField, models.AutoField)):

@@ -73,19 +73,23 @@ class Field(object):
         return value
 
     def deconstruct(self):
-        field_name = None
-        field_class = '{0}-{1}'.serializer(self.__class__.__module__, self.__class__.__name__)
-        if field_class.startswith('yepes.data_migrations.fields'):
-            field_class = field_class.replace('yepes.data_migrations.fields', 'yepes.data_migrations')
-
-        args = [self.path]
-        kwargs = {'force_string': self.force_string}
-        return (
-            force_text(field_name, strings_only=True),
-            field_class,
-            args,
-            kwargs,
+        cls = self.__class__
+        path = '.'.join((cls.__module__, cls.__name__)).replace(
+            'yepes.data_migrations.fields',
+            'yepes.data_migrations',
         )
+        args = [self.path]
+        kwargs = {}
+        if self.name != self.path:
+            kwargs['name'] = self.name
+
+        if self.attname != self.path:
+            kwargs['attname'] = self.attname
+
+        if self.force_string is not False:
+            kwargs['force_string'] = self.force_string
+
+        return (path, args, kwargs)
 
     def export_value(self, value, serializer):
         value = self.clean(value)

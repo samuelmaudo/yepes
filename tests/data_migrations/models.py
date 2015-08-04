@@ -26,6 +26,16 @@ class DateTimeModel(models.Model):
             null=True)
 
 
+class FileModel(models.Model):
+
+    file = models.FileField(
+            blank=True,
+            upload_to='%y%m%d%H%M%S')
+    image = models.ImageField(
+            blank=True,
+            upload_to='%y%m%d%H%M%S')
+
+
 class NumericModel(models.Model):
 
     integer = models.IntegerField(
@@ -78,6 +88,9 @@ class AuthorModel(models.Model):
     name = models.CharField(
             max_length=255,
             unique=True)
+    image = models.ImageField(
+            blank=True,
+            upload_to='%y%m%d%H%M%S')
 
 
 class BlogModel(models.Model):
@@ -113,6 +126,9 @@ class PostModel(models.Model):
     category = models.ForeignKey(
             BlogCategoryModel,
             related_name='posts')
+    image = models.ImageField(
+            blank=True,
+            upload_to='%y%m%d%H%M%S')
     content = models.TextField(
             blank=True)
 

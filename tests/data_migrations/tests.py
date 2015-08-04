@@ -38,6 +38,7 @@ from .data_migrations import (
     BooleanMigration,
     DateTimeMigration,
     DateTimeEdgeMigration,
+    FileMigration,
     NumericMigration,
     TextMigration,
 )
@@ -48,6 +49,7 @@ from .models import (
     BlogCategoryModel,
     BooleanModel,
     DateTimeModel,
+    FileModel,
     NumericModel,
     PostModel,
     TextModel,
@@ -650,6 +652,222 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.yaml')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.yaml')
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                migration.export_data(result_file, serializer)
+                result_file.seek(0)
+                self.assertEqual(
+                        result_file.read().splitlines(),
+                        expected_file.read().splitlines())
+
+
+class FileFieldsTests(TempDirMixin, test.TestCase):
+
+    expectedResults = [
+        '860925120000',
+        '150731173632',
+        '',
+        '',
+    ]
+    maxDiff = None
+    tempDirPrefix = 'test_data_migrations_'
+
+    def test_data_migration(self):
+        migration = FileMigration(FileModel)
+        self.assertEqual(
+            [repr(fld) for fld in migration.fields],
+            ['<yepes.data_migrations.fields.FileField: file>',
+             '<yepes.data_migrations.fields.FileField: image>'],
+        )
+        self.assertEqual(
+            [repr(fld) for fld in migration.fields_to_import],
+            ['<yepes.data_migrations.fields.FileField: file>',
+             '<yepes.data_migrations.fields.FileField: image>'],
+        )
+        self.assertIsNone(migration.primary_key)
+        self.assertIsNone(migration.natural_foreign_keys)
+        self.assertTrue(migration.can_create)
+        self.assertFalse(migration.can_update)
+        self.assertFalse(migration.requires_model_instances)
+
+    def test_csv_serializer(self):
+        migration = FileMigration(FileModel)
+        import_serializer = CsvSerializer
+        export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
+
+        source_path = os.path.join(FIXTURES_DIR, 'file_source.csv')
+        expected_path = os.path.join(FIXTURES_DIR, 'file_result.csv')
+        result_path = os.path.join(self.temp_dir, 'file_result.csv')
+
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file.read(), import_serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                result = migration.export_data(serializer=export_serializer)
+                self.assertEqual(
+                        result.splitlines(),
+                        expected_file.read().splitlines())
+
+        FileModel.objects.all().delete()
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file, import_serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                migration.export_data(result_file, export_serializer)
+                result_file.seek(0)
+                self.assertEqual(
+                        result_file.read().splitlines(),
+                        expected_file.read().splitlines())
+
+    def test_json_serializer(self):
+        migration = FileMigration(FileModel)
+        serializer = JsonSerializer
+
+        source_path = os.path.join(FIXTURES_DIR, 'file_source.json')
+        expected_path = os.path.join(FIXTURES_DIR, 'file_result.json')
+        result_path = os.path.join(self.temp_dir, 'file_result.json')
+
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file.read(), serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                result = migration.export_data(serializer=serializer)
+                self.assertEqual(
+                        result.splitlines(),
+                        expected_file.read().splitlines())
+
+        FileModel.objects.all().delete()
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file, serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                migration.export_data(result_file, serializer)
+                result_file.seek(0)
+                self.assertEqual(
+                        result_file.read().splitlines(),
+                        expected_file.read().splitlines())
+
+    def test_tsv_serializer(self):
+        migration = FileMigration(FileModel)
+        import_serializer = TsvSerializer
+        export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
+
+        source_path = os.path.join(FIXTURES_DIR, 'file_source.tsv')
+        expected_path = os.path.join(FIXTURES_DIR, 'file_result.tsv')
+        result_path = os.path.join(self.temp_dir, 'file_result.tsv')
+
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file.read(), import_serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                result = migration.export_data(serializer=export_serializer)
+                self.assertEqual(
+                        result.splitlines(),
+                        expected_file.read().splitlines())
+
+        FileModel.objects.all().delete()
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file, import_serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                migration.export_data(result_file, export_serializer)
+                result_file.seek(0)
+                self.assertEqual(
+                        result_file.read().splitlines(),
+                        expected_file.read().splitlines())
+
+    def test_yaml_serializer(self):
+        migration = FileMigration(FileModel)
+        serializer = YamlSerializer
+
+        source_path = os.path.join(FIXTURES_DIR, 'file_source.yaml')
+        expected_path = os.path.join(FIXTURES_DIR, 'file_result.yaml')
+        result_path = os.path.join(self.temp_dir, 'file_result.yaml')
+
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file.read(), serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
+        with open(expected_path, 'r') as expected_file:
+            with open(result_path, 'w+') as result_file:
+
+                result = migration.export_data(serializer=serializer)
+                self.assertEqual(
+                        result.splitlines(),
+                        expected_file.read().splitlines())
+
+        FileModel.objects.all().delete()
+        with open(source_path, 'r') as source_file:
+
+            migration.import_data(source_file, serializer, DirectPlan)
+
+            objs = list(FileModel.objects.all())
+            self.assertEqual(len(objs), len(self.expectedResults))
+            for obj, result in zip(objs, self.expectedResults):
+                self.assertEqual(obj.file, result)
+                self.assertEqual(obj.image, result)
+
         with open(expected_path, 'r') as expected_file:
             with open(result_path, 'w+') as result_file:
 
@@ -1435,11 +1653,13 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.data_migrations.fields.TextField: name>'],
+            ['<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.data_migrations.fields.TextField: name>'],
+            ['<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
@@ -1821,12 +2041,14 @@ class ModelMigrationsTests(test.TestCase):
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
             ['<yepes.data_migrations.fields.IntegerField: id>',
-             '<yepes.data_migrations.fields.TextField: name>'],
+             '<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
             ['<yepes.data_migrations.fields.IntegerField: id>',
-             '<yepes.data_migrations.fields.TextField: name>'],
+             '<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
@@ -1844,11 +2066,13 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.data_migrations.fields.TextField: name>'],
+            ['<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.data_migrations.fields.TextField: name>'],
+            ['<yepes.data_migrations.fields.TextField: name>',
+             '<yepes.data_migrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
