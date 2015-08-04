@@ -1,0 +1,13 @@
+include LICENSE
+include MANIFEST.in
+include README.md
+recursive-include tests *
+recursive-include yepes/locale *
+recursive-include yepes/static *
+recursive-include yepes/templates *
+recursive-include yepes/apps/*/fixtures *
+recursive-include yepes/apps/*/locale *
+recursive-include yepes/apps/*/static *
+recursive-include yepes/apps/*/templates *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
