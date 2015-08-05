@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 import unittest
 import warnings
 
@@ -136,12 +138,12 @@ class GetModuleTest(test.SimpleTestCase):
 
     def test_invalid_dependency(self):
         with self.assertRaises(ImportError):
-            get_module('tests.loading.invalid_dependency')
+            get_module('loading.invalid_dependency')
 
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter('always')
             module = get_module(
-                'tests.loading.invalid_dependency',
+                'loading.invalid_dependency',
                 ignore_internal_errors=True,
             )
             self.assertEqual(len(w), 1)
@@ -151,12 +153,12 @@ class GetModuleTest(test.SimpleTestCase):
 
     def test_invalid_syntax(self):
         with self.assertRaises(SyntaxError):
-            get_module('tests.loading.invalid_syntax')
+            get_module('loading.invalid_syntax')
 
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter('always')
             module = get_module(
-                'tests.loading.invalid_syntax',
+                'loading.invalid_syntax',
                 ignore_internal_errors=True,
             )
             self.assertEqual(len(w), 1)

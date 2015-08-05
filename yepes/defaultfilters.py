@@ -34,21 +34,25 @@ def pk(value):
 
 
 @register.filter(is_safe=False)
-def roundlist(iterable, i):
-    L = list(iterable)
+def roundlist(value, arg):
+    sequence = list(value)
     try:
-        i = int(i)
-    except:
+        nelements = int(arg)
+    except (ValueError, TypeError):
         pass
     else:
-        if L:
-            lg = len(L)
-            excess = ((float(lg) / i) - (int(lg) / i)) * i
-            remaining = int(i - int(round(excess) or i))
+        if not sequence:
+            remaining = nelements
         else:
-            remaining = i
-        L.extend(None for i in range(remaining))
-    return L
+            excess = len(sequence) % nelements
+            if not excess:
+                remaining = 0
+            else:
+                remaining = nelements - excess
+
+        sequence.extend(None for i in range(remaining))
+
+    return sequence
 
 
 @register.filter(is_safe=True)

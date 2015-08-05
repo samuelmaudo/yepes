@@ -7,6 +7,7 @@ import os
 
 from django.test import TestCase
 from django.template import Context, Template
+from django.utils.encoding import force_bytes
 
 from yepes.apps.thumbnails.models import Configuration
 from yepes.apps.thumbnails.templatetags.thumbnails import (
@@ -43,7 +44,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             height=50,
         )
         salt = os.path.join('default', self.source.name)
-        salt = hashlib.md5(salt).hexdigest()[:6]
+        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
@@ -64,7 +65,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             'source': self.source
         })
         salt = os.path.join('w100_h50', self.source.name)
-        salt = hashlib.md5(salt).hexdigest()[:6]
+        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',

@@ -6,6 +6,7 @@ import hashlib
 import os
 
 from django.test import TestCase
+from django.utils.encoding import force_bytes
 
 from yepes.apps.thumbnails.models import Configuration
 from yepes.apps.thumbnails.proxies import ConfigurationProxy
@@ -23,7 +24,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
             height=50,
         )
         salt = os.path.join(configuration.key, self.source.name)
-        salt = hashlib.md5(salt).hexdigest()[:6]
+        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
@@ -46,7 +47,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertLessEqual(thumbnail.width, 100)
         self.assertLessEqual(thumbnail.height, 50)
         self.assertEqual(thumbnail.format, 'JPEG')
-        self.assertNotEqual(thumbnail.accessed_time, original_accessed_time)
+        self.assertGreaterEqual(thumbnail.accessed_time, original_accessed_time)
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
@@ -56,7 +57,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertLessEqual(thumbnail.width, 100)
         self.assertLessEqual(thumbnail.height, 50)
         self.assertEqual(thumbnail.format, 'JPEG')
-        self.assertNotEqual(thumbnail.accessed_time, original_accessed_time)
+        self.assertGreaterEqual(thumbnail.accessed_time, original_accessed_time)
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
@@ -68,7 +69,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         )
         self.assertEqual(configuration.key, 'w100_h50')
         salt = os.path.join(configuration.key, self.source.name)
-        salt = hashlib.md5(salt).hexdigest()[:6]
+        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
@@ -91,7 +92,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertLessEqual(thumbnail.width, configuration.width)
         self.assertLessEqual(thumbnail.height, configuration.height)
         self.assertEqual(thumbnail.format, configuration.format)
-        self.assertNotEqual(thumbnail.accessed_time, original_accessed_time)
+        self.assertGreaterEqual(thumbnail.accessed_time, original_accessed_time)
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
@@ -101,7 +102,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertLessEqual(thumbnail.width, configuration.width)
         self.assertLessEqual(thumbnail.height, configuration.height)
         self.assertEqual(thumbnail.format, configuration.format)
-        self.assertNotEqual(thumbnail.accessed_time, original_accessed_time)
+        self.assertGreaterEqual(thumbnail.accessed_time, original_accessed_time)
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)

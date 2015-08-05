@@ -434,10 +434,20 @@ class DataMigration(CustomDataMigration):
 class QuerySetExportation(DataMigration):
 
     def __init__(self, queryset):
-        field_names, defer = queryset.query.deferred_loading
         model = queryset.model
-        fields = field_names if field_names and not defer else None
-        exclude = field_names if field_names and defer else None
+        opts = model._meta
+        fields = None
+        exclude = None
+
+        field_names, defer = queryset.query.deferred_loading
+        if field_names:
+            field_names = sorted(field_names, key=(
+                lambda n: opts.get_field(n).creation_counter))
+            if defer:
+                exclude = field_names
+            else:
+                fields = field_names
+
         super(QuerySetExportation, self).__init__(model, fields, exclude)
         self.queryset = queryset
 

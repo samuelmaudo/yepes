@@ -11,6 +11,7 @@ from django.core.files.base import ContentFile, File
 from django.core.files.storage import default_storage
 from django.db.models.fields.files import FieldFile
 from django.utils import timezone
+from django.utils.encoding import force_bytes
 
 from yepes.apps.thumbnails.utils import clean_config
 from yepes.loading import LazyModelManager
@@ -320,7 +321,8 @@ class SourceFile(StoredImageFile):
         config = clean_config(config)
         path, source_name = os.path.split(self.name)
         source_name = os.path.splitext(source_name)[0]
-        salt = hashlib.md5(os.path.join(config.key, self.name)).hexdigest()[:6]
+        salt = os.path.join(config.key, self.name)
+        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
         if config.format != 'JPEG':
             extension = config.format.lower()
         elif 'truecolor' in img.type and not img.alpha_channel:
