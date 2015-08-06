@@ -9,9 +9,15 @@ from django.db import transaction
 from django.utils import six
 from django.utils.six.moves import zip
 
-from yepes.apps.data_migrations import fields
-from yepes.apps.data_migrations import importation_plans
 from yepes.apps.data_migrations import serializers
+from yepes.apps.data_migrations import importation_plans
+from yepes.apps.data_migrations.fields import (
+    BooleanField,
+    DateField, DateTimeField, TimeField,
+    FileField,
+    FloatField, IntegerField, NumberField,
+    TextField,
+)
 from yepes.apps.data_migrations.importation_plans.create import CreatePlan
 from yepes.apps.data_migrations.importation_plans.update_or_create import UpdateOrCreatePlan
 from yepes.apps.data_migrations.serializers.json import JsonSerializer
@@ -282,25 +288,25 @@ class DataMigration(CustomDataMigration):
             attname = path
 
         if isinstance(model_field, (models.BooleanField, models.NullBooleanField)):
-            field_class = fields.BooleanField
+            field_class = BooleanField
         elif isinstance(model_field, models.DateTimeField):
-            field_class = fields.DateTimeField
+            field_class = DateTimeField
         elif isinstance(model_field, models.DateField):
-            field_class = fields.DateField
+            field_class = DateField
         elif isinstance(model_field, models.FileField):
-            field_class = fields.FileField
+            field_class = FileField
         elif isinstance(model_field, models.FloatField):
-            field_class = fields.FloatField
+            field_class = FloatField
         elif isinstance(model_field, (models.IntegerField, models.AutoField)):
-            field_class = fields.IntegerField
+            field_class = IntegerField
         elif isinstance(model_field, models.DecimalField):
-            field_class = fields.NumberField
+            field_class = NumberField
         elif isinstance(model_field, (models.CharField, models.TextField,
                                       models.FilePathField,
                                       models.IPAddressField, models.GenericIPAddressField)):
-            field_class = fields.TextField
+            field_class = TextField
         elif isinstance(model_field, models.TimeField):
-            field_class = fields.TimeField
+            field_class = TimeField
         else:
             return None
 

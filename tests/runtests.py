@@ -25,6 +25,7 @@ program = TestProgram(
         'django.contrib.sites',
         'mptt',
         'yepes',
+        'yepes.apps.data_migrations',
         'yepes.apps.emails',
         'yepes.apps.metrics',
         'yepes.apps.newsletters',

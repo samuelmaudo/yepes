@@ -14,7 +14,11 @@ from django.utils.functional import Promise
 from django.utils.timezone import utc as UTC
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.apps.data_migrations import types
+from yepes.apps.data_migrations.types import (
+    BOOLEAN, FLOAT, INTEGER, TEXT,
+    DATE, DATETIME, TIME,
+    DECIMAL,
+)
 from yepes.exceptions import UnexpectedTypeError
 from yepes.utils.properties import cached_property
 
@@ -143,7 +147,7 @@ class Field(object):
 
 class BooleanField(Field):
 
-    data_type = types.BOOLEAN
+    data_type = BOOLEAN
     description = _('Boolean')
 
     def clean(self, value):
@@ -165,7 +169,7 @@ class BooleanField(Field):
 
 class FloatField(Field):
 
-    data_type = types.FLOAT
+    data_type = FLOAT
     description = _('Float')
 
     def clean(self, value):
@@ -184,7 +188,7 @@ class FloatField(Field):
 
 class IntegerField(Field):
 
-    data_type = types.INTEGER
+    data_type = INTEGER
     description = _('Integer')
 
     def clean(self, value):
@@ -203,7 +207,7 @@ class IntegerField(Field):
 
 class TextField(Field):
 
-    data_type = types.TEXT
+    data_type = TEXT
     description = _('Text')
 
     def clean(self, value):
@@ -224,7 +228,7 @@ class TextField(Field):
 
 class DateField(Field):
 
-    data_type = types.DATE
+    data_type = DATE
     description = _('Date')
 
     def clean(self, value):
@@ -250,7 +254,7 @@ class DateField(Field):
 
 class DateTimeField(Field):
 
-    data_type = types.DATETIME
+    data_type = DATETIME
     description = _('Date time')
 
     def clean(self, value):
@@ -360,7 +364,7 @@ class SecondField(IntegerField):
 
 class TimeField(Field):
 
-    data_type = types.TIME
+    data_type = TIME
     description = _('Time')
 
     def clean(self, value):
@@ -411,7 +415,7 @@ class FixedOffset(datetime.tzinfo):
 
 class TimeZoneField(Field):
 
-    data_type = types.TEXT
+    data_type = TEXT
     description = _('Time Zone')
 
     def import_value(self, value, serializer):
@@ -477,7 +481,7 @@ class YearField(IntegerField):
 
 class DecimalField(Field):
 
-    data_type = types.DECIMAL
+    data_type = DECIMAL
     description = _('Decimal')
 
     def clean(self, value):
@@ -529,7 +533,7 @@ class NumberField(DecimalField):
     WARNING: This test takes a long long time, at least in my computer.
 
     """
-    data_type = types.FLOAT
+    data_type = FLOAT
     description = _('Number')
 
     def export_value(self, value, serializer):

@@ -9,20 +9,20 @@ if PY3:
 else:
     import unicodecsv as csv
 
-from yepes.apps.data_migrations import types
 from yepes.apps.data_migrations.serializers.base import Serializer
+from yepes.apps.data_migrations.types import FLOAT, INTEGER, TEXT
 from yepes.types import Undefined
 
 
 class CsvSerializer(Serializer):
 
     exportation_data_types = frozenset([
-        types.TEXT,
-        types.INTEGER,
-        types.FLOAT,
+        TEXT,
+        INTEGER,
+        FLOAT,
     ])
     importation_data_types = frozenset([
-        types.TEXT,
+        TEXT,
     ])
 
     def __init__(self, **serializer_parameters):

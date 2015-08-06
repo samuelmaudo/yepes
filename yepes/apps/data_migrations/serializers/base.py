@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 from django.utils.six.moves import cStringIO
 
-from yepes.apps.data_migrations import types
+from yepes.apps.data_migrations.types import BOOLEAN, FLOAT, INTEGER, TEXT
 
 
 class Serializer(object):
@@ -16,16 +16,16 @@ class Serializer(object):
 
     """
     exportation_data_types = frozenset([
-        types.TEXT,
-        types.INTEGER,
-        types.FLOAT,
-        types.BOOLEAN,
+        TEXT,
+        INTEGER,
+        FLOAT,
+        BOOLEAN,
     ])
     importation_data_types = frozenset([
-        types.TEXT,
-        types.INTEGER,
-        types.FLOAT,
-        types.BOOLEAN,
+        TEXT,
+        INTEGER,
+        FLOAT,
+        BOOLEAN,
     ])
 
     def __init__(self, **serializer_parameters):
