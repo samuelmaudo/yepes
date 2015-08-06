@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.test import SimpleTestCase
 from django.template import Context, Template
 
-from yepes.templatetags.metrics import AnalyticsScriptTag
+from yepes.apps.metrics.templatetags.metrics import AnalyticsScriptTag
 from yepes.test_mixins import TemplateTagsMixin
 
 

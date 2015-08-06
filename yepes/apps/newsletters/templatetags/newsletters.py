@@ -16,11 +16,11 @@ MessageLink = get_model('newsletters', 'MessageLink')
 MessageLinkManager = MessageLink._default_manager
 
 IMAGE_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
-    'LOCATION': 'yepes.templatetags.newsletters.image_url',
+    'LOCATION': 'yepes.apps.newsletters.templatetags.newsletters.image_url',
     'TIMEOUT': 600,
 })
 LINK_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
-    'LOCATION': 'yepes.templatetags.newsletters.link_url',
+    'LOCATION': 'yepes.apps.newsletters.templatetags.newsletters.link_url',
     'TIMEOUT': 600,
 })
 
