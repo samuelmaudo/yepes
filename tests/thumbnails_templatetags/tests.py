@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 
-import hashlib
+from base64 import b64encode
+from hashlib import md5
 import os
 
 from django.test import TestCase
@@ -43,12 +44,13 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             width=100,
             height=50,
         )
-        salt = os.path.join('default', self.source.name)
-        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
+        key = os.path.join('default', self.source.name)
+        key = md5(force_bytes(key)).digest()
+        key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
-            'wolf_{0}.jpg'.format(salt),
+            'wolf_{0}.jpg'.format(key),
         )
         context = Context({
             'source': self.source
@@ -64,12 +66,13 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         context = Context({
             'source': self.source
         })
-        salt = os.path.join('w100_h50', self.source.name)
-        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
+        key = os.path.join('w100_h50', self.source.name)
+        key = md5(force_bytes(key)).digest()
+        key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
-            'wolf_{0}.jpg'.format(salt),
+            'wolf_{0}.jpg'.format(key),
         )
         template = Template('''
             {% load thumbnails %}

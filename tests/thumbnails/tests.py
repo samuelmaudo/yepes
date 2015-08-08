@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 
-import hashlib
+from base64 import b64encode
+from hashlib import md5
 import os
 
 from django.test import TestCase
@@ -23,12 +24,13 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
             width=100,
             height=50,
         )
-        salt = os.path.join(configuration.key, self.source.name)
-        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
+        key = os.path.join(configuration.key, self.source.name)
+        key = md5(force_bytes(key)).digest()
+        key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
-            'wolf_{0}.jpg'.format(salt),
+            'wolf_{0}.jpg'.format(key),
         )
         self.assertIsNone(self.source.get_existing_thumbnail('default'))
 
@@ -68,12 +70,13 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
             height=50,
         )
         self.assertEqual(configuration.key, 'w100_h50')
-        salt = os.path.join(configuration.key, self.source.name)
-        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
+        key = os.path.join(configuration.key, self.source.name)
+        key = md5(force_bytes(key)).digest()
+        key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
             'thumbs',
-            'wolf_{0}.jpg'.format(salt),
+            'wolf_{0}.jpg'.format(key),
         )
         self.assertIsNone(self.source.get_existing_thumbnail(configuration))
 

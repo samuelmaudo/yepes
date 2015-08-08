@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 
-import hashlib
+from base64 import b64encode
+from hashlib import md5
 import os
 
 from wand.image import Image
@@ -319,10 +320,16 @@ class SourceFile(StoredImageFile):
             return None
 
         config = clean_config(config)
-        path, source_name = os.path.split(self.name)
-        source_name = os.path.splitext(source_name)[0]
-        salt = os.path.join(config.key, self.name)
-        salt = hashlib.md5(force_bytes(salt)).hexdigest()[:6]
+        path, name = os.path.split(self.name)
+        name = os.path.splitext(name)[0]
+
+        # The key must identify the source and the configuration used to
+        # generate the thumbnail. And must not contain any character that
+        # is not allowed in a  filename.
+        key = os.path.join(config.key, self.name)
+        key = md5(force_bytes(key)).digest()
+        key = b64encode(key, b'ab').decode('ascii')[:6]
+
         if config.format != 'JPEG':
             extension = config.format.lower()
         elif 'truecolor' in img.type and not img.alpha_channel:
@@ -330,7 +337,7 @@ class SourceFile(StoredImageFile):
         else:
             extension = 'png'
 
-        thumb_name = '{0}_{1}.{2}'.format(source_name, salt, extension)
+        thumb_name = '{0}_{1}.{2}'.format(name, key, extension)
         return os.path.join(path, 'thumbs', thumb_name)
 
 
