@@ -320,13 +320,18 @@ class SourceFile(StoredImageFile):
             return None
 
         config = clean_config(config)
-        path, name = os.path.split(self.name)
-        name = os.path.splitext(name)[0]
+        path, source_name = os.path.split(self.name)
+        name = os.path.splitext(source_name)[0]
 
         # The key must identify the source and the configuration used to
         # generate the thumbnail. And must not contain any character that
         # is not allowed in a  filename.
-        key = os.path.join(config.key, self.name)
+        #
+        # Use the configuration key is simpler but requires to maintain
+        # the source extension and, more importantly, adds semantic value
+        # to the original name.
+        #
+        key = '/'.join((config.key, source_name))
         key = md5(force_bytes(key)).digest()
         key = b64encode(key, b'ab').decode('ascii')[:6]
 

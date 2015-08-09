@@ -44,8 +44,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             width=100,
             height=50,
         )
-        key = os.path.join('default', self.source.name)
-        key = md5(force_bytes(key)).digest()
+        key = md5(b'default/wolf.jpg').digest()
         key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
@@ -66,8 +65,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         context = Context({
             'source': self.source
         })
-        key = os.path.join('w100_h50', self.source.name)
-        key = md5(force_bytes(key)).digest()
+        key = md5(b'w100_h50/wolf.jpg').digest()
         key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
             self.temp_dir,
