@@ -217,10 +217,12 @@ class SourceFile(StoredImageFile):
             if scale < 1.0:
                 # Resize the image to the target size boundary.
                 # Round the scaled sizes to avoid floating point errors.
-                thumb.resize(int(round(source_x * scale)),
-                             int(round(source_y * scale)),
-                             config.filter,
-                             config.blur)
+                x = int(round(source_x * scale))
+                y = int(round(source_y * scale))
+                if config.filter == 'sample':
+                    thumb.sample(x, y)
+                else:
+                    thumb.resize(x, y, config.filter, config.blur)
 
             # Set final format.
             if is_truecolor:

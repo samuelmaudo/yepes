@@ -17,11 +17,18 @@ from yepes.model_mixins import Logged
 @python_2_unicode_compatible
 class AbstractConfiguration(Logged):
 
-    FILTER_CHOICES = tuple(
+    FILTER_CHOICES = [
+        ('undefined', 'undefined'),
+        ('sample', 'sample'),
+    ]
+    FILTER_CHOICES.extend(
         (type, type)
         for type
         in FILTER_TYPES
+        if type != 'undefined'
     )
+    FILTER_CHOICES = tuple(FILTER_CHOICES)
+
     FORMAT_CHOICES = (
         ('GIF', 'GIF'),
         ('JPEG', 'JPEG'),
