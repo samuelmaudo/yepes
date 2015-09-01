@@ -178,7 +178,7 @@ class SourceFile(StoredImageFile):
 
     def generate_thumbnail(self, config):
         """
-        Generates a new imagenail image and returns it as a ``ThumbnailFile``.
+        Generates a new thumbnail image and returns it as a ``ThumbnailFile``.
         """
         source = self.image
         if source is None:
