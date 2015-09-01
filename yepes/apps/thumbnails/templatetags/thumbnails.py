@@ -40,7 +40,7 @@ class GetThumbnailTag(AssignTag):
 register.tag('get_thumbnail', GetThumbnailTag.as_tag())
 
 
-## {% make_thumbnail source width height[ filter[ blur[ format[ quality]]]][ as variable_name] %} #####
+## {% make_thumbnail source width height[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]][ as variable_name] %} #####
 
 
 class MakeThumbnailTag(GetThumbnailTag):
@@ -52,18 +52,26 @@ class MakeThumbnailTag(GetThumbnailTag):
     Otherwise, a new thumbnail is generated.
 
     """
-    def process(self, source, width, height, filter='undefined', blur=1.0,
-                format='JPEG', quality=85, force_generation=False):
+    def process(self, source, width, height, background=None, mode='limit',
+                algorithm='undefined', gravity='center', format='JPEG',
+                quality=85, force_generation=False):
 
         if not source:
             return None
 
+        mode = mode.lower()
+        algorithm = algorithm.lower()
+        gravity = gravity.lower()
+        format = format.upper()
+
         config = ConfigurationProxy(**{
             'width': width,
             'height': height,
-            'filter': filter,
-            'blur': blur,
-            'format': format,
+            'background': background,
+            'mode': mode,
+            'algorithm': algorithm,
+            'gravity': gravity,
+            'format': format if format != 'PNG' else 'PNG64',
             'quality': quality,
         })
         if force_generation:

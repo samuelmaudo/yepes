@@ -6,6 +6,7 @@ from base64 import b64encode
 from hashlib import md5
 import os
 
+from wand.color import Color
 from wand.image import Image
 
 from django.core.files.base import ContentFile, File
@@ -14,6 +15,7 @@ from django.db.models.fields.files import FieldFile
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 
+from yepes.apps.thumbnails import engine
 from yepes.apps.thumbnails.utils import clean_config
 from yepes.loading import LazyModelManager
 from yepes.types import Undefined
@@ -28,7 +30,7 @@ class ImageFile(File):
     _image_cache = Undefined
     _width_cache = Undefined
 
-    def _del_image(self, img):
+    def _del_image(self, source):
         self._image_cache = Undefined
         self._format_cache = Undefined
         self._height_cache = Undefined
@@ -82,23 +84,23 @@ class ImageFile(File):
             self._fetch_image_data()
         return self._width_cache
 
-    def _set_image(self, img):
+    def _set_image(self, source):
         """
         Set the image for this file.
 
         This also caches the dimensions and the format of the image.
 
         """
-        if img is None:
+        if source is None:
             self._image_cache = None
             self._format_cache = None
             self._height_cache = None
             self._width_cache = None
         else:
-            self._image_cache = img
-            self._format_cache = img.format
-            self._height_cache = img.height
-            self._width_cache = img.width
+            self._image_cache = source
+            self._format_cache = source.format
+            self._height_cache = source.height
+            self._width_cache = source.width
 
     format = property(_get_format)
     height = property(_get_height)
@@ -176,87 +178,42 @@ class SourceFile(StoredImageFile):
 
     def generate_thumbnail(self, config):
         """
-        Generates a new thumbnail image and returns it as a ``ThumbnailFile``.
+        Generates a new imagenail image and returns it as a ``ThumbnailFile``.
         """
-        img = self.image
-        if img is None:
+        source = self.image
+        if source is None:
             return None
 
         config = clean_config(config)
-        thumb_name = self.get_thumbnail_name(config)
-        with img.clone() as thumb:
+        if config.background is None:
+            background = None
+        else:
+            background = Color(config.background)
 
-            is_transparent = thumb.alpha_channel
-            is_truecolor = ('truecolor' in thumb.type)
-
-            # Set working format.
-            thumb.format = 'MPC'
-            if is_transparent:
-                thumb.depth = 32
-                thumb.type = 'truecolormatte'
+        measures = engine.calculate_measures(source, config)
+        width, height, image_width, image_height = measures
+        with Image(width=width, height=height, background=background) as thumb:
+            if image_width == source.width and image_height == source.height:
+                engine.composite_image(thumb, source, config)
             else:
-                thumb.depth = 24
-                thumb.type = 'truecolor'
+                with source.clone() as image:
+                    engine.resize_image(image, image_width, image_height, config)
+                    engine.composite_image(thumb, image, config)
 
             # Remove all image metadata, color profiles and comments included.
             thumb.strip()
 
-            source_x = float(self.width)
-            source_y = float(self.height)
-            target_x = float(config.width)
-            target_y = float(config.height)
-
-            # Handle one-dimensional targets.
-            if not target_x or not target_y:
-                scale = max(target_x / source_x,
-                            target_y / source_y)
+            # Set image format.
+            if config.format == 'PNG64':
+                # It is not always necessary to use 64 bits per pixel. This
+                # allows ImageMagick to use a more economical format if it
+                # does not lose information.
+                thumb.format = 'PNG'
             else:
-                scale = min(target_x / source_x,
-                            target_y / source_y)
+                thumb.format = config.format
 
-            if scale < 1.0:
-                # Resize the image to the target size boundary.
-                # Round the scaled sizes to avoid floating point errors.
-                x = int(round(source_x * scale))
-                y = int(round(source_y * scale))
-                if config.filter == 'sample':
-                    thumb.sample(x, y)
-                else:
-                    thumb.resize(x, y, config.filter, config.blur)
-
-            # Set final format.
-            if is_truecolor:
-
-                if is_transparent:
-                    thumb.depth = 32
-                    thumb.type = 'truecolormatte'
-                    if config.format == 'WEBP':
-                        thumb.format = 'WEBP'
-                    else:
-                        thumb.format = 'PNG'
-                else:
-                    thumb.depth = 24
-                    thumb.type = 'truecolor'
-                    if config.format == 'GIF':
-                        thumb.format = 'JPEG'
-                    else:
-                        thumb.format = config.format
-
-                if thumb.format in ('JPEG', 'WEBP'):
-                    thumb.compression_quality = config.quality
-
-            else:  # is_indexed
-
-                thumb.depth = 8
-                if is_transparent:
-                    thumb.type = 'palettematte'
-                else:
-                    thumb.type = 'palette'
-
-                if config.format == 'JPEG':
-                    thumb.format = 'PNG'
-                else:
-                    thumb.format = config.format
+            if thumb.format in ('JPEG', 'WEBP'):
+                thumb.compression_quality = config.quality
 
             # Transform larger jpeg images (those more than 10KB in size)
             # into progressive jpegs.
@@ -269,6 +226,7 @@ class SourceFile(StoredImageFile):
                 thumb_blob = thumb.make_blob()
 
             thumb_file = ContentFile(thumb_blob)
+            thumb_name = self.get_thumbnail_name(config)
             try:
                 self.thumbnail_storage.delete(thumb_name)
             except Exception:
@@ -317,8 +275,8 @@ class SourceFile(StoredImageFile):
         """
         Return the thumbnail filename for the given configuration.
         """
-        img = self.image
-        if img is None:
+        source = self.image
+        if source is None:
             return None
 
         config = clean_config(config)
@@ -337,12 +295,12 @@ class SourceFile(StoredImageFile):
         key = md5(force_bytes(key)).digest()
         key = b64encode(key, b'ab').decode('ascii')[:6]
 
-        if config.format != 'JPEG':
-            extension = config.format.lower()
-        elif 'truecolor' in img.type and not img.alpha_channel:
+        if config.format == 'JPEG':
             extension = 'jpg'
-        else:
+        elif config.format.startswith('PNG'):
             extension = 'png'
+        else:
+            extension = config.format.lower()
 
         thumb_name = '{0}_{1}.{2}'.format(name, key, extension)
         return os.path.join(path, 'thumbs', thumb_name)

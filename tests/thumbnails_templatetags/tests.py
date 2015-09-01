@@ -34,7 +34,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         self.checkSyntax(
             MakeThumbnailTag,
             '{% make_thumbnail source width height'
-            '[ filter[ blur[ format[ quality]]]]'
+            '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
             '[ as variable_name] %}',
         )
 

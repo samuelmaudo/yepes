@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.contrib.staticfiles.storage import AppStaticStorage
 from django.core.files.storage import FileSystemStorage
+from django.views.generic import TemplateView
 
 from yepes.apps.thumbnails.files import SourceFile
 from yepes.conf import settings
@@ -13,13 +14,10 @@ from yepes.views import ListView
 Configuration = get_model('thumbnails', 'Configuration')
 
 
-class TestView(ListView):
-
-    model = Configuration
-    template_name = 'thumbnails/test.html'
+class TestMixin(object):
 
     def get_context_data(self, **kwargs):
-        context = super(TestView, self).get_context_data(**kwargs)
+        context = super(TestMixin, self).get_context_data(**kwargs)
         context['source'] = self.get_source_file()
         return context
 
@@ -34,4 +32,15 @@ class TestView(ListView):
             media.save(path, app.open(path))
 
         return SourceFile(media.open(path), path, media)
+
+
+class ConfigurationsTestView(TestMixin, ListView):
+
+    model = Configuration
+    template_name = 'thumbnails/configurations.html'
+
+
+class OptionsTestView(TestMixin, TemplateView):
+
+    template_name = 'thumbnails/options.html'
 

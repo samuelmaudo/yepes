@@ -2,97 +2,87 @@
 
 from __future__ import unicode_literals
 
-from wand.image import FILTER_TYPES
-
 from django.utils.encoding import python_2_unicode_compatible
 
-from yepes.loading import get_model
-from yepes.utils.properties import cached_property
+from yepes.loading import LazyModel
+
+Configuration = LazyModel('thumbnails', 'Configuration')
 
 
 @python_2_unicode_compatible
 class ConfigurationProxy(object):
 
-    FILTER_TYPES = tuple(FILTER_TYPES)
-    FORMAT_TYPES = (
-        'GIF',
-        'JPEG',
-        'PNG',
-        'WEBP',
-    )
-    def __init__(self, width, height, filter='undefined', blur=1.0,
-                       format='JPEG', quality=85):
-        if not width or width < 0:
-            raise ValueError
-        else:
-            self._width = int(width)
+    def __init__(self, width, height, **kwargs):
+        self._wrapped = Configuration(width=width, height=height, **kwargs)
 
-        if not height or height < 0:
-            raise ValueError
-        else:
-            self._height = int(height)
+        tokens = []
+        if self._wrapped.width:
+            tokens.append('w{0}'.format(self._wrapped.width))
 
-        if filter not in self.FILTER_TYPES:
-            raise ValueError
-        else:
-            self._filter = filter
+        if self._wrapped.height:
+            tokens.append('h{0}'.format(self._wrapped.height))
 
-        if not blur or blur < 0.0:
-            raise ValueError
-        else:
-            self._blur = float(blur)
+        if self._wrapped.background:
+            tokens.append('b{0}'.format(self._wrapped.background.lstrip('#', 1).upper()))
 
-        if format not in self.FORMAT_TYPES:
-            raise ValueError
-        else:
-            self._format = format
+        if self._wrapped.mode != 'limit':
+            tokens.append('m{0}'.format(self._wrapped.mode.upper()))
 
-        if not quality or quality < 1 or quality > 100:
-            raise ValueError
-        else:
-            self._quality = int(quality)
+        if self._wrapped.algorithm != 'undefined':
+            tokens.append('a{0}'.format(self._wrapped.algorithm.upper()))
+
+        if self._wrapped.gravity != 'center':
+            tokens.append('g{0}'.format(self._wrapped.gravity.replace('_', '').upper()))
+
+        if self._wrapped.format != 'JPEG':
+            tokens.append('f{0}'.format(self._wrapped.format.upper()))
+
+        if self._wrapped.quality != 85:
+            tokens.append('q{0}'.format(self._wrapped.quality))
+
+        self._wrapped.key = '_'.join(tokens)
+        self._wrapped.full_clean()
 
     def __str__(self):
         return self.key
 
     @property
+    def __class__(self):
+        return self._wrapped.__class__
+
+    @property
     def key(self):
-        k = 'w{0}_h{1}'.format(self._width, self._height)
-        if self._blur != 1.0:
-            k += '_b{0}'.format(self._blur)
-        if self._quality != 85:
-            k += '_q{0}'.format(self._quality)
-        if self._filter != 'undefined':
-            k += '_{0}'.format(self._filter)
-        return k
+        return self._wrapped.key
 
     @property
     def width(self):
-        return self._width
+        return self._wrapped.width
 
     @property
     def height(self):
-        return self._height
+        return self._wrapped.height
 
     @property
-    def filter(self):
-        return self._filter
+    def background(self):
+        return self._wrapped.background
 
     @property
-    def blur(self):
-        return self._blur
+    def mode(self):
+        return self._wrapped.mode
+
+    @property
+    def algorithm(self):
+        return self._wrapped.algorithm
+
+    @property
+    def gravity(self):
+        return self._wrapped.gravity
 
     @property
     def format(self):
-        return self._format
+        return self._wrapped.format
 
     @property
     def quality(self):
-        return self._quality
-
-    # Need to pretend to be the wrapped class, for the sake of objects that
-    # care about this (especially in equality tests).
-    @cached_property
-    def __class__(self):
-        return get_model('thumbnails', 'Configuration')
+        return self._wrapped.quality
 

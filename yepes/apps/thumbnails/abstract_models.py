@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals
 
-from wand.image import FILTER_TYPES
+from wand.image import FILTER_TYPES as AVAILABLE_ALGORITHMS
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
@@ -17,23 +18,43 @@ from yepes.model_mixins import Logged
 @python_2_unicode_compatible
 class AbstractConfiguration(Logged):
 
-    FILTER_CHOICES = [
+    ALGORITHM_CHOICES = (
         ('undefined', 'undefined'),
         ('sample', 'sample'),
-    ]
-    FILTER_CHOICES.extend(
-        (type, type)
-        for type
-        in FILTER_TYPES
-        if type != 'undefined'
+        ('liquid', 'liquid'),
+    ) + tuple(
+        (algorithm, algorithm)
+        for algorithm
+        in AVAILABLE_ALGORITHMS
+        if algorithm != 'undefined'
     )
-    FILTER_CHOICES = tuple(FILTER_CHOICES)
-
     FORMAT_CHOICES = (
         ('GIF', 'GIF'),
         ('JPEG', 'JPEG'),
-        ('PNG', 'PNG'),
+        ('PNG8', 'PNG8'),
+        ('PNG64', 'PNG64'),
         ('WEBP', 'WEBP'),
+    )
+    GRAVITY_CHOICES = (
+        ('north_west', _('Northwest')),
+        ('north', _('North')),
+        ('north_east', _('Northeast')),
+        ('west', _('West')),
+        ('center', _('Center')),
+        ('east', _('East')),
+        ('south_west', _('Southwest')),
+        ('south', _('South')),
+        ('south_east', _('Southeast')),
+    )
+    MODE_CHOICES = (
+        ('scale', _('Scale')),
+        ('fit', _('Fit')),
+        ('limit', _('Fit without enlarging')),
+        ('fill', _('Fill')),
+        ('lfill', _('Fill without enlarging')),
+        ('pad', _('Pad')),
+        ('lpad', _('Pad without enlarging')),
+        ('crop', _('Crop')),
     )
     key = fields.IdentifierField(
             max_length=63,
@@ -46,16 +67,26 @@ class AbstractConfiguration(Logged):
     height = fields.IntegerField(
             min_value=0,
             verbose_name=_('Height'))
+    background = fields.ColorField(
+            blank=True,
+            null=True,
+            verbose_name=_('Background'))
 
-    filter = fields.CharField(
-            choices=FILTER_CHOICES,
+    mode = fields.CharField(
+            choices=MODE_CHOICES,
+            default='limit',
+            max_length=15,
+            verbose_name=_('Crop Mode'))
+    algorithm = fields.CharField(
+            choices=ALGORITHM_CHOICES,
             default='undefined',
             max_length=15,
-            verbose_name=_('Filter'))
-    blur = fields.FloatField(
-            default=1.0,
-            min_value=0.0,
-            verbose_name=_('Blur'))
+            verbose_name=_('Resizing Algorithm'))
+    gravity = fields.CharField(
+            choices=GRAVITY_CHOICES,
+            default='center',
+            max_length=15,
+            verbose_name=_('Gravity'))
 
     format = fields.CharField(
             choices=FORMAT_CHOICES,
@@ -82,6 +113,10 @@ class AbstractConfiguration(Logged):
     @staticmethod
     def autocomplete_search_fields():
         return ('key__icontains', )
+
+    def clean(self):
+        if not self.width and not self.height:
+            raise ValidationError()
 
 
 @python_2_unicode_compatible

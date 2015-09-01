@@ -16,10 +16,24 @@ class ConfigurationAdmin(admin.ModelAdmin):
         (None, {
             'fields': [
                 'key',
+            ],
+        }),
+        (None, {
+            'fields': [
                 'width',
                 'height',
-                'filter',
-                'blur',
+                'background',
+            ],
+        }),
+        (None, {
+            'fields': [
+                'mode',
+                'algorithm',
+                'gravity',
+            ],
+        }),
+        (None, {
+            'fields': [
                 'format',
                 'quality',
             ],
@@ -29,8 +43,10 @@ class ConfigurationAdmin(admin.ModelAdmin):
         'key',
         'width',
         'height',
-        'filter',
-        'blur',
+        'background',
+        'mode',
+        'algorithm',
+        'gravity',
         'format',
         'quality',
     ]
