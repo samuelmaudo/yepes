@@ -51,8 +51,16 @@ class ConfigurationProxy(object):
         return self._wrapped.__class__
 
     @property
+    def creation_date(self):
+        return self._wrapped.creation_date
+
+    @property
     def key(self):
         return self._wrapped.key
+
+    @property
+    def last_modified(self):
+        return self._wrapped.last_modified
 
     @property
     def width(self):

@@ -239,6 +239,7 @@ class SourceFile(StoredImageFile):
         """
         Returns a ``ThumbnailFile`` containing an existing thumbnail image.
         """
+        config = clean_config(config)
         thumb_name = self.get_thumbnail_name(config)
         if not thumb_name:
             return None
@@ -250,10 +251,19 @@ class SourceFile(StoredImageFile):
 
         if not thumb_modified_time:
             return None
-        elif thumb_modified_time < self.modified_time:
+
+        if thumb_modified_time < self.modified_time:
             return None
-        else:
-            return ThumbnailFile(thumb_name, None, self.thumbnail_storage)
+
+        if config.last_modified is not None:
+            config_modified_time = timezone.make_naive(
+                config.last_modified,
+                timezone.get_current_timezone(),
+            )
+            if thumb_modified_time < config_modified_time:
+                return None
+
+        return ThumbnailFile(thumb_name, None, self.thumbnail_storage)
 
     def get_thumbnail(self, config):
         """
