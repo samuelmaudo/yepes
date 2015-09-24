@@ -2,14 +2,11 @@
 
 from __future__ import unicode_literals
 
-from functools import update_wrapper
 import hashlib
 
 from django.core.cache import cache
-from django.template import (
-    Context, Library, Variable,
-    TemplateSyntaxError, VariableDoesNotExist,
-)
+from django.template import Context, Library, TemplateSyntaxError, Variable
+from django.template.base import kwarg_re as KWARG_RE
 from django.utils import six
 from django.utils.decorators import classonlymethod
 from django.utils.encoding import force_bytes, force_str, force_text
@@ -291,7 +288,7 @@ class PaginationTag(InclusionTag):
 register.tag('pagination', PaginationTag.as_tag())
 
 
-## {% phased[ with *var_names] %} ##############################################
+## {% phased[ with *vars **new_vars] %} ########################################
 
 
 class PhasedTag(DoubleTag):
@@ -306,19 +303,18 @@ class PhasedTag(DoubleTag):
             .. some content to be rendered a second time ..
         {% endphased %}
 
-    You can pass it a list of context variable names to automatically
-    save those variables for the second pass rendering of the template,
-    e.g.::
+    You can pass it a list of context variables to automatically save those
+    variables for the second pass rendering of the template, e.g.::
 
         {% load phased_tags %}
-        {% phased with 'comment_count' 'object' %}
+        {% phased with object comment_count=10 %}
             There are {{ comment_count }} comments for "{{ object }}".
         {% endphased %}
 
     Alternatively you can also set the ``PHASED_KEEP_CONTEXT`` setting to
     ``True`` to automatically keep the whole context for each phased block.
 
-    Note: Lazy objects such as messages and csrf tokens aren't kept.
+    NOTE: Lazy objects such as messages and csrf tokens aren't kept.
 
     """
     literal_content = True
@@ -332,7 +328,7 @@ class PhasedTag(DoubleTag):
 
     @classmethod
     def get_syntax(cls, tag_name='tag_name'):
-        return '{{% {0}[ with *var_names] %}}...{{% end{0} %}}'.format(tag_name)
+        return '{{% {0}[ with *vars **new_vars] %}}...{{% end{0} %}}'.format(tag_name)
 
     @classonlymethod
     def parse_arguments(cls, parser, tag_name, bits):
@@ -343,16 +339,21 @@ class PhasedTag(DoubleTag):
             if len(bits) == 1 or bits[0] != 'with':
                 raise TagSyntaxError(cls, tag_name)
 
-            for var_name in bits[1:]:
-                if (var_name.startswith(('"', "'"))
-                        and var_name.endswith(var_name[0])):
-                    args.append(var_name[1:-1])
+            for bit in bits[1:]:
+                match = KWARG_RE.match(bit)
+                if not match:
+                    msg = '"{0}" is not a valid argument.'
+                    raise TemplateSyntaxError(msg.format(bit))
+
+                name, value = match.groups()
+                if name:
+                    kwargs[name] = parser.compile_filter(value)
                 else:
-                    args.append(var_name)
+                    kwargs[value] = Variable(value)
 
         return (args, kwargs)
 
-    def process(self, *var_names):
+    def process(self, **variables):
         """
         Outputs the literal content of the phased block with pickled context,
         enclosed in a delimited block that can be parsed by the second pass
@@ -366,13 +367,7 @@ class PhasedTag(DoubleTag):
             storage.update(flatten_context(self.context))
 
         # but check if there are variables specifically wanted
-        for var_name in var_names:
-            try:
-                storage[var_name] = Variable(var_name).resolve(self.context)
-            except VariableDoesNotExist:
-                msg = "'{0}' tag got an unknown variable: {1!r}"
-                raise TemplateSyntaxError(msg.format(self.tag_name, var_name))
-
+        storage.update(variables)
         storage = backup_csrf_token(self.context, storage)
 
         # lastly return the pre phased template part

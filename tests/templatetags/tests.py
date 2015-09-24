@@ -44,6 +44,6 @@ class DefaultTagsTest(TemplateTagsMixin, SimpleTestCase):
     def test_phased_syntax(self):
         self.checkSyntax(
             PhasedTag,
-            '{% phased[ with *var_names] %}...{% endphased %}',
+            '{% phased[ with *vars **new_vars] %}...{% endphased %}',
         )
 
