@@ -104,7 +104,7 @@ class CachedModel(models.Model):
 class CachedModelWithDefaultValue(models.Model):
 
     cache = LookupTable(
-            default_from_registry='tests:DEFAULT_CACHED_MODEL')
+            default_registry_key='tests:DEFAULT_CACHED_MODEL')
 
 
 CALCULATOR_CALLS = defaultdict(int)

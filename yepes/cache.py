@@ -22,6 +22,7 @@ from django.utils.synch import RWLock
 from yepes.apps.registry import registry
 from yepes.conf import settings
 from yepes.types import Undefined
+from yepes.utils.properties import cached_property
 
 __all__ = ('get_cache', 'get_mint_cache', 'MintCache', 'LookupTable')
 
@@ -140,22 +141,32 @@ class MintCache(object):
 
 class LookupTable(object):
 
-    _model_pk = Undefined
-    _populated = False
-    default_from_registry = None
+    default_registry_key = None
+    indexed_fields = None
+    prefetch_related = None
+    timeout = 600
 
-    def __init__(self, indexed_fields=None, prefetch_related=(), timeout=None,
-                 default_from_registry=None):
+    def __init__(self, indexed_fields=None, prefetch_related=None, timeout=None,
+                       default_registry_key=None):
         self._set_creation_counter()
         self._inherited = False
+
+        if not indexed_fields:
+            indexed_fields = self.indexed_fields
+
         self.indexed_fields = set()
         if indexed_fields:
             self.indexed_fields.update(indexed_fields)
             self.indexed_fields.discard('pk')
-        self.prefetch_related = prefetch_related
-        self.timeout = timeout or 600
-        if default_from_registry is not None:
-            self.default_from_registry = default_from_registry
+
+        if prefetch_related is not None:
+            self.prefetch_related = prefetch_related
+
+        if timeout is not None:
+            self.timeout = timeout
+
+        if default_registry_key is not None:
+            self.default_registry_key = default_registry_key
 
     def __get__(self, obj, cls=None):
         if obj is not None:
@@ -253,6 +264,7 @@ class LookupTable(object):
             post_save.connect(self._model_changed, sender=model)
             post_delete.connect(self._model_changed, sender=model)
             setattr(model, name, ManagerDescriptor(self))
+
         if (model._meta.abstract
                 or (self._inherited and not self.model._meta.proxy)):
             model._meta.abstract_managers.append(
@@ -287,19 +299,19 @@ class LookupTable(object):
             return cache.get(key, default)
 
     def get_default(self):
-        if self.default_from_registry is None:
-            msg = ('{cls}.default_from_registry is undefined.'
-                   ' Define {cls}.default_from_registry'
+        if self.default_registry_key is None:
+            msg = ('{cls}.default_registry_key is undefined.'
+                   ' Define {cls}.default_registry_key'
                    ' or override {cls}.get_default().')
             raise ImproperlyConfigured(msg.format(cls=self.__class__.__name__))
 
         record = None
-        record_id = registry.get_raw(self.default_from_registry)
+        record_id = registry.get_raw(self.default_registry_key)
         if record_id is not None:
             record = self.get(int(record_id))
             if record is None:
                 try:
-                    record = registry.get(self.default_from_registry)
+                    record = registry.get(self.default_registry_key)
                 except ObjectDoesNotExist:
                     pass
 
@@ -313,7 +325,7 @@ class LookupTable(object):
             return [cache.get(k, default) for k in keys]
 
     def has_default(self):
-        return (self.default_from_registry is not None)
+        return (self.default_registry_key is not None)
 
     def populate(self):
         self.clear()
@@ -329,9 +341,7 @@ class LookupTable(object):
     def model(self):
         return self._model_ref()
 
-    @property
+    @cached_property
     def model_pk(self):
-        if self._model_pk is Undefined:
-            self._model_pk = self.model._meta.pk.name
-        return self._model_pk
+        return self.model._meta.pk.name
 
