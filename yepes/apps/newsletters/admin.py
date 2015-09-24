@@ -213,6 +213,7 @@ class DeliveryAdmin(admin.ModelAdmin):
         'is_clicked',
     ]
     readonly_fields = [
+        'admin_status',
         'bounce_date',
         'click_date',
         'date',
