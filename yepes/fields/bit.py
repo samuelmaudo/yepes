@@ -481,7 +481,7 @@ class RelatedBitFieldFlags(object):
         elif isinstance(instance, (Bit, six.integer_types)):
             return instance
         elif isinstance(instance, self._field.fake_rel.to):
-            return 2 ** (instance.pk - 1)
+            return 2 ** (instance._get_pk_val() - 1)
         else:
             cls_name = self._field.fake_rel.to.__name__
             msg = '{0} instance was expected, {1!r} received.'

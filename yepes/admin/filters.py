@@ -49,9 +49,9 @@ class NestableFieldListFilter(FieldListFilter):
             }
         for obj in self.objects:
             yield {
-                'selected': self.lookup_val == smart_text(obj.pk),
+                'selected': self.lookup_val == smart_text(obj._get_pk_val()),
                 'query_string': cl.get_query_string({
-                    self.lookup_kwarg: smart_text(obj.pk),
+                    self.lookup_kwarg: smart_text(obj._get_pk_val()),
                 }, [self.lookup_kwarg_isnull]),
                 'display': self.label(obj),
             }

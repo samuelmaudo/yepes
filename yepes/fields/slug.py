@@ -32,12 +32,14 @@ class SlugField(CharField):
         self.base_length = self.max_length - 3
 
     def avoid_duplicates(self, base_slug, model_instance):
+        model_instance_id = model_instance._get_pk_val()
+
         if len(base_slug) > (self.base_length):
             base_slug = base_slug[:self.base_length].rstrip('-')
 
         qs = self.model._default_manager.get_queryset()
-        if model_instance.pk:
-            qs = qs.exclude(pk=model_instance.pk)
+        if model_instance_id:
+            qs = qs.exclude(pk=model_instance_id)
 
         if self.unique_with_respect_to is not None:
             field = self.unique_with_respect_to

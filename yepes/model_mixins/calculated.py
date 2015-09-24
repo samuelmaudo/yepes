@@ -49,7 +49,7 @@ class Calculated(models.Model):
         super(Calculated, self).save(**kwargs)
 
     def save_calculated_fields(self):
-        if not self.pk:
+        if not self._get_pk_val():
             # This avoids partial storages when the record
             # has not been stored yet.
             self.save()

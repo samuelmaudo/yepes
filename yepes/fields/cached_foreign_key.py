@@ -62,7 +62,7 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
                 rel_obj = None
                 setattr(instance, self.cache_name, rel_obj)
         else:
-            if rel_obj is None or rel_id != rel_obj.pk:
+            if rel_obj is None or rel_id != rel_obj._get_pk_val():
                 rel_obj = self.related_lookup_table.get(rel_id)
                 setattr(instance, self.cache_name, rel_obj)
 

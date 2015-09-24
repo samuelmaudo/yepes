@@ -141,7 +141,7 @@ class Orderable(six.with_metaclass(OrderableBase, models.Model)):
         """
         updated_fields = kwargs.get('update_fields', ())
         new_record = (kwargs.get('force_insert', False)
-                      or not (self.pk or updated_fields))
+                      or not (self._get_pk_val() or updated_fields))
 
         self._next = Undefined
         self._previous = Undefined
