@@ -11,7 +11,7 @@ class CreatePlan(ImportationPlan):
 
     needs_create = True
 
-    def run(self, batch):
+    def import_batch(self, batch):
         model = self.migration.model
         obj_keys = self._get_existing_object_keys(batch)
         if not obj_keys:

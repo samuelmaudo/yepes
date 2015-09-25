@@ -11,6 +11,8 @@ BUILTIN_PLANS = {
     'bulk_create': 'yepes.apps.data_migrations.importation_plans.bulk_create.BulkCreatePlan',
     'create': 'yepes.apps.data_migrations.importation_plans.create.CreatePlan',
     'direct': 'yepes.apps.data_migrations.importation_plans.direct.DirectPlan',
+    'replace': 'yepes.apps.data_migrations.importation_plans.replace.ReplacePlan',
+    'replace_all': 'yepes.apps.data_migrations.importation_plans.replace_all.ReplaceAllPlan',
     'update': 'yepes.apps.data_migrations.importation_plans.update.UpdatePlan',
     'update_or_bulk_create': 'yepes.apps.data_migrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
     'update_or_create': 'yepes.apps.data_migrations.importation_plans.update_or_create.UpdateOrCreatePlan',

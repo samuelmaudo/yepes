@@ -14,7 +14,7 @@ class UpdateOrBulkCreatePlan(ImportationPlan):
     needs_create = True
     needs_update = True
 
-    def run(self, batch):
+    def import_batch(self, batch):
         model = self.migration.model
         manager = model._default_manager
         objs = self._get_existing_objects(batch)

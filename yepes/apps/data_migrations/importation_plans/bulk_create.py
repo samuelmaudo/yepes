@@ -11,7 +11,7 @@ class BulkCreatePlan(ImportationPlan):
 
     needs_create = True
 
-    def run(self, batch):
+    def import_batch(self, batch):
         model = self.migration.model
         manager = model._default_manager
         obj_keys = self._get_existing_object_keys(batch)

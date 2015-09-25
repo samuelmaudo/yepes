@@ -13,7 +13,7 @@ class UpdatePlan(ImportationPlan):
 
     needs_update = True
 
-    def run(self, batch):
+    def import_batch(self, batch):
         objs = self._get_existing_objects(batch)
         if objs:
             model = self.migration.model

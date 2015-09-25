@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 import collections
 
 from django.db import models
-from django.db import transaction
 from django.utils import six
 from django.utils.six.moves import zip
 
@@ -22,7 +21,6 @@ from yepes.apps.data_migrations.importation_plans.create import CreatePlan
 from yepes.apps.data_migrations.importation_plans.update_or_create import UpdateOrCreatePlan
 from yepes.apps.data_migrations.serializers.json import JsonSerializer
 from yepes.types import Undefined
-from yepes.utils.iterators import isplit
 from yepes.utils.properties import cached_property
 
 
@@ -97,7 +95,7 @@ class CustomDataMigration(object):
             in data
         )
 
-    def get_importation_plan(self, data, plan_class=None):
+    def get_importation_plan(self, plan_class=None):
         if plan_class is None:
             plan_class = UpdateOrCreatePlan if self.can_update else CreatePlan
         elif isinstance(plan_class, six.string_types):
@@ -118,11 +116,8 @@ class CustomDataMigration(object):
     def import_data(self, source, serializer=None, plan=None, batch_size=100):
         serializer = self.get_serializer(serializer)
         data = self.get_data_to_import(source, serializer)
-        plan = self.get_importation_plan(data, plan)
-        plan.check()
-        with transaction.atomic():
-            for batch in isplit(data, batch_size):
-                plan.run(plan.prepare(batch))
+        plan = self.get_importation_plan(plan)
+        plan.run(data, batch_size)
 
     @cached_property
     def can_create(self):

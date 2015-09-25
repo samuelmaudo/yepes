@@ -14,7 +14,7 @@ class UpdateOrCreatePlan(ImportationPlan):
     needs_create = True
     needs_update = True
 
-    def run(self, batch):
+    def import_batch(self, batch):
         model = self.migration.model
         objs = self._get_existing_objects(batch)
         if not objs:
