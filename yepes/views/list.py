@@ -54,16 +54,20 @@ class ListView(MultipleObjectTemplateResponseMixin,
             return [int(self.paginate_by)]
 
     def get_page_number(self):
-        return int(self.kwargs.get(self.page_kwarg)
-                   or self.request.GET.get(self.page_kwarg)
-                   or 1)
+        try:
+            return int(self.kwargs.get(self.page_kwarg)
+                       or self.request.GET.get(self.page_kwarg))
+        except (ValueError, TypeError):
+            return 1
 
     def get_page_size(self):
-        return int(self.kwargs.get('paginate_by')
-                   or self.kwargs.get('page_size')
-                   or self.request.GET.get('paginate_by')
-                   or self.request.GET.get('page_size')
-                   or 0)
+        try:
+            return int(self.kwargs.get('paginate_by')
+                       or self.kwargs.get('page_size')
+                       or self.request.GET.get('paginate_by')
+                       or self.request.GET.get('page_size'))
+        except (ValueError, TypeError):
+            return 0
 
     def get_paginate_by(self, queryset=None):
         """
