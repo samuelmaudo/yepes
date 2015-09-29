@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import division, unicode_literals
 
 import hashlib
 
@@ -233,38 +233,35 @@ class PaginationTag(InclusionTag):
             else:
                 return ''
 
-        if paginator.num_pages < 2:
+        num_pages = paginator.num_pages
+        if num_pages < 2:
             return ''
 
-        num_pages = paginator.num_pages
-        delimiter = page_obj.number - 1
+        current_page = page_obj.number
         visible_pages = int(kwargs.pop('visible_pages', 7))
-        previous_pages = int((visible_pages - 1) / 2)
-        if delimiter < previous_pages:
-            previous_pages = delimiter
-        next_pages = visible_pages - previous_pages
-        if delimiter + next_pages > num_pages:
-            next_pages = num_pages - delimiter
 
-        visible_page_range = list(
-            range(page_obj.number - previous_pages,
-                   page_obj.number + next_pages))
+        start_page = current_page - ((visible_pages - 1) // 2)
+        stop_page = current_page + int(round((visible_pages - 1) / 2))
+        if start_page < 1:
+            start_page = 1
+            stop_page = visible_pages
 
-        display_gaps = kwargs.pop('display_gaps', 'False')
-        if display_gaps in ('t', 'True', '1'):
-            display_gaps = True
-        if display_gaps in ('f', 'False', '0'):
-            display_gaps = False
-        else:
-            display_gaps = bool(display_gaps)
+        if stop_page > num_pages:
+            start_page = start_page - stop_page + num_pages
+            stop_page = num_pages
+            if start_page < 1:
+                start_page = 1
 
+        visible_page_range = list(range(start_page, stop_page + 1))
+
+        display_gaps = bool(kwargs.pop('display_gaps', False))
         if display_gaps and len(visible_page_range) > 4:
             if visible_page_range[0] != 1:
                 visible_page_range[0] = 1
                 visible_page_range[1] = None
             if visible_page_range[-1] != num_pages:
-                visible_page_range[-1] = num_pages
                 visible_page_range[-2] = None
+                visible_page_range[-1] = num_pages
 
         query_string = '?' + '&'.join(
                 '{0}={1}'.format(urlquote(k), urlquote(v))
