@@ -335,8 +335,15 @@ class SearchableQuerySet(QuerySet):
         """
         Mark the filter as being ordered if search has occurred.
         """
-        self._search_ordered = False
-        return super(SearchableQuerySet, self).order_by(*field_names)
+        if field_names == ('search_score', ):
+            queryset = super(SearchableQuerySet, self).order_by()
+            queryset._search_ordered = True
+            queryset._search_decorated = True
+        else:
+            queryset = super(SearchableQuerySet, self).order_by(*field_names)
+            queryset._search_ordered = False
+
+        return queryset
 
 
 class SearchableManager(Manager):
