@@ -13,4 +13,5 @@ from yepes.views.csrf import CsrfFailureView, csrf_failure_view
 from yepes.views.detail import DetailView
 from yepes.views.edit import FormView, CreateView, UpdateView, DeleteView
 from yepes.views.list import ListView, ListAndCreateView
+from yepes.views.search import SearchView
 from yepes.views.static import StaticFileView
