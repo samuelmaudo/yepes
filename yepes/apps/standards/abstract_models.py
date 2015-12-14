@@ -84,7 +84,7 @@ class AbstractCountrySubdivision(Enableable, Standard):
             verbose_name=_('Country'))
     code = fields.CharField(
             unique=True,
-            charset='A-Z\-',
+            charset='A-Z0-9\-',
             force_upper=True,
             min_length=4,
             max_length=6,
