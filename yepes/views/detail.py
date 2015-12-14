@@ -34,7 +34,7 @@ class DetailView(SingleObjectTemplateResponseMixin,
     def dispatch(self, *args, **kwargs):
         response = super(DetailView, self).dispatch(*args, **kwargs)
         if (isinstance(response, HttpResponse)
-                and response.status_code in (200, 404)
+                and response.status_code == 200
                 and not self.request.user.is_staff):
             self.send_view_signal(self.get_object(), self.request, response)
         return response
