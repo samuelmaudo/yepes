@@ -12,6 +12,10 @@ from yepes.defaulttags import (
     PaginationTag,
     PhasedTag,
 )
+from yepes.templatetags.svg import (
+    InsertFileTag,
+    InsertSymbolTag,
+)
 from yepes.test_mixins import TemplateTagsMixin
 
 
@@ -45,5 +49,22 @@ class DefaultTagsTest(TemplateTagsMixin, SimpleTestCase):
         self.checkSyntax(
             PhasedTag,
             '{% phased[ with *vars **new_vars] %}...{% endphased %}',
+        )
+
+
+class SvgTagsTest(TemplateTagsMixin, SimpleTestCase):
+
+    requiredLibraries = ['svg']
+
+    def test_insert_file_syntax(self):
+        self.checkSyntax(
+            InsertFileTag,
+            '{% insert_file file_name[ method] %}',
+        )
+
+    def test_insert_symbol_syntax(self):
+        self.checkSyntax(
+            InsertSymbolTag,
+            '{% insert_symbol file_name symbol_name[ method] %}',
         )
 
