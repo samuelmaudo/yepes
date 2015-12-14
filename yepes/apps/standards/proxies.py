@@ -107,6 +107,9 @@ class GeographicAreaProxy(object):
 
         return getattr(self, ''.join(('name_', language[:2])))
 
+    def _get_pk_val(self):
+        return self.pk
+
     def contains_address(self, address):
         """
         Checks whether the given address is located within this area.
