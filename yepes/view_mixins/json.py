@@ -22,7 +22,7 @@ class JsonMixin(object):
 
     content_type = None
     force_json_response = False
-    response_class = JsonResponse
+    json_response_class = JsonResponse
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -60,7 +60,7 @@ class JsonMixin(object):
                     'message': force_text(e),
                 },
             }
-            return self.response_class(data, status=404)
+            return self.json_response_class(data, status=404)
         except PermissionDenied as e:
             logger.warning(
                 'Forbidden (Permission denied): %s',
@@ -76,7 +76,7 @@ class JsonMixin(object):
                     'message': force_text(e),
                 },
             }
-            return self.response_class(data, status=403)
+            return self.json_response_class(data, status=403)
         except SuspiciousOperation as e:
             # The request logger receives events for any problematic request
             # The security logger receives events for all SuspiciousOperations
@@ -95,7 +95,7 @@ class JsonMixin(object):
                     'message': force_text(e),
                 },
             }
-            return self.response_class(data, status=400)
+            return self.json_response_class(data, status=400)
         except SystemExit:
             # Allow sys.exit() to actually exit.
             raise
@@ -115,7 +115,7 @@ class JsonMixin(object):
                     'message': force_text(e),
                 },
             }
-            return self.response_class(data, status=500)
+            return self.json_response_class(data, status=500)
 
         if 'json' not in response['Content-Type']:
             if response.status_code == 200:
@@ -125,7 +125,7 @@ class JsonMixin(object):
                         'message': 'Not implemented',
                     },
                 }
-                return self.response_class(data, status=501)
+                return self.json_response_class(data, status=501)
             else:
                 data = {
                     'error': {
@@ -136,7 +136,7 @@ class JsonMixin(object):
                 if response.status_code in (301, 302, 303, 307, 308):
                     data['error']['url'] = response['Location']
 
-                return self.response_class(data, status=response.status_code)
+                return self.json_response_class(data, status=response.status_code)
 
         return response
 
@@ -180,9 +180,9 @@ class JsonMixin(object):
 
     def serialize_to_response(self, data, **response_kwargs):
         """
-        Returns a response, using the ``response_class`` for this view, with
-        the given data serialized to a JSON formatted string.
+        Returns a response, using the ``json_response_class`` for this view,
+        with the given data serialized to a JSON formatted string.
         """
         response_kwargs.setdefault('content_type', self.content_type)
-        return self.response_class(data, **response_kwargs)
+        return self.json_response_class(data, **response_kwargs)
 
