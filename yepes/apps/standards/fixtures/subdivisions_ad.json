@@ -1,0 +1,121 @@
+[
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1001,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-02",
+      "name": "Canillo",
+      "name_de": "Canillo",
+      "name_en": "Canillo",
+      "name_es": "Canillo",
+      "name_fr": "Canillo",
+      "name_pt": "Canillo",
+      "name_ru": "Канильо",
+      "name_zh": "卡尼略"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1002,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-03",
+      "name": "Encamp",
+      "name_de": "Encamp",
+      "name_en": "Encamp",
+      "name_es": "Encamp",
+      "name_fr": "Encamp",
+      "name_pt": "Encamp",
+      "name_ru": "Энкам",
+      "name_zh": "恩坎普"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1003,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-05",
+      "name": "Ordino",
+      "name_de": "Ordino",
+      "name_en": "Ordino",
+      "name_es": "Ordino",
+      "name_fr": "Ordino",
+      "name_pt": "Ordino",
+      "name_ru": "Ордино",
+      "name_zh": "奥尔迪诺"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1004,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-04",
+      "name": "La Massana",
+      "name_de": "La Massana",
+      "name_en": "La Massana",
+      "name_es": "La Massana",
+      "name_fr": "La Massana",
+      "name_pt": "La Massana",
+      "name_ru": "Ла-Масана",
+      "name_zh": "马萨纳"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1005,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-07",
+      "name": "Andorra la Vella",
+      "name_de": "Andorra la Vella",
+      "name_en": "Andorra la Vella",
+      "name_es": "Andorra la Vieja",
+      "name_fr": "Andorre-la-Vieille",
+      "name_pt": "Andorra-a-Velha",
+      "name_ru": "Андорра-ла-Велья",
+      "name_zh": "安道尔城"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1006,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-06",
+      "name": "Sant Julià de Lòria",
+      "name_de": "Sant Julià de Lòria",
+      "name_en": "Sant Julià de Lòria",
+      "name_es": "Sant Julián de Loria",
+      "name_fr": "Sant Julià de Lòria",
+      "name_pt": "Sant Julià de Lòria",
+      "name_ru": "Сан-Жулиа-де-Лория",
+      "name_zh": "圣胡利娅-德洛里亚"
+    }
+  },
+  {
+    "model": "standards.CountrySubdivision",
+    "pk": 1007,
+    "fields": {
+      "is_enabled": true,
+      "country": 1,
+      "code": "AD-08",
+      "name": "Escaldes-Engordany",
+      "name_de": "Escaldes-Engordany",
+      "name_en": "Escaldes-Engordany",
+      "name_es": "Escaldes-Engordany",
+      "name_fr": "Escaldes-Engordany",
+      "name_pt": "Escaldes-Engordany",
+      "name_ru": "Эскальдес-Энгордань",
+      "name_zh": "莱塞斯卡尔德-恩戈尔达"
+    }
+  }
+]
