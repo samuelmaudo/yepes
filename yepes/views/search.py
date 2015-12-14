@@ -38,10 +38,13 @@ class Filter(object):
         return (isinstance(other, Filter) and self.name == other.name)
 
     def __hash__(self):
-        return hash((self.__class__, self.name))
+        return hash((self.__class__.__name__, self.name))
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return str('<{0}: {1}>'.format(self.__class__.__name__, self.name))
 
     def __str__(self):
         return self.name
@@ -113,34 +116,46 @@ class FilterOption(object):
                 and self.name == other.name)
 
     def __hash__(self):
-        return hash((self.__class__, self.filter, self.name))
+        return hash((self.__class__.__name__, self.filter, self.name))
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return str('<{0}: {1}>'.format(self.__class__.__name__, self.name))
 
     def __str__(self):
         return self.name
 
     def get_link(self):
-        if self.is_selected:
-            template = '<a href="{remove_url}" class="selected" rel="nofollow">{verbose_name}</a>'
-            kwargs = {
-                'remove_url': escape(self.remove_url),
-                'verbose_name': escape(self.verbose_name),
-            }
-        elif self.count is None:
-            template = '<a href="{url}" rel="nofollow">{verbose_name}</a>'
-            kwargs = {
-                'url': escape(self.url),
-                'verbose_name': escape(self.verbose_name),
-            }
+        if self.count is None:
+            if self.is_selected:
+                template = '<a href="{remove_url}" class="selected" rel="nofollow">{verbose_name}</a>'
+                kwargs = {
+                    'remove_url': escape(self.remove_url),
+                    'verbose_name': escape(self.verbose_name),
+                }
+            else:
+                template = '<a href="{url}" rel="nofollow">{verbose_name}</a>'
+                kwargs = {
+                    'url': escape(self.url),
+                    'verbose_name': escape(self.verbose_name),
+                }
         else:
-            template = '<a href="{url}" rel="nofollow">{verbose_name} <span class="count">({count})</span></a>'
-            kwargs = {
-                'count': self.count,
-                'url': escape(self.url),
-                'verbose_name': escape(self.verbose_name),
-            }
+            if self.is_selected:
+                template = '<a href="{remove_url}" class="selected" rel="nofollow">{verbose_name} <span class="count">({count})</span></a>'
+                kwargs = {
+                    'count': self.count,
+                    'remove_url': escape(self.remove_url),
+                    'verbose_name': escape(self.verbose_name),
+                }
+            else:
+                template = '<a href="{url}" rel="nofollow">{verbose_name} <span class="count">({count})</span></a>'
+                kwargs = {
+                    'count': self.count,
+                    'url': escape(self.url),
+                    'verbose_name': escape(self.verbose_name),
+                }
         return mark_safe(template.format(**kwargs))
 
     @cached_property
@@ -207,10 +222,13 @@ class Ordering(object):
         return (isinstance(other, Ordering) and self.name == other.name)
 
     def __hash__(self):
-        return hash((self.__class__, self.name))
+        return hash((self.__class__.__name__, self.name))
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return str('<{0}: {1}>'.format(self.__class__.__name__, self.name))
 
     def __str__(self):
         return self.name
@@ -272,10 +290,13 @@ class Page(object):
         return (isinstance(other, Page) and self.value == other.value)
 
     def __hash__(self):
-        return hash((self.__class__, self.value))
+        return hash((self.__class__.__name__, self.value))
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return str('<{0}: {1}>'.format(self.__class__.__name__, self.value))
 
     def __str__(self):
         return force_text(self.value)
@@ -344,10 +365,13 @@ class PageSize(object):
         return (isinstance(other, PageSize) and self.value == other.value)
 
     def __hash__(self):
-        return hash((self.__class__, self.value))
+        return hash((self.__class__.__name__, self.value))
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return str('<{0}: {1}>'.format(self.__class__.__name__, self.value))
 
     def __str__(self):
         return force_text(self.value)
@@ -390,6 +414,16 @@ class SearchAvailablePages(object):
     def __init__(self, search):
         self._cache = {}
         self._search = search
+
+    def __contains__(self, key):
+        if key in self._cache:
+            return True
+        elif (isinstance(key, six.integer_types)
+                and key >= 1
+                and key <= self._search.num_pages):
+            return True
+        else:
+            return False
 
     def __getitem__(self, key):
         if key in self._cache:
@@ -474,6 +508,12 @@ class SearchVisiblePages(object):
 
         self._range = list(range(start_page, stop_page + 1))
 
+    def __contains__(self, key):
+        if key in self._range:
+            return True
+        else:
+            return False
+
     def __getitem__(self, key):
         if key in self._range:
             return self._search.available_pages[key]
@@ -529,6 +569,13 @@ class Search(object):
 
     def __init__(self, view):
         self._view = view
+
+    def __repr__(self):
+        args = (
+            self.__class__.__name__,
+            self.get_query_string(page=self.page).replace('&', ' '),
+        )
+        return str('<{0} {1}>'.format(*args))
 
     def _prepare_parameters(self, user_query, filters, ordering, page, page_size):
         if user_query is Undefined:
