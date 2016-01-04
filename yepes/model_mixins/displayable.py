@@ -56,7 +56,7 @@ class Displayable(Slugged, MetaData):
         if (self.publish_from and self.publish_to
                 and self.publish_to < self.publish_from):
             msg = _('End date cannot be earlier than starting date.')
-            raise ValidationError(msg)
+            raise ValidationError({'publish_to': msg})
 
     def is_draft(self):
         return (self.publish_status == Displayable.DRAFT)

@@ -47,7 +47,7 @@ class Activatable(models.Model):
         if (self.active_from and self.active_to
                 and self.active_to < self.active_from):
             msg = _('End date cannot be earlier than starting date.')
-            raise ValidationError(msg)
+            raise ValidationError({'active_to': msg})
 
     def is_active(self, date=None):
         if date is None:
