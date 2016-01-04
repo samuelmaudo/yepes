@@ -94,7 +94,7 @@ else:
                     left_attr = self._mptt_meta.left_attr
                     right_attr = self._mptt_meta.right_attr
 
-                    self_right = getattr(sgelf, right_attr)
+                    self_right = getattr(self, right_attr)
                     for i, node in enumerate(siblings):
                         if getattr(node, left_attr) == self_right:
                             siblings.insert(i, self)
