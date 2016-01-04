@@ -23,8 +23,6 @@ else:
         _ancestors = Undefined
         _children = Undefined
         _descendants = Undefined
-        _level = Undefined
-        _parent = Undefined
         _root = Undefined
         _siblings = Undefined
 
@@ -66,19 +64,6 @@ else:
         def get_descendants_queryset(self, include_self=False):
             return super(Nestable, self).get_descendants(include_self)
 
-        def get_level(self):
-            if self._level is Undefined:
-                qs = self.get_level_queryset()
-                self._level = list(qs.iterator())
-
-            return self._level[:]
-
-        def get_level_queryset(self):
-            return super(Nestable, self).get_siblings(include_self=True)
-
-        def get_level_number(self):
-            return super(Nestable, self).get_level()
-
         def get_parent(self):
             return getattr(self, self._mptt_meta.parent_attr)
 
@@ -89,13 +74,35 @@ else:
             return self._root
 
         def get_siblings(self, include_self=False):
-            if include_self:
-                return self.get_level()
             if self._siblings is Undefined:
                 qs = self.get_siblings_queryset()
                 self._siblings = list(qs.iterator())
 
-            return self._siblings[:]
+            siblings = self._siblings[:]
+            if include_self:
+                if self.is_root_node():
+                    tree_attr = self._mptt_meta.tree_id_attr
+
+                    self_tree = getattr(self, tree_attr)
+                    for i, node in enumerate(siblings):
+                        if getattr(node, tree_attr) > self_tree:
+                            siblings.insert(i, self)
+                            break
+                    else:
+                        siblings.append(self)
+                else:
+                    left_attr = self._mptt_meta.left_attr
+                    right_attr = self._mptt_meta.right_attr
+
+                    self_right = getattr(sgelf, right_attr)
+                    for i, node in enumerate(siblings):
+                        if getattr(node, left_attr) == self_right:
+                            siblings.insert(i, self)
+                            break
+                    else:
+                        siblings.append(self)
+
+            return siblings
 
         def get_siblings_queryset(self, include_self=False):
             return super(Nestable, self).get_siblings(include_self)

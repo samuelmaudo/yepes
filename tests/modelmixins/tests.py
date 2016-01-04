@@ -582,28 +582,15 @@ class NestableTest(test.TestCase):
         )
         # LEVEL
         self.assertEqual(
-            list(self.books.get_level()),
-            [self.books],
-        )
-        self.assertEqual(
-            list(self.classics.get_level()),
-            [self.classics],
-        )
-        self.assertEqual(
-            list(self.european.get_level()),
-            [self.african, self.american, self.asian, self.australian, self.european],
-        )
-        # LEVEL NUMBER
-        self.assertEqual(
-            self.books.get_level_number(),
+            self.books.get_level(),
             0,
         )
         self.assertEqual(
-            self.classics.get_level_number(),
+            self.classics.get_level(),
             1,
         )
         self.assertEqual(
-            self.european.get_level_number(),
+            self.european.get_level(),
             2,
         )
         # PARENT
