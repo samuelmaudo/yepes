@@ -68,7 +68,7 @@ class NestableFieldListFilter(FieldListFilter):
 
     def label(self, obj):
         return '{0} {1}'.format(
-                self.level_indicator * obj.get_level_number(),
+                self.level_indicator * obj.get_level(),
                 smart_text(obj))
 
     def queryset(self, request, queryset):
