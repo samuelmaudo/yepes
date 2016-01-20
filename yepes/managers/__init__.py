@@ -1,13 +1,19 @@
 # -*- coding:utf-8 -*-
 
+from yepes.managers.activatable import ActivatableManager, ActivatableQuerySet
+from yepes.managers.displayable import DisplayableManager, DisplayableQuerySet
+from yepes.managers.enableable import EnableableManager, EnableableQuerySet
+from yepes.managers.publishable import PublishableManager, PublishableQuerySet
+from yepes.managers.searchable import SearchableManager, SearchableQuerySet
+from yepes.managers.slugged import SluggedManager
+
 try:
-    from mptt.managers import TreeManager as NestableManager
+    import mptt
 except ImportError:
     pass
-
-from .activatable import ActivatableManager, ActivatableQuerySet
-from .displayable import DisplayableManager, DisplayableQuerySet
-from .enableable import EnableableManager, EnableableQuerySet
-from .publishable import PublishableManager, PublishableQuerySet
-from .searchable import SearchableManager, SearchableQuerySet
-from .slugged import SluggedManager
+else:
+    from yepes.managers.nestable import (
+        NestableManager,
+        NestableQuerySet,
+        TreeQuerySet,
+    )

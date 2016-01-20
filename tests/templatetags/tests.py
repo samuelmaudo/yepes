@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
 from django.template import Context, Template
 
 from yepes.defaulttags import (
@@ -16,7 +16,12 @@ from yepes.templatetags.svg import (
     InsertFileTag,
     InsertSymbolTag,
 )
+from yepes.templatetags.trees import (
+    RecurseTag,
+)
 from yepes.test_mixins import TemplateTagsMixin
+
+from .models import Category
 
 
 class DefaultTagsTest(TemplateTagsMixin, SimpleTestCase):
@@ -67,4 +72,155 @@ class SvgTagsTest(TemplateTagsMixin, SimpleTestCase):
             InsertSymbolTag,
             '{% insert_symbol file_name symbol_name[ method] %}',
         )
+
+
+class TreesTagsTest(TemplateTagsMixin, TestCase):
+
+    requiredLibraries = ['trees']
+
+    def setUp(self):
+        def factory(n, p=None):
+            return Category.objects.create(name=n, parent=p)
+
+        root = factory('PC & Video Games')
+        wii = factory('Nintendo Wii', root)
+        wii_games = factory('Games', wii)
+        wii_hardware = factory('Hardware & Accessories', wii)
+        xbox = factory('Xbox 360', root)
+        xbox_games = factory('Games', xbox)
+        xbox_hardware = factory('Hardware & Accessories', xbox)
+        play = factory('PlayStation 3', root)
+        play_games = factory('Games', play)
+        play_hardware = factory('Hardware & Accessories', play)
+
+        def getter(n, p=None):
+            return Category.objects.get(name=n, parent=p)
+
+        self.root = getter('PC & Video Games')
+        self.wii = getter('Nintendo Wii', root)
+        self.wii_games = getter('Games', wii)
+        self.wii_hardware = getter('Hardware & Accessories', wii)
+        self.xbox = getter('Xbox 360', root)
+        self.xbox_games = getter('Games', xbox)
+        self.xbox_hardware = getter('Hardware & Accessories', xbox)
+        self.play = getter('PlayStation 3', root)
+        self.play_games = getter('Games', play)
+        self.play_hardware = getter('Hardware & Accessories', play)
+
+    def test_recurse_syntax(self):
+        self.checkSyntax(
+            RecurseTag,
+            '{% recurse tree %}...{% endrecurse %}',
+        )
+
+    def test_recurse(self):
+        template = Template('''
+            {% load trees %}
+            <ul>
+              {% recurse tree %}
+                <li>
+                  {{ node.name }}
+                  {% if not node.is_leaf_node %}
+                    <ul class="children">
+                      {{ children }}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endrecurse %}
+            </ul>
+        ''')
+        # TREE NODE
+        context = Context({
+            'tree': self.root,
+        })
+        with self.assertNumQueries(1):
+            html = template.render(context)
+
+        self.assertHTMLEqual(html,'''
+            <ul>
+              <li>
+                Nintendo Wii
+                <ul class="children">
+                  <li>Games</li>
+                  <li>Hardware &amp; Accessories</li>
+                </ul>
+              </li>
+              <li>
+                PlayStation 3
+                <ul class="children">
+                  <li>Games</li>
+                  <li>Hardware &amp; Accessories</li>
+                </ul>
+              </li>
+              <li>
+                Xbox 360
+                <ul class="children">
+                  <li>Games</li>
+                  <li>Hardware &amp; Accessories</li>
+                </ul>
+              </li>
+            </ul>
+        ''')
+        # NODE LIST
+        context = Context({
+            'tree': [self.wii, self.xbox],
+        })
+        with self.assertNumQueries(2):
+            html = template.render(context)
+
+        self.assertHTMLEqual(html,'''
+            <ul>
+              <li>
+                Nintendo Wii
+                <ul class="children">
+                  <li>Games</li>
+                  <li>Hardware &amp; Accessories</li>
+                </ul>
+              </li>
+              <li>
+                Xbox 360
+                <ul class="children">
+                  <li>Games</li>
+                  <li>Hardware &amp; Accessories</li>
+                </ul>
+              </li>
+            </ul>
+        ''')
+        # NODE QUERYSET
+        context = Context({
+            'tree': Category.objects.trees(),
+        })
+        with self.assertNumQueries(1):
+            html = template.render(context)
+
+        self.assertHTMLEqual(html,'''
+            <ul>
+              <li>
+                PC &amp; Video Games
+                <ul class="children">
+                  <li>
+                    Nintendo Wii
+                    <ul class="children">
+                      <li>Games</li>
+                      <li>Hardware &amp; Accessories</li>
+                    </ul>
+                  </li>
+                  <li>
+                    PlayStation 3
+                    <ul class="children">
+                      <li>Games</li>
+                      <li>Hardware &amp; Accessories</li>
+                    </ul>
+                  </li>
+                  <li>
+                    Xbox 360
+                    <ul class="children">
+                      <li>Games</li>
+                      <li>Hardware &amp; Accessories</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        ''')
 

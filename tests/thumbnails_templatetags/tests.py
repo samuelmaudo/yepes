@@ -30,14 +30,6 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             '{% get_thumbnail source config[ as variable_name] %}',
         )
 
-    def test_make_thumbnail_syntax(self):
-        self.checkSyntax(
-            MakeThumbnailTag,
-            '{% make_thumbnail source width height'
-            '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
-            '[ as variable_name] %}',
-        )
-
     def test_get_thumbnail(self):
         Configuration.objects.create(
             key='default',
@@ -60,6 +52,14 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             {{ thumbnail.path }}
         ''')
         self.assertEqual(template.render(context).strip(), path)
+
+    def test_make_thumbnail_syntax(self):
+        self.checkSyntax(
+            MakeThumbnailTag,
+            '{% make_thumbnail source width height'
+            '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
+            '[ as variable_name] %}',
+        )
 
     def test_make_thumbnail(self):
         context = Context({

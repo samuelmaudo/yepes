@@ -14,12 +14,15 @@ from yepes.model_mixins.multilingual import (
     Multilingual,
     TranslationDoesNotExist,
 )
-from yepes.model_mixins.nestable import (
-    Nestable,
-    NestableBase,
-    ParentForeignKey,
-)
-from yepes.model_mixins.orderable import (
-    Orderable,
-    OrderableBase,
-)
+from yepes.model_mixins.orderable import Orderable, OrderableBase
+
+try:
+    import mptt
+except ImportError:
+    pass
+else:
+    from yepes.model_mixins.nestable import (
+        Nestable,
+        NestableBase,
+        ParentForeignKey,
+    )

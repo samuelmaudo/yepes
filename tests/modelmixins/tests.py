@@ -504,33 +504,27 @@ class MultilingualTest(test.TestCase):
 class NestableTest(test.TestCase):
 
     def setUp(self):
-        self.books = Category.objects.create(
-            name='Books',
-        )
-        self.classics = Category.objects.create(
-            name='Classics',
-            parent=self.books,
-        )
-        self.african = Category.objects.create(
-            name='African',
-            parent=self.classics,
-        )
-        self.european = Category.objects.create(
-            name='European',
-            parent=self.classics,
-        )
-        self.american = Category.objects.create(
-            name='American',
-            parent=self.classics,
-        )
-        self.asian = Category.objects.create(
-            name='Asian',
-            parent=self.classics,
-        )
-        self.australian = Category.objects.create(
-            name='Australian & Oceanian',
-            parent=self.classics,
-        )
+        def factory(n, p=None):
+            return Category.objects.create(name=n, parent=p)
+
+        books = factory('Books')
+        classics = factory('Classics', books)
+        african = factory('African', classics)
+        european = factory('European', classics)
+        american = factory('American', classics)
+        asian = factory('Asian', classics)
+        australian = factory('Australian & Oceanian', classics)
+
+        def getter(n, p=None):
+            return Category.objects.get(name=n, parent=p)
+
+        self.books = getter('Books')
+        self.classics = getter('Classics', books)
+        self.african = getter('African', classics)
+        self.european = getter('European', classics)
+        self.american = getter('American', classics)
+        self.asian = getter('Asian', classics)
+        self.australian = getter('Australian & Oceanian', classics)
 
     def test_instance_methods(self):
         # ANCESTORS
@@ -580,19 +574,6 @@ class NestableTest(test.TestCase):
             list(self.books.get_descendants(include_self=True)),
             [self.books, self.classics, self.african, self.american, self.asian, self.australian, self.european],
         )
-        # LEVEL
-        self.assertEqual(
-            self.books.get_level(),
-            0,
-        )
-        self.assertEqual(
-            self.classics.get_level(),
-            1,
-        )
-        self.assertEqual(
-            self.european.get_level(),
-            2,
-        )
         # PARENT
         self.assertEqual(
             self.books.get_parent(),
@@ -635,6 +616,53 @@ class NestableTest(test.TestCase):
         self.assertEqual(
             list(self.european.get_siblings(include_self=True)),
             [self.african, self.american, self.asian, self.australian, self.european],
+        )
+        # SUBTREES
+        self.assertEqual(
+            list(self.books.get_subtrees()),
+            [self.classics],
+        )
+        self.assertEqual(
+            [tree._children for tree in self.books.get_subtrees()],
+            [[self.african, self.american, self.asian, self.australian, self.european]],
+        )
+        self.assertEqual(
+            [[subtree._children for subtree in tree._children] for tree in self.books.get_subtrees()],
+            [[[], [], [], [], []]],
+        )
+        self.assertEqual(
+            list(self.classics.get_subtrees()),
+            [self.african, self.american, self.asian, self.australian, self.european],
+        )
+        self.assertEqual(
+            [tree._children for tree in self.classics.get_subtrees()],
+            [[], [], [], [], []],
+        )
+        self.assertEqual(
+            list(self.european.get_subtrees()),
+            [],
+        )
+        self.assertEqual(
+            self.books.get_subtrees(include_self=True),
+            self.books,
+        )
+        self.assertEqual(
+            self.books.get_subtrees(include_self=True)._children,
+            [self.classics],
+        )
+        self.assertEqual(
+            [subtree._children for subtree in self.books.get_subtrees(include_self=True)._children],
+            [[self.african, self.american, self.asian, self.australian, self.european]],
+        )
+
+    def test_manager_methods(self):
+        self.assertEqual(
+            list(Category.objects.trees()),
+            [self.books],
+        )
+        self.assertEqual(
+            list(self.books.get_descendants_queryset().trees()),
+            [self.classics],
         )
 
 
