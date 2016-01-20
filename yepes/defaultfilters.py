@@ -21,7 +21,7 @@ def endswith(value, arg):
 def get(value, arg):
     try:
         return getattr(value, arg)
-    except AttributeError:
+    except (AttributeError, TypeError):
         try:
             return value[arg]
         except (AttributeError, KeyError, TypeError):
