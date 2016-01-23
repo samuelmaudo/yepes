@@ -24,6 +24,14 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
     requiredLibraries = ['thumbnails']
     tempDirPrefix = 'test_thumbnails_templatetags_'
 
+    def setUp(self):
+        super(ThumbnailTagsTest, self).setUp()
+        Configuration.objects.create(
+            key='default',
+            width=100,
+            height=50,
+        )
+
     def test_get_thumbnail_syntax(self):
         self.checkSyntax(
             GetThumbnailTag,
@@ -31,11 +39,6 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         )
 
     def test_get_thumbnail(self):
-        Configuration.objects.create(
-            key='default',
-            width=100,
-            height=50,
-        )
         key = md5(b'default/wolf.jpg').digest()
         key = b64encode(key, b'ab').decode('ascii')[:6]
         path = os.path.join(
@@ -78,4 +81,56 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             {{ thumbnail.path }}
         ''')
         self.assertEqual(template.render(context).strip(), path)
+
+    def test_render_image_tag(self):
+        self.source.generate_thumbnail('default')
+        thumbnail = self.source.get_existing_thumbnail('default')
+        self.assertTrue(thumbnail.closed)
+
+        context = Context({'thumbnail': thumbnail})
+        template = Template('{{ thumbnail.get_tag }}')
+        tag = template.render(context)
+        self.assertTrue(thumbnail.closed)
+
+        self.assertTrue(tag.startswith('<img '))
+        self.assertTrue(tag.endswith('">'))
+        self.assertEqual(set(tag[1:-1].split()), {
+            'img',
+            'src="{0}"'.format(thumbnail.url),
+            'width="{0}"'.format(thumbnail.width),
+            'height="{0}"'.format(thumbnail.height),
+        })
+        self.assertTrue(thumbnail.closed)
+
+    def test_closing_of_previous_thumbnail(self):
+        thumbnail = self.source.generate_thumbnail('default')
+        thumbnail.open()
+        context = Context({
+            'source': self.source,
+            'thumbnail': thumbnail,
+        })
+        template = Template('''
+            {% load thumbnails %}
+            {% get_thumbnail source 'default' %}
+        ''')
+        self.assertFalse(thumbnail.closed)
+        template.render(context)
+        # Generated thumbnails internally use ContentFile and its instances
+        # cannot be closed. However, the Image instance is correctly closed.
+        self.assertFalse(thumbnail.closed)
+
+        thumbnail = self.source.get_existing_thumbnail('default')
+        thumbnail.open()
+        context = Context({
+            'source': self.source,
+            'thumbnail': thumbnail,
+        })
+        template = Template('''
+            {% load thumbnails %}
+            {% get_thumbnail source 'default' %}
+        ''')
+        self.assertFalse(thumbnail.closed)
+        template.render(context)
+        self.assertTrue(thumbnail.closed)
+
 

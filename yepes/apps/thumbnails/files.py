@@ -12,8 +12,10 @@ from wand.image import Image
 from django.core.files.base import ContentFile, File
 from django.core.files.storage import default_storage
 from django.db.models.fields.files import FieldFile
+from django.utils import six
 from django.utils import timezone
 from django.utils.encoding import force_bytes
+from django.utils.safestring import mark_safe
 
 from yepes.apps.thumbnails import engine
 from yepes.apps.thumbnails.utils import clean_config
@@ -25,16 +27,22 @@ SourceManager = LazyModelManager('thumbnails', 'source')
 
 class ImageFile(File):
 
-    _format_cache = Undefined
-    _height_cache = Undefined
-    _image_cache = Undefined
-    _width_cache = Undefined
+    _format_cache = None
+    _height_cache = None
+    _image_cache = None
+    _width_cache = None
+
+    def __del__(self):
+        try:
+            self.close()
+        except (AttributeError, ReferenceError):
+            pass
 
     def _del_image(self, source):
-        self._image_cache = Undefined
-        self._format_cache = Undefined
-        self._height_cache = Undefined
-        self._width_cache = Undefined
+        self._image_cache = None
+        self._format_cache = None
+        self._height_cache = None
+        self._width_cache = None
 
     def _fetch_image_data(self):
         was_closed = self.closed
@@ -53,12 +61,12 @@ class ImageFile(File):
             self.seek(pos)
 
     def _get_format(self):
-        if self._format_cache is Undefined:
+        if self._format_cache is None:
             self._fetch_image_data()
         return self._format_cache
 
     def _get_height(self):
-        if self._height_cache is Undefined:
+        if self._height_cache is None:
             self._fetch_image_data()
         return self._height_cache
 
@@ -70,17 +78,14 @@ class ImageFile(File):
         function is called again.
 
         """
-        try:
-            self.open()  # Wand does not open the file before read it.
-        except IOError:
-            self._set_image(None)
-        else:
-            if self._image_cache is Undefined:
-                self._set_image(Image(file=self))
+        if self._image_cache is None:
+            self.open('rb')  # Wand does not open the file before read it.
+            self._set_image(Image(file=self.file))
+
         return self._image_cache
 
     def _get_width(self):
-        if self._width_cache is Undefined:
+        if self._width_cache is None:
             self._fetch_image_data()
         return self._width_cache
 
@@ -91,16 +96,15 @@ class ImageFile(File):
         This also caches the dimensions and the format of the image.
 
         """
-        if source is None:
-            self._image_cache = None
-            self._format_cache = None
-            self._height_cache = None
-            self._width_cache = None
-        else:
-            self._image_cache = source
-            self._format_cache = source.format
-            self._height_cache = source.height
-            self._width_cache = source.width
+        self._image_cache = source
+        self._format_cache = source.format
+        self._height_cache = source.height
+        self._width_cache = source.width
+
+    def close(self):
+        self.file.close()
+        if self._image_cache is not None:
+            self._image_cache.close()
 
     format = property(_get_format)
     height = property(_get_height)
@@ -152,6 +156,39 @@ class StoredImageFile(ImageFile):
         if self._file_cache is not None:
             self._file_cache.close()
 
+        if self._image_cache is not None:
+            self._image_cache.close()
+
+    def get_tag(self, alt=None, measures=None, **attrs):
+        """
+        Returns a standard HTML ``<img>`` tag.
+        """
+        attrs['src'] = self.url
+        if alt is not None:
+            attrs['alt'] = alt
+
+        if measures is None:
+            if (self._height_cache is not None
+                    and self._width_cache is not None):
+                measures = True
+            else:
+                try:
+                    self.storage.path(self.name)
+                except NotImplementedError:
+                    measures = False
+                else:
+                    measures = True
+
+        if measures:
+            attrs['width'] = self.width
+            attrs['height'] = self.height
+
+        return mark_safe('<img {0}>'.format(' '.join(
+            '{0}="{1}"'.format(key, value)
+            for key, value
+            in six.iteritems(attrs)
+        )))
+
     def open(self, mode='rb'):
         self.file.open(mode)
     open.alters_data = True   # open() doesn't alter the file's contents,
@@ -190,6 +227,7 @@ class SourceFile(StoredImageFile):
         else:
             background = Color(config.background)
 
+        format = engine.get_format(config)
         measures = engine.calculate_measures(source, config)
         width, height, image_width, image_height = measures
         with Image(width=width, height=height, background=background) as thumb:
@@ -204,14 +242,7 @@ class SourceFile(StoredImageFile):
             thumb.strip()
 
             # Set image format.
-            if config.format == 'PNG64':
-                # It is not always necessary to use 64 bits per pixel. This
-                # allows ImageMagick to use a more economical format if it
-                # does not lose information.
-                thumb.format = 'PNG'
-            else:
-                thumb.format = config.format
-
+            thumb.format = format
             if thumb.format in ('JPEG', 'WEBP'):
                 thumb.compression_quality = config.quality
 
@@ -233,7 +264,11 @@ class SourceFile(StoredImageFile):
                 pass
             self.thumbnail_storage.save(thumb_name, thumb_file)
 
-        return ThumbnailFile(thumb_name, thumb_file, self.thumbnail_storage)
+        proxy = ThumbnailFile(thumb_name, thumb_file, self.thumbnail_storage)
+        proxy._format_cache = format
+        proxy._height_cache = height
+        proxy._width_cache = width
+        return proxy
 
     def get_existing_thumbnail(self, config):
         """
@@ -263,7 +298,17 @@ class SourceFile(StoredImageFile):
             if thumb_modified_time < config_modified_time:
                 return None
 
-        return ThumbnailFile(thumb_name, None, self.thumbnail_storage)
+        proxy = ThumbnailFile(thumb_name, None, self.thumbnail_storage)
+        proxy._format_cache = engine.get_format(config)
+        if (self._height_cache is not None
+                and self._width_cache is not None):
+            # If the source measures are cached, it is not  necessary to open
+            # the source image.
+            width, height = engine.calculate_measures(self, config)[:2]
+            proxy._height_cache = height
+            proxy._width_cache = width
+
+        return proxy
 
     def get_thumbnail(self, config):
         """
@@ -285,10 +330,6 @@ class SourceFile(StoredImageFile):
         """
         Return the thumbnail filename for the given configuration.
         """
-        source = self.image
-        if source is None:
-            return None
-
         config = clean_config(config)
         path, source_name = os.path.split(self.name)
         name = os.path.splitext(source_name)[0]
@@ -320,6 +361,17 @@ class SourceFieldFile(FieldFile, SourceFile):
 
     _source_cache = Undefined
 
+    def __init__(self, instance, field, name):
+        super(SourceFieldFile, self).__init__(instance, field, name)
+        if self.field.height_field:
+            height = getattr(instance, self.field.height_field)
+            if height is not None:
+                self._height_cache = height
+        if self.field.width_field:
+            width = getattr(instance, self.field.width_field)
+            if width is not None:
+                self._width_cache = width
+
     def _get_source_record(self):
         if self._source_cache is Undefined:
             self._source_cache = SourceManager.filter(name=self.name).first()
@@ -336,7 +388,7 @@ class SourceFieldFile(FieldFile, SourceFile):
         """
         Deletes the source image, along with any generated thumbnails.
         """
-        self._set_image(None)
+        self._del_image()
 
         source = self._get_source_record()
         self.delete_thumbnails()

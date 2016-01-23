@@ -9,4 +9,4 @@ pycrypto
 pytz
 PyYAML
 unicodecsv
-Wand<0.3.8
+Wand

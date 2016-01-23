@@ -43,6 +43,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         original_created_time = thumbnail.created_time
         original_modified_time = thumbnail.modified_time
         original_size = thumbnail.size
+        self.assertFalse(thumbnail.closed)
 
         thumbnail = self.source.get_existing_thumbnail('default')
         self.assertEqual(thumbnail.path, path)
@@ -53,6 +54,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
+        self.assertTrue(thumbnail.closed)
 
         thumbnail = self.source.get_thumbnail('default')
         self.assertEqual(thumbnail.path, path)
@@ -63,6 +65,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
+        self.assertTrue(thumbnail.closed)
 
     def test_proxy_configuration(self):
         configuration = ConfigurationProxy(
@@ -89,6 +92,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         original_created_time = thumbnail.created_time
         original_modified_time = thumbnail.modified_time
         original_size = thumbnail.size
+        self.assertFalse(thumbnail.closed)
 
         thumbnail = self.source.get_existing_thumbnail(configuration)
         self.assertEqual(thumbnail.path, path)
@@ -99,6 +103,7 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
+        self.assertTrue(thumbnail.closed)
 
         thumbnail = self.source.get_thumbnail(configuration)
         self.assertEqual(thumbnail.path, path)
@@ -109,4 +114,5 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertEqual(thumbnail.created_time, original_created_time)
         self.assertEqual(thumbnail.modified_time, original_modified_time)
         self.assertEqual(thumbnail.size, original_size)
+        self.assertTrue(thumbnail.closed)
 

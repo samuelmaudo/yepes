@@ -129,6 +129,16 @@ def composite_image(canvas, image, config):
     return canvas
 
 
+def get_format(config):
+    if config.format == 'PNG64':
+        # It is not always necessary to use 64 bits per pixel. This allows
+        # ImageMagick to use a more economical format if it does not lose
+        # information.
+        return 'PNG'
+    else:
+        return config.format
+
+
 def resize_image(image, target_width, target_height, config):
     if config.algorithm == 'sample':
         image.sample(target_width, target_height)
@@ -138,8 +148,8 @@ def resize_image(image, target_width, target_height, config):
                     image.height / target_height)
 
         if lenght <= 512 and scale > 7:
-            # This increases resizing speed and produces good results
-            # for small thumbnails.
+            # This increases resizing speed and produces good results for
+            # small thumbnails.
             image.sample(target_width * 5, target_height * 5)
 
         if config.algorithm == 'liquid':

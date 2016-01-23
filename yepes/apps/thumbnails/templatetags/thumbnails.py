@@ -37,6 +37,19 @@ class GetThumbnailTag(AssignTag):
         else:
             return source.get_thumbnail(config)
 
+    def render(self, context):
+        if self.target_var is not None:
+            old_value = context.get(self.target_var)
+            if old_value is not None:
+                # Probably we are into a loop and surely the old value will
+                # not be used anymore, so we release memory.
+                try:
+                    old_value.close()
+                except AttributeError:
+                    pass
+
+        return super(GetThumbnailTag, self).render(context)
+
 register.tag('get_thumbnail', GetThumbnailTag.as_tag())
 
 
@@ -71,7 +84,7 @@ class MakeThumbnailTag(GetThumbnailTag):
             'mode': mode,
             'algorithm': algorithm,
             'gravity': gravity,
-            'format': format if format != 'PNG' else 'PNG64',
+            'format': format if format != 'PNG64' else 'PNG',
             'quality': quality,
         })
         if force_generation:
