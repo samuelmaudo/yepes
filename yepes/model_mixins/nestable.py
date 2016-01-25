@@ -111,7 +111,7 @@ else:
             return descendants
 
         def get_descendants_queryset(self, include_self=False):
-            qs = super(Nestable, self).get_descendants(include_self=False)
+            qs = super(Nestable, self).get_descendants(include_self)
             if (not self._meta.ordering
                     and self._mptt_meta.order_insertion_by):
                 qs = qs.order_by(self._mptt_meta.left_attr)
