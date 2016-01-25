@@ -23,7 +23,7 @@ class ConfigurationProxy(object):
             tokens.append('h{0}'.format(self._wrapped.height))
 
         if self._wrapped.background:
-            tokens.append('b{0}'.format(self._wrapped.background.lstrip('#', 1).upper()))
+            tokens.append('b{0}'.format(self._wrapped.background.lstrip('#').upper()))
 
         if self._wrapped.mode != 'limit':
             tokens.append('m{0}'.format(self._wrapped.mode.upper()))

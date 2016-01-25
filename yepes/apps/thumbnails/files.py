@@ -264,7 +264,6 @@ class SourceFile(StoredImageFile):
             self.thumbnail_storage.save(thumb_name, thumb_file)
 
         proxy = ThumbnailFile(thumb_name, thumb_file, self.thumbnail_storage)
-        proxy._format_cache = format
         proxy._height_cache = height
         proxy._width_cache = width
         return proxy
@@ -298,7 +297,6 @@ class SourceFile(StoredImageFile):
                 return None
 
         proxy = ThumbnailFile(thumb_name, None, self.thumbnail_storage)
-        proxy._format_cache = engine.get_format(config)
         if (self._height_cache is not None
                 and self._width_cache is not None):
             # If the source measures are cached, it is not  necessary to open

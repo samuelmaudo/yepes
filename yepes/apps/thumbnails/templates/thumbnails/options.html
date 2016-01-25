@@ -18,55 +18,64 @@
   <p>{{ source.name }}</p>
   <p><img src="{{ source.url }}" width="{{ source.width }}" height="{{ source.height }}"></p>
 {% load thumbnails %}
-  {% make_thumbnail source 200 200 force_generation=True %}
+  {% make_configuration 200 200 %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='scale' force_generation=True %}
+  {% make_configuration 200 200 mode='scale' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mSCALE</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='fit' force_generation=True %}
+  {% make_configuration 200 200 mode='fit' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mFIT</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='fill' force_generation=True %}
+  {% make_configuration 200 200 mode='fill' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mFILL</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='pad' force_generation=True %}
+  {% make_configuration 200 200 mode='pad' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mPAD</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 '00ff00' mode='pad' gravity='north_west' force_generation=True %}
+  {% make_configuration 200 200 '00ff00' mode='pad' gravity='north_west' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_b00FF00_mPAD_gNORTHWEST</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='pad' gravity='south_east' format='png' force_generation=True %}
+  {% make_configuration 200 200 mode='pad' gravity='south_east' format='png' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mPAD_gSOUTHEAST_fPNG64</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='crop' force_generation=True %}
+  {% make_configuration 200 200 mode='crop' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mCROP</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">
     <img src="{{ thumbnail.url }}" width="{{ thumbnail.width }}" height="{{ thumbnail.height }}">
   </p>
-  {% make_thumbnail source 200 200 mode='scale' algorithm='liquid' force_generation=True %}
+  {% make_configuration 200 200 mode='scale' algorithm='liquid' %}
+  {% get_thumbnail source configuration force_generation=True %}
   <h2>Thumbnail: w200_h200_mSCALE_aLIQUID</h2>
   <p>{{ thumbnail.name }}</p>
   <p class="thumbnail" style="height:200px; width:200px">

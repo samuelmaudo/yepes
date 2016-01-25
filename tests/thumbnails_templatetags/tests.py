@@ -14,9 +14,9 @@ from yepes.apps.thumbnails.models import Configuration
 from yepes.apps.thumbnails.proxies import ConfigurationProxy
 from yepes.apps.thumbnails.templatetags.thumbnails import (
     GetThumbnailTag,
-    GetThumbnailTagTag,
-    MakeThumbnailTag,
-    MakeThumbnailTagTag,
+    MakeConfigurationTag,
+    ThumbnailTagTag,
+    ThumbnailUrlTag,
 )
 from yepes.apps.thumbnails.test_mixins import ThumbnailsMixin
 from yepes.test_mixins import TemplateTagsMixin
@@ -63,47 +63,15 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         ''')
         self.assertEqual(template.render(context).strip(), path)
 
-    def test_get_thumbnail_tag_syntax(self):
+    def test_make_configuration_syntax(self):
         self.checkSyntax(
-            GetThumbnailTagTag,
-            '{% get_thumbnail_tag source config **attrs %}',
-        )
-
-    def test_get_thumbnail_tag(self):
-        thumbnail = self.source.generate_thumbnail(self.configuration)
-        self.source.close()
-        self.assertTrue(self.source.closed)
-
-        context = Context({
-            'source': self.source,
-            'configuration': self.configuration,
-        })
-        template = Template('''
-            {% load thumbnails %}
-            {% get_thumbnail_tag source configuration %}
-        ''')
-        tag = template.render(context).strip()
-        self.assertTrue(self.source.closed)
-
-        self.assertTrue(tag.startswith('<img '))
-        self.assertTrue(tag.endswith('">'))
-        self.assertEqual(set(tag[1:-1].split()), {
-            'img',
-            'src="{0}"'.format(thumbnail.url),
-            'width="{0}"'.format(thumbnail.width),
-            'height="{0}"'.format(thumbnail.height),
-        })
-        self.assertTrue(self.source.closed)
-
-    def test_make_thumbnail_syntax(self):
-        self.checkSyntax(
-            MakeThumbnailTag,
-            '{% make_thumbnail source width height'
+            MakeConfigurationTag,
+            '{% make_configuration width height'
             '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
             '[ as variable_name] %}',
         )
 
-    def test_make_thumbnail(self):
+    def test_make_configuration(self):
         context = Context({
             'source': self.source
         })
@@ -116,30 +84,30 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         )
         template = Template('''
             {% load thumbnails %}
-            {% make_thumbnail source 100 50 %}
+            {% make_configuration 100 50 %}
+            {% get_thumbnail source configuration %}
             {{ thumbnail.path }}
         ''')
         self.assertEqual(template.render(context).strip(), path)
 
-    def test_make_thumbnail_tag_syntax(self):
+    def test_thumbnail_tag_syntax(self):
         self.checkSyntax(
-            MakeThumbnailTagTag,
-            '{% make_thumbnail_tag source width height'
-            '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
-            ' **attrs %}',
+            ThumbnailTagTag,
+            '{% thumbnail_tag source config **attrs %}',
         )
 
-    def test_make_thumbnail_tag(self):
-        thumbnail = self.source.generate_thumbnail(self.configuration_proxy)
+    def test_thumbnail_tag(self):
+        thumbnail = self.source.generate_thumbnail(self.configuration)
         self.source.close()
         self.assertTrue(self.source.closed)
 
         context = Context({
             'source': self.source,
+            'configuration': self.configuration,
         })
         template = Template('''
             {% load thumbnails %}
-            {% make_thumbnail_tag source 100 50 %}
+            {% thumbnail_tag source configuration %}
         ''')
         tag = template.render(context).strip()
         self.assertTrue(self.source.closed)
@@ -152,6 +120,31 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             'width="{0}"'.format(thumbnail.width),
             'height="{0}"'.format(thumbnail.height),
         })
+        self.assertTrue(self.source.closed)
+
+    def test_thumbnail_url_syntax(self):
+        self.checkSyntax(
+            ThumbnailUrlTag,
+            '{% thumbnail_url source config %}',
+        )
+
+    def test_thumbnail_url(self):
+        thumbnail = self.source.generate_thumbnail(self.configuration)
+        self.source.close()
+        self.assertTrue(self.source.closed)
+
+        context = Context({
+            'source': self.source,
+            'configuration': self.configuration,
+        })
+        template = Template('''
+            {% load thumbnails %}
+            {% thumbnail_url source configuration %}
+        ''')
+        url = template.render(context).strip()
+        self.assertTrue(self.source.closed)
+
+        self.assertEqual(url, thumbnail.url)
         self.assertTrue(self.source.closed)
 
     def test_closing_of_previous_thumbnail(self):
