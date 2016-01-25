@@ -116,3 +116,27 @@ class ThumbnailsTest(ThumbnailsMixin, TestCase):
         self.assertEqual(thumbnail.size, original_size)
         self.assertTrue(thumbnail.closed)
 
+    def test_render_image_tag(self):
+        configuration = Configuration.objects.create(
+            key='default',
+            width=100,
+            height=50,
+        )
+        self.source.generate_thumbnail(configuration) # New thumbnails cannot be closed because they are based on ContentFile.
+
+        thumbnail = self.source.get_existing_thumbnail(configuration)
+        self.assertTrue(thumbnail.closed)
+
+        tag = thumbnail.get_tag()
+        self.assertTrue(thumbnail.closed)
+
+        self.assertTrue(tag.startswith('<img '))
+        self.assertTrue(tag.endswith('">'))
+        self.assertEqual(set(tag[1:-1].split()), {
+            'img',
+            'src="{0}"'.format(thumbnail.url),
+            'width="{0}"'.format(thumbnail.width),
+            'height="{0}"'.format(thumbnail.height),
+        })
+        self.assertTrue(thumbnail.closed)
+

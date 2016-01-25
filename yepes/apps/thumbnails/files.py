@@ -15,6 +15,7 @@ from django.db.models.fields.files import FieldFile
 from django.utils import six
 from django.utils import timezone
 from django.utils.encoding import force_bytes
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from yepes.apps.thumbnails import engine
@@ -33,10 +34,7 @@ class ImageFile(File):
     _width_cache = None
 
     def __del__(self):
-        try:
-            self.close()
-        except (AttributeError, ReferenceError):
-            pass
+        self.close()
 
     def _del_image(self, source):
         self._image_cache = None
@@ -104,7 +102,10 @@ class ImageFile(File):
     def close(self):
         self.file.close()
         if self._image_cache is not None:
-            self._image_cache.close()
+            try:
+                self._image_cache.close()
+            except ReferenceError:
+                pass
 
     format = property(_get_format)
     height = property(_get_height)
@@ -157,9 +158,12 @@ class StoredImageFile(ImageFile):
             self._file_cache.close()
 
         if self._image_cache is not None:
-            self._image_cache.close()
+            try:
+                self._image_cache.close()
+            except ReferenceError:
+                pass
 
-    def get_tag(self, alt=None, measures=None, **attrs):
+    def get_tag(self, alt=None, with_measures=None, **attrs):
         """
         Returns a standard HTML ``<img>`` tag.
         """
@@ -167,24 +171,19 @@ class StoredImageFile(ImageFile):
         if alt is not None:
             attrs['alt'] = alt
 
-        if measures is None:
+        if with_measures is None:
             if (self._height_cache is not None
                     and self._width_cache is not None):
-                measures = True
+                with_measures = True
             else:
-                try:
-                    self.storage.path(self.name)
-                except NotImplementedError:
-                    measures = False
-                else:
-                    measures = True
+                with_measures = False
 
-        if measures:
+        if with_measures:
             attrs['width'] = self.width
             attrs['height'] = self.height
 
         return mark_safe('<img {0}>'.format(' '.join(
-            '{0}="{1}"'.format(key, value)
+            '{0}="{1}"'.format(key, escape(value))
             for key, value
             in six.iteritems(attrs)
         )))

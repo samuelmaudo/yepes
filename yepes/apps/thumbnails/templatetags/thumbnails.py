@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.template.base import Library
 
 from yepes.apps.thumbnails.proxies import ConfigurationProxy
-from yepes.template import AssignTag
+from yepes.template import AssignTag, SingleTag
 
 register = Library()
 
@@ -53,6 +53,30 @@ class GetThumbnailTag(AssignTag):
 register.tag('get_thumbnail', GetThumbnailTag.as_tag())
 
 
+## {% get_thumbnail_tag source config **attrs %} ###############################
+
+
+class GetThumbnailTagTag(SingleTag):
+    """
+    Renders an image tag for the thumbnail of the ``source`` image with the
+    given ``config``.
+    """
+    def process(self, source, config, **attrs):
+        if source:
+            was_closed = source.closed
+            thumbnail = source.get_thumbnail(config)
+            thumbnail_tag = thumbnail.get_tag(**attrs)
+            thumbnail.close()
+            if was_closed:
+                source.close()
+
+            return thumbnail_tag
+        else:
+            return ''
+
+register.tag('get_thumbnail_tag', GetThumbnailTagTag.as_tag())
+
+
 ## {% make_thumbnail source width height[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]][ as variable_name] %} #####
 
 
@@ -69,8 +93,37 @@ class MakeThumbnailTag(GetThumbnailTag):
                 algorithm='undefined', gravity='center', format='JPEG',
                 quality=85, force_generation=False):
 
-        if not source:
-            return None
+        mode = mode.lower()
+        algorithm = algorithm.lower()
+        gravity = gravity.lower()
+        format = format.upper()
+
+        config = ConfigurationProxy(**{
+            'width': width,
+            'height': height,
+            'background': background,
+            'mode': mode,
+            'algorithm': algorithm,
+            'gravity': gravity,
+            'format': format if format != 'PNG64' else 'PNG',
+            'quality': quality,
+        })
+        return self.super_proccess(source, config, force_generation)
+
+register.tag('make_thumbnail', MakeThumbnailTag.as_tag())
+
+
+## {% make_thumbnail_tag source width height[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]] **attrs %} #####
+
+
+class MakeThumbnailTagTag(GetThumbnailTagTag):
+    """
+    Renders an image tag for the thumbnail of the ``source`` image with the
+    specified ``width`` and ``height``.
+    """
+    def process(self, source, width, height, background=None, mode='limit',
+                algorithm='undefined', gravity='center', format='JPEG',
+                quality=85, **attrs):
 
         mode = mode.lower()
         algorithm = algorithm.lower()
@@ -87,10 +140,7 @@ class MakeThumbnailTag(GetThumbnailTag):
             'format': format if format != 'PNG64' else 'PNG',
             'quality': quality,
         })
-        if force_generation:
-            return source.generate_thumbnail(config)
-        else:
-            return source.get_thumbnail(config)
+        return self.super_proccess(source, config, **attrs)
 
-register.tag('make_thumbnail', MakeThumbnailTag.as_tag())
+register.tag('make_thumbnail_tag', MakeThumbnailTagTag.as_tag())
 

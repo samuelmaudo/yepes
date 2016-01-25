@@ -11,9 +11,12 @@ from django.template import Context, Template
 from django.utils.encoding import force_bytes
 
 from yepes.apps.thumbnails.models import Configuration
+from yepes.apps.thumbnails.proxies import ConfigurationProxy
 from yepes.apps.thumbnails.templatetags.thumbnails import (
     GetThumbnailTag,
+    GetThumbnailTagTag,
     MakeThumbnailTag,
+    MakeThumbnailTagTag,
 )
 from yepes.apps.thumbnails.test_mixins import ThumbnailsMixin
 from yepes.test_mixins import TemplateTagsMixin
@@ -26,8 +29,12 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
 
     def setUp(self):
         super(ThumbnailTagsTest, self).setUp()
-        Configuration.objects.create(
+        self.configuration = Configuration.objects.create(
             key='default',
+            width=100,
+            height=50,
+        )
+        self.configuration_proxy = ConfigurationProxy(
             width=100,
             height=50,
         )
@@ -56,6 +63,38 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         ''')
         self.assertEqual(template.render(context).strip(), path)
 
+    def test_get_thumbnail_tag_syntax(self):
+        self.checkSyntax(
+            GetThumbnailTagTag,
+            '{% get_thumbnail_tag source config **attrs %}',
+        )
+
+    def test_get_thumbnail_tag(self):
+        thumbnail = self.source.generate_thumbnail(self.configuration)
+        self.source.close()
+        self.assertTrue(self.source.closed)
+
+        context = Context({
+            'source': self.source,
+            'configuration': self.configuration,
+        })
+        template = Template('''
+            {% load thumbnails %}
+            {% get_thumbnail_tag source configuration %}
+        ''')
+        tag = template.render(context).strip()
+        self.assertTrue(self.source.closed)
+
+        self.assertTrue(tag.startswith('<img '))
+        self.assertTrue(tag.endswith('">'))
+        self.assertEqual(set(tag[1:-1].split()), {
+            'img',
+            'src="{0}"'.format(thumbnail.url),
+            'width="{0}"'.format(thumbnail.width),
+            'height="{0}"'.format(thumbnail.height),
+        })
+        self.assertTrue(self.source.closed)
+
     def test_make_thumbnail_syntax(self):
         self.checkSyntax(
             MakeThumbnailTag,
@@ -82,15 +121,28 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
         ''')
         self.assertEqual(template.render(context).strip(), path)
 
-    def test_render_image_tag(self):
-        self.source.generate_thumbnail('default')
-        thumbnail = self.source.get_existing_thumbnail('default')
-        self.assertTrue(thumbnail.closed)
+    def test_make_thumbnail_tag_syntax(self):
+        self.checkSyntax(
+            MakeThumbnailTagTag,
+            '{% make_thumbnail_tag source width height'
+            '[ background[ mode[ algorithm[ gravity[ format[ quality]]]]]]'
+            ' **attrs %}',
+        )
 
-        context = Context({'thumbnail': thumbnail})
-        template = Template('{{ thumbnail.get_tag }}')
-        tag = template.render(context)
-        self.assertTrue(thumbnail.closed)
+    def test_make_thumbnail_tag(self):
+        thumbnail = self.source.generate_thumbnail(self.configuration_proxy)
+        self.source.close()
+        self.assertTrue(self.source.closed)
+
+        context = Context({
+            'source': self.source,
+        })
+        template = Template('''
+            {% load thumbnails %}
+            {% make_thumbnail_tag source 100 50 %}
+        ''')
+        tag = template.render(context).strip()
+        self.assertTrue(self.source.closed)
 
         self.assertTrue(tag.startswith('<img '))
         self.assertTrue(tag.endswith('">'))
@@ -100,7 +152,7 @@ class ThumbnailTagsTest(ThumbnailsMixin, TemplateTagsMixin, TestCase):
             'width="{0}"'.format(thumbnail.width),
             'height="{0}"'.format(thumbnail.height),
         })
-        self.assertTrue(thumbnail.closed)
+        self.assertTrue(self.source.closed)
 
     def test_closing_of_previous_thumbnail(self):
         thumbnail = self.source.generate_thumbnail('default')
