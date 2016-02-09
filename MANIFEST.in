@@ -2,6 +2,7 @@ include LICENSE
 include MANIFEST.in
 include README.md
 recursive-include tests *
+recursive-include yepes/fixtures *
 recursive-include yepes/locale *
 recursive-include yepes/static *
 recursive-include yepes/templates *
