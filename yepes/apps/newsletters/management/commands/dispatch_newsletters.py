@@ -12,7 +12,7 @@ from django.utils import timezone
 
 from yepes.apps.newsletters.utils import prerender, render
 from yepes.loading import get_model
-from yepes.utils.minifier import html_minifier
+from yepes.utils.minifier import minify_html
 
 
 PrerenderedMessage = namedtuple(
@@ -113,7 +113,7 @@ class Command(NoArgsCommand):
             msg = PrerenderedMessage(
                 delivery.message.subject,
                 prerender(delivery.message.text, context),
-                prerender(html_minifier.minify(delivery.message.html), context),
+                prerender(minify_html(delivery.message.html), context),
             )
             self.prerendered_messages[delivery.message.pk] = msg
 

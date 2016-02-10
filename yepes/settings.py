@@ -17,6 +17,13 @@ SEARCH_MIN_WORD_LEN = 3
 SEARCH_RESULT_LIMIT = 1000
 
 
+# Minifier #####################################################################
+
+CSS_MINIFIER = 'css'
+HTML_MINIFIER = 'html'
+JS_MINIFIER = 'js'
+
+
 # Mint cache ###################################################################
 
 MINT_CACHE_DELAY_SECONDS = 60

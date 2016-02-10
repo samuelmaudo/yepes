@@ -21,10 +21,12 @@ from yepes.utils import (
     html,
     htmlentities,
     iterators,
+    minifier,
     properties,
     slugify,
     unidecode,
 )
+from yepes.utils.minifier import decorators as minifier_decorators
 
 
 class DecimalsTest(test.SimpleTestCase):
@@ -178,6 +180,104 @@ class IteratorsTest(test.SimpleTestCase):
             result,
             [[1, 2, 3], [4, 5, 6], [7]]
         )
+
+
+class MinifierTest(test.SimpleTestCase):
+
+    css_code = (
+        '\n'
+        '    your css {  \n'
+        '        content: "!" ; \n'
+        '    } \n'
+        '\n'
+    )
+    minified_css_code = (
+        'your css{content:"!"}\n'
+    )
+    html_code = (
+        '<!DOCTYPE html>\n'
+        '<html>\n'
+        '  <head>\n'
+        '    <title>This is a title</title>\n'
+        '    <!--This is a comment.-->\n'
+        '    <!--[if IE]>This is a conditional comment<![endif]-->\n'
+        '  </head>\n'
+        '  <body>\n'
+        '\n'
+        '    <p>This is a paragraph.</p>\n'
+        '    \n'
+        '    <!-- This is another comment. -->\n'
+        '    <pre>\n'
+        '      This a preformatted text.\n'
+        '    </pre>\n'
+        '\n'
+        '  </body>\n'
+        '</html>\n'
+    )
+    minified_html_code = (
+        '<!DOCTYPE html>\n'
+        '<html>\n'
+        '<head>\n'
+        '<title>This is a title</title>\n'
+        '<!--[if IE]>This is a conditional comment<![endif]-->\n'
+        '</head>\n'
+        '<body>\n'
+        '<p>This is a paragraph.</p>\n'
+        '<pre>\n'
+        '      This a preformatted text.\n'
+        '    </pre>\n'
+        '</body>\n'
+        '</html>\n'
+    )
+    js_code = (
+        '$( document ).ready(function() {\n'
+        ' \n'
+        '    $( "a" ).click(function( event ) {\n'
+        ' \n'
+        '        alert( "Thanks for visiting!" );\n'
+        ' \n'
+        '    });\n'
+        ' \n'
+        '});\n'
+    )
+    minified_js_code = (
+        '$( document ).ready(function() {\n'
+        '$( "a" ).click(function( event ) {\n'
+        'alert( "Thanks for visiting!" );\n'
+        '});\n'
+        '});\n'
+    )
+    maxDiff = None
+
+    @minifier_decorators.minify_css_output
+    def minifyCss(self, code):
+        return code
+
+    @minifier_decorators.minify_html_output
+    def minifyHtml(self, code):
+        return code
+
+    @minifier_decorators.minify_js_output
+    def minifyJs(self, code):
+        return code
+
+    def test_minify_css(self):
+        self.assertEqual(minifier.minify_css(self.css_code), self.minified_css_code)
+
+    def test_minify_css_output(self):
+        self.assertEqual(self.minifyCss(self.css_code), self.minified_css_code)
+
+    def test_minify_html(self):
+        self.assertEqual(minifier.minify_html(self.html_code), self.minified_html_code)
+
+    def test_minify_html_output(self):
+        self.assertEqual(self.minifyHtml(self.html_code), self.minified_html_code)
+
+    def test_minify_js(self):
+        self.assertEqual(minifier.minify_js(self.js_code), self.minified_js_code)
+
+    def test_minify_js_output(self):
+        self.assertEqual(self.minifyJs(self.js_code), self.minified_js_code)
 
 
 class HtmlTest(test.SimpleTestCase):

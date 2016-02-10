@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from yepes.utils.minifier.html import html_minifier
+from yepes.utils.minifier import minify_html_response
 
 
 class HtmlMinifierMiddleware(object):
@@ -12,5 +12,5 @@ class HtmlMinifierMiddleware(object):
     """
 
     def process_response(self, request, response):
-        return html_minifier.minify_response(response)
+        return minify_html_response(response)
 

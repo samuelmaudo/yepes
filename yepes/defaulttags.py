@@ -21,7 +21,7 @@ from yepes.template import (
     InclusionTag,
     TagSyntaxError,
 )
-from yepes.utils.minifier import html_minifier
+from yepes.utils.minifier import minify_html
 from yepes.utils.phased import (
     backup_csrf_token,
     flatten_context,
@@ -100,7 +100,7 @@ class CacheTag(DoubleTag):
         value = cache.get(cache_key)
         if value is None:
             value = self.nodelist.render(self.context)
-            value = html_minifier.minify(value)
+            value = minify_html(value)
             cache.set(cache_key, value, expire_time)
 
         return value

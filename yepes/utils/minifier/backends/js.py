@@ -4,9 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.utils.encoding import force_text
-
-__all__ = ('js_minifier', 'JsMinifier')
+__all__ = ('JsMinifier', 'minify')
 
 PLACEHOLDER = '~{{[({0})]}}~'
 
@@ -17,7 +15,7 @@ MULTI_LINE_COMMENTS_RE = re.compile(r'/\*.*?\*/', re.DOTALL)
 NEWLINES_RE = re.compile(r'(\r\n|\r)')
 PLACEHOLDERS_RE = re.compile(r'\~\{\[\((\d+)\)\]\}\~')
 TRAILING_SPACES_RE = re.compile(r' +$', re.M)
-WHITESPACES_RE = re.compile(r'[ \t\f\v]+')
+WHITESPACES_RE = re.compile(r'[ \t]+')
 
 
 class JsMinifier(object):
@@ -27,7 +25,7 @@ class JsMinifier(object):
 
     def minify(self, code):
         self.placeholders = []
-        return self._minify(force_text(code))
+        return self._minify(code)
 
     def _minify(self, code):
         code = self.process_newlines(code)
@@ -74,5 +72,8 @@ class JsMinifier(object):
         self.placeholders.append(code)
         return PLACEHOLDER.format(len(self.placeholders) - 1)
 
-js_minifier = JsMinifier()
+
+def minify(code):
+    minifier = JsMinifier()
+    return minifier.minify(code)
 

@@ -214,37 +214,37 @@ class CsrfTokenMiddlewareTest(test.SimpleTestCase):
 
 class HtmlMinifierMiddlewareTest(test.SimpleTestCase):
 
+    html_code = (
+        '<!DOCTYPE html>\n'
+        '<html>\n'
+        '  <head>\n'
+        '    <title>This is a title</title>\n'
+        '    <!--This is a comment.-->\n'
+        '    <!--[if IE]>This is a conditional comment<![endif]-->\n'
+        '  </head>\n'
+        '  <body>\n'
+        '\n'
+        '    <p>This is a paragraph.</p>\n'
+        '    \n'
+        '    <!-- This is another comment. -->\n'
+        '\n'
+        '  </body>\n'
+        '</html>\n'
+    )
+    minified_html_code = (
+        '<!DOCTYPE html>\n'
+        '<html>\n'
+        '<head>\n'
+        '<title>This is a title</title>\n'
+        '<!--[if IE]>This is a conditional comment<![endif]-->\n'
+        '</head>\n'
+        '<body>\n'
+        '<p>This is a paragraph.</p>\n'
+        '</body>\n'
+        '</html>\n'
+    )
     def setUp(self):
         self.middleware = HtmlMinifierMiddleware()
-        self.html_code = (
-            '<!DOCTYPE html>\n'
-            '<html>\n'
-            '  <head>\n'
-            '    <title>This is a title</title>\n'
-            '    <!--This is a comment.-->\n'
-            '    <!--[if IE]>This is a conditional comment<![endif]-->\n'
-            '  </head>\n'
-            '  <body>\n'
-            '\n'
-            '    <p>This is a paragraph.</p>\n'
-            '    \n'
-            '    <!-- This is another comment. -->\n'
-            '\n'
-            '  </body>\n'
-            '</html>\n'
-        )
-        self.minified_html_code = (
-            '<!DOCTYPE html>\n'
-            '<html>\n'
-            '<head>\n'
-            '<title>This is a title</title>\n'
-            '<!--[if IE]>This is a conditional comment<![endif]-->\n'
-            '</head>\n'
-            '<body>\n'
-            '<p>This is a paragraph.</p>\n'
-            '</body>\n'
-            '</html>\n'
-        )
 
     def test_html(self):
         request = HttpRequest()
@@ -317,17 +317,18 @@ class LoginRequiredMiddlewareTest(test.SimpleTestCase):
 
 class PhasedRenderMiddlewareTestCase(test.SimpleTestCase):
 
+    template = (
+        'before '
+        '{delimiter}'
+        'inside{{# a comment #}} '
+        '{delimiter}'
+        'after'
+    )
+    first_render = template.format(delimiter=phased.SECRET_DELIMITER)
+    second_render = 'before inside after'
+
     def setUp(self):
         self.middleware = PhasedRenderMiddleware()
-        self.template = (
-            'before '
-            '{delimiter}'
-            'inside{{# a comment #}} '
-            '{delimiter}'
-            'after'
-        )
-        self.first_render = self.template.format(delimiter=phased.SECRET_DELIMITER)
-        self.second_render = 'before inside after'
 
     def test_html(self):
         request = HttpRequest()

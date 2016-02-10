@@ -11,7 +11,7 @@ from django.utils.encoding import force_bytes
 from yepes.cache import get_mint_cache
 from yepes.conf import settings
 from yepes.types import Undefined
-from yepes.utils.minifier import html_minifier
+from yepes.utils.minifier import minify_html_response
 
 
 class CacheMixin(object):
@@ -55,15 +55,16 @@ class CacheMixin(object):
                 if response.status_code not in (200, 301, 404):
                     return response
 
-                def update_cache(resp):
-                    resp = html_minifier.minify_response(resp)
-                    return self._cache.set(key, resp)
-
                 if (hasattr(response, 'render')
                         and callable(response.render)):
+
+                    def update_cache(resp):
+                        resp = minify_html_response(resp)
+                        return self._cache.set(key, resp)
+
                     response.add_post_render_callback(update_cache)
                 else:
-                    update_cache(response)
+                    self._cache.set(key, minify_html_response(response))
 
             return response
         else:

@@ -4,13 +4,9 @@ from __future__ import unicode_literals
 
 import re
 
-from django.utils import six
-from django.utils.encoding import force_text
+from yepes.utils.minifier import minify_css, minify_js
 
-from yepes.utils.minifier.css import css_minifier
-from yepes.utils.minifier.js import js_minifier
-
-__all__ = ('html_minifier', 'HtmlMinifier')
+__all__ = ('HtmlMinifier', 'minify')
 
 
 PLACEHOLDER = '~({{[{0}]}})~'
@@ -26,7 +22,7 @@ SCRIPTS_RE = re.compile(r'(<script\b.*?>)(.*?)(<\/script>)', re.I  | re.DOTALL)
 STYLES_RE = re.compile(r'(<style\b.*?>)(.*?)(<\/style>)', re.I | re.DOTALL)
 TEXTAREAS_RE = re.compile(r'(<textarea\b.*?>)(.*?)(<\/textarea>)', re.I | re.DOTALL)
 TRAILING_SPACES_RE = re.compile(r' +$', re.M)
-WHITESPACES_RE = re.compile(r'[ \t\f\v]+')
+WHITESPACES_RE = re.compile(r'[ \t]+')
 
 
 class HtmlMinifier(object):
@@ -38,17 +34,7 @@ class HtmlMinifier(object):
     """
     def minify(self, code):
         self.placeholders = []
-        return self._minify(force_text(code))
-
-    def minify_response(self, response):
-        if (not response.streaming
-                and response.status_code in (200, 404)
-                and response.get('Content-Type', '').startswith('text/html')
-                and len(response.content) >= 200):
-            response.content = self.minify(response.content)
-            response['Content-Length'] = six.text_type(len(response.content))
-
-        return response
+        return self._minify(code)
 
     def _minify(self, code):
         code = self.process_newlines(code)
@@ -84,9 +70,9 @@ class HtmlMinifier(object):
 
     def pres_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
-        content = self.process_trailing_spaces(matchobj.group(2))
+        content = matchobj.group(2)
         closing_tag = matchobj.group(3)
-        return self.reserve(''.join((opening_tag, content, closing_tag)))
+        return ''.join((opening_tag, self.reserve(content), closing_tag))
 
     def process_comments(self, code):
         return COMMENTS_RE.sub('', code)
@@ -137,21 +123,34 @@ class HtmlMinifier(object):
 
     def scripts_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
-        content = js_minifier.minify(matchobj.group(2))
+        content = matchobj.group(2)
+        if content.strip():
+            content = ''.join(('\n', minify_js(content)))
+        else:
+            content = ''
+
         closing_tag = matchobj.group(3)
-        return self.reserve(''.join((opening_tag, content, closing_tag)))
+        return ''.join((opening_tag, self.reserve(content), closing_tag))
 
     def styles_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
-        content = css_minifier.minify(matchobj.group(2))
+        content = matchobj.group(2)
+        if content.strip():
+            content = ''.join(('\n', minify_css(content)))
+        else:
+            content = ''
+
         closing_tag = matchobj.group(3)
-        return self.reserve(''.join((opening_tag, '\n', content, closing_tag)))
+        return ''.join((opening_tag, self.reserve(content), closing_tag))
 
     def textareas_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
-        content = self.reserve(matchobj.group(2))
+        content = matchobj.group(2)
         closing_tag = matchobj.group(3)
-        return ''.join((opening_tag, content, closing_tag))
+        return ''.join((opening_tag, self.reserve(content), closing_tag))
 
-html_minifier = HtmlMinifier()
+
+def minify(code):
+    minifier = HtmlMinifier()
+    return minifier.minify(code)
 
