@@ -34,7 +34,7 @@ class MassUpdateTest(test.TestCase):
             for field
             in MassUpdateModel._meta.fields
         }
-        self.view = MassUpdateView.as_view(model_admin=self.model_admin)
+        self.view = MassUpdateView.as_view(modeladmin=self.model_admin)
 
     def test_assignment_operations(self):
         for obj in MassUpdateModel.objects.all():

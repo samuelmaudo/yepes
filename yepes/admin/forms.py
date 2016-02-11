@@ -79,8 +79,8 @@ class MassUpdateFormSet(BaseFormSet):
 
     def __init__(self, **kwargs):
         self.request = kwargs.pop('request')
-        self.model_admin = kwargs.pop('model_admin')
-        self.fields = self.model_admin.get_formfields(self.request, many_to_many=True)
+        self.modeladmin = kwargs.pop('modeladmin')
+        self.fields = self.modeladmin.get_formfields(self.request, many_to_many=True)
         super(MassUpdateFormSet, self).__init__(**kwargs)
 
     def add_fields(self, form, index):
@@ -98,7 +98,7 @@ class MassUpdateFormSet(BaseFormSet):
             for w in widget.widgets:
                 w.attrs['id'] = w.id_for_label(widget_id)
 
-        ops=self.model_admin.get_field_operations(self.request, model_field)
+        ops=self.modeladmin.get_field_operations(self.request, model_field)
         form.field = model_field
         form.fields['operation'] = OperationChoiceField(operations=ops)
         form.fields['value'] = form_field

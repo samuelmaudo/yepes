@@ -16,7 +16,7 @@ class NestableFieldListFilter(FieldListFilter):
 
     level_indicator = '– '
 
-    def __init__(self, field, request, params, model, model_admin, field_path):
+    def __init__(self, field, request, params, model, modeladmin, field_path):
         self.lookup_kwarg = '{0}__in'.format(field_path)
         self.lookup_kwarg_isnull = '{0}__isnull'.format(field_path)
         self.lookup_val = request.GET.get(self.lookup_kwarg)
@@ -29,7 +29,7 @@ class NestableFieldListFilter(FieldListFilter):
                 '{0}__gt'.format(opts.right_attr): F(opts.left_attr) + 1,
             })
         self.objects = qs.order_by(opts.tree_id_attr, opts.left_attr)
-        super(NestableFieldListFilter, self).__init__(field, request, params, model, model_admin, field_path)
+        super(NestableFieldListFilter, self).__init__(field, request, params, model, modeladmin, field_path)
 
     def choices(self, cl):
         yield {

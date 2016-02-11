@@ -44,15 +44,26 @@ mass_update.short_description = _('Update selected {verbose_name_plural}')
 
 def _redirect_to(url_name, modeladmin, request, queryset):
     opts = modeladmin.model._meta
-    url_name = url_name.format(
-        app_label=opts.app_label,
-        model_name=opts.model_name,
-    )
-    url = reverse(url_name)
+    url = reverse(url_name.format(
+            app_label=opts.app_label,
+            model_name=opts.model_name))
+
+    filters = modeladmin.get_preserved_filters(request)
+    if filters:
+        url = ''.join((
+            url,
+            '&' if '?' in url else '?',
+            filters,
+        ))
 
     if request.POST.get('select_across') not in ('true', '1'):
-        selected = request.POST.getlist(ACTION_CHECKBOX_NAME)
-        url += '?ids={0}'.format(','.join(selected))
+        ids = request.POST.getlist(ACTION_CHECKBOX_NAME)
+        url = ''.join((
+            url,
+            '&' if '?' in url else '?',
+            '_selected_ids=',
+            ','.join(ids),
+        ))
 
     return HttpResponseRedirect(url)
 

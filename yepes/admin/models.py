@@ -44,7 +44,7 @@ class ModelAdmin(DjangoModelAdmin):
             action = getattr(actions, label)
             acts[label] = (action, label, action.short_description)
 
-        if self.has_massupdate_permission(request):
+        if self.has_change_permission(request):
             add_action('mass_update')
 
         # Move admin site actions after mass_update.
@@ -55,7 +55,7 @@ class ModelAdmin(DjangoModelAdmin):
                             or self.has_delete_permission(request))):
                 acts[name] = info
 
-        if self.has_export_permission(request):
+        if self.has_view_permission(request):
             if serializers.has_serializer('csv'):
                 add_action('export_csv')
             if serializers.has_serializer('json'):
@@ -172,23 +172,23 @@ class ModelAdmin(DjangoModelAdmin):
         info = (self.model._meta.app_label, self.model._meta.model_name)
         urls = patterns('',
             url(r'^export-csv/$',
-                wrap(CsvExportView.as_view(model_admin=self)),
+                wrap(CsvExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exportcsv'.format(*info),
             ),
             url(r'^export-json/$',
-                wrap(JsonExportView.as_view(model_admin=self)),
+                wrap(JsonExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exportjson'.format(*info),
             ),
             url(r'^export-tsv/$',
-                wrap(TsvExportView.as_view(model_admin=self)),
+                wrap(TsvExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exporttsv'.format(*info),
             ),
             url(r'^export-yaml/$',
-                wrap(YamlExportView.as_view(model_admin=self)),
+                wrap(YamlExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exportyaml'.format(*info),
             ),
             url(r'^mass-update/$',
-                wrap(MassUpdateView.as_view(model_admin=self)),
+                wrap(MassUpdateView.as_view(modeladmin=self)),
                 name='{0}_{1}_massupdate'.format(*info),
             ),
         )
@@ -252,15 +252,6 @@ class ModelAdmin(DjangoModelAdmin):
         app_label = self.opts.app_label
         delete_permission = self.opts.get_delete_permission()
         return request.user.has_perm(app_label + '.' + delete_permission)
-
-    def has_export_permission(self, request, obj=None):
-        return request.user.has_perm('export')
-
-    def has_import_permission(self, request, obj=None):
-        return request.user.has_perm('import')
-
-    def has_massupdate_permission(self, request, obj=None):
-        return request.user.has_perm('mass_update')
 
     def has_view_permission(self, request, obj=None):
         attr_name = self._get_cache_attribute('view', obj)

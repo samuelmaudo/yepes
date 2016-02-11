@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import FormView, View
 
 from yepes.admin.forms import MassUpdateFormSet, MassUpdateErrorList
+from yepes.admin.view_mixins import AdminMixin
 from yepes.apps.data_migrations import QuerySetExportation
 from yepes.utils.views import decorate_view
 
@@ -25,16 +26,15 @@ TRUE_VALUES = ('on', 'yes', 'true', '1')
 @decorate_view(
     csrf_protect,
 )
-class CsvExportView(View):
+class CsvExportView(AdminMixin, View):
 
-    model_admin = None
     content_type='text/csv; charset=utf-8'
     serializer_name = 'csv'
 
     def dispatch(self, request, *args, **kwargs):
-        model_admin = self.get_model_admin()
-        if (model_admin is None
-                or not model_admin.has_export_permission(request)):
+        modeladmin = self.get_modeladmin()
+        if (modeladmin is None
+                or not modeladmin.has_view_permission(request)):
             raise PermissionDenied
         else:
             return super(CsvExportView, self).dispatch(request, *args, **kwargs)
@@ -58,17 +58,6 @@ class CsvExportView(View):
         temp_file.seek(0)
         return response
 
-    def get_model_admin(self):
-        return self.model_admin
-
-    def get_queryset(self):
-        qs = self.get_model_admin().get_queryset(self.request)
-        ids = self.request.GET.get('ids')
-        if ids:
-            qs = qs.filter(pk__in=ids.split(','))
-
-        return qs
-
 
 class JsonExportView(CsvExportView):
     content_type='application/json; charset=utf-8'
@@ -88,22 +77,21 @@ class YamlExportView(CsvExportView):
 @decorate_view(
     csrf_protect,
 )
-class MassUpdateView(FormView):
+class MassUpdateView(AdminMixin, FormView):
 
     form_class = MassUpdateFormSet
-    model_admin = None
 
     def dispatch(self, request, *args, **kwargs):
-        model_admin = self.get_model_admin()
-        if (model_admin is None
-                or not model_admin.has_massupdate_permission(request)):
+        modeladmin = self.get_modeladmin()
+        if (modeladmin is None
+                or not modeladmin.has_change_permission(request)):
             raise PermissionDenied
         else:
             return super(MassUpdateView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        model_admin = self.get_model_admin()
-        opts = model_admin.model._meta
+        modeladmin = self.get_modeladmin()
+        opts = modeladmin.model._meta
 
         ops = []
         for f in form:
@@ -124,12 +112,7 @@ class MassUpdateView(FormView):
                 operations=ops,
             ))
         else:
-            qs = model_admin.get_queryset(self.request)
-            ids = self.request.GET.get('ids')
-            if ids:
-                qs = qs.filter(pk__in=ids.split(','))
-
-            affected_rows = model_admin.update_queryset(
+            affected_rows = modeladmin.update_queryset(
                 self.request,
                 self.get_queryset(),
                 ops,
@@ -145,7 +128,7 @@ class MassUpdateView(FormView):
                 msg = _('{record_count} {verbose_name_plural} were updated successfully.')
                 msg_level = messages.SUCCESS
 
-        model_admin.message_user(
+        modeladmin.message_user(
             self.request,
             msg.format(
                 record_count=affected_rows,
@@ -158,15 +141,15 @@ class MassUpdateView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(MassUpdateView, self).get_context_data(**kwargs)
-        model_admin = self.get_model_admin()
+        modeladmin = self.get_modeladmin()
         formset = context.pop('form')
-        opts = model_admin.model._meta
+        opts = modeladmin.model._meta
         admin_form = helpers.AdminForm(
             formset,
-            model_admin.get_fieldsets(self.request),
+            modeladmin.get_fieldsets(self.request),
             {},
-            model_admin.get_readonly_fields(self.request),
-            model_admin,
+            modeladmin.get_readonly_fields(self.request),
+            modeladmin,
         )
         context.update({
             'adminform': admin_form,
@@ -181,34 +164,23 @@ class MassUpdateView(FormView):
 
     def get_form_kwargs(self):
         kwargs = super(MassUpdateView, self).get_form_kwargs()
-        kwargs['model_admin'] = self.get_model_admin()
+        kwargs['modeladmin'] = self.get_modeladmin()
         kwargs['request'] = self.request
         return kwargs
 
-    def get_model_admin(self):
-        return self.model_admin
-
-    def get_queryset(self):
-        qs = self.get_model_admin().get_queryset(self.request)
-        ids = self.request.GET.get('ids')
-        if ids:
-            qs = qs.filter(pk__in=ids.split(','))
-
-        return qs
-
     def get_success_url(self):
-        model_admin = self.get_model_admin()
-        opts = model_admin.model._meta
+        modeladmin = self.get_modeladmin()
+        opts = modeladmin.model._meta
         url_name = 'admin:{0}_{1}_changelist'.format(
             opts.app_label,
             opts.model_name,
         )
-        return reverse(url_name)
+        return self.add_preserved_filters(reverse(url_name))
 
     def get_template_names(self):
         if self.template_name is None:
-            model_admin = self.get_model_admin()
-            opts = model_admin.model._meta
+            modeladmin = self.get_modeladmin()
+            opts = modeladmin.model._meta
             return [
                 'admin/{0}/{1}/mass_update.html'.format(opts.app_label, opts.model_name),
                 'admin/{0}/mass_update.html'.format(opts.app_label),
