@@ -124,10 +124,12 @@ class HtmlMinifier(object):
     def scripts_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
         content = matchobj.group(2)
-        if content.strip():
-            content = ''.join(('\n', minify_js(content)))
-        else:
+        if not content.strip():
             content = ''
+        else:
+            content = minify_js(content)
+            if content.endswith('\n'):
+                content = ''.join(('\n', content))
 
         closing_tag = matchobj.group(3)
         return ''.join((opening_tag, self.reserve(content), closing_tag))
@@ -135,10 +137,12 @@ class HtmlMinifier(object):
     def styles_replacement(self, matchobj):
         opening_tag = matchobj.group(1)
         content = matchobj.group(2)
-        if content.strip():
-            content = ''.join(('\n', minify_css(content)))
-        else:
+        if not content.strip():
             content = ''
+        else:
+            content = minify_css(content)
+            if content.endswith('\n'):
+                content = ''.join(('\n', content))
 
         closing_tag = matchobj.group(3)
         return ''.join((opening_tag, self.reserve(content), closing_tag))
