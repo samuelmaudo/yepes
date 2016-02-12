@@ -11,7 +11,7 @@ from django.contrib.admin import (
 )
 
 from yepes.admin.filters import NestableFieldListFilter
-from yepes.admin.mixins import (
+from yepes.admin.model_mixins import (
     ActivatableMixin,
     DisplayableMixin,
     EnableableMixin,
