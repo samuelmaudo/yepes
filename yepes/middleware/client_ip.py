@@ -9,7 +9,7 @@ from django.core.validators import ipv4_re as IPV4_RE
 from django.http import HttpResponseForbidden
 from django.utils.ipv6 import clean_ipv6_address
 
-from yepes.apps.registry import registry
+from yepes.contrib.registry import registry
 from yepes.utils.http import get_meta_data
 
 COMMA_RE = re.compile(r'\s*,\s*')

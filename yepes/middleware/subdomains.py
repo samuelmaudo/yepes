@@ -7,7 +7,7 @@ import re
 from django.contrib.sites.models import Site
 from django.http import HttpResponseNotFound
 
-from yepes.apps.registry import registry
+from yepes.contrib.registry import registry
 
 
 class SubdomainsMiddleware(object):

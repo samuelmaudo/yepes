@@ -10,15 +10,15 @@ from django.test import TestCase
 from django.template import Context, Template
 from django.utils.encoding import force_bytes
 
-from yepes.apps.thumbnails.models import Configuration
-from yepes.apps.thumbnails.proxies import ConfigurationProxy
-from yepes.apps.thumbnails.templatetags.thumbnails import (
+from yepes.contrib.thumbnails.models import Configuration
+from yepes.contrib.thumbnails.proxies import ConfigurationProxy
+from yepes.contrib.thumbnails.templatetags.thumbnails import (
     GetThumbnailTag,
     MakeConfigurationTag,
     ThumbnailTagTag,
     ThumbnailUrlTag,
 )
-from yepes.apps.thumbnails.test_mixins import ThumbnailsMixin
+from yepes.contrib.thumbnails.test_mixins import ThumbnailsMixin
 from yepes.test_mixins import TemplateTagsMixin
 
 

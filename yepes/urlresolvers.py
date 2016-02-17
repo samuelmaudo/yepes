@@ -8,8 +8,8 @@ from django.utils import six
 from django.utils.encoding import iri_to_uri
 from django.utils.functional import lazy
 
-from yepes.apps.registry import registry
 from yepes.conf import settings
+from yepes.contrib.registry import registry
 
 __all__ = ('build_full_url', 'full_reverse', 'full_reverse_lazy')
 

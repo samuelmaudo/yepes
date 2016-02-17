@@ -16,7 +16,7 @@ from django.views.generic import FormView, View
 
 from yepes.admin.forms import MassUpdateFormSet, MassUpdateErrorList
 from yepes.admin.view_mixins import AdminMixin
-from yepes.apps.data_migrations import QuerySetExportation
+from yepes.contrib.data_migrations import QuerySetExportation
 from yepes.utils.views import decorate_view
 
 

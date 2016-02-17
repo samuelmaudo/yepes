@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.apps.registry import Registry
-from yepes.apps.registry.fields import *
+from yepes.contrib.registry import Registry
+from yepes.contrib.registry.fields import *
 
 
 registry = Registry(namespace='core')

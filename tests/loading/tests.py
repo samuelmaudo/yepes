@@ -20,7 +20,7 @@ class GetClassTest(test.SimpleTestCase):
 
     def test_valid_class(self):
         cls = get_class('registry.base', 'Registry')
-        from yepes.apps.registry.base import Registry
+        from yepes.contrib.registry.base import Registry
         self.assertEqual(cls, Registry)
         self.assertIs(cls, Registry)
 
@@ -41,7 +41,7 @@ class GetClassesTest(test.SimpleTestCase):
 
     def test_valid_class(self):
         classes = get_classes('registry.base', ['Registry', 'UnregisteredError'])
-        from yepes.apps.registry.base import Registry, UnregisteredError
+        from yepes.contrib.registry.base import Registry, UnregisteredError
         self.assertEqual(classes, [Registry, UnregisteredError])
         for a, b in zip(classes, [Registry, UnregisteredError]):
             self.assertIs(a, b)
@@ -63,7 +63,7 @@ class GetModelTest(test.SimpleTestCase):
 
     def test_valid_model(self):
         model = get_model('registry', 'Entry')
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         self.assertEqual(model, Entry)
         self.assertIs(model, Entry)
 
@@ -80,7 +80,7 @@ class GetModelsTest(test.SimpleTestCase):
 
     def test_valid_model(self):
         models = get_models('registry', ['Entry', 'LongEntry'])
-        from yepes.apps.registry.models import Entry, LongEntry
+        from yepes.contrib.registry.models import Entry, LongEntry
         self.assertEqual(models, [Entry, LongEntry])
         for a, b in zip(models, [Entry, LongEntry]):
             self.assertIs(a, b)
@@ -95,7 +95,7 @@ class GetModelsTest(test.SimpleTestCase):
 
     def test_app_models(self):
         models = get_models('registry')
-        from yepes.apps.registry.models import Entry, LongEntry
+        from yepes.contrib.registry.models import Entry, LongEntry
         self.assertEqual(models, [Entry, LongEntry])
         for a, b in zip(models, [Entry, LongEntry]):
             self.assertIs(a, b)
@@ -109,7 +109,7 @@ class GetModelsTest(test.SimpleTestCase):
         from django.contrib.auth.models import Group, User
         from django.contrib.contenttypes.models import ContentType
         from django.contrib.sites.models import Site
-        from yepes.apps.registry.models import Entry, LongEntry
+        from yepes.contrib.registry.models import Entry, LongEntry
         self.assertIn(Group, models)
         self.assertIn(User, models)
         self.assertIn(ContentType, models)
@@ -180,27 +180,27 @@ class LazyClassTest(test.SimpleTestCase):
 
     def test_class(self):
         cls = LazyClass('registry.base', 'Registry')
-        from yepes.apps.registry.base import Registry
+        from yepes.contrib.registry.base import Registry
         self.assertEqual(cls.__class__, object.__class__)
         self.assertEqual(cls.__class__, Registry.__class__)
 
     def test_call(self):
         cls = LazyClass('registry.base', 'Registry')
-        from yepes.apps.registry.base import Registry
+        from yepes.contrib.registry.base import Registry
         self.assertIsInstance(cls(), object)
         self.assertIsInstance(cls(), Registry)
         self.assertIsInstance(cls(), cls)
 
     def test_instance_check(self):
         cls = LazyClass('registry.base', 'Registry')
-        from yepes.apps.registry.base import Registry
+        from yepes.contrib.registry.base import Registry
         self.assertIsInstance(Registry(), cls)
         self.assertIsInstance(cls(), cls)
 
     @unittest.expectedFailure
     def test_subclass_check(self):
         cls = LazyClass('registry.base', 'Registry')
-        from yepes.apps.registry.base import Registry
+        from yepes.contrib.registry.base import Registry
         self.assertFalse(issubclass(object, Registry))
         self.assertFalse(issubclass(object, cls))
         self.assertTrue(issubclass(Registry, Registry))
@@ -228,30 +228,30 @@ class LazyModelTest(test.SimpleTestCase):
 
     def test_class(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.apps.registry.abstract_models import AbstractEntry
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.models import Entry
         self.assertEqual(model.__class__, AbstractEntry.__class__)
         self.assertEqual(model.__class__, Entry.__class__)
 
     def test_call(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.apps.registry.abstract_models import AbstractEntry
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.models import Entry
         self.assertIsInstance(model(), AbstractEntry)
         self.assertIsInstance(model(), Entry)
         self.assertIsInstance(model(), model)
 
     def test_instance_check(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         self.assertIsInstance(Entry(), model)
         self.assertIsInstance(model(), model)
 
     @unittest.expectedFailure
     def test_subclass_check(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.apps.registry.abstract_models import AbstractEntry
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.models import Entry
         self.assertFalse(issubclass(AbstractEntry, Entry))
         self.assertFalse(issubclass(AbstractEntry, model))
         self.assertTrue(issubclass(Entry, Entry))
@@ -281,7 +281,7 @@ class LazyModelManagerTest(test.SimpleTestCase):
         manager = LazyModelManager('registry', 'Entry')
         from django.db.models import Manager
         from django.contrib.sites.managers import CurrentSiteManager
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         EntryManager = Entry._default_manager
 
         self.assertNotEqual(manager.__class__, Manager)
@@ -293,7 +293,7 @@ class LazyModelManagerTest(test.SimpleTestCase):
 
     def test_attributes(self):
         manager = LazyModelManager('registry', 'Entry')
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         EntryManager = Entry._default_manager
 
         self.assertEqual(manager.creation_counter, EntryManager.creation_counter)
@@ -304,7 +304,7 @@ class LazyModelManagerTest(test.SimpleTestCase):
         manager = LazyModelManager('registry', 'Entry', 'all_objects')
         from django.db.models import Manager
         from django.contrib.sites.managers import CurrentSiteManager
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
 
         self.assertEqual(manager.__class__, Manager)
         self.assertIsInstance(manager, Manager)
@@ -333,7 +333,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
     @classmethod
     def setUpClass(cls):
         from django.contrib.sites.models import Site
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         Entry.objects.create(
             site=Site.objects.get_current(),
             key='KEY',
@@ -341,11 +341,11 @@ class LazyModelObjectTest(test.SimpleTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         Entry.objects.filter(key='KEY').delete()
 
     def test_lazy_loading(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         lazy_obj = LazyModelObject(Entry, key='asdfg')
         with self.assertRaises(Entry.DoesNotExist):
             lazy_obj.key
@@ -359,7 +359,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
             del lazy_obj.key
 
     def test_class(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertEqual(lazy_obj.__class__, obj.__class__)
@@ -368,7 +368,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
         self.assertIsInstance(lazy_obj, Entry)
 
     def test_attributes(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertEqual(lazy_obj.pk, obj.pk)
@@ -377,7 +377,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
         self.assertEqual(lazy_obj.value, obj.value)
 
     def test_equal(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertEqual(lazy_obj, obj)
@@ -385,7 +385,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
         self.assertEqual(obj, lazy_obj)
 
     def test_not_equal(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertFalse(lazy_obj != obj)
@@ -393,7 +393,7 @@ class LazyModelObjectTest(test.SimpleTestCase):
         self.assertFalse(obj != lazy_obj)
 
     def test_hash(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertEqual(hash(lazy_obj), hash(obj))
@@ -402,14 +402,14 @@ class LazyModelObjectTest(test.SimpleTestCase):
         self.assertIn(obj, {lazy_obj})
 
     def test_string(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertEqual(str(lazy_obj), str(obj))
         self.assertEqual(str(obj), str(lazy_obj))
 
     def test_representation(self):
-        from yepes.apps.registry.models import Entry
+        from yepes.contrib.registry.models import Entry
         obj = Entry.objects.get(key='KEY')
         lazy_obj = LazyModelObject(Entry, key='KEY')
         self.assertNotEqual(repr(lazy_obj), repr(obj))

@@ -15,7 +15,7 @@ from yepes.fields.float import FloatField
 from yepes.fields.formula import FormulaField
 from yepes.fields.guid import GuidField
 from yepes.fields.identifier import IdentifierField
-from yepes.apps.thumbnails.fields import ImageField
+from yepes.contrib.thumbnails.fields import ImageField
 from yepes.fields.integer import IntegerField, BigIntegerField, SmallIntegerField
 from yepes.fields.phone_number import PhoneNumberField
 from yepes.fields.pickled import PickledObjectField

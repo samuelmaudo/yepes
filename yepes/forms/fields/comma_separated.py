@@ -40,7 +40,7 @@ class CommaSeparatedField(CharField):
 
     def value_to_string(self, value):
         """
-        This method is for use field into ``yepes.apps.registry``.
+        This method is for use field into ``yepes.contrib.registry``.
         """
         if not value:
             return ''

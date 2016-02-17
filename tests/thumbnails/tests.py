@@ -9,9 +9,9 @@ import os
 from django.test import TestCase
 from django.utils.encoding import force_bytes
 
-from yepes.apps.thumbnails.models import Configuration
-from yepes.apps.thumbnails.proxies import ConfigurationProxy
-from yepes.apps.thumbnails.test_mixins import ThumbnailsMixin
+from yepes.contrib.thumbnails.models import Configuration
+from yepes.contrib.thumbnails.proxies import ConfigurationProxy
+from yepes.contrib.thumbnails.test_mixins import ThumbnailsMixin
 
 
 class ThumbnailsTest(ThumbnailsMixin, TestCase):

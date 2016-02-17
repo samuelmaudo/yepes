@@ -16,8 +16,8 @@ from django.utils.encoding import force_text
 from django.utils.module_loading import import_by_path
 from django.utils.six.moves import reduce, zip
 
-from yepes.apps.registry import registry
 from yepes.conf import settings
+from yepes.contrib.registry import registry
 from yepes.types import Undefined
 
 

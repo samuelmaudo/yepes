@@ -145,7 +145,7 @@ def get_class(module_path, class_name):
     Example:
 
         >>> get_class('registry.base', 'Registry')
-        <class 'yepes.apps.registry.base.Registry'>
+        <class 'yepes.contrib.registry.base.Registry'>
 
     Raises:
 
@@ -186,8 +186,8 @@ def get_classes(module_path, class_names):
 
         >>> get_classes('registry.base', ['AlreadyRegisteredError',
                                           'UnregisteredError'])
-        [<class 'yepes.apps.registry.base.AlreadyRegisteredError'>,
-         <class 'yepes.apps.registry.base.UnregisteredError'>]
+        [<class 'yepes.contrib.registry.base.AlreadyRegisteredError'>,
+         <class 'yepes.contrib.registry.base.UnregisteredError'>]
 
     Raises:
 
@@ -264,7 +264,7 @@ def get_model(app_label, model_name):
     Example:
 
         >>> get_model('registry', 'Entry')
-        <class 'yepes.apps.registry.models.Entry'>
+        <class 'yepes.contrib.registry.models.Entry'>
 
     Raises:
 
@@ -301,8 +301,8 @@ def get_models(app_label=None, model_names=None):
     Example:
 
         >>> get_model('registry', ['Entry', 'LongEntry'])
-        [<class 'yepes.apps.registry.models.Entry'>,
-         <class 'yepes.apps.registry.models.LongEntry'>]
+        [<class 'yepes.contrib.registry.models.Entry'>,
+         <class 'yepes.contrib.registry.models.LongEntry'>]
 
     Raises:
 

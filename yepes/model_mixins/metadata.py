@@ -13,7 +13,7 @@ from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.apps.registry import registry
+from yepes.contrib.registry import registry
 
 __all__ = ('MetaData', )
 

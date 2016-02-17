@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.test import SimpleTestCase
 from django.template import Context, Template
 
-from yepes.apps.newsletters.templatetags.newsletters import (
+from yepes.contrib.newsletters.templatetags.newsletters import (
     ImageUrlTag,
     LinkUrlTag,
     MessageUrlTag,

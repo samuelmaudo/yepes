@@ -19,8 +19,8 @@ from django.db.models.signals import post_save, post_delete
 from django.utils import six
 from django.utils.synch import RWLock
 
-from yepes.apps.registry import registry
 from yepes.conf import settings
+from yepes.contrib.registry import registry
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 

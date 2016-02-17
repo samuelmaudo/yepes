@@ -6,7 +6,7 @@ from functools import wraps
 
 from django.utils import six
 
-from yepes.apps.registry import registry
+from yepes.contrib.registry import registry
 
 __all__ = ('override_registry', )
 

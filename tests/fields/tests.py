@@ -14,8 +14,8 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils import six
 from django.utils.unittest import skip
 
-from yepes.apps.registry import registry
-from yepes.apps.registry.fields import ModelChoiceField
+from yepes.contrib.registry import registry
+from yepes.contrib.registry.fields import ModelChoiceField
 from yepes.types import Bit, Formula
 
 from .forms import (

@@ -9,7 +9,7 @@ from django import test
 from django.utils import timezone
 from django.utils import translation
 
-from yepes.apps.registry import registry
+from yepes.contrib.registry import registry
 from yepes.model_mixins import Displayable
 from yepes.model_mixins.multilingual import TranslationDoesNotExist
 

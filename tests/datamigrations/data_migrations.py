@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from yepes.apps import data_migrations as migrations
+from yepes.contrib import data_migrations as migrations
 
 
 class BooleanMigration(migrations.CustomDataMigration):

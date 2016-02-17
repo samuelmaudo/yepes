@@ -17,8 +17,8 @@ from django.views.decorators.csrf import (
     ensure_csrf_cookie,
 )
 
-from yepes.apps.registry import registry
 from yepes.conf import settings
+from yepes.contrib.registry import registry
 from yepes.middleware.client_ip import ClientIpMiddleware
 from yepes.middleware.csrf_token import CsrfTokenMiddleware
 from yepes.middleware.html_minifier import HtmlMinifierMiddleware

@@ -10,9 +10,9 @@ from django.test import TestCase
 from django.utils._os import upath
 from django.utils.six import StringIO
 
-from yepes.apps.data_migrations import DataMigration
-from yepes.apps.data_migrations.importation_plans.direct import DirectPlan
-from yepes.apps.data_migrations.serializers.csv import CsvSerializer
+from yepes.contrib.data_migrations import DataMigration
+from yepes.contrib.data_migrations.importation_plans.direct import DirectPlan
+from yepes.contrib.data_migrations.serializers.csv import CsvSerializer
 from yepes.test_mixins import TempDirMixin
 
 from .models import AlphabetModel
