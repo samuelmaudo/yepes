@@ -34,6 +34,8 @@ class TemplateTagsMixin(object):
                 erroneous_args = " acxz='acxz'"
             elif not process.varargs:
                 erroneous_args = ''.join(" 'acxz'" * (len(process.args)))
+            else:
+                return  # There is no erroneous arguments.
 
         template_code = ''
         if self.requiredLibraries is not None:
