@@ -24,7 +24,7 @@ def get(value, arg):
     except (AttributeError, TypeError):
         try:
             return value[arg]
-        except (AttributeError, KeyError, TypeError):
+        except (AttributeError, KeyError, IndexError, TypeError):
             return ''
 
 
