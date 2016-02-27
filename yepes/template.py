@@ -17,7 +17,7 @@ from django.template.context import Context
 from django.template.loader import get_template, select_template
 from django.utils import six
 from django.utils.decorators import classonlymethod
-from django.utils.encoding import force_str, smart_bytes
+from django.utils.encoding import force_str, force_str
 from django.utils.itercompat import is_iterable
 from django.utils.safestring import mark_safe
 
@@ -87,7 +87,7 @@ class Sandbox(object):
                 msg = "'{0}' tag got an unknown variable: {1!r}"
                 raise TemplateSyntaxError(msg.format(self.tag_name, value))
 
-            kwargs[smart_bytes(key, 'ascii')] = value
+            kwargs[force_str(key)] = value
 
         return kwargs
 
