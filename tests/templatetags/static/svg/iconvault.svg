@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+<defs>
+<symbol id="media-playback-pause" viewBox="0 0 16 16">
+	<rect style="fill:#4d4d4d" width="2" height="6" x="5" y="5"/>
+	<rect style="fill:#4d4d4d" width="2" height="6" x="9" y="5"/>
+</symbol>
+<symbol id="media-playback-start" viewBox="0 0 16 16">
+    <path style="fill:#4d4d4d" d="M6,11 4,-3 -4,-3z"/>
+</symbol>
+<symbol id="media-playback-stop" viewBox="0 0 16 16">
+	<rect style="fill:#4d4d4d" width="6" height="6" x="5" y="5"/>
+</symbol>
+<symbol id="media-record" viewBox="0 0 16 16">
+	<circle cy="8" cx="8" style="fill:#da4453" r="2"/>
+	<path style="fill:#4d4d4d" d="M 8 2 A 6 6 0 0 0 2 8 A 6 6 0 0 0 8 14 A 6 6 0 0 0 14 8 A 6 6 0 0 0 8 2 z M 8 3 A 5 5 0 0 1 13 8 A 5 5 0 0 1 8 13 A 5 5 0 0 1 3 8 A 5 5 0 0 1 8 3 z"/>
+</symbol>
+<symbol id="media-seek-backward" viewBox="0 0 16 16">
+	<path style="fill:#4d4d4d" d="M12,11 -4,-3 4,-3 0,6 0,0z"/>
+	<path style="fill:#4d4d4d" d="M8,11 -4,-3 4,-3 0,6 0,0z"/>
+</symbol>
+<symbol id="media-seek-forward" viewBox="0 0 16 16">
+	<path style="fill:#4d4d4d" d="M4,11 4,-3 -4,-3 0,6 0,0z"/>
+	<path style="fill:#4d4d4d" d="M8,11 4,-3 -4,-3 0,6 0,0z"/>
+</symbol>
+<symbol id="media-skip-backward" viewBox="0 0 16 16">
+	<rect y="5" x="9" height="6" width="2" style="fill:#4d4d4d"/>
+	<path d="M5,11 4,-3 -4,-3 0,6 0,0z" style="fill:#4d4d4d"/>
+</symbol>
+<symbol id="media-skip-forward" viewBox="0 0 16 16">
+	<rect style="fill:#4d4d4d" width="2" height="6" x="9" y="5"/>
+	<path style="fill:#4d4d4d" d="M5,11 4,-3 -4,-3 0,6 0,0z"/>
+</symbol>
+</defs>
+</svg>

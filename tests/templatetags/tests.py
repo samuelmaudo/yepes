@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 from django.test import SimpleTestCase, TestCase
-from django.template import Context, Template
+from django.test.utils import override_settings
+from django.template import Context, Template, TemplateSyntaxError
 
 from yepes.defaulttags import (
     BuildFullUrlTag,
@@ -67,11 +68,107 @@ class SvgTagsTest(TemplateTagsMixin, SimpleTestCase):
             '{% insert_file file_name[ method] %}',
         )
 
+    @override_settings(DEBUG=True)
+    def test_insert_file(self):
+        template = Template('''
+            {% load svg %}
+            {% insert_file 'invalid-file' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertEqual(html.strip(), '')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_file 'svg/icon.svg' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertHTMLEqual(html, '''
+            <svg width="16" height="16">
+                <rect style="fill:#4d4d4d" width="6" height="6" x="5" y="5"/>
+            </svg>
+        ''')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_file 'svg/icon.svg' method='img' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertHTMLEqual(html, '''
+            <img src="data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect style='fill:%234d4d4d' width='6' height='6' x='5' y='5'/%3E%3C/svg%3E" width="16" height="16" />
+        ''')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_file 'svg/icon.svg' 'invalid-method' %}
+        ''')
+        context = Context()
+        with self.assertRaises(TemplateSyntaxError):
+            template.render(context)
+
+
     def test_insert_symbol_syntax(self):
         self.checkSyntax(
             InsertSymbolTag,
             '{% insert_symbol file_name symbol_name[ method] %}',
         )
+
+    @override_settings(DEBUG=True)
+    def test_insert_symbol(self):
+        template = Template('''
+            {% load svg %}
+            {% insert_symbol 'invalid-file' 'invalid-symbol' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertEqual(html.strip(), '')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_symbol 'svg/iconvault.svg' 'invalid-symbol' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertEqual(html.strip(), '')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_symbol 'svg/iconvault.svg' 'media-playback-stop' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertHTMLEqual(html, '''
+            <svg width="16" height="16">
+                <rect style="fill:#4d4d4d" width="6" height="6" x="5" y="5"/>
+            </svg>
+        ''')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_symbol 'svg/iconvault.svg' 'media-playback-stop' method='img' %}
+        ''')
+        context = Context()
+        html = template.render(context)
+
+        self.assertHTMLEqual(html, '''
+            <img src="data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect style='fill:%234d4d4d' width='6' height='6' x='5' y='5'/%3E%3C/svg%3E" width="16" height="16" />
+        ''')
+
+        template = Template('''
+            {% load svg %}
+            {% insert_symbol 'svg/iconvault.svg' 'media-playback-stop' 'invalid-method' %}
+        ''')
+        context = Context()
+        with self.assertRaises(TemplateSyntaxError):
+            template.render(context)
 
 
 class TreesTagsTest(TemplateTagsMixin, TestCase):

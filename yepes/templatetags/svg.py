@@ -3,13 +3,21 @@
 from __future__ import unicode_literals
 
 from lxml import etree
-import os
+from posixpath import normpath
 
+from django.contrib.staticfiles import finders as staticfiles_finders
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core.cache import get_cache
 from django.template.base import Library, TemplateSyntaxError
-from django.utils.encoding import force_str
+from django.utils.encoding import force_bytes, force_text
 
 from yepes.conf import settings
 from yepes.template import SingleTag
+
+SYMBOL_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
+    'LOCATION': 'yepes.templatetags.svg.insert_symbol',
+    'TIMEOUT': 600,
+})
 
 register = Library()
 
@@ -26,16 +34,36 @@ class SvgMixin(object):
             element.tail = None
             svg.append(element)
 
+        width = ''
+        height = ''
+        if 'width' in source.attrib and 'height' in source.attrib:
+            w = source.attrib['width']
+            h = source.attrib['height']
+            if w.isdigit() and h.isdigit():
+                width = w
+                height = h
+
+        elif 'viewBox' in source.attrib:
+            viewBox = source.attrib['viewBox'].split()
+            if len(viewBox) == 4:
+                w = viewBox[2]
+                h = viewBox[3]
+                if w.isdigit() and h.isdigit():
+                    width = w
+                    height = h
+
         if method == 'img':
+
             measures = ''
-            if 'viewBox' in source.attrib:
-                viewBox = source.attrib['viewBox'].split()
-                if len(viewBox) == 4 and viewBox[2].isdigit() and viewBox[3].isdigit():
-                    svg.attrib['viewBox'] = ' '.join(viewBox)
-                    measures = ' width="{0}" height="{1}"'.format(viewBox[2], viewBox[3])
+            if width and height:
+                measures = ' width="{0}" height="{1}"'.format(width, height)
 
             svg.attrib['xmlns'] = 'http://www.w3.org/2000/svg'
-            code = etree.tostring(svg, encoding='utf8', pretty_print=False).strip()
+            code = force_text(etree.tostring(
+                svg,
+                encoding='utf8',
+                pretty_print=False,
+            )).strip()
             code = code.replace('"', "'")
             code = code.replace('<', '%3C')
             code = code.replace('>', '%3E')
@@ -43,29 +71,32 @@ class SvgMixin(object):
             return '<img src="data:image/svg+xml;charset=utf8,{0}"{1}>'.format(code, measures)
 
         if method == 'svg':
-            if 'viewBox' in source.attrib:
-                viewBox = source.attrib['viewBox'].split()
-                if len(viewBox) == 4 and viewBox[2].isdigit() and viewBox[3].isdigit():
-                    svg.attrib['width'] = viewBox[2]
-                    svg.attrib['height'] = viewBox[3]
 
-            return etree.tostring(svg, encoding='utf8', pretty_print=True).strip()
+            if width and height:
+                svg.attrib['width'] = width
+                svg.attrib['height'] = height
+
+            return force_text(etree.tostring(
+                svg,
+                encoding='utf8',
+                pretty_print=True)
+            ).strip()
 
         return ''
 
     def open_file(self, file_name):
-        if settings.STATIC_ROOT:
+        file_name = normpath(file_name)
+        if file_name:
             try:
-                return open(os.path.join(settings.STATIC_ROOT, file_name))
+                return staticfiles_storage.open(file_name)
             except IOError:
-                pass
-
-        if settings.STATICFILES_DIRS:
-            for dir_name in settings.STATICFILES_DIRS:
-                try:
-                    return open(os.path.join(dir_name, file_name))
-                except IOError:
-                    continue
+                if settings.DEBUG:
+                    file_path = staticfiles_finders.find(file_name)
+                    if file_path:
+                        try:
+                            return open(file_path)
+                        except IOError:
+                            pass
 
         return None
 
@@ -75,7 +106,7 @@ class SvgMixin(object):
             return file
 
         try:
-            root = etree.fromstring(force_str(file.read()))
+            root = etree.fromstring(force_bytes(file.read()))
         finally:
             file.close()
 
@@ -111,31 +142,39 @@ class InsertSymbolTag(SvgMixin, SingleTag):
             msg = "'{0}' tag does not support '{1}' method."
             raise TemplateSyntaxError(msg.format(self.tag_name, method))
 
-        root = self.parse_file(file_name)
-        if root is None or not root.tag.endswith('svg'):
+        cache = SYMBOL_CACHE.get(file_name)
+        if cache is None:
+            cache = {}
+
+            root = self.parse_file(file_name)
+            if root is not None and root.tag.endswith('svg'):
+
+                defs = None
+                for element in root.iterchildren():
+                    if element.tag.endswith('defs'):
+                        defs = element
+                        break
+
+                if defs is not None:
+                    cache = {
+                        element.attrib.get('id'): force_bytes(etree.tostring(
+                            element,
+                            encoding='utf8',
+                            pretty_print=False
+                        ))
+                        for element
+                        in defs.iterchildren()
+                        if not isinstance(element, etree._Comment)
+                        and element.tag.endswith('symbol')
+                    }
+
+            SYMBOL_CACHE.set(file_name, cache)
+
+        symbol_xml = cache.get(symbol_name)
+        if symbol_xml is None:
             return ''
 
-        defs = None
-        for element in root.iterchildren():
-            if element.tag.endswith('defs'):
-                defs = element
-                break
-
-        if defs is None:
-            return ''
-
-        symbol = None
-        for element in defs.iterchildren():
-            if (not isinstance(element, etree._Comment)
-                    and element.tag.endswith('symbol')
-                    and element.attrib.get('id') == symbol_name):
-                symbol = element
-                break
-
-        if symbol is None:
-            return ''
-
-        return self.generate_code(symbol, method)
+        return self.generate_code(etree.fromstring(symbol_xml), method)
 
 register.tag('insert_symbol', InsertSymbolTag.as_tag())
 
