@@ -31,7 +31,7 @@ class ImportationPlan(object):
 
     def _get_existing_object_keys(self, batch):
         key = self.migration.primary_key
-        if key is None:
+        if not batch or key is None:
             return set()
 
         qs = self._get_queryset_of_existing_objects(batch)
@@ -43,7 +43,7 @@ class ImportationPlan(object):
 
     def _get_existing_objects(self, batch):
         key = self.migration.primary_key
-        if key is None:
+        if not batch or key is None:
             return {}
 
         qs = self._get_queryset_of_existing_objects(batch)
@@ -66,7 +66,7 @@ class ImportationPlan(object):
         key = self.migration.primary_key
         model = self.migration.model
         manager = model._default_manager
-        if key is None:
+        if not batch or key is None:
             return manager.none()
 
         if not isinstance(key, collections.Iterable):
