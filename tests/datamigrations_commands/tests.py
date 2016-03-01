@@ -10,15 +10,15 @@ from django.test import TestCase
 from django.utils._os import upath
 from django.utils.six import StringIO
 
-from yepes.contrib.data_migrations import DataMigration
-from yepes.contrib.data_migrations.importation_plans.direct import DirectPlan
-from yepes.contrib.data_migrations.serializers.csv import CsvSerializer
+from yepes.contrib.datamigrations import DataMigration
+from yepes.contrib.datamigrations.importation_plans.direct import DirectPlan
+from yepes.contrib.datamigrations.serializers.csv import CsvSerializer
 from yepes.test_mixins import TempDirMixin
 
 from .models import AlphabetModel
 
 MODULE_DIR = os.path.abspath(os.path.dirname(upath(__file__)))
-FIXTURES_DIR = os.path.join(MODULE_DIR, 'data_migrations')
+MIGRATIONS_DIR = os.path.join(MODULE_DIR, 'data_migrations')
 
 
 class ExportModelTest(TempDirMixin, TestCase):
@@ -52,7 +52,7 @@ class ExportModelTest(TempDirMixin, TestCase):
 
     def test_no_file(self):
         migration = DataMigration(AlphabetModel)
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
@@ -69,7 +69,7 @@ class ExportModelTest(TempDirMixin, TestCase):
 
     def test_file(self):
         migration = DataMigration(AlphabetModel)
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         result_path = os.path.join(self.temp_dir, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
@@ -116,28 +116,28 @@ class ImportModelTest(TempDirMixin, TestCase):
             call_command('import_model', 'appname.ModelName', input='filename')
 
     def test_app_not_found(self):
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "App with label 'appname' could not be found."):
             call_command('import_model', 'appname.ModelName', input=source_path)
 
     def test_model_not_found(self):
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Model 'ModelName' could not be found."):
             call_command('import_model', 'datamigrations_commands.ModelName', input=source_path)
 
     def test_serializer_not_found(self):
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
             call_command('import_model', 'datamigrations_commands.AlphabetModel', input=source_path, format='serializername')
 
     def test_importation_plan_not_found(self):
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Importation plan 'planname' could not be found."):
             call_command('import_model', 'datamigrations_commands.AlphabetModel', input=source_path, plan='planname')
 
     def test_file(self):
         migration = DataMigration(AlphabetModel)
-        source_path = os.path.join(FIXTURES_DIR, 'alphabet.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 

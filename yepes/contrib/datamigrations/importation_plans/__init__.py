@@ -8,14 +8,14 @@ from yepes.conf import settings
 from yepes.loading import get_module, LoadingError
 
 BUILTIN_PLANS = {
-    'bulk_create': 'yepes.contrib.data_migrations.importation_plans.bulk_create.BulkCreatePlan',
-    'create': 'yepes.contrib.data_migrations.importation_plans.create.CreatePlan',
-    'direct': 'yepes.contrib.data_migrations.importation_plans.direct.DirectPlan',
-    'replace': 'yepes.contrib.data_migrations.importation_plans.replace.ReplacePlan',
-    'replace_all': 'yepes.contrib.data_migrations.importation_plans.replace_all.ReplaceAllPlan',
-    'update': 'yepes.contrib.data_migrations.importation_plans.update.UpdatePlan',
-    'update_or_bulk_create': 'yepes.contrib.data_migrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
-    'update_or_create': 'yepes.contrib.data_migrations.importation_plans.update_or_create.UpdateOrCreatePlan',
+    'bulk_create': 'yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan',
+    'create': 'yepes.contrib.datamigrations.importation_plans.create.CreatePlan',
+    'direct': 'yepes.contrib.datamigrations.importation_plans.direct.DirectPlan',
+    'replace': 'yepes.contrib.datamigrations.importation_plans.replace.ReplacePlan',
+    'replace_all': 'yepes.contrib.datamigrations.importation_plans.replace_all.ReplaceAllPlan',
+    'update': 'yepes.contrib.datamigrations.importation_plans.update.UpdatePlan',
+    'update_or_bulk_create': 'yepes.contrib.datamigrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
+    'update_or_create': 'yepes.contrib.datamigrations.importation_plans.update_or_create.UpdateOrCreatePlan',
 }
 
 _PLANS = None

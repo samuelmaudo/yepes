@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from yepes.contrib.data_migrations.importation_plans.direct import DirectPlan
+from yepes.contrib.datamigrations.importation_plans.direct import DirectPlan
 
 
 class ReplaceAllPlan(DirectPlan):

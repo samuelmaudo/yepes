@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 from django.utils.six.moves import cStringIO
 
-from yepes.contrib.data_migrations.types import BOOLEAN, FLOAT, INTEGER, TEXT
+from yepes.contrib.datamigrations.types import BOOLEAN, FLOAT, INTEGER, TEXT
 
 
 class Serializer(object):

@@ -22,7 +22,7 @@ from yepes.admin.views import (
     YamlExportView,
     MassUpdateView,
 )
-from yepes.contrib.data_migrations import serializers
+from yepes.contrib.datamigrations import serializers
 
 
 class ModelAdmin(DjangoModelAdmin):

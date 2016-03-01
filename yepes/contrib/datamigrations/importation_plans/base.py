@@ -9,7 +9,7 @@ from django.db import transaction
 from django.db.models import F, Q
 from django.utils.six.moves import reduce
 
-from yepes.contrib.data_migrations.exceptions import (
+from yepes.contrib.datamigrations.exceptions import (
     UnableToCreateError,
     UnableToUpdateError,
 )

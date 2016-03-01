@@ -17,17 +17,17 @@ from django.utils._os import upath
 from django.utils.six.moves import zip
 from django.utils.timezone import utc as UTC
 
-from yepes.contrib.data_migrations import (
+from yepes.contrib.datamigrations import (
     DataMigration,
     importation_plans,
     QuerySetExportation,
     serializers,
 )
-from yepes.contrib.data_migrations.importation_plans.direct import DirectPlan
-from yepes.contrib.data_migrations.serializers.csv import CsvSerializer
-from yepes.contrib.data_migrations.serializers.json import JsonSerializer
-from yepes.contrib.data_migrations.serializers.tsv import TsvSerializer
-from yepes.contrib.data_migrations.serializers.yaml import YamlSerializer
+from yepes.contrib.datamigrations.importation_plans.direct import DirectPlan
+from yepes.contrib.datamigrations.serializers.csv import CsvSerializer
+from yepes.contrib.datamigrations.serializers.json import JsonSerializer
+from yepes.contrib.datamigrations.serializers.tsv import TsvSerializer
+from yepes.contrib.datamigrations.serializers.yaml import YamlSerializer
 from yepes.test_mixins import TempDirMixin
 
 from .data_migrations import (
@@ -56,7 +56,7 @@ from .models import (
 )
 
 MODULE_DIR = os.path.abspath(os.path.dirname(upath(__file__)))
-FIXTURES_DIR = os.path.join(MODULE_DIR, 'data_migrations')
+MIGRATIONS_DIR = os.path.join(MODULE_DIR, 'data_migrations')
 
 
 class BooleanFieldsTests(TempDirMixin, test.TestCase):
@@ -80,17 +80,17 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         migration = BooleanMigration(BooleanModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -103,8 +103,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = CsvSerializer
         export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'boolean_source.csv')
-        expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'boolean_source.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'boolean_result.csv')
         result_path = os.path.join(self.temp_dir, 'boolean_result.csv')
 
         with open(source_path, 'r') as source_file:
@@ -153,8 +153,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         migration = BooleanMigration(BooleanModel)
         serializer = JsonSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'boolean_source.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'boolean_source.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'boolean_result.json')
         result_path = os.path.join(self.temp_dir, 'boolean_result.json')
 
         with open(source_path, 'r') as source_file:
@@ -204,8 +204,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = TsvSerializer
         export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'boolean_source.tsv')
-        expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.tsv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'boolean_source.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'boolean_result.tsv')
         result_path = os.path.join(self.temp_dir, 'boolean_result.tsv')
 
         with open(source_path, 'r') as source_file:
@@ -254,8 +254,8 @@ class BooleanFieldsTests(TempDirMixin, test.TestCase):
         migration = BooleanMigration(BooleanModel)
         serializer = YamlSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'boolean_source.yaml')
-        expected_path = os.path.join(FIXTURES_DIR, 'boolean_result.yaml')
+        source_path = os.path.join(MIGRATIONS_DIR, 'boolean_source.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'boolean_result.yaml')
         result_path = os.path.join(self.temp_dir, 'boolean_result.yaml')
 
         with open(source_path, 'r') as source_file:
@@ -320,31 +320,31 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeMigration(DateTimeModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.YearField: date__year>',
-             '<yepes.contrib.data_migrations.fields.MonthField: date__month>',
-             '<yepes.contrib.data_migrations.fields.DayField: date__day>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.YearField: datetime__year>',
-             '<yepes.contrib.data_migrations.fields.MonthField: datetime__month>',
-             '<yepes.contrib.data_migrations.fields.DayField: datetime__day>',
-             '<yepes.contrib.data_migrations.fields.HourField: datetime__hour>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: datetime__minute>',
-             '<yepes.contrib.data_migrations.fields.SecondField: datetime__second>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: datetime__microsecond>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: datetime__tzinfo>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>',
-             '<yepes.contrib.data_migrations.fields.HourField: time__hour>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: time__minute>',
-             '<yepes.contrib.data_migrations.fields.SecondField: time__second>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: time__microsecond>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: time__tzinfo>'],
+            ['<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.YearField: date__year>',
+             '<yepes.contrib.datamigrations.fields.MonthField: date__month>',
+             '<yepes.contrib.datamigrations.fields.DayField: date__day>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.YearField: datetime__year>',
+             '<yepes.contrib.datamigrations.fields.MonthField: datetime__month>',
+             '<yepes.contrib.datamigrations.fields.DayField: datetime__day>',
+             '<yepes.contrib.datamigrations.fields.HourField: datetime__hour>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: datetime__minute>',
+             '<yepes.contrib.datamigrations.fields.SecondField: datetime__second>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: datetime__microsecond>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: datetime__tzinfo>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>',
+             '<yepes.contrib.datamigrations.fields.HourField: time__hour>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: time__minute>',
+             '<yepes.contrib.datamigrations.fields.SecondField: time__second>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: time__microsecond>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: time__tzinfo>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>'],
+            ['<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -355,47 +355,47 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeEdgeMigration(DateTimeModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.DateTimeField: date__datetime (date)>',
-             '<yepes.contrib.data_migrations.fields.YearField: date__year (date)>',
-             '<yepes.contrib.data_migrations.fields.MonthField: date__month (date)>',
-             '<yepes.contrib.data_migrations.fields.DayField: date__day (date)>',
-             '<yepes.contrib.data_migrations.fields.DateField: datetime__date (datetime)>',
-             '<yepes.contrib.data_migrations.fields.TimeField: datetime__time (datetime)>',
-             '<yepes.contrib.data_migrations.fields.YearField: datetime__year (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MonthField: datetime__month (datetime)>',
-             '<yepes.contrib.data_migrations.fields.DayField: datetime__day (datetime)>',
-             '<yepes.contrib.data_migrations.fields.HourField: datetime__hour (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: datetime__minute (datetime)>',
-             '<yepes.contrib.data_migrations.fields.SecondField: datetime__second (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: datetime__microsecond (datetime)>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: datetime__tzinfo (datetime)>',
-             '<yepes.contrib.data_migrations.fields.HourField: time__hour (time)>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: time__minute (time)>',
-             '<yepes.contrib.data_migrations.fields.SecondField: time__second (time)>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: time__microsecond (time)>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: time__tzinfo (time)>'],
+            ['<yepes.contrib.datamigrations.fields.DateTimeField: date__datetime (date)>',
+             '<yepes.contrib.datamigrations.fields.YearField: date__year (date)>',
+             '<yepes.contrib.datamigrations.fields.MonthField: date__month (date)>',
+             '<yepes.contrib.datamigrations.fields.DayField: date__day (date)>',
+             '<yepes.contrib.datamigrations.fields.DateField: datetime__date (datetime)>',
+             '<yepes.contrib.datamigrations.fields.TimeField: datetime__time (datetime)>',
+             '<yepes.contrib.datamigrations.fields.YearField: datetime__year (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MonthField: datetime__month (datetime)>',
+             '<yepes.contrib.datamigrations.fields.DayField: datetime__day (datetime)>',
+             '<yepes.contrib.datamigrations.fields.HourField: datetime__hour (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: datetime__minute (datetime)>',
+             '<yepes.contrib.datamigrations.fields.SecondField: datetime__second (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: datetime__microsecond (datetime)>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: datetime__tzinfo (datetime)>',
+             '<yepes.contrib.datamigrations.fields.HourField: time__hour (time)>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: time__minute (time)>',
+             '<yepes.contrib.datamigrations.fields.SecondField: time__second (time)>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: time__microsecond (time)>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: time__tzinfo (time)>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.DateTimeField: date__datetime (date)>',
-             '<yepes.contrib.data_migrations.fields.YearField: date__year (date)>',
-             '<yepes.contrib.data_migrations.fields.MonthField: date__month (date)>',
-             '<yepes.contrib.data_migrations.fields.DayField: date__day (date)>',
-             '<yepes.contrib.data_migrations.fields.DateField: datetime__date (datetime)>',
-             '<yepes.contrib.data_migrations.fields.TimeField: datetime__time (datetime)>',
-             '<yepes.contrib.data_migrations.fields.YearField: datetime__year (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MonthField: datetime__month (datetime)>',
-             '<yepes.contrib.data_migrations.fields.DayField: datetime__day (datetime)>',
-             '<yepes.contrib.data_migrations.fields.HourField: datetime__hour (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: datetime__minute (datetime)>',
-             '<yepes.contrib.data_migrations.fields.SecondField: datetime__second (datetime)>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: datetime__microsecond (datetime)>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: datetime__tzinfo (datetime)>',
-             '<yepes.contrib.data_migrations.fields.HourField: time__hour (time)>',
-             '<yepes.contrib.data_migrations.fields.MinuteField: time__minute (time)>',
-             '<yepes.contrib.data_migrations.fields.SecondField: time__second (time)>',
-             '<yepes.contrib.data_migrations.fields.MicrosecondField: time__microsecond (time)>',
-             '<yepes.contrib.data_migrations.fields.TimeZoneField: time__tzinfo (time)>'],
+            ['<yepes.contrib.datamigrations.fields.DateTimeField: date__datetime (date)>',
+             '<yepes.contrib.datamigrations.fields.YearField: date__year (date)>',
+             '<yepes.contrib.datamigrations.fields.MonthField: date__month (date)>',
+             '<yepes.contrib.datamigrations.fields.DayField: date__day (date)>',
+             '<yepes.contrib.datamigrations.fields.DateField: datetime__date (datetime)>',
+             '<yepes.contrib.datamigrations.fields.TimeField: datetime__time (datetime)>',
+             '<yepes.contrib.datamigrations.fields.YearField: datetime__year (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MonthField: datetime__month (datetime)>',
+             '<yepes.contrib.datamigrations.fields.DayField: datetime__day (datetime)>',
+             '<yepes.contrib.datamigrations.fields.HourField: datetime__hour (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: datetime__minute (datetime)>',
+             '<yepes.contrib.datamigrations.fields.SecondField: datetime__second (datetime)>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: datetime__microsecond (datetime)>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: datetime__tzinfo (datetime)>',
+             '<yepes.contrib.datamigrations.fields.HourField: time__hour (time)>',
+             '<yepes.contrib.datamigrations.fields.MinuteField: time__minute (time)>',
+             '<yepes.contrib.datamigrations.fields.SecondField: time__second (time)>',
+             '<yepes.contrib.datamigrations.fields.MicrosecondField: time__microsecond (time)>',
+             '<yepes.contrib.datamigrations.fields.TimeZoneField: time__tzinfo (time)>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -408,8 +408,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = CsvSerializer
         export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'datetime_source.csv')
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'datetime_source.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_result.csv')
         result_path = os.path.join(self.temp_dir, 'datetime_result.csv')
 
         with open(source_path, 'r') as source_file:
@@ -457,7 +457,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         migration = DateTimeEdgeMigration(DateTimeModel)
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_edge_result.csv')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.csv')
         with open(expected_path, 'r') as expected_file:
             with open(result_path, 'w+') as result_file:
@@ -472,8 +472,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeMigration(DateTimeModel)
         serializer = JsonSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'datetime_source.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'datetime_source.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_result.json')
         result_path = os.path.join(self.temp_dir, 'datetime_result.json')
 
         with open(source_path, 'r') as source_file:
@@ -521,7 +521,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         migration = DateTimeEdgeMigration(DateTimeModel)
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_edge_result.json')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.json')
         with open(expected_path, 'r') as expected_file:
             with open(result_path, 'w+') as result_file:
@@ -537,8 +537,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = TsvSerializer
         export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'datetime_source.tsv')
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.tsv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'datetime_source.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_result.tsv')
         result_path = os.path.join(self.temp_dir, 'datetime_result.tsv')
 
         with open(source_path, 'r') as source_file:
@@ -586,7 +586,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         migration = DateTimeEdgeMigration(DateTimeModel)
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_edge_result.tsv')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.tsv')
         with open(expected_path, 'r') as expected_file:
             with open(result_path, 'w+') as result_file:
@@ -601,8 +601,8 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
         migration = DateTimeMigration(DateTimeModel)
         serializer = YamlSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'datetime_source.yaml')
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_result.yaml')
+        source_path = os.path.join(MIGRATIONS_DIR, 'datetime_source.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_result.yaml')
         result_path = os.path.join(self.temp_dir, 'datetime_result.yaml')
 
         with open(source_path, 'r') as source_file:
@@ -650,7 +650,7 @@ class DateTimeFieldsTests(TempDirMixin, test.TestCase):
                         expected_file.read().splitlines())
 
         migration = DateTimeEdgeMigration(DateTimeModel)
-        expected_path = os.path.join(FIXTURES_DIR, 'datetime_edge_result.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'datetime_edge_result.yaml')
         result_path = os.path.join(self.temp_dir, 'datetime_edge_result.yaml')
         with open(expected_path, 'r') as expected_file:
             with open(result_path, 'w+') as result_file:
@@ -677,13 +677,13 @@ class FileFieldsTests(TempDirMixin, test.TestCase):
         migration = FileMigration(FileModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.FileField: file>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.FileField: file>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.FileField: file>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.FileField: file>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -696,8 +696,8 @@ class FileFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = CsvSerializer
         export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'file_source.csv')
-        expected_path = os.path.join(FIXTURES_DIR, 'file_result.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'file_source.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'file_result.csv')
         result_path = os.path.join(self.temp_dir, 'file_result.csv')
 
         with open(source_path, 'r') as source_file:
@@ -742,8 +742,8 @@ class FileFieldsTests(TempDirMixin, test.TestCase):
         migration = FileMigration(FileModel)
         serializer = JsonSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'file_source.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'file_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'file_source.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'file_result.json')
         result_path = os.path.join(self.temp_dir, 'file_result.json')
 
         with open(source_path, 'r') as source_file:
@@ -789,8 +789,8 @@ class FileFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = TsvSerializer
         export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'file_source.tsv')
-        expected_path = os.path.join(FIXTURES_DIR, 'file_result.tsv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'file_source.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'file_result.tsv')
         result_path = os.path.join(self.temp_dir, 'file_result.tsv')
 
         with open(source_path, 'r') as source_file:
@@ -835,8 +835,8 @@ class FileFieldsTests(TempDirMixin, test.TestCase):
         migration = FileMigration(FileModel)
         serializer = YamlSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'file_source.yaml')
-        expected_path = os.path.join(FIXTURES_DIR, 'file_result.yaml')
+        source_path = os.path.join(MIGRATIONS_DIR, 'file_source.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'file_result.yaml')
         result_path = os.path.join(self.temp_dir, 'file_result.yaml')
 
         with open(source_path, 'r') as source_file:
@@ -898,21 +898,21 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         migration = NumericMigration(NumericModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -925,8 +925,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = CsvSerializer
         export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'numeric_source.csv')
-        expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'numeric_source.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'numeric_result.csv')
         result_path = os.path.join(self.temp_dir, 'numeric_result.csv')
 
         with open(source_path, 'r') as source_file:
@@ -979,8 +979,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         migration = NumericMigration(NumericModel)
         serializer = JsonSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'numeric_source.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'numeric_source.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'numeric_result.json')
         result_path = os.path.join(self.temp_dir, 'numeric_result.json')
 
         with open(source_path, 'r') as source_file:
@@ -1034,8 +1034,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = TsvSerializer
         export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'numeric_source.tsv')
-        expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.tsv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'numeric_source.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'numeric_result.tsv')
         result_path = os.path.join(self.temp_dir, 'numeric_result.tsv')
 
         with open(source_path, 'r') as source_file:
@@ -1088,8 +1088,8 @@ class NumberFieldsTests(TempDirMixin, test.TestCase):
         migration = NumericMigration(NumericModel)
         serializer = YamlSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'numeric_source.yaml')
-        expected_path = os.path.join(FIXTURES_DIR, 'numeric_result.yaml')
+        source_path = os.path.join(MIGRATIONS_DIR, 'numeric_source.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'numeric_result.yaml')
         result_path = os.path.join(self.temp_dir, 'numeric_result.yaml')
 
         with open(source_path, 'r') as source_file:
@@ -1163,13 +1163,13 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         migration = TextMigration(TextModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -1182,8 +1182,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = CsvSerializer
         export_serializer = CsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'text_source.csv')
-        expected_path = os.path.join(FIXTURES_DIR, 'text_result.csv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'text_source.csv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'text_result.csv')
         result_path = os.path.join(self.temp_dir, 'text_result.csv')
 
         with open(source_path, 'r') as source_file:
@@ -1228,8 +1228,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         migration = TextMigration(TextModel)
         serializer = JsonSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'text_source.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'text_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'text_source.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'text_result.json')
         result_path = os.path.join(self.temp_dir, 'text_result.json')
 
         with open(source_path, 'r') as source_file:
@@ -1275,8 +1275,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         import_serializer = TsvSerializer
         export_serializer = TsvSerializer(quoting=csv.QUOTE_NONNUMERIC)
 
-        source_path = os.path.join(FIXTURES_DIR, 'text_source.tsv')
-        expected_path = os.path.join(FIXTURES_DIR, 'text_result.tsv')
+        source_path = os.path.join(MIGRATIONS_DIR, 'text_source.tsv')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'text_result.tsv')
         result_path = os.path.join(self.temp_dir, 'text_result.tsv')
 
         with open(source_path, 'r') as source_file:
@@ -1321,8 +1321,8 @@ class TextFieldsTests(TempDirMixin, test.TestCase):
         migration = TextMigration(TextModel)
         serializer = YamlSerializer
 
-        source_path = os.path.join(FIXTURES_DIR, 'text_source.yaml')
-        expected_path = os.path.join(FIXTURES_DIR, 'text_result.yaml')
+        source_path = os.path.join(MIGRATIONS_DIR, 'text_source.yaml')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'text_result.yaml')
         result_path = os.path.join(self.temp_dir, 'text_result.yaml')
 
         with open(source_path, 'r') as source_file:
@@ -1448,19 +1448,19 @@ class ImportationPlansTests(test.TestCase):
         migration = AlphabetMigration(AlphabetModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: pk>',
-             '<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: pk>',
+             '<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: pk>',
-             '<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: pk>',
+             '<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: pk>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: pk>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -1653,17 +1653,17 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.TextField: name>',
+            '<yepes.contrib.datamigrations.fields.TextField: name>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -1673,17 +1673,17 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogMigration(BlogModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.TextField: name>',
+            '<yepes.contrib.datamigrations.fields.TextField: name>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -1693,24 +1693,24 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogCategoryMigration(BlogCategoryModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(k) for k in migration.primary_key],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>'],
         )
         self.assertEqual(
             [repr(k) for k in migration.natural_foreign_keys],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>'],
         )
         self.assertTrue(migration.can_create)
         self.assertTrue(migration.can_update)
@@ -1720,7 +1720,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'author_source.json')
         with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='create')
@@ -1733,9 +1733,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogMigration(BlogModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'blog_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1767,9 +1767,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
             [k.attname for k in migration.primary_key],
             ['blog_id', 'name'],
         )
-        source_path = os.path.join(FIXTURES_DIR, 'blog_category_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_category_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_category_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1795,7 +1795,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'author_source.json')
         with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='bulk_create')
@@ -1808,9 +1808,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogMigration(BlogModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'blog_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1842,9 +1842,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
             [k.attname for k in migration.primary_key],
             ['blog_id', 'name'],
         )
-        source_path = os.path.join(FIXTURES_DIR, 'blog_category_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_category_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_category_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1870,7 +1870,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'author_source.json')
         with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read())
@@ -1883,9 +1883,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogMigration(BlogModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'blog_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1909,9 +1909,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
             [k.attname for k in migration.primary_key],
             ['blog_id', 'name'],
         )
-        source_path = os.path.join(FIXTURES_DIR, 'blog_category_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_category_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_category_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1929,7 +1929,7 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = AuthorMigration(AuthorModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'author_source.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'author_source.json')
         with open(source_path, 'r') as source_file:
 
             migration.import_data(source_file.read(), plan='update_or_bulk_create')
@@ -1942,9 +1942,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
         migration = BlogMigration(BlogModel)
         self.assertEqual(migration.primary_key.path, 'name')
 
-        source_path = os.path.join(FIXTURES_DIR, 'blog_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1968,9 +1968,9 @@ class NaturalAndCompositeKeysTests(TempDirMixin, test.TestCase):
             [k.attname for k in migration.primary_key],
             ['blog_id', 'name'],
         )
-        source_path = os.path.join(FIXTURES_DIR, 'blog_category_source.json')
-        update_path = os.path.join(FIXTURES_DIR, 'blog_category_update.json')
-        expected_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_category_source.json')
+        update_path = os.path.join(MIGRATIONS_DIR, 'blog_category_update.json')
+        expected_path = os.path.join(MIGRATIONS_DIR, 'blog_category_result.json')
         result_path = os.path.join(self.temp_dir, 'blog_category_result.json')
         with open(source_path, 'r') as source_file:
             with open(update_path, 'r') as update_file:
@@ -1993,19 +1993,19 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(AlphabetModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2019,17 +2019,17 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: letter>',
-             '<yepes.contrib.data_migrations.fields.TextField: word>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: letter>',
+             '<yepes.contrib.datamigrations.fields.TextField: word>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.TextField: letter>',
+            '<yepes.contrib.datamigrations.fields.TextField: letter>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2040,19 +2040,19 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(AuthorModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2066,17 +2066,17 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.FileField: image>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.FileField: image>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.TextField: name>',
+            '<yepes.contrib.datamigrations.fields.TextField: name>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2087,19 +2087,19 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(BlogModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2113,17 +2113,17 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.TextField: name>',
+            '<yepes.contrib.datamigrations.fields.TextField: name>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2134,21 +2134,21 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(BlogCategoryModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2159,23 +2159,23 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(BooleanModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2189,23 +2189,23 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean_as_string>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: null_boolean_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean_as_string>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: null_boolean_as_string>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2216,21 +2216,21 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(DateTimeModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2244,21 +2244,21 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.DateField: date>',
-             '<yepes.contrib.data_migrations.fields.DateTimeField: datetime>',
-             '<yepes.contrib.data_migrations.fields.TimeField: time>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.DateField: date>',
+             '<yepes.contrib.datamigrations.fields.DateTimeField: datetime>',
+             '<yepes.contrib.datamigrations.fields.TimeField: time>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2269,27 +2269,27 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(NumericModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2303,27 +2303,27 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: integer_as_string>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float>',
-             '<yepes.contrib.data_migrations.fields.FloatField: float_as_string>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal>',
-             '<yepes.contrib.data_migrations.fields.NumberField: decimal_as_string>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: integer_as_string>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float>',
+             '<yepes.contrib.datamigrations.fields.FloatField: float_as_string>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal>',
+             '<yepes.contrib.datamigrations.fields.NumberField: decimal_as_string>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2334,19 +2334,19 @@ class ModelMigrationsTests(test.TestCase):
         migration = DataMigration(TextModel)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2360,19 +2360,19 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: char>',
-             '<yepes.contrib.data_migrations.fields.TextField: text>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: char>',
+             '<yepes.contrib.datamigrations.fields.TextField: text>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2389,13 +2389,13 @@ class ModelMigrationsTests(test.TestCase):
         ])
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>'],
+            ['<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.data_migrations.fields.BooleanField: boolean>'],
+            ['<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
+             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>'],
         )
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
@@ -2411,20 +2411,20 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.primary_key],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>'],
         )
         self.assertIsNone(migration.natural_foreign_keys)
         self.assertTrue(migration.can_create)
@@ -2438,25 +2438,25 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             repr(migration.primary_key),
-            '<yepes.contrib.data_migrations.fields.IntegerField: id>',
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
         )
         self.assertEqual(
             [repr(fld) for fld in migration.natural_foreign_keys],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>'],
         )
         self.assertTrue(migration.can_create)
         self.assertTrue(migration.can_update)
@@ -2469,24 +2469,24 @@ class ModelMigrationsTests(test.TestCase):
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.fields_to_import],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.primary_key],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>'],
         )
         self.assertEqual(
             [repr(fld) for fld in migration.natural_foreign_keys],
-            ['<yepes.contrib.data_migrations.fields.TextField: blog__name>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name>'],
         )
         self.assertTrue(migration.can_create)
         self.assertTrue(migration.can_update)
@@ -2501,12 +2501,12 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
     def setUp(self):
         super(QuerySetExportationsTests, self).setUp()
         migration = BlogMigration(BlogModel)
-        source_path = os.path.join(FIXTURES_DIR, 'blog_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_result.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file.read(), plan='create')
 
         migration = BlogCategoryMigration(BlogCategoryModel)
-        source_path = os.path.join(FIXTURES_DIR, 'blog_category_result.json')
+        source_path = os.path.join(MIGRATIONS_DIR, 'blog_category_result.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file.read(), plan='direct')
 
@@ -2514,10 +2514,10 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(BlogCategoryModel.objects.all())
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2541,8 +2541,8 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(BlogCategoryModel.objects.only('id', 'name'))
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2566,9 +2566,9 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(BlogCategoryModel.objects.defer('description'))
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2594,10 +2594,10 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(qs)
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2623,10 +2623,10 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(qs.filter(name__startswith='S'))
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2646,10 +2646,10 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(qs[0:4])
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)
@@ -2671,10 +2671,10 @@ class QuerySetExportationsTests(TempDirMixin, test.TestCase):
         migration = QuerySetExportation(qs.order_by('name'))
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.data_migrations.fields.IntegerField: id>',
-             '<yepes.contrib.data_migrations.fields.IntegerField: blog (blog_id)>',
-             '<yepes.contrib.data_migrations.fields.TextField: name>',
-             '<yepes.contrib.data_migrations.fields.TextField: description>'],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.IntegerField: blog (blog_id)>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_import, [])
         self.assertIsNone(migration.primary_key)

@@ -6,18 +6,27 @@ import collections
 
 from django.utils import six
 
-from yepes.contrib.data_migrations.importation_plans.base import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan
 
 
-class UpdatePlan(ImportationPlan):
+class UpdateOrBulkCreatePlan(ImportationPlan):
 
+    needs_create = True
     needs_update = True
 
     def import_batch(self, batch):
+        model = self.migration.model
+        manager = model._default_manager
         objs = self._get_existing_objects(batch)
-        if objs:
-            model = self.migration.model
+        if not objs:
+            manager.bulk_create(
+                model(**row)
+                for row
+                in batch
+            )
+        else:
             key = self.migration.primary_key
+            new_objs = []
             if not isinstance(key, collections.Iterable):
                 key_attr = key.attname
                 for row in batch:
@@ -26,6 +35,8 @@ class UpdatePlan(ImportationPlan):
                         for k, v in six.iteritems(row):
                             setattr(obj, k, v)
                         obj.save(force_update=True)
+                    else:
+                        new_objs.append(model(**row))
             else:
                 key_attrs = [k.attname for k in key]
                 for row in batch:
@@ -34,4 +45,8 @@ class UpdatePlan(ImportationPlan):
                         for k, v in six.iteritems(row):
                             setattr(obj, k, v)
                         obj.save(force_update=True)
+                    else:
+                        new_objs.append(model(**row))
+
+            manager.bulk_create(new_objs)
 

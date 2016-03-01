@@ -9,8 +9,8 @@ if PY3:
 else:
     import unicodecsv as csv
 
-from yepes.contrib.data_migrations.serializers.base import Serializer
-from yepes.contrib.data_migrations.types import FLOAT, INTEGER, TEXT
+from yepes.contrib.datamigrations.serializers.base import Serializer
+from yepes.contrib.datamigrations.types import FLOAT, INTEGER, TEXT
 from yepes.types import Undefined
 
 

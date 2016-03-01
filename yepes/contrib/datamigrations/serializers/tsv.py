@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.utils.six import PY3
 
-from yepes.contrib.data_migrations.serializers.csv import CsvSerializer
+from yepes.contrib.datamigrations.serializers.csv import CsvSerializer
 
 
 class TsvSerializer(CsvSerializer):

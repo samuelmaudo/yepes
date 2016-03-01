@@ -8,10 +8,10 @@ from yepes.conf import settings
 from yepes.loading import get_module, LoadingError
 
 BUILTIN_SERIALIZERS = {
-    'csv': 'yepes.contrib.data_migrations.serializers.csv.CsvSerializer',
-    'json': 'yepes.contrib.data_migrations.serializers.json.JsonSerializer',
-    'tsv': 'yepes.contrib.data_migrations.serializers.tsv.TsvSerializer',
-    'yaml': 'yepes.contrib.data_migrations.serializers.yaml.YamlSerializer',
+    'csv': 'yepes.contrib.datamigrations.serializers.csv.CsvSerializer',
+    'json': 'yepes.contrib.datamigrations.serializers.json.JsonSerializer',
+    'tsv': 'yepes.contrib.datamigrations.serializers.tsv.TsvSerializer',
+    'yaml': 'yepes.contrib.datamigrations.serializers.yaml.YamlSerializer',
 }
 
 _SERIALIZERS = None

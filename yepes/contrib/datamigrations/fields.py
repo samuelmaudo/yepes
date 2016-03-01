@@ -14,7 +14,7 @@ from django.utils.functional import Promise
 from django.utils.timezone import utc as UTC
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.contrib.data_migrations.types import (
+from yepes.contrib.datamigrations.types import (
     BOOLEAN, FLOAT, INTEGER, TEXT,
     DATE, DATETIME, TIME,
     DECIMAL,
@@ -79,8 +79,8 @@ class Field(object):
     def deconstruct(self):
         cls = self.__class__
         path = '.'.join((cls.__module__, cls.__name__)).replace(
-            'yepes.contrib.data_migrations.fields',
-            'yepes.contrib.data_migrations',
+            'yepes.contrib.datamigrations.fields',
+            'yepes.contrib.datamigrations',
         )
         args = [self.path]
         kwargs = {}

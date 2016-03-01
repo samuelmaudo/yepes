@@ -8,18 +8,18 @@ from django.db import models
 from django.utils import six
 from django.utils.six.moves import zip
 
-from yepes.contrib.data_migrations import serializers
-from yepes.contrib.data_migrations import importation_plans
-from yepes.contrib.data_migrations.fields import (
+from yepes.contrib.datamigrations import serializers
+from yepes.contrib.datamigrations import importation_plans
+from yepes.contrib.datamigrations.fields import (
     BooleanField,
     DateField, DateTimeField, TimeField,
     FileField,
     FloatField, IntegerField, NumberField,
     TextField,
 )
-from yepes.contrib.data_migrations.importation_plans.create import CreatePlan
-from yepes.contrib.data_migrations.importation_plans.update_or_create import UpdateOrCreatePlan
-from yepes.contrib.data_migrations.serializers.json import JsonSerializer
+from yepes.contrib.datamigrations.importation_plans.create import CreatePlan
+from yepes.contrib.datamigrations.importation_plans.update_or_create import UpdateOrCreatePlan
+from yepes.contrib.datamigrations.serializers.json import JsonSerializer
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
