@@ -52,11 +52,11 @@ class Filter(object):
     def filter_results(self, results, options=Undefined):
         raise NotImplementedError('Subclasses of Filter must override filter_results() method')
 
-    def get_all_options(self):
-        raise NotImplementedError('Subclasses of Filter must override get_all_options() method')
-
     def get_options(self):
         raise NotImplementedError('Subclasses of Filter must override get_options() method')
+
+    def get_selected_options(self):
+        raise NotImplementedError('Subclasses of Filter must override get_selected_options() method')
 
     @cached_property
     def _options(self):
