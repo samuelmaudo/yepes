@@ -899,7 +899,7 @@ class SearchView(CacheMixin, ContextMixin, ModelMixin, TemplateResponseMixin, Vi
     def get_cache_hash(self, request):
         return '?'.join((
             super(SearchView, self).get_cache_hash(request),
-            self.search.get_query_string(),
+            self.search.get_query_string(page=self.search.page),
         ))
 
     def get_context_data(self, **kwargs):
