@@ -18,6 +18,14 @@ def endswith(value, arg):
 
 
 @register.filter(is_safe=False)
+def first(value):
+    try:
+        return next(iter(value))
+    except (KeyError, StopIteration, TypeError):
+        return None
+
+
+@register.filter(is_safe=False)
 def get(value, arg):
     try:
         return getattr(value, arg)
@@ -25,7 +33,24 @@ def get(value, arg):
         try:
             return value[arg]
         except (AttributeError, KeyError, IndexError, TypeError):
-            return ''
+            return None
+
+
+@register.filter(is_safe=False)
+def last(value):
+    try:
+        iterator = iter(value)
+    except TypeError:
+        return None
+    else:
+        item = None
+        try:
+            for item in iterator:
+                pass
+        except KeyError:
+            return None
+        else:
+            return item
 
 
 @register.filter(is_safe=False)

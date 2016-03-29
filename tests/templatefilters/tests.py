@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django import test
 from django.db import models
 from django.utils.six.moves import range
@@ -21,17 +23,47 @@ class DefaultFiltersTest(test.SimpleTestCase):
         self.assertTrue(filters.endswith(100, '00'))
         self.assertFalse(filters.endswith(100, '23'))
 
+    def test_first(self):
+        self.assertEqual(filters.first('abc'), 'a')
+        self.assertEqual(filters.first(tuple('abc')), 'a')
+        self.assertEqual(filters.first(list('abc')), 'a')
+        self.assertEqual(filters.first(iter('abc')), 'a')
+        self.assertEqual(filters.first(OrderedDict([('a', 1), ('b', 2), ('c', 3)])), 'a')
+        self.assertEqual(filters.first(''), None)
+        self.assertEqual(filters.first(tuple('')), None)
+        self.assertEqual(filters.first(list('')), None)
+        self.assertEqual(filters.first(iter('')), None)
+        self.assertEqual(filters.first(OrderedDict()), None)
+        self.assertEqual(filters.first(None), None)
+        self.assertEqual(filters.first(False), None)
+        self.assertEqual(filters.first(0), None)
+
     def test_get(self):
         class Article(Displayable):
             name = models.CharField(max_length=255)
             text = models.TextField(blank=True)
         self.assertEqual(filters.get(Article(), 'name'), '')
         self.assertEqual(filters.get(Article(name='The Hobbit'), 'name'), 'The Hobbit')
-        self.assertEqual(filters.get({}, 'name'), '')
+        self.assertEqual(filters.get({}, 'name'), None)
         self.assertEqual(filters.get({'name': 'The Hobbit'}, 'name'), 'The Hobbit')
-        self.assertEqual(filters.get(None, 'name'), '')
-        self.assertEqual(filters.get('', 'name'), '')
-        self.assertEqual(filters.get(0, 'name'), '')
+        self.assertEqual(filters.get(None, 'name'), None)
+        self.assertEqual(filters.get('', 'name'), None)
+        self.assertEqual(filters.get(0, 'name'), None)
+
+    def test_last(self):
+        self.assertEqual(filters.last('abc'), 'c')
+        self.assertEqual(filters.last(tuple('abc')), 'c')
+        self.assertEqual(filters.last(list('abc')), 'c')
+        self.assertEqual(filters.last(iter('abc')), 'c')
+        self.assertEqual(filters.last(OrderedDict([('a', 1), ('b', 2), ('c', 3)])), 'c')
+        self.assertEqual(filters.last(''), None)
+        self.assertEqual(filters.last(tuple('')), None)
+        self.assertEqual(filters.last(list('')), None)
+        self.assertEqual(filters.last(iter('')), None)
+        self.assertEqual(filters.last(OrderedDict()), None)
+        self.assertEqual(filters.last(None), None)
+        self.assertEqual(filters.last(False), None)
+        self.assertEqual(filters.last(0), None)
 
     def test_pk(self):
         class Article(Displayable):
