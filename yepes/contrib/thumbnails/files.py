@@ -18,6 +18,7 @@ from django.utils.encoding import force_bytes
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
+from yepes.conf import settings
 from yepes.contrib.thumbnails import engine
 from yepes.contrib.thumbnails.utils import clean_config
 from yepes.loading import LazyModelManager
@@ -351,7 +352,7 @@ class SourceFile(StoredImageFile):
             extension = config.format.lower()
 
         thumb_name = '{0}_{1}.{2}'.format(name, key, extension)
-        return os.path.join(path, 'thumbs', thumb_name)
+        return os.path.join(path, settings.THUMBNAIL_SUBDIR, thumb_name)
 
 
 class SourceFieldFile(FieldFile, SourceFile):
