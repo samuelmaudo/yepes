@@ -27,11 +27,6 @@ class SvgMixin(object):
     def generate_code(self, source, method='svg'):
         svg = etree.Element('svg')
         for element in source.iterchildren():
-            i = element.tag.find('}')
-            if i >= 0:
-                element.tag = element.tag[i+1:]
-
-            element.tail = None
             svg.append(element)
 
         width = ''
@@ -127,6 +122,16 @@ class InsertFileTag(SvgMixin, SingleTag):
         if root is None or not root.tag.endswith('svg'):
             return ''
 
+        for element in root.iter():
+            i = element.tag.find('}')
+            if i >= 0:
+                element.tag = element.tag[i+1:]
+
+            if element.text is not None:
+                element.text = element.text.strip()
+
+            element.tail = None
+
         return self.generate_code(root, method)
 
 register.tag('insert_file', InsertFileTag.as_tag())
@@ -156,17 +161,41 @@ class InsertSymbolTag(SvgMixin, SingleTag):
                         break
 
                 if defs is not None:
-                    cache = {
-                        element.attrib.get('id'): force_bytes(etree.tostring(
-                            element,
+                    for symb in defs.iterchildren():
+                        if (isinstance(symb, etree._Comment)
+                                or not symb.tag.endswith('symbol')):
+                            continue
+
+                        symbol = etree.Element('symbol')
+                        symbol.attrib['id'] = symb.attrib['id']
+                        if 'width' in symb.attrib:
+                            symbol.attrib['width'] = symb.attrib['width']
+
+                        if 'height' in symb.attrib:
+                            symbol.attrib['height'] = symb.attrib['height']
+
+                        if 'viewBox' in symb.attrib:
+                            symbol.attrib['viewBox'] = symb.attrib['viewBox']
+
+                        for element in symb.iterchildren():
+                            for elem in element.iter():
+                                i = elem.tag.find('}')
+                                if i >= 0:
+                                    elem.tag = elem.tag[i+1:]
+
+                                if elem.text is not None:
+                                    elem.text = elem.text.strip()
+
+                                elem.tail = None
+
+                            symbol.append(element)
+
+                        xml = force_bytes(etree.tostring(
+                            symbol,
                             encoding='utf8',
                             pretty_print=False
                         ))
-                        for element
-                        in defs.iterchildren()
-                        if not isinstance(element, etree._Comment)
-                        and element.tag.endswith('symbol')
-                    }
+                        cache[symbol.attrib['id']] = xml
 
             SYMBOL_CACHE.set(file_name, cache)
 
