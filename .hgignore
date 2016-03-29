@@ -2,12 +2,15 @@ syntax:glob
 
 *.coverage
 *.egg-info
+*.env
+*.kate-swp
 *.kdev4
 *.old
 *.pot
-*.py[co]
+*.py[cod]
 *.sqlite
-__pycache__
+__pycache__/
+.kdev4/
 backup/
 build/
 dist/
