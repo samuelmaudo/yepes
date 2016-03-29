@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
 from django.utils import six
 from django.utils.itercompat import is_iterable
@@ -12,8 +12,11 @@ from django.views.generic.detail import (
     SingleObjectTemplateResponseMixin,
 )
 
+from yepes.loading import is_installed, LazyModelManager
 from yepes.view_mixins import CacheMixin, CanonicalMixin, ModelMixin
 from yepes.types import Undefined
+
+SlugHistoryManager = LazyModelManager('slugs', 'SlugHistory')
 
 
 class DetailView(SingleObjectTemplateResponseMixin,
@@ -27,8 +30,6 @@ class DetailView(SingleObjectTemplateResponseMixin,
 
     """
     _object = Undefined
-    guid_field = 'guid'
-    guid_url_kwarg = 'guid'
     view_signal = None
 
     def dispatch(self, *args, **kwargs):
@@ -39,60 +40,63 @@ class DetailView(SingleObjectTemplateResponseMixin,
             self.send_view_signal(self.get_object(), self.request, response)
         return response
 
-    def get_guid_field(self):
-        """
-        Get the name of a guid field to be used to look up by guid.
-        """
-        return self.guid_field
-
     def get_object(self, queryset=None):
         """
         Returns the object the view is displaying.
 
-        By default this requires ``self.queryset`` and a ``pk``, ``guid`` or
-        ``slug`` argument in the URLconf, but subclasses can override this to
-        return any object.
+        By default this requires ``self.queryset`` and a ``pk`` or ``slug``
+        argument in the URLconf, but subclasses can override this to return
+        any object.
 
         """
-        if self._object is not Undefined:
-            return self._object
+        if self._object is Undefined:
+            try:
+                obj = super(DetailView, self).get_object(queryset)
+            except Http404 as e:
+                if not is_installed('slugs'):
+                    raise e
 
-        # Use a custom queryset if provided; this is required for subclasses
-        # like DateDetailView
-        if queryset is None:
-            queryset = self.get_queryset()
+                #if queryset is None:
+                    #model = self.get_model()
+                #else:
+                    #model = queryset.model
 
-        pk = self.kwargs.get(self.pk_url_kwarg, None)
-        guid = self.kwargs.get(self.guid_url_kwarg, None)
-        slug = self.kwargs.get(self.slug_url_kwarg, None)
+                #object_id = self.kwargs.get(self.pk_url_kwarg, None)
+                #object_type = ContentType.objects.get_for_model(model)
+                #slug = self.kwargs.get(self.slug_url_kwarg, None)
 
-        # Next, try looking up by primary key.
-        if pk is not None:
-            queryset = queryset.filter(pk=pk)
+                #queryset = SlugHistoryManager.select_related('object')
+                #queryset = queryset.filter(slug=slug)
+                #queryset = queryset.filter(object_type=object_type)
+                #if object_id is not None:
+                    #queryset = queryset.filter(object_id=object_id)
 
-        # Next, try looking up by guid.
-        elif guid is not None:
-            guid_field = self.get_guid_field()
-            queryset = queryset.filter(**{guid_field: guid})
+                #records = list(queryset[:1])
+                #if not records:
+                    #raise e
 
-        # Next, try looking up by slug.
-        elif slug is not None:
-            slug_field = self.get_slug_field()
-            queryset = queryset.filter(**{slug_field: slug})
+                #obj = records[0].object
 
-        # If none of those are defined, it's an error.
-        else:
-            msg = ('Generic detail view {0} must be called with either an'
-                   ' object pk or a guid or a slug.')
-            raise AttributeError(msg.format(self.__class__.__name__))
+                pk = self.kwargs.get(self.pk_url_kwarg, None)
+                slug = self.kwargs.get(self.slug_url_kwarg, None)
+                if slug is None:
+                    raise e
 
-        # Get the single item from the filtered queryset
-        try:
-            self._object = queryset.get()
-        except ObjectDoesNotExist:
-            opts = queryset.model._meta
-            msg = _('No {verbose_name} found matching the query')
-            raise Http404(msg.format(verbose_name=opts.verbose_name))
+                if queryset is None:
+                    queryset = self.get_queryset()
+
+                queryset = queryset.order_by('-slug_history__id')
+                queryset = queryset.filter(slug_history__slug=slug)
+                if pk is not None:
+                    queryset = queryset.filter(slug_history__object_id=pk)
+
+                records = list(queryset[:1])
+                if not records:
+                    raise e
+
+                obj = records[0]
+
+            self._object = obj
 
         return self._object
 

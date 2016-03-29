@@ -3,6 +3,10 @@
 from django.db import models
 
 from yepes import fields
+from yepes.managers import (
+    NestableManager,
+    SluggedManager,
+)
 from yepes.model_mixins import (
     Activatable,
     Displayable,
@@ -71,6 +75,10 @@ class BookTranslation(models.Model):
     __unicode__ = __str__
 
 
+class CategoryManager(NestableManager, SluggedManager):
+    pass
+
+
 class Category(Nestable, Slugged):
 
     parent = ParentForeignKey(
@@ -81,6 +89,8 @@ class Category(Nestable, Slugged):
     name = models.CharField(
             unique=True,
             max_length=63)
+
+    objects = CategoryManager()
 
     class MPTTMeta:
         order_insertion_by = ['name']

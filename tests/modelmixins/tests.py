@@ -1125,3 +1125,79 @@ class SluggedTest(test.TestCase):
             '<a href="http://example.com/categories/educational-toys.html">View on site</a>',
         )
 
+    def test_manager_methods(self):
+        with self.assertNumQueries(1):
+            obj = Category.objects.get(slug='educational-toys')
+        self.assertEqual(obj, self.category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('educational-toys')
+        self.assertEqual(obj, self.category)
+
+        self.category.name = 'Didactic Games'
+        self.category.slug = 'didactic-games'
+        self.category.save(update_fields=['name'])
+
+        with self.assertNumQueries(1):
+            obj = Category.objects.get(slug='educational-toys')
+        self.assertEqual(obj, self.category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('educational-toys')
+        self.assertEqual(obj, self.category)
+        with self.assertRaises(Category.DoesNotExist):
+            Category.objects.get(slug='didactic-games')
+        with self.assertRaises(Category.DoesNotExist):
+            Category.objects.get_by_slug('didactic-games')
+
+        self.category.save(update_fields=['slug'])
+
+        with self.assertRaises(Category.DoesNotExist):
+            Category.objects.get(slug='educational-toys')
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('educational-toys')
+        self.assertEqual(obj, self.category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get(slug='didactic-games')
+        self.assertEqual(obj, self.category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('didactic-games')
+        self.assertEqual(obj, self.category)
+
+        new_category = Category.objects.create(
+            name='Educational Toys',
+        )
+        with self.assertNumQueries(1):
+            obj = Category.objects.get(slug='educational-toys')
+        self.assertEqual(obj, new_category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('educational-toys')
+        self.assertEqual(obj, new_category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get(slug='didactic-games')
+        self.assertEqual(obj, self.category)
+        with self.assertNumQueries(1):
+            obj = Category.objects.get_by_slug('didactic-games')
+        self.assertEqual(obj, self.category)
+
+    def test_history_field(self):
+        self.assertEqual(
+            list(self.category.slug_history.values_list('slug', flat=True)),
+            ['educational-toys']
+        )
+        self.category.save()
+        self.assertEqual(
+            list(self.category.slug_history.values_list('slug', flat=True)),
+            ['educational-toys']
+        )
+        self.category.name = 'Didactic Games'
+        self.category.slug = 'didactic-games'
+        self.category.save(update_fields=['name'])
+        self.assertEqual(
+            list(self.category.slug_history.values_list('slug', flat=True)),
+            ['educational-toys']
+        )
+        self.category.save(update_fields=['slug'])
+        self.assertEqual(
+            list(self.category.slug_history.values_list('slug', flat=True)),
+            ['didactic-games', 'educational-toys']
+        )
+

@@ -31,6 +31,7 @@ program = TestProgram(
         'yepes.contrib.newsletters',
         'yepes.contrib.registry',
         'yepes.contrib.sitemaps',
+        'yepes.contrib.slugs',
         'yepes.contrib.standards',
         'yepes.contrib.thumbnails',
     ],
