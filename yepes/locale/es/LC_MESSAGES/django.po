@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-04 15:52+0100\n"
-"PO-Revision-Date: 2016-03-04 17:19+0100\n"
+"POT-Creation-Date: 2016-03-21 17:37+0100\n"
+"PO-Revision-Date: 2016-03-21 17:42+0100\n"
 "Last-Translator: Radagast el Pardo <samuelmaudo@gmail.com>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: en\n"
@@ -329,7 +329,8 @@ msgstr "Año"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: contrib/datamigrations/fields.py:537 contrib/standards/abstract_models.py:50
+#: contrib/datamigrations/fields.py:537
+#: contrib/standards/abstract_models.py:50
 #: contrib/standards/abstract_models.py:132
 #: contrib/standards/abstract_models.py:370
 msgid "Number"
@@ -521,7 +522,8 @@ msgstr "Cuerpo"
 msgid "Metrics"
 msgstr "Métricas"
 
-#: contrib/metrics/abstract_models.py:27 contrib/metrics/abstract_models.py:235
+#: contrib/metrics/abstract_models.py:27
+#: contrib/metrics/abstract_models.py:235
 msgid "Browser"
 msgstr "Navegador"
 
@@ -537,7 +539,8 @@ msgstr "Motor de renderizado"
 msgid "Rendering Engines"
 msgstr "Motores de renderizado"
 
-#: contrib/metrics/abstract_models.py:45 contrib/metrics/abstract_models.py:245
+#: contrib/metrics/abstract_models.py:45
+#: contrib/metrics/abstract_models.py:245
 msgid "Platform"
 msgstr "Plataforma"
 
@@ -545,7 +548,8 @@ msgstr "Plataforma"
 msgid "Platforms"
 msgstr "Plataformas"
 
-#: contrib/metrics/abstract_models.py:55 contrib/metrics/abstract_models.py:217
+#: contrib/metrics/abstract_models.py:55
+#: contrib/metrics/abstract_models.py:217
 #: contrib/metrics/abstract_models.py:302
 #: contrib/registry/abstract_models.py:17
 msgid "Site"
@@ -563,8 +567,8 @@ msgstr "Final de la ruta"
 msgid "Query String"
 msgstr "Cadena de consulta"
 
-#: contrib/metrics/abstract_models.py:74 contrib/metrics/abstract_models.py:110
-#: contrib/metrics/admin.py:77
+#: contrib/metrics/abstract_models.py:74
+#: contrib/metrics/abstract_models.py:110 contrib/metrics/admin.py:77
 msgid "Page"
 msgstr "Página"
 
@@ -576,7 +580,8 @@ msgstr "Páginas"
 msgid "Full Path"
 msgstr "Ruta completa"
 
-#: contrib/metrics/abstract_models.py:95 contrib/metrics/abstract_models.py:194
+#: contrib/metrics/abstract_models.py:95
+#: contrib/metrics/abstract_models.py:194
 msgid "Path"
 msgstr "Ruta"
 
@@ -755,7 +760,8 @@ msgstr "Agentes de usuario no registrados"
 msgid "Visit Timeout"
 msgstr "Duración máxima de una visita"
 
-#: contrib/newsletters/__init__.py:5 contrib/newsletters/abstract_models.py:427
+#: contrib/newsletters/__init__.py:5
+#: contrib/newsletters/abstract_models.py:427
 #: contrib/newsletters/abstract_models.py:546
 msgid "Newsletters"
 msgstr "Boletines"
@@ -1125,6 +1131,18 @@ msgstr "¿Cuándo y a quién se lo quieres enviar?"
 #: contrib/newsletters/views.py:60
 msgid "Send Message"
 msgstr "Enviar mensaje"
+
+#: contrib/newsletters/views.py:296
+msgid "Your profile was changed successfully."
+msgstr "Tu perfil ha sido actualizado correctamente."
+
+#: contrib/newsletters/views.py:364
+msgid "You was subscribed successfully."
+msgstr "Has sido suscrito correctamente."
+
+#: contrib/newsletters/views.py:483
+msgid "You was unsubscribed successfully."
+msgstr "Has sido dado de baja correctamente."
 
 #: contrib/newsletters/templates/admin/newsletters/message/change_form.html:11
 msgid "History"

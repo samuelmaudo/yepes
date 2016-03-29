@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.admin.models import LogEntry, CHANGE
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse
 from django.db.models import F, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import six
@@ -291,7 +291,9 @@ class ProfileView(SubscriberMixin, NewsletterMixin, MessageMixin, FormView):
 
     """
     form_class = ProfileForm
+    leave_message = True
     require_subscriber = True
+    success_message = _('Your profile was changed successfully.')
 
     def get_initial(self):
         initial = super(ProfileView, self).get_initial()
@@ -302,9 +304,20 @@ class ProfileView(SubscriberMixin, NewsletterMixin, MessageMixin, FormView):
         return initial
 
     def get_success_url(self):
-        return reverse('profile', kwargs={
-            'subscriber_guid': self.get_subscriber().guid,
-        })
+        subscriber = self.get_subscriber()
+        newsletter = self.get_newsletter()
+        message = self.get_message()
+        kwargs = {}
+        if subscriber is not None:
+            kwargs['subscriber_guid'] = subscriber.guid
+
+        if newsletter is not None:
+            kwargs['newsletter_guid'] = newsletter.guid
+
+        if message is not None:
+            kwargs['message_guid'] = message.guid
+
+        return reverse('profile', kwargs=kwargs)
 
     def get_template_names(self):
         names = []
@@ -358,19 +371,35 @@ class ResubscriptionView(SubscriberMixin, NewsletterMixin, TemplateView):
 class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
 
     form_class = SubscriptionForm
-    success_url = reverse_lazy('subscription')
+    leave_message = True
+    success_message = _('You was subscribed successfully.')
 
     def form_valid(self, form):
         subscriber = self.get_subscriber(form)
         subscriber.subscribe_to(form.cleaned_data['newsletter'])
         return super(SubscriptionView, self).form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super(SubscriptionView, self).get_form_kwargs()
+        if 'data' in kwargs:
+            newsletter = self.get_newsletter()
+            if newsletter is not None:
+                data = kwargs['data'].copy()
+                data['newsletter'] = newsletter.pk
+                kwargs['data'] = data
+
+        return kwargs
+
     def get_initial(self):
         initial = super(SubscriptionView, self).get_initial()
+        newsletter = self.get_newsletter()
+        subscriber = self.get_subscriber()
         if 'newsletter' not in initial:
-            initial['newsletter'] = self.get_newsletter()
-        if 'email_address' not in initial and self.get_subscriber():
-            initial['email_address'] = self.get_subscriber().email_address
+            initial['newsletter'] = newsletter
+
+        if 'email_address' not in initial and subscriber:
+            initial['email_address'] = subscriber.email_address
+
         return initial
 
     def get_subscriber(self, form=None):
@@ -389,6 +418,18 @@ class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
             subscriber.save()
 
         return subscriber
+
+    def get_success_url(self):
+        subscriber = self.get_subscriber()
+        newsletter = self.get_newsletter()
+        kwargs = {}
+        if subscriber is not None:
+            kwargs['subscriber_guid'] = subscriber.guid
+
+        if newsletter is not None:
+            kwargs['newsletter_guid'] = newsletter.guid
+
+        return reverse('subscription', kwargs=kwargs)
 
     def get_template_names(self):
         names = []
@@ -417,7 +458,7 @@ class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormVie
             subscriber.unsubscribe_from(
                 newsletter,
                 last_message=self.get_message())
-            return HttpResponseRedirect(self.get_success_url(subscriber, newsletter))
+            return HttpResponseRedirect(self.get_success_url())
         else:
             return super(UnsubscriptionView, self).get(request, *args, **kwargs)
 
@@ -429,14 +470,27 @@ class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormVie
             initial['email_address'] = self.get_subscriber().email_address
         return initial
 
-    def get_success_url(self, subscriber, newsletter):
+    def get_success_url(self):
+        subscriber = self.get_subscriber()
+        newsletter = self.get_newsletter()
+        message = self.get_message()
+        kwargs = {}
+        if subscriber is not None:
+            kwargs['subscriber_guid'] = subscriber.guid
+
+        if newsletter is not None:
+            kwargs['newsletter_guid'] = newsletter.guid
+
+        if message is not None:
+            kwargs['message_guid'] = message.guid
+
         if subscriber is None or newsletter is None:
-            return reverse('unsubscription')
+            viewname = 'unsubscription'
         else:
-            return reverse('unsubscription_reason', kwargs={
-                'subscriber_guid': subscriber.guid,
-                'newsletter_guid': newsletter.guid,
-            })
+            viewname = 'unsubscription_reason'
+            kwargs.drop('message_guid', None)
+
+        return reverse(viewname, kwargs=kwargs)
 
     def get_template_names(self):
         names = []
@@ -467,15 +521,16 @@ class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormVie
                 newsletter,
                 last_message=self.get_message())
 
-        return HttpResponseRedirect(self.get_success_url(subscriber, newsletter))
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UnsubscriptionReasonView(SubscriberMixin, NewsletterMixin, FormView):
 
     form_class = UnsubscriptionReasonForm
+    leave_message = True
     require_newsletter = True
     require_subscriber = True
-    success_url = reverse_lazy('unsubscription')
+    success_message = _('You was unsubscribed successfully.')
 
     def get_template_names(self):
         names = []
@@ -493,6 +548,22 @@ class UnsubscriptionReasonView(SubscriberMixin, NewsletterMixin, FormView):
         qs = qs.filter(newsletter=self.get_newsletter())
         qs = qs.order_by('date')
         return qs.last()
+
+    def get_success_url(self):
+        subscriber = self.get_subscriber()
+        newsletter = self.get_newsletter()
+        message = self.get_message()
+        kwargs = {}
+        if subscriber is not None:
+            kwargs['subscriber_guid'] = subscriber.guid
+
+        if newsletter is not None:
+            kwargs['newsletter_guid'] = newsletter.guid
+
+        if message is not None:
+            kwargs['message_guid'] = message.guid
+
+        return reverse('unsubscription', kwargs=kwargs)
 
     def form_valid(self, form):
         unsubscription = self.get_unsubscription()
