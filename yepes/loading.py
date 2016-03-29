@@ -427,6 +427,32 @@ def get_module(module_path, ignore_missing=False, ignore_internal_errors=False):
     return sys.modules[module_path]
 
 
+def is_installed(app_label):
+    """
+    Checks if it has installed an app with the given label.
+
+    Args:
+
+        app_label (str): Label of the app to check.
+
+    Returns:
+
+        True if the app is installed or False if not.
+
+    Example:
+
+        >>> is_installed('registry')
+        True
+
+    """
+    classes_cache._populate()
+    for label, path in classes_cache.installed_apps:
+        if label == app_label:
+            return True
+
+    return False
+
+
 class LazyClass(LazyObject):
 
     def __init__(self, module_path, class_name):

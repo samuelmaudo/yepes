@@ -46,6 +46,13 @@ class DebugSettings(object):
         msg = "can't set attribute '{0}'"
         raise AttributeError(msg.format(name))
 
+    def is_installed(self, app_name):
+        """
+        Checks whether an application with the given name appears in the
+        settings.
+        """
+        return (app_name in self._user_settings.INSTALLED_APPS)
+
 
 class ProductionSettings(object):
 
@@ -69,6 +76,13 @@ class ProductionSettings(object):
     def __setattr__(self, name, value):
         msg = "can't set attribute '{0}'"
         raise AttributeError(msg.format(name))
+
+    def is_installed(self, app_name):
+        """
+        Checks whether an application with the given name appears in the
+        settings.
+        """
+        return (app_name in self.INSTALLED_APPS)
 
 
 if user_settings.DEBUG:

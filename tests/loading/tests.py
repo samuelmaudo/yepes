@@ -13,6 +13,7 @@ from yepes.loading import (
     get_class, get_classes,
     get_model, get_models,
     get_module,
+    is_installed,
     LazyClass, LazyModel, LazyModelManager, LazyModelObject,
 )
 
@@ -165,6 +166,15 @@ class GetModuleTest(test.SimpleTestCase):
             self.assertTrue(issubclass(w[0].category, SyntaxWarning))
             self.assertIn('invalid syntax', str(w[0].message))
             self.assertIsNone(module)
+
+
+class IsInstalledTest(test.SimpleTestCase):
+
+    def test_installed_app(self):
+        self.assertTrue(is_installed('registry'))
+
+    def test_missing_app(self):
+        self.assertFalse(is_installed('asdfg'))
 
 
 class LazyClassTest(test.SimpleTestCase):
