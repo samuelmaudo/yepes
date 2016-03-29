@@ -8,7 +8,7 @@ import inspect
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.template.base import (
     kwarg_re as KWARG_RE,
-    Node,
+    Node, NodeList,
     Template, TemplateSyntaxError,
     TOKEN_BLOCK, TOKEN_COMMENT, TOKEN_TEXT, TOKEN_VAR,
     VariableDoesNotExist,
@@ -46,11 +46,11 @@ class Sandbox(object):
         return getattr(self.tag, name)
 
     def get_content(self, context=None):
-        c = getattr(self.tag, 'content', None)
-        if c is not None:
+        c = getattr(self.tag, 'content', False)
+        if c:
             return c
-        nl = getattr(self.tag, 'nodelist', None)
-        if nl is not None:
+        nl = getattr(self.tag, 'nodelist', False)
+        if nl:
             return nl.render(context or self.context)
 
     def get_new_context(self):
@@ -279,9 +279,9 @@ class DoubleTag(SingleTag):
 
         if cls.literal_content:
             content = ''.join(cls.parse_literals(parser, tag_name))
-            nodelist = None
+            nodelist = NodeList()
         else:
-            content = None
+            content = ''
             nodelist = cls.parse_nodelist(parser, tag_name)
 
         return {
@@ -353,7 +353,7 @@ class InclusionTag(SingleTag):
             'tag_name': tag_name,
             'args': args,
             'kwargs': kwargs,
-            'content': None,
+            'content': '',
             'nodelist': template.nodelist,
         }
 
