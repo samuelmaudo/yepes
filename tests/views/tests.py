@@ -15,6 +15,7 @@ from .models import Article
 class DetailViewTest(test.TestCase):
 
     def setUp(self):
+        super(DetailViewTest, self).setUp()
         self.article = Article.objects.create(title='Django for Dummies')
 
     def test_slug_history(self):

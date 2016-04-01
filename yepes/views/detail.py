@@ -2,11 +2,9 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.contenttypes.models import ContentType
 from django.http import Http404, HttpResponse
 from django.utils import six
 from django.utils.itercompat import is_iterable
-from django.utils.translation import ugettext as _
 from django.views.generic.detail import (
     BaseDetailView,
     SingleObjectTemplateResponseMixin,
@@ -40,6 +38,9 @@ class DetailView(SingleObjectTemplateResponseMixin,
             self.send_view_signal(self.get_object(), self.request, response)
         return response
 
+    def get_canonical_path(self, request):
+        return self.get_object().get_absolute_url()
+
     def get_object(self, queryset=None):
         """
         Returns the object the view is displaying.
@@ -55,27 +56,6 @@ class DetailView(SingleObjectTemplateResponseMixin,
             except Http404 as e:
                 if not is_installed('slugs'):
                     raise e
-
-                #if queryset is None:
-                    #model = self.get_model()
-                #else:
-                    #model = queryset.model
-
-                #object_id = self.kwargs.get(self.pk_url_kwarg, None)
-                #object_type = ContentType.objects.get_for_model(model)
-                #slug = self.kwargs.get(self.slug_url_kwarg, None)
-
-                #queryset = SlugHistoryManager.select_related('object')
-                #queryset = queryset.filter(slug=slug)
-                #queryset = queryset.filter(object_type=object_type)
-                #if object_id is not None:
-                    #queryset = queryset.filter(object_id=object_id)
-
-                #records = list(queryset[:1])
-                #if not records:
-                    #raise e
-
-                #obj = records[0].object
 
                 pk = self.kwargs.get(self.pk_url_kwarg, None)
                 slug = self.kwargs.get(self.slug_url_kwarg, None)

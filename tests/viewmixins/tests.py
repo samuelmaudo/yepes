@@ -16,7 +16,7 @@ from django.core.exceptions import (
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 from django.utils import translation
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_text
 from django.views.generic import FormView, View
 
 from yepes.conf import settings
@@ -47,7 +47,7 @@ class CacheMixinTest(test.SimpleTestCase):
     def assertResponseContentEqual(self, content, view, method, msg=None):
         req = getattr(self.request_factory, method)('/')
         resp = view(req)
-        self.assertEqual(force_bytes(content), resp.content, msg=msg)
+        self.assertEqual(content, force_text(resp.content), msg=msg)
 
     def test_get_request(self):
 
@@ -150,30 +150,23 @@ class CanonicalMixinTest(test.SimpleTestCase):
         self.request_factory = test.RequestFactory()
 
     def test_redirection(self):
-        article = Article.objects.create(
-            title='Django for Dummies',
-            slug='django-for-dummies',
-        )
-        canonical_url = '/{0}-{1}/'.format(article.slug, article.pk)
+        title='Django for Dummies'
+        slug='django-for-dummies'
+        path = '/{0}.html'.format(slug)
 
         class TestView(CanonicalMixin, View):
+            canonical_path = path
             def get(self, request, *args, **kwargs):
-                return http.HttpResponse(self.get_object().title)
-            def get_object(self):
-                return article
+                return http.HttpResponse(title)
 
         view = TestView.as_view()
-        resp = view(self.request_factory.get('/{0}/'.format(article.pk)))
+        resp = view(self.request_factory.get('/another-slug.html'))
         self.assertEqual(301, resp.status_code)
-        self.assertEqual(canonical_url, resp['Location'])
+        self.assertEqual(path, resp['Location'])
 
-        resp = view(self.request_factory.get('/{0}/'.format(article.slug)))
-        self.assertEqual(301, resp.status_code)
-        self.assertEqual(canonical_url, resp['Location'])
-
-        resp = view(self.request_factory.get(canonical_url))
+        resp = view(self.request_factory.get(path))
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(force_bytes(article.title), resp.content)
+        self.assertEqual(title, force_text(resp.content))
 
 
 class JsonMixinTest(test.SimpleTestCase):
@@ -435,7 +428,7 @@ class JsonMixinTest(test.SimpleTestCase):
         view = TestView.as_view()
         resp = view(self.request_factory.get('/'))
         self.assertIn('html', resp['Content-Type'])
-        self.assertEqual(force_bytes(html_data), resp.content)
+        self.assertEqual(html_data, force_text(resp.content))
         self.assertEqual(200, resp.status_code)
 
         class TestView(JsonMixin, View):
