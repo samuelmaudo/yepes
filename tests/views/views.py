@@ -25,6 +25,5 @@ class ArticleDetailView(DetailView):
     model = Article
 
     def get(self, request, *args, **kwargs):
-        object = self.get_object()
-        return HttpResponse(object.slug)
+        return HttpResponse(self.object.slug)
 

@@ -7,6 +7,9 @@ from django.http import HttpResponsePermanentRedirect
 
 
 class CanonicalMixin(object):
+    """
+    Provides the ability to check if the requested path is the canonical path.
+    """
 
     canonical_path = None
     check_canonical = True
@@ -25,6 +28,13 @@ class CanonicalMixin(object):
         return super(CanonicalMixin, self).dispatch(request, *args, **kwargs)
 
     def get_canonical_path(self, request):
+        """
+        Returns the canonical path to compare it with the requested path.
+
+        By default this requires ``self.canonical_path`` but subclasses can
+        override this to dynamically calculate the canonical path.
+
+        """
         if self.canonical_path is None:
             msg = (
                 "CanonicalMixin requires either a definition of "
@@ -36,5 +46,9 @@ class CanonicalMixin(object):
             return self.canonical_path
 
     def get_check_canonical(self, request):
+        """
+        Returns whether is necessary to check if the requested path is the
+        canonical path.
+        """
         return self.check_canonical
 

@@ -15,8 +15,18 @@ from yepes.utils.minifier import minify_html_response
 
 
 class CacheMixin(object):
+    """
+    Provides the ability to cache the response to save resources in
+    further requests.
 
+    By default, it only caches responses for GET and HEAD requests,
+    and only if the response status code is 200, 301 or 404. However,
+    it is highly customizable.
+
+    """
     cache_alias = None
+    cached_methods = ('GET', 'HEAD')
+    cached_statuses = (200, 301, 404)
     delay = None
     timeout = None
     use_cache = True
@@ -52,7 +62,7 @@ class CacheMixin(object):
             response = self._cache.get(key)
             if response is None:
                 response = super_dispatch(request, *args, **kwargs)
-                if response.status_code not in (200, 301, 404):
+                if response.status_code not in self.cached_statuses:
                     return response
 
                 if (hasattr(response, 'render')
@@ -72,7 +82,7 @@ class CacheMixin(object):
 
     def get_use_cache(self, request):
         if (not self.use_cache
-                or request.method.upper() not in ('GET', 'HEAD')
+                or request.method.upper() not in self.cached_methods
                 or hasattr(request, 'user') and request.user.is_staff):
             return False
         else:
