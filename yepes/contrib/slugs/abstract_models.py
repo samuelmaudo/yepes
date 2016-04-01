@@ -8,6 +8,8 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from yepes.contrib.slugs.managers import SlugHistoryManager
+
 
 @python_2_unicode_compatible
 class AbstractSlugHistory(models.Model):
@@ -30,6 +32,8 @@ class AbstractSlugHistory(models.Model):
     object = GenericForeignKey(
             'object_type',
             'object_id')
+
+    objects = SlugHistoryManager()
 
     class Meta:
         abstract = True

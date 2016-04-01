@@ -69,13 +69,13 @@ if six.PY2:
 setattr(Manager, 'in_batches', in_batches)
 setattr(Manager, 'statements', {
     'postgresql': {
-        'truncate': 'TRUNCATE {table} RESTART IDENTITY;',
+        'truncate': 'TRUNCATE "{table}" RESTART IDENTITY;',
     },
     'mysql': {
-        'truncate': 'TRUNCATE {table};',
+        'truncate': 'TRUNCATE `{table}`;',
     },
     'default': {
-        'truncate': 'DELETE FROM {table};',
+        'truncate': 'DELETE FROM "{table}";',
     },
 })
 setattr(Manager, 'truncate', truncate)
