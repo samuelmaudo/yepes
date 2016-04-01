@@ -38,7 +38,7 @@ class Slugged(Linked):
 
     def __init__(self, *args, **kwargs):
         super(Slugged, self).__init__(*args, **kwargs)
-        self._slug = self.slug
+        self.old_slug = self.slug
 
     def natural_key(self):
         return (self.slug, )
@@ -51,9 +51,9 @@ class Slugged(Linked):
         super(Slugged, self).save(**kwargs)
         if (is_installed('slugs')
                 and (new_record
-                        or (self.slug != self._slug
+                        or (self.slug != self.old_slug
                                 and (not updated_fields
                                         or 'slug' in updated_fields)))):
             self.slug_history.create(slug=self.slug)
-            self._slug = self.slug
+            self.old_slug = self.slug
 
