@@ -488,7 +488,7 @@ class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormVie
             viewname = 'unsubscription'
         else:
             viewname = 'unsubscription_reason'
-            kwargs.drop('message_guid', None)
+            kwargs.pop('message_guid', None)
 
         return reverse(viewname, kwargs=kwargs)
 
@@ -530,7 +530,7 @@ class UnsubscriptionReasonView(SubscriberMixin, NewsletterMixin, FormView):
     leave_message = True
     require_newsletter = True
     require_subscriber = True
-    success_message = _('You was unsubscribed successfully.')
+    success_message = _('Thanks for the feedback.')
 
     def get_template_names(self):
         names = []
@@ -552,7 +552,6 @@ class UnsubscriptionReasonView(SubscriberMixin, NewsletterMixin, FormView):
     def get_success_url(self):
         subscriber = self.get_subscriber()
         newsletter = self.get_newsletter()
-        message = self.get_message()
         kwargs = {}
         if subscriber is not None:
             kwargs['subscriber_guid'] = subscriber.guid
@@ -560,10 +559,7 @@ class UnsubscriptionReasonView(SubscriberMixin, NewsletterMixin, FormView):
         if newsletter is not None:
             kwargs['newsletter_guid'] = newsletter.guid
 
-        if message is not None:
-            kwargs['message_guid'] = message.guid
-
-        return reverse('unsubscription', kwargs=kwargs)
+        return reverse('unsubscription_reason', kwargs=kwargs)
 
     def form_valid(self, form):
         unsubscription = self.get_unsubscription()

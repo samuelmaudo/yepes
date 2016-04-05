@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 17:37+0100\n"
-"PO-Revision-Date: 2016-03-21 17:42+0100\n"
+"POT-Creation-Date: 2016-04-05 16:36+0200\n"
+"PO-Revision-Date: 2016-04-05 16:38+0100\n"
 "Last-Translator: Radagast el Pardo <samuelmaudo@gmail.com>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: en\n"
@@ -936,18 +936,18 @@ msgid "Opens"
 msgstr "Aperturas"
 
 #: contrib/newsletters/abstract_models.py:527 contrib/newsletters/admin.py:614
-#: contrib/newsletters/forms.py:83 contrib/newsletters/forms.py:113
+#: contrib/newsletters/forms.py:83 contrib/newsletters/forms.py:105
 #: contrib/newsletters/forms.py:123
 msgid "E-mail Address"
 msgstr "Dirección de correo"
 
 #: contrib/newsletters/abstract_models.py:536 contrib/newsletters/forms.py:86
-#: contrib/newsletters/forms.py:105
+#: contrib/newsletters/forms.py:108
 msgid "First Name"
 msgstr "Nombre"
 
 #: contrib/newsletters/abstract_models.py:540 contrib/newsletters/forms.py:90
-#: contrib/newsletters/forms.py:109
+#: contrib/newsletters/forms.py:112
 msgid "Last Name"
 msgstr "Apellidos"
 
@@ -1104,7 +1104,7 @@ msgstr "incluye"
 msgid "does not include"
 msgstr "no incluye"
 
-#: contrib/newsletters/forms.py:130
+#: contrib/newsletters/forms.py:131
 msgid "Reason"
 msgstr "Motivo"
 
@@ -1136,13 +1136,13 @@ msgstr "Enviar mensaje"
 msgid "Your profile was changed successfully."
 msgstr "Tu perfil ha sido actualizado correctamente."
 
-#: contrib/newsletters/views.py:364
+#: contrib/newsletters/views.py:375
 msgid "You was subscribed successfully."
 msgstr "Has sido suscrito correctamente."
 
-#: contrib/newsletters/views.py:483
-msgid "You was unsubscribed successfully."
-msgstr "Has sido dado de baja correctamente."
+#: contrib/newsletters/views.py:533
+msgid "Thanks for the feedback."
+msgstr "Gracias por la información."
 
 #: contrib/newsletters/templates/admin/newsletters/message/change_form.html:11
 msgid "History"
@@ -1201,6 +1201,35 @@ msgstr "Entradas largas"
 #: contrib/sitemaps/__init__.py:5
 msgid "Sitemaps"
 msgstr "Mapas del sitio"
+
+#: contrib/slugs/__init__.py:5
+#, fuzzy
+msgid "Slugs"
+msgstr "Nombre URL"
+
+#: contrib/slugs/abstract_models.py:21 fields/slug.py:16
+#: model_mixins/slugged.py:22
+msgid "Slug"
+msgstr "Nombre URL"
+
+#: contrib/slugs/abstract_models.py:27
+msgid "Object Type"
+msgstr ""
+
+#: contrib/slugs/abstract_models.py:31
+#, fuzzy
+msgid "Object ID"
+msgstr "Asunto"
+
+#: contrib/slugs/abstract_models.py:41
+#, fuzzy
+msgid "Slug Entry"
+msgstr "Entrada larga"
+
+#: contrib/slugs/abstract_models.py:42
+#, fuzzy
+msgid "Slug Entries"
+msgstr "Entradas largas"
 
 #: contrib/standards/__init__.py:5
 msgid "Standards"
@@ -1730,10 +1759,6 @@ msgstr "Código postal genérico"
 msgid "Rich text"
 msgstr "Texto enriquecido"
 
-#: fields/slug.py:16 model_mixins/slugged.py:20
-msgid "Slug"
-msgstr "Nombre URL"
-
 #: model_mixins/activatable.py:32
 msgid "Active From"
 msgstr "Activo desde"
@@ -1826,13 +1851,18 @@ msgstr ""
 "Palabras clave opcionales para utilizar en la meta etiqueta «keywords». Si "
 "se deja en blanco, se extraerán de la descripción."
 
-#: model_mixins/slugged.py:21
+#: model_mixins/slugged.py:23
 msgid ""
 "URL friendly version of the main title. It is usually all lowercase and "
 "contains only letters, numbers and hyphens."
 msgstr ""
 "Versión del título principal para utilizar en la URL. Normalmente, sólo "
 "contiene letras minúsculas, números y guiones."
+
+#: model_mixins/slugged.py:32
+#, fuzzy
+msgid "Slug History"
+msgstr "Histórico"
 
 #: templates/admin/mass_update.html:102
 msgid "Please correct the error below."
@@ -2036,11 +2066,6 @@ msgstr "Introduce un código postal válido."
 msgid "Cache Stats"
 msgstr "Estadísticas de la cache"
 
-#: views/detail.py:94
-#, python-brace-format
-msgid "No {verbose_name} found matching the query"
-msgstr "No se ha encontrado ningún {verbose_name} que coincida con la consulta"
-
 #: views/list.py:185
 #, python-brace-format
 msgid "Empty list and '{class_name}.allow_empty' is False."
@@ -2054,6 +2079,13 @@ msgstr "Relevancia"
 #: views/static.py:41 views/static.py:50
 msgid "No file found matching the query"
 msgstr "Ningún archivo coincide con la consulta"
+
+#~ msgid "You was unsubscribed successfully."
+#~ msgstr "Has sido dado de baja correctamente."
+
+#~ msgid "No {verbose_name} found matching the query"
+#~ msgstr ""
+#~ "No se ha encontrado ningún {verbose_name} que coincida con la consulta"
 
 #~ msgid "Enter a valid email domain."
 #~ msgstr "Introduce un dominio de correo válido."

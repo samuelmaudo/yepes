@@ -101,6 +101,9 @@ class SubscriptionForm(forms.Form):
     newsletter = forms.ModelChoiceField(
             label=_('Newsletter'),
             queryset=NewsletterManager.get_queryset())
+    email_address = fields.EmailField(
+            label=_('E-mail Address'),
+            max_length=120)
     first_name = forms.CharField(
             label=_('First Name'),
             max_length=60,
@@ -109,9 +112,6 @@ class SubscriptionForm(forms.Form):
             label=_('Last Name'),
             max_length=60,
             required=False)
-    email_address = fields.EmailField(
-            label=_('E-mail Address'),
-            max_length=120)
 
 
 class UnsubscriptionForm(forms.Form):
@@ -127,6 +127,8 @@ class UnsubscriptionForm(forms.Form):
 class UnsubscriptionReasonForm(forms.Form):
 
     reason = forms.ModelChoiceField(
+            empty_label=None,
             label=_('Reason'),
-            queryset=UnsubscriptionReasonManager.get_queryset())
+            queryset=UnsubscriptionReasonManager.get_queryset(),
+            widget=forms.RadioSelect)
 
