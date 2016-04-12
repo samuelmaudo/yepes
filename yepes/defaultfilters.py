@@ -55,7 +55,10 @@ def last(value):
 
 @register.filter(is_safe=False)
 def pk(value):
-    return getattr(value, 'pk', None)
+    try:
+        return value._get_pk_val()
+    except AttributeError:
+        return None
 
 
 @register.filter(is_safe=False)
