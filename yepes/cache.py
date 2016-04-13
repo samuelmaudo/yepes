@@ -190,14 +190,16 @@ class LookupTable(object):
         if not self._is_populated():
             self.populate()
 
-    def _model_changed(self, sender, **kwargs):
-        self.clear()
+    def _model_changed(self, sender, instance, **kwargs):
+        if getattr(instance, '_clear_lookup_table', True):
+            self.clear()
 
     def _parse_args(self, args, kwargs):
         if args:
             if len(args) != 1 or len(kwargs) != 0:
                 raise AttributeError
             cache = self._cache
+            field = 'pk'
             key = args[0]
         elif kwargs:
             if len(args) != 0 or len(kwargs) != 1:
@@ -212,7 +214,7 @@ class LookupTable(object):
         else:
             raise AttributeError
 
-        return cache, key
+        return cache, field, key
 
     def _set_creation_counter(self):
         self.creation_counter = Manager.creation_counter
@@ -273,14 +275,29 @@ class LookupTable(object):
             model._meta.concrete_managers.append(
                     (self.creation_counter, name, self))
 
+    def create(self, **kwargs):
+        record = self.model(**kwargs)
+        record._clear_lookup_table = False
+        #post_save.disconnect(self._model_changed, sender=self.model)
+        record.save(force_insert=True)
+        #post_save.connect(self._model_changed, sender=self.model)
+        del record._clear_lookup_table
+        if self._is_populated():
+            with self._lock.writer():
+                self._cache[getattr(record, self.model_pk)] = record
+                for field, index in six.iteritems(self._indexes):
+                    index[getattr(record, field)] = record
+
+        return record
+
     def exists(self, *args, **kwargs):
-        cache, key = self._parse_args(args, kwargs)
+        cache, field, key = self._parse_args(args, kwargs)
         self._maybe_populate()
         with self._lock.reader():
             return (key in cache)
 
     def exists_many(self, *args, **kwargs):
-        cache, keys = self._parse_args(args, kwargs)
+        cache, field, keys = self._parse_args(args, kwargs)
         self._maybe_populate()
         with self._lock.reader():
             return all(k in cache for k in keys)
@@ -293,7 +310,7 @@ class LookupTable(object):
 
     def get(self, *args, **kwargs):
         default = kwargs.pop('default', None)
-        cache, key = self._parse_args(args, kwargs)
+        cache, field, key = self._parse_args(args, kwargs)
         self._maybe_populate()
         with self._lock.reader():
             return cache.get(key, default)
@@ -319,10 +336,26 @@ class LookupTable(object):
 
     def get_many(self, *args, **kwargs):
         default = kwargs.pop('default', None)
-        cache, keys = self._parse_args(args, kwargs)
+        cache, field, keys = self._parse_args(args, kwargs)
         self._maybe_populate()
         with self._lock.reader():
             return [cache.get(k, default) for k in keys]
+
+    def get_or_create(self, *args, **kwargs):
+        if 'default' in kwargs:
+            raise AttributeError
+
+        defaults = kwargs.pop('defaults', {})
+        record = self.get(*args, **kwargs)
+        if record is None:
+            cache, field, key = self._parse_args(args, kwargs)
+            defaults[field] = key
+            record = self.create(**defaults)
+            created = True
+        else:
+            created = False
+
+        return (record, created)
 
     def has_default(self):
         return (self.default_registry_key is not None)
@@ -331,6 +364,7 @@ class LookupTable(object):
         self.clear()
         with self._lock.writer():
             for record in self.fetch_records():
+                record._clear_lookup_table = False
                 self._cache[getattr(record, self.model_pk)] = record
                 for field, index in six.iteritems(self._indexes):
                     index[getattr(record, field)] = record
