@@ -429,7 +429,12 @@ class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
         if newsletter is not None:
             kwargs['newsletter_guid'] = newsletter.guid
 
-        return reverse('subscription', kwargs=kwargs)
+        if subscriber is None:
+            viewname = 'subscription'
+        else:
+            viewname = 'profile'
+
+        return reverse(viewname, kwargs=kwargs)
 
     def get_template_names(self):
         names = []

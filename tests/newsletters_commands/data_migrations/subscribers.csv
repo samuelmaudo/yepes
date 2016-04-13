@@ -1,0 +1,4 @@
+email_address,first_name,last_name,newsletters,tags
+john.rambo@army.com,John,Rambo
+paul.smith@army.com,Paul,Smith,,"soldier|sargent"
+peter.parker@army.com,Peter,,,soldier

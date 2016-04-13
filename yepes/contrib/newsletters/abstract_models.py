@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
+from yepes.cache import LookupTable
 from yepes.contrib.registry import registry
 from yepes.contrib.newsletters.managers import NewsletterManager
 from yepes.loading import LazyModelManager
@@ -246,6 +247,8 @@ class AbstractDomain(models.Model):
             default=False,
             verbose_name=_('Is Trusted?'))
 
+    cache = LookupTable(['name'])
+
     class Meta:
         abstract = True
         ordering = ['name']
@@ -420,6 +423,7 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
             verbose_name=_("Return To Address"))
 
     objects = NewsletterManager()
+    cache = LookupTable(['guid', 'name'])
 
     class Meta:
         abstract = True
@@ -575,7 +579,10 @@ class AbstractSubscriber(Enableable, Logged):
     # CUSTOM METHODS
 
     def is_subscribed_to(self, newsletter):
-        return self.subscriptions.filter(newsletter=newsletter).exists()
+        if not self._get_pk_val():
+            return False
+        else:
+            return self.subscriptions.filter(newsletter=newsletter).exists()
 
     def set_email(self, address):
         address = normalize_email(address)
@@ -598,7 +605,9 @@ class AbstractSubscriber(Enableable, Logged):
             return self.subscriptions.create(newsletter=newsletter)
 
     def subscribe_to(self, newsletter):
-        if not self.is_subscribed_to(newsletter):
+        if self.is_subscribed_to(newsletter):
+            return None
+        else:
             return self.subscriptions.create(newsletter=newsletter)
 
     def unsubscribe_from(self, newsletter, reason=None, last_message=None):
@@ -631,6 +640,8 @@ class AbstractSubscriberTag(Logged):
     description = fields.TextField(
             blank=True,
             verbose_name=_('Description'))
+
+    cache = LookupTable(['name'])
 
     class Meta:
         abstract = True
