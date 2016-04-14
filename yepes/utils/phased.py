@@ -7,7 +7,7 @@ import re
 
 from django.contrib.messages.storage.base import BaseStorage
 from django.http import HttpRequest
-from django.template import (
+from django.template.base import (
     COMMENT_TAG_START, COMMENT_TAG_END,
     Lexer, Parser, Token, TOKEN_TEXT,
     TemplateSyntaxError,

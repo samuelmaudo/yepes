@@ -231,7 +231,7 @@ class TestProgram(object):
         state = {
             'INSTALLED_APPS': settings.INSTALLED_APPS,
             'ROOT_URLCONF': getattr(settings, 'ROOT_URLCONF', ''),
-            'TEMPLATE_DIRS': settings.TEMPLATE_DIRS,
+            'TEMPLATES': settings.TEMPLATES,
             'LANGUAGE_CODE': settings.LANGUAGE_CODE,
             'STATIC_URL': settings.STATIC_URL,
             'STATIC_ROOT': settings.STATIC_ROOT,
@@ -240,14 +240,33 @@ class TestProgram(object):
         settings.ROOT_URLCONF = 'urls'
         settings.STATIC_URL = '/static/'
         settings.STATIC_ROOT = os.path.join(self.tempDir, 'static')
-        settings.TEMPLATE_DIRS = (os.path.join(self.workingDir, self.templatesDir), )
+        settings.TEMPLATES = [{
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [os.path.join(self.workingDir, self.templatesDir)],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        }]
         settings.LANGUAGE_CODE = 'en'
         settings.SITE_ID = 1
+        settings.MIGRATION_MODULES = {
+            # These 'tests.migrations' modules don't actually exist, but
+            # this lets us skip creating migrations for the test models.
+            'auth': 'django.contrib.auth.tests.migrations',
+            'contenttypes': 'contenttypes_tests.migrations',
+        }
         return state
 
     def setup(self, verbosity, testLabels):
+        import django
+        from django.apps import apps
         from django.conf import settings
-        from django.db.models.loading import get_apps, load_app
         from django.test.testcases import TransactionTestCase, TestCase
 
         # Force declaring available_apps in TransactionTestCase for faster tests.
@@ -268,7 +287,7 @@ class TestProgram(object):
             logger.addHandler(handler)
 
         # Load all the self.alwaysInstalledApps.
-        get_apps()
+        django.setup()
 
         # Reduce given test labels to just the app module path
         appLabels = set(l.split('.', 1)[0] for l in testLabels)
@@ -280,9 +299,9 @@ class TestProgram(object):
         for label in appLabels:
             if verbosity >= 2:
                 self.stream.writeln('Importing application {0}'.format(label))
-
-            module = load_app(label)
             settings.INSTALLED_APPS.append(label)
+
+        apps.set_installed_apps(settings.INSTALLED_APPS)
 
         return state
 

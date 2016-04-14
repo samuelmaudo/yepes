@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.util import get_model_from_relation
 from django.db.models import F, Q
-from django.db.models.related import RelatedObject
+from django.db.models.fields.related import ForeignObjectRel
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
 
@@ -38,8 +38,9 @@ class NestableFieldListFilter(FieldListFilter):
                 [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('All'),
         }
-        if ((isinstance(self.field, RelatedObject) and self.field.field.null)
-                    or (hasattr(self.field, 'rel') and self.field.null)):
+        fld = self.field
+        if (isinstance(fld, ForeignObjectRel) and fld.field.null
+                or hasattr(fld, 'rel') and fld.null):
             yield {
                 'selected': bool(self.lookup_val_isnull),
                 'query_string': cl.get_query_string({
@@ -61,8 +62,9 @@ class NestableFieldListFilter(FieldListFilter):
 
     def has_output(self):
         choices_count = len(self.objects)
-        if ((isinstance(self.field, RelatedObject) and self.field.field.null)
-                    or (hasattr(self.field, 'rel') and self.field.null)):
+        fld = self.field
+        if (isinstance(fld, ForeignObjectRel) and fld.field.null
+                or hasattr(fld, 'rel') and fld.null):
             choices_count += 1
         return choices_count > 1
 
@@ -80,12 +82,10 @@ class NestableFieldListFilter(FieldListFilter):
             return queryset.filter(**{self.lookup_kwarg: objects})
 
 FieldListFilter.register(
-    lambda f: (
-        bool(getattr(f, 'rel', None))
-            and issubclass(f.rel.to, Nestable)
+    lambda fld: (
+        fld.rel is not None and issubclass(fld.rel.to, Nestable)
         or
-        isinstance(f, RelatedObject)
-            and issubclass(f.field.rel.to, Nestable)
+        isinstance(fld, ForeignObjectRel) and issubclass(fld.field.rel.to, Nestable)
     ),
     NestableFieldListFilter,
     take_priority=True,

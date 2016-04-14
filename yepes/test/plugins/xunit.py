@@ -201,6 +201,7 @@ class Xunit(Plugin):
         """
         Initializes a timer before starting a test.
         """
+        self.testsRun += 1
         self.testStartTime = time()
 
     def startTestRun(self):
