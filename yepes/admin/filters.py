@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.admin import FieldListFilter
-from django.contrib.admin.util import get_model_from_relation
+from django.contrib.admin.utils import get_model_from_relation
 from django.db.models import F, Q
 from django.db.models.fields.related import ForeignObjectRel
 from django.utils.encoding import smart_text

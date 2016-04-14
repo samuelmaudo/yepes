@@ -39,7 +39,7 @@ class OperationChoiceField(forms.ChoiceField):
         return super(OperationChoiceField, self).validate(value.label)
 
 
-class MassUpdateErrorList(forms.util.ErrorList):
+class MassUpdateErrorList(forms.utils.ErrorList):
     """
     Stores all errors for the form/formsets in a mass-update view.
     """

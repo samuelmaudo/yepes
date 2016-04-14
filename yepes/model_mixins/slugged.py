@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields

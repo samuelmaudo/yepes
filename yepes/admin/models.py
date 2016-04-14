@@ -7,7 +7,7 @@ import hashlib
 
 from django.conf.urls import patterns, url
 from django.contrib.admin import ModelAdmin as DjangoModelAdmin
-from django.contrib.admin.util import flatten_fieldsets, model_format_dict
+from django.contrib.admin.utils import flatten_fieldsets, model_format_dict
 from django.db import models
 from django.db import transaction
 from django.db.models.fields import BLANK_CHOICE_DASH, FieldDoesNotExist

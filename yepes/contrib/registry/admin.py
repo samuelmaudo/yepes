@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from collections import OrderedDict
 
 from django.contrib.admin.views.main import ChangeList as BaseChangeList
-from django.contrib.admin.util import quote
+from django.contrib.admin.utils import quote
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.forms.fields import CharField, IntegerField
