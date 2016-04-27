@@ -12,6 +12,11 @@ import sys
 
 from unittest.runner import _WritelnDecorator as WriteLnDecorator
 
+import django
+
+from django.apps import AppConfig, apps
+from django.conf import settings
+from django.test.testcases import TransactionTestCase, TestCase
 from django.utils import six
 
 
@@ -265,11 +270,6 @@ class TestProgram(object):
         return state
 
     def setup(self, verbosity, testLabels):
-        import django
-        from django.apps import AppConfig, apps
-        from django.conf import settings
-        from django.test.testcases import TransactionTestCase, TestCase
-
         # Force declaring available_apps in TransactionTestCase for faster tests.
         def noAvailableApps(self):
             raise Exception('Please define available_apps in'
@@ -311,7 +311,6 @@ class TestProgram(object):
         return state
 
     def teardown(self, state):
-        from django.conf import settings
         self.removeTempDir()
         self.restoreSettings(settings, state)
 
