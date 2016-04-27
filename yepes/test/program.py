@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import fnmatch
+import importlib
 import logging
 import optparse
 import os
@@ -265,7 +266,7 @@ class TestProgram(object):
 
     def setup(self, verbosity, testLabels):
         import django
-        from django.apps import apps
+        from django.apps import AppConfig, apps
         from django.conf import settings
         from django.test.testcases import TransactionTestCase, TestCase
 
@@ -290,16 +291,20 @@ class TestProgram(object):
         django.setup()
 
         # Reduce given test labels to just the app module path
-        appLabels = set(l.split('.', 1)[0] for l in testLabels)
+        appNames = set(l.split('.', 1)[0] for l in testLabels)
 
         # Load all the test model apps.
         if verbosity >= 2:
             self.stream.writeln('Importing applications ...')
 
-        for label in appLabels:
+        for name in appNames:
             if verbosity >= 2:
-                self.stream.writeln('Importing application {0}'.format(label))
-            settings.INSTALLED_APPS.append(label)
+                self.stream.writeln('Importing application {0}'.format(name))
+
+            module = importlib.import_module(name)
+            config = AppConfig(name, module)
+            config.label = '_'.join((config.label.strip('_'), 'tests'))
+            settings.INSTALLED_APPS.append(config)
 
         apps.set_installed_apps(settings.INSTALLED_APPS)
 
