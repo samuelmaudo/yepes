@@ -107,8 +107,22 @@ class Sugar(Plugin):
             self.lastTestCase = None
 
     def getAbbreviatedDescription(self, test):
-        module = test.__class__.__module__
-        name = test.__class__.__name__
+        try:
+            test._testMethodName
+        except AttributeError:
+            # This handles class or module level exceptions.
+            i = test.description.index('(') + 1
+            j = test.description.index(')')
+            full_name = test.description[i:j]
+            if '.' in full_name:
+                module, name = full_name.rsplit('.', 1)
+            else:
+                module = None
+                name = full_name
+        else:
+            module = test.__class__.__module__
+            name = test.__class__.__name__
+
         if not module:
             return name
         else:
@@ -121,8 +135,15 @@ class Sugar(Plugin):
             ))
 
     def getDescription(self, test):
+        try:
+            method_name = test._testMethodName
+        except AttributeError:
+            # This handles class or module level exceptions.
+            i = test.description.index(' ')
+            method_name = test.description[:i]
+
         return ''.join((
-            test._testMethodName,
+            method_name,
             ' ',
             TERMINAL_COLORS['gray'],
             '(',
