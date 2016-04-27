@@ -128,7 +128,7 @@ class GetModuleTest(test.SimpleTestCase):
         self.assertIs(module, cgi)
 
     def test_missing_module(self):
-        with self.assertRaises(MissingModuleError):
+        with self.assertRaises(ImportError):
             get_module('asdfg')
 
         module = get_module(

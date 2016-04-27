@@ -8,6 +8,7 @@ from decimal import Decimal
 import random
 import sys
 import traceback
+import warnings
 
 from django import test
 from django.utils.six import unichr as chr
@@ -22,6 +23,7 @@ from yepes.utils import (
     htmlentities,
     iterators,
     minifier,
+    modules,
     properties,
     slugify,
     unidecode,
@@ -182,6 +184,63 @@ class IteratorsTest(test.SimpleTestCase):
         )
 
 
+class HtmlTest(test.SimpleTestCase):
+
+    def test_close_tags(self):
+        self.assertEqual(
+            html.close_tags('<p><strong>Lorem fistrum</strong> pecador.'),
+            '<p><strong>Lorem fistrum</strong> pecador.</p>',
+        )
+        self.assertEqual(
+            html.close_tags('<p><em><strong>Te va a has&eacute; pupitaa mamaar.'),
+            '<p><em><strong>Te va a has&eacute; pupitaa mamaar.</strong></em></p>',
+        )
+        self.assertEqual(
+            html.close_tags('Est&#225; la cosa muy <strong><em>malar</strong>.'),
+            'Est&#225; la cosa muy <strong><em>malar</strong>.</em>',
+        )
+
+    def test_extract_text(self):
+        self.assertEqual(
+            html.extract_text('<p><strong>Lorem fistrum</strong> pecador.</p>'),
+            'Lorem fistrum pecador.',
+        )
+        self.assertEqual(
+            html.extract_text('<p><em>Te va a has&eacute; pupitaa mamaar.</em></p>'),
+            'Te va a hasé pupitaa mamaar.',
+        )
+        self.assertEqual(
+            html.extract_text('Est&#225; la cosa muy <strong><em>malar<strong>.'),
+            'Está la cosa muy malar.',
+        )
+
+
+class HtmlEntitiesTest(test.SimpleTestCase):
+
+    def test_decode(self):
+        self.assertEqual(htmlentities.decode('&lt;'), '<')
+        self.assertEqual(htmlentities.decode('&#60;'), '<')
+        self.assertEqual(htmlentities.decode('&euro;'), '€')
+        self.assertEqual(htmlentities.decode('&#8364;'), '€')
+        self.assertEqual(htmlentities.decode('&#x20AC;'), '€')
+        self.assertEqual(htmlentities.decode('&notin;'), '∉')
+        self.assertEqual(htmlentities.decode('&#8713;'), '∉')
+        self.assertEqual(htmlentities.decode('&Gamma;'), 'Γ')
+        self.assertEqual(htmlentities.decode('Γ'), 'Γ')
+        self.assertEqual(htmlentities.decode('&spades;'), '♠')
+        self.assertEqual(htmlentities.decode('&#9824;'), '♠')
+        self.assertEqual(htmlentities.decode('&#2384;'), 'ॐ')
+        self.assertEqual(htmlentities.decode('&#x950;'), 'ॐ')
+
+    def test_encode(self):
+        self.assertEqual(htmlentities.encode('<'), '&lt;')
+        self.assertEqual(htmlentities.encode('€'), '&euro;')
+        self.assertEqual(htmlentities.encode('∉'), '&notin;')
+        self.assertEqual(htmlentities.encode('Γ'), '&Gamma;')
+        self.assertEqual(htmlentities.encode('♠'), '&spades;')
+        self.assertEqual(htmlentities.encode('ॐ'), '&#2384;')
+
+
 class MinifierTest(test.SimpleTestCase):
 
     css_code = (
@@ -280,61 +339,53 @@ class MinifierTest(test.SimpleTestCase):
         self.assertEqual(self.minifyJs(self.js_code), self.minified_js_code)
 
 
-class HtmlTest(test.SimpleTestCase):
+class ModulesTest(test.SimpleTestCase):
 
-    def test_close_tags(self):
-        self.assertEqual(
-            html.close_tags('<p><strong>Lorem fistrum</strong> pecador.'),
-            '<p><strong>Lorem fistrum</strong> pecador.</p>',
-        )
-        self.assertEqual(
-            html.close_tags('<p><em><strong>Te va a has&eacute; pupitaa mamaar.'),
-            '<p><em><strong>Te va a has&eacute; pupitaa mamaar.</strong></em></p>',
-        )
-        self.assertEqual(
-            html.close_tags('Est&#225; la cosa muy <strong><em>malar</strong>.'),
-            'Est&#225; la cosa muy <strong><em>malar</strong>.</em>',
-        )
+    def test_valid_module(self):
+        module = modules.import_module('cgi')
+        import cgi
+        self.assertEqual(module, cgi)
+        self.assertIs(module, cgi)
 
-    def test_extract_text(self):
-        self.assertEqual(
-            html.extract_text('<p><strong>Lorem fistrum</strong> pecador.</p>'),
-            'Lorem fistrum pecador.',
+    def test_missing_module(self):
+        with self.assertRaises(ImportError):
+            modules.import_module('asdfg')
+
+        module = modules.import_module(
+            'asdfg',
+            ignore_missing=True,
         )
-        self.assertEqual(
-            html.extract_text('<p><em>Te va a has&eacute; pupitaa mamaar.</em></p>'),
-            'Te va a hasé pupitaa mamaar.',
-        )
-        self.assertEqual(
-            html.extract_text('Est&#225; la cosa muy <strong><em>malar<strong>.'),
-            'Está la cosa muy malar.',
-        )
+        self.assertIsNone(module)
 
+    def test_invalid_dependency(self):
+        with self.assertRaises(ImportError):
+            modules.import_module('utils.invalid_dependency')
 
-class HtmlEntitiesTest(test.SimpleTestCase):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            module = modules.import_module(
+                'utils.invalid_dependency',
+                ignore_internal_errors=True,
+            )
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[0].category, ImportWarning))
+            self.assertIn('No module', str(w[0].message))
+            self.assertIsNone(module)
 
-    def test_decode(self):
-        self.assertEqual(htmlentities.decode('&lt;'), '<')
-        self.assertEqual(htmlentities.decode('&#60;'), '<')
-        self.assertEqual(htmlentities.decode('&euro;'), '€')
-        self.assertEqual(htmlentities.decode('&#8364;'), '€')
-        self.assertEqual(htmlentities.decode('&#x20AC;'), '€')
-        self.assertEqual(htmlentities.decode('&notin;'), '∉')
-        self.assertEqual(htmlentities.decode('&#8713;'), '∉')
-        self.assertEqual(htmlentities.decode('&Gamma;'), 'Γ')
-        self.assertEqual(htmlentities.decode('Γ'), 'Γ')
-        self.assertEqual(htmlentities.decode('&spades;'), '♠')
-        self.assertEqual(htmlentities.decode('&#9824;'), '♠')
-        self.assertEqual(htmlentities.decode('&#2384;'), 'ॐ')
-        self.assertEqual(htmlentities.decode('&#x950;'), 'ॐ')
+    def test_invalid_syntax(self):
+        with self.assertRaises(SyntaxError):
+            modules.import_module('utils.invalid_syntax')
 
-    def test_encode(self):
-        self.assertEqual(htmlentities.encode('<'), '&lt;')
-        self.assertEqual(htmlentities.encode('€'), '&euro;')
-        self.assertEqual(htmlentities.encode('∉'), '&notin;')
-        self.assertEqual(htmlentities.encode('Γ'), '&Gamma;')
-        self.assertEqual(htmlentities.encode('♠'), '&spades;')
-        self.assertEqual(htmlentities.encode('ॐ'), '&#2384;')
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            module = modules.import_module(
+                'utils.invalid_syntax',
+                ignore_internal_errors=True,
+            )
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[0].category, SyntaxWarning))
+            self.assertIn('invalid syntax', str(w[0].message))
+            self.assertIsNone(module)
 
 
 class PropertiesTest(test.SimpleTestCase):
