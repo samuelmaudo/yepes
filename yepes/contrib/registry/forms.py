@@ -8,7 +8,7 @@ from django.forms.forms import Form as BaseForm
 from django.forms.models import BaseModelFormSet
 from django.forms.widgets import HiddenInput
 
-from yepes.contrib.registry.base import registry, REGISTRY_KEYS
+from yepes.contrib.registry import registry, REGISTRY_KEYS
 from yepes.contrib.registry.models import Entry
 from yepes.utils.properties import cached_property
 

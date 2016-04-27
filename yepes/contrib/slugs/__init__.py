@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 
-from django.utils.translation import ugettext_lazy as _
+from __future__ import unicode_literals
 
-VERBOSE_NAME = _('Slugs')
-VERSION = (0, 1, 0, 'alpha', 1)
+VERSION = (1, 0, 0, 'alpha', 0)
 
 def get_version():
     from django.utils.version import get_version
     return get_version(VERSION)
+
+default_app_config = 'yepes.contrib.slugs.apps.SlugsConfig'

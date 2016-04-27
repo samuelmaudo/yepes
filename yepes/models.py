@@ -7,12 +7,7 @@ import types
 from django.db import connections
 from django.db.models.manager import Manager
 from django.db.models.query import QuerySet
-from django.template.base import add_to_builtins
 from django.utils import six
-
-
-add_to_builtins('yepes.defaultfilters')
-add_to_builtins('yepes.defaulttags')
 
 
 def in_batches(self, batch_size):

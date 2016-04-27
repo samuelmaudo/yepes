@@ -8,6 +8,8 @@ from django.utils import six
 
 from yepes.urlresolvers import full_reverse
 
+__all__ = ('FullUrlSitemap', 'StaticSitemap')
+
 
 class FullUrlSitemap(Sitemap):
     """

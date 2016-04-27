@@ -1,14 +1,10 @@
 # -*- coding:utf-8 -*-
 
-from django.utils.translation import ugettext_lazy as _
+from __future__ import unicode_literals
 
-VERBOSE_NAME = _('Registry')
-VERSION = (0, 1, 0, 'alpha', 1)
+from yepes.contrib.registry.base import *
 
-def get_version():
-    from django.utils.version import get_version
-    return get_version(VERSION)
-
+VERSION = (1, 0, 0, 'alpha', 0)
 
 def autodiscover():
     """
@@ -16,14 +12,14 @@ def autodiscover():
     not present. This forces an import on them to register any entries they
     may want.
     """
-    import importlib
-    from django.conf import settings
-    for app in settings.INSTALLED_APPS:
-        try:
-            importlib.import_module('{0}.registry'.format(app))
-        except ImportError:
-            pass
+    from yepes.apps import apps
+    from yepes.utils.modules import import_module
+    for app_config in apps.get_app_configs():
+        module_path = '.'.join((app_config.name, 'registry'))
+        import_module(module_path, ignore_missing=True)
 
-from yepes.contrib.registry.base import *
-autodiscover()
+def get_version():
+    from django.utils.version import get_version
+    return get_version(VERSION)
 
+default_app_config = 'yepes.contrib.registry.apps.RegistryConfig'

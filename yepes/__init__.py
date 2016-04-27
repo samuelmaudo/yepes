@@ -1,8 +1,11 @@
 # -*- coding:utf-8 -*-
 
-VERBOSE_NAME = 'Yepes'
-VERSION = (0, 1, 0, 'alpha', 1)
+from __future__ import unicode_literals
+
+VERSION = (1, 0, 0, 'alpha', 0)
 
 def get_version():
     from django.utils.version import get_version
     return get_version(VERSION)
+
+default_app_config = 'yepes.apps.YepesConfig'

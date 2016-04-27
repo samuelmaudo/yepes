@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import unicode_literals
+
 from yepes.apps import AppConfig, apps
 from yepes.utils.properties import cached_property
 

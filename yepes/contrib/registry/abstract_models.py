@@ -35,32 +35,3 @@ class BaseEntry(models.Model):
     def natural_key(self):
         return (self.key, )
 
-
-class AbstractEntry(BaseEntry):
-
-    value = models.CharField(
-            max_length=255,
-            blank=True,
-            null=True,
-            verbose_name=_('Value'))
-
-    class Meta:
-        abstract = True
-        unique_together = ('site', 'key')
-        verbose_name = _('Entry')
-        verbose_name_plural = _('Entries')
-
-
-class AbstractLongEntry(BaseEntry):
-
-    value = models.TextField(
-            blank=True,
-            null=True,
-            verbose_name=_('Value'))
-
-    class Meta:
-        abstract = True
-        unique_together = ('site', 'key')
-        verbose_name = _('Long Entry')
-        verbose_name_plural = _('Long Entries')
-
