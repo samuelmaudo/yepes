@@ -673,13 +673,13 @@ class OrderableTest(test.TestCase):
         self.assertTrue(Language._meta.get_field('index').db_index)
         self.assertEqual(
             Language._meta.index_together,
-            []
+            ()
         )
         self.assertEqual(Image._meta.filter_field, 'article')
         self.assertFalse(Image._meta.get_field('index').db_index)
         self.assertEqual(
             Image._meta.index_together,
-            [('article', 'index')]
+            (('article', 'index'), )
         )
 
     def test_simple_ordering(self):

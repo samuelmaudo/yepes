@@ -63,7 +63,7 @@ class OrderableBase(ModelBase):
             sort_field = opts.get_field('index')
             if filter_field is not None:
                 if (filter_field, 'index') not in opts.index_together:
-                    opts.index_together.append((filter_field, 'index'))
+                    opts.index_together += ((filter_field, 'index'), )
 
                 sort_field.db_index = False
             else:
