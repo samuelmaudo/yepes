@@ -4,10 +4,4 @@ from __future__ import unicode_literals
 
 from yepes.contrib.sitemaps.base import *
 
-VERSION = (1, 0, 0, 'alpha', 0)
-
-def get_version():
-    from django.utils.version import get_version
-    return get_version(VERSION)
-
 default_app_config = 'yepes.contrib.sitemaps.apps.SitemapsConfig'

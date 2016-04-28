@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 from yepes.contrib.registry.base import *
 
-VERSION = (1, 0, 0, 'alpha', 0)
-
 def autodiscover():
     """
     Auto-discover INSTALLED_APPS registry.py modules and fail silently when
@@ -17,9 +15,5 @@ def autodiscover():
     for app_config in apps.get_app_configs():
         module_path = '.'.join((app_config.name, 'registry'))
         import_module(module_path, ignore_missing=True)
-
-def get_version():
-    from django.utils.version import get_version
-    return get_version(VERSION)
 
 default_app_config = 'yepes.contrib.registry.apps.RegistryConfig'
