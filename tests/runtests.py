@@ -28,7 +28,7 @@ program = TestProgram(
         'yepes.contrib.datamigrations',
         'yepes.contrib.emails',
         'yepes.contrib.metrics',
-        #'yepes.contrib.newsletters',
+        'yepes.contrib.newsletters',
         'yepes.contrib.registry',
         'yepes.contrib.sitemaps',
         'yepes.contrib.slugs',

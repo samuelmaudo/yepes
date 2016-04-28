@@ -6,7 +6,7 @@ from django.contrib.admin.models import LogEntry, CHANGE
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
-from django.db.models import F, Q
+from django.db.models import Case, IntegerField, Q, When
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import six
 from django.utils.encoding import force_text
@@ -19,8 +19,6 @@ from django.views.generic import (
     TemplateView,
     View,
 )
-
-from aggregate_if import Count
 
 from yepes.contrib.newsletters.utils import prerender, render
 from yepes.loading import get_class, get_model
@@ -79,27 +77,33 @@ class DispatchView(UpdateView):
             })
 
         if form_data.get('bounce_filter'):
-            subscribers = subscribers.annotate(bounce_count=Count(
-                'deliveries',
-                Q(deliveries__is_bounced=True)),
+            subscribers = subscribers.annotate(
+                bounce_count=Sum(
+                    Case(When(deliveries__is_bounced=True, then=1),
+                        output_field=IntegerField())
+                ),
             ).filter(**{
                 'bounce_count__{0}'.format(form_data['bounce_filter']):
                 form_data['bounce_filter_value'],
             })
 
         if form_data.get('click_filter'):
-            subscribers = subscribers.annotate(click_count=Count(
-                'deliveries',
-                Q(deliveries__is_clicked=True)),
+            subscribers = subscribers.annotate(
+                click_count=Sum(
+                    Case(When(deliveries__is_clicked=True, then=1),
+                        output_field=IntegerField())
+                ),
             ).filter(**{
                 'click_count__{0}'.format(form_data['click_filter']):
                 form_data['click_filter_value'],
             })
 
         if form_data.get('open_filter'):
-            subscribers = subscribers.annotate(open_count=Count(
-                'deliveries',
-                Q(deliveries__is_opened=True)),
+            subscribers = subscribers.annotate(
+                open_count=Sum(
+                    Case(When(deliveries__is_opened=True, then=1),
+                        output_field=IntegerField())
+                ),
             ).filter(**{
                 'open_count__{0}'.format(form_data['open_filter']):
                 form_data['open_filter_value'],

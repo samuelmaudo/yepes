@@ -5,13 +5,11 @@ from __future__ import unicode_literals
 from django import forms
 from django.conf.urls import patterns, url
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import Case, Count, IntegerField, When
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.six.moves.urllib.parse import urljoin
 from django.utils.translation import ugettext_lazy as _
-
-from aggregate_if import Count
 
 from yepes import admin
 from yepes.conf import settings
@@ -300,10 +298,24 @@ class DomainAdmin(StatisticsMixin, admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(DomainAdmin, self).get_queryset(request)
-        qs = qs.annotate(bounce_count=Count('deliveries', Q(deliveries__is_bounced=True)))
-        qs = qs.annotate(click_count=Count('deliveries', Q(deliveries__is_clicked=True)))
-        qs = qs.annotate(delivery_count=Count('deliveries', Q(deliveries__is_processed=True)))
-        qs = qs.annotate(open_count=Count('deliveries', Q(deliveries__is_opened=True)))
+        qs = qs.annotate(
+            bounce_count=Sum(
+                Case(When(deliveries__is_bounced=True, then=1),
+                     output_field=IntegerField())
+            ),
+            click_count=Sum(
+                Case(When(deliveries__is_clicked=True, then=1),
+                     output_field=IntegerField())
+            ),
+            delivery_count=Sum(
+                Case(When(deliveries__is_processed=True, then=1),
+                     output_field=IntegerField())
+            ),
+            open_count=Sum(
+                Case(When(deliveries__is_opened=True, then=1),
+                     output_field=IntegerField())
+            ),
+        )
         return qs
 
 
@@ -386,10 +398,24 @@ class MessageAdmin(StatisticsMixin, admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(MessageAdmin, self).get_queryset(request)
-        qs = qs.annotate(bounce_count=Count('deliveries', Q(deliveries__is_bounced=True)))
-        qs = qs.annotate(click_count=Count('deliveries', Q(deliveries__is_clicked=True)))
-        qs = qs.annotate(delivery_count=Count('deliveries', Q(deliveries__is_processed=True)))
-        qs = qs.annotate(open_count=Count('deliveries', Q(deliveries__is_opened=True)))
+        qs = qs.annotate(
+            bounce_count=Sum(
+                Case(When(deliveries__is_bounced=True, then=1),
+                     output_field=IntegerField())
+            ),
+            click_count=Sum(
+                Case(When(deliveries__is_clicked=True, then=1),
+                     output_field=IntegerField())
+            ),
+            delivery_count=Sum(
+                Case(When(deliveries__is_processed=True, then=1),
+                     output_field=IntegerField())
+            ),
+            open_count=Sum(
+                Case(When(deliveries__is_opened=True, then=1),
+                     output_field=IntegerField())
+            ),
+        )
         return qs
 
     def get_urls(self):
@@ -567,10 +593,24 @@ class NewsletterAdmin(StatisticsMixin, admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(NewsletterAdmin, self).get_queryset(request)
-        qs = qs.annotate(bounce_count=Count('deliveries', Q(deliveries__is_bounced=True)))
-        qs = qs.annotate(click_count=Count('deliveries', Q(deliveries__is_clicked=True)))
-        qs = qs.annotate(delivery_count=Count('deliveries', Q(deliveries__is_processed=True)))
-        qs = qs.annotate(open_count=Count('deliveries', Q(deliveries__is_opened=True)))
+        qs = qs.annotate(
+            bounce_count=Sum(
+                Case(When(deliveries__is_bounced=True, then=1),
+                     output_field=IntegerField())
+            ),
+            click_count=Sum(
+                Case(When(deliveries__is_clicked=True, then=1),
+                     output_field=IntegerField())
+            ),
+            delivery_count=Sum(
+                Case(When(deliveries__is_processed=True, then=1),
+                     output_field=IntegerField())
+            ),
+            open_count=Sum(
+                Case(When(deliveries__is_opened=True, then=1),
+                     output_field=IntegerField())
+            ),
+        )
         return qs
 
 
