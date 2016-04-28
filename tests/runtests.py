@@ -26,14 +26,14 @@ program = TestProgram(
         'mptt',
         'yepes',
         'yepes.contrib.datamigrations',
-        #'yepes.contrib.emails',
-        #'yepes.contrib.metrics',
+        'yepes.contrib.emails',
+        'yepes.contrib.metrics',
         #'yepes.contrib.newsletters',
         'yepes.contrib.registry',
         'yepes.contrib.sitemaps',
         'yepes.contrib.slugs',
-        #'yepes.contrib.standards',
-        #'yepes.contrib.thumbnails',
+        'yepes.contrib.standards',
+        'yepes.contrib.thumbnails',
     ],
 )
 

@@ -92,9 +92,10 @@ class EncryptedTextField(CalculatedSubfield, models.BinaryField):
     _check_min_length_attribute = CharField._check_min_length_attribute
 
     def deconstruct(self):
-        name, path, args, kwargs = super(EncryptedTextField, self).deconstruct()
+        name, path, args, kwargs = super(models.BinaryField, self).deconstruct()
         path = path.replace('yepes.fields.encrypted', 'yepes.fields')
         clean_keywords(self, kwargs, variables={
+            'calculated': False,
             'cipher': AES,
             'editable': True,
             'min_length': None,

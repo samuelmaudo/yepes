@@ -63,9 +63,10 @@ class CompressedTextField(CalculatedSubfield, models.BinaryField):
         return bytes.decode('utf8')
 
     def deconstruct(self):
-        name, path, args, kwargs = super(CompressedTextField, self).deconstruct()
+        name, path, args, kwargs = super(models.BinaryField, self).deconstruct()
         path = path.replace('yepes.fields.compressed', 'yepes.fields')
         clean_keywords(self, kwargs, variables={
+            'calculated': False,
             'compression_level': 6,
             'editable': True,
             'min_length': None,
