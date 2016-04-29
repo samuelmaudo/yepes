@@ -15,6 +15,7 @@ class YepesConfig(AppConfig):
     verbose_name = 'Yepes'
 
     def ready(self):
+        super(YepesConfig, self).ready()
         from django.template.base import add_to_builtins
         add_to_builtins('yepes.defaultfilters')
         add_to_builtins('yepes.defaulttags')

@@ -32,3 +32,7 @@ class OverridableConfig(AppConfig):
             if app_config.overrided_app_config.label == self.label
         ]
 
+    def ready(self):
+        super(OverridableConfig, self).ready()
+        self.__dict__['overriding_app_configs'] = self.get_overriding_app_configs()
+

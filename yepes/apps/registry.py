@@ -11,6 +11,28 @@ from django.utils import six
 from django.utils.lru_cache import lru_cache
 
 
+def clear_cache(self):
+    """
+    Clears all internal caches, for methods that alter the app registry.
+
+    This is mostly used in tests.
+
+    """
+    self.get_models.cache_clear()
+    self.get_overriding_app_configs.cache_clear()
+
+    # Call expire cache on each model. This will purge the
+    # relation tree and the fields cache.
+    if self.ready:
+        for model in self.get_models(include_auto_created=True):
+            model._meta._expire_cache()
+
+if six.PY2:
+    clear_cache = types.MethodType(clear_cache, None, Apps)
+
+setattr(Apps, 'clear_cache', clear_cache)
+
+
 def get_class(self, module_path, class_name=None):
     """
     Returns the model matching the given app_label and model_name.
