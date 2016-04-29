@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 
 from yepes.conf import settings
-from yepes.loading import get_module, LoadingError
+from yepes.utils.modules import import_module
 
 BUILTIN_PLANS = {
     'bulk_create': 'yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan',
@@ -21,16 +21,13 @@ BUILTIN_PLANS = {
 _PLANS = None
 
 
-class MissingPlanError(LoadingError):
-
-    def __init__(self, plan_name):
-        msg = "Importation plan '{0}' could not be found."
-        super(MissingPlanError, self).__init__(msg.format(plan_name))
+MissingPlanError = LookupError
 
 
 def get_plan(name):
     if not has_plan(name):
-        raise MissingPlanError(name)
+        msg = "Importation plan '{0}' could not be found."
+        raise LookupError(msg.format(name))
     else:
         return _PLANS[name]
 
@@ -51,7 +48,7 @@ def register_plan(name, path):
 
 def _import_plan(path):
     module_path, class_name = path.rsplit('.', 1)
-    module = get_module(module_path, ignore_internal_errors=True)
+    module = import_module(module_path, ignore_internal_errors=True)
     return getattr(module, class_name, None)
 
 

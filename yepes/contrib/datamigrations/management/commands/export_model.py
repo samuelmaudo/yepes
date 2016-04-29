@@ -10,7 +10,7 @@ from django.utils import six
 
 from yepes.contrib.datamigrations import DataMigration
 from yepes.contrib.datamigrations.serializers import get_serializer
-from yepes.loading import get_model, LoadingError
+from yepes.loading import get_model
 
 
 class Command(BaseCommand):
@@ -68,12 +68,12 @@ class Command(BaseCommand):
 
         try:
             model = get_model(*model_name.rsplit('.', 1))
-        except LoadingError as e:
+        except LookupError as e:
             raise CommandError(str(e))
 
         try:
             serializer = get_serializer(serializer_name)
-        except LoadingError as e:
+        except LookupError as e:
             raise CommandError(str(e))
 
         migration = DataMigration(

@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 
 from yepes.conf import settings
-from yepes.loading import get_module, LoadingError
+from yepes.utils.modules import import_module
 
 BUILTIN_SERIALIZERS = {
     'csv': 'yepes.contrib.datamigrations.serializers.csv.CsvSerializer',
@@ -17,11 +17,7 @@ BUILTIN_SERIALIZERS = {
 _SERIALIZERS = None
 
 
-class MissingSerializerError(LoadingError):
-
-    def __init__(self, serializer_name):
-        msg = "Serializer '{0}' could not be found."
-        super(MissingSerializerError, self).__init__(msg.format(serializer_name))
+MissingSerializerError = LookupError
 
 
 def serialize(format, headers, data, file=None, **parameters):
@@ -36,7 +32,8 @@ def deserialize(format, headers, source, **parameters):
 
 def get_serializer(name):
     if not has_serializer(name):
-        raise MissingSerializerError(name)
+        msg = "Serializer '{0}' could not be found."
+        raise LookupError(msg.format(name))
     else:
         return _SERIALIZERS[name]
 
@@ -57,7 +54,7 @@ def register_serializer(name, path):
 
 def _import_serializer(path):
     module_path, class_name = path.rsplit('.', 1)
-    module = get_module(module_path, ignore_internal_errors=True)
+    module = import_module(module_path, ignore_internal_errors=True)
     return getattr(module, class_name, None)
 
 
