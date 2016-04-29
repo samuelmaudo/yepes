@@ -9,7 +9,7 @@ import stat
 
 from django.core.exceptions import ImproperlyConfigured
 from django.http import (
-    CompatibleStreamingHttpResponse,
+    FileResponse,
     Http404,
     HttpResponseNotModified,
 )
@@ -44,14 +44,15 @@ class StaticFileView(View):
         if not self.was_modified(filename, filestats):
             return HttpResponseNotModified()
 
+        charset = self.get_charset(filename, filestats)
+        mimetype = self.get_mimetype(filename, filestats)
+        encoding = self.get_encoding(filename, filestats)
+
         try:
             fileobj = open(filename, 'rb')
         except IOError:
             raise Http404(_('No file found matching the query'))
 
-        charset = self.get_charset(filename, filestats)
-        mimetype = self.get_mimetype(filename, filestats)
-        encoding = self.get_encoding(filename, filestats)
         if not charset and mimetype and not mimetype.startswith('text'):
             content_type = mimetype or 'application/octet-stream'
         else:
@@ -59,7 +60,7 @@ class StaticFileView(View):
                 mimetype or settings.DEFAULT_CONTENT_TYPE,
                 charset or settings.DEFAULT_CHARSET,
             )
-        response = CompatibleStreamingHttpResponse(fileobj, content_type)
+        response = FileResponse(fileobj, content_type=content_type)
         response['Last-Modified'] = http_date(filestats.st_mtime)
         if stat.S_ISREG(filestats.st_mode):
             response['Content-Length'] = filestats.st_size
