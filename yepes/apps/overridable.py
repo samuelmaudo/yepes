@@ -8,9 +8,14 @@ from yepes.utils.properties import cached_property
 
 class OverridableConfig(AppConfig):
     """
-    Class representing a Django application and its configuration.
-    """
+    Class representing a Django application which can be overridden by
+    defining an overriding app that points to it.
 
+    To allow this, the overriding apps should be listed before the
+    overridden application. This is because the first model registered
+    prevails over the following models.
+
+    """
     @cached_property
     def overriding_app_configs(self):
         return self.get_overriding_app_configs()
@@ -29,7 +34,7 @@ class OverridableConfig(AppConfig):
             app_config
             for app_config
             in apps.get_overriding_app_configs()
-            if app_config.overrided_app_config.label == self.label
+            if app_config.overridden_app_config.label == self.label
         ]
 
     def ready(self):

@@ -35,21 +35,24 @@ setattr(Apps, 'clear_cache', clear_cache)
 
 def get_class(self, module_path, class_name=None):
     """
-    Returns the model matching the given app_label and model_name.
+    Dynamically imports a single class from the given module_path. The
+    path includes the app label and the module name, separated by a dot.
+    E.g., 'yepes.views'.
 
     As a shortcut, this function also accepts a single argument in the
-    form <app_label>.<model_name>.
+    form <module_path>.<class_name>.
 
-    Raises LookupError if no application exists with this label, or no
-    model exists with this name in the application. Raises ValueError if
-    called with a single argument that doesn't contain exactly one dot.
+    Raises LookupError if no application exists with the given label, or
+    the app does not contain the specified module, or if the requested
+    class cannot be found in the module. Raises ValueError if called
+    with a single argument that doesn't contain exactly one dot.
 
     """
     if class_name is None:
         module_path, class_name = module_path.rsplit('.', 1)
 
-    app_label, module_path = module_path.split('.', 1)
-    return self.get_app_config(app_label).get_class(module_path, class_name)
+    app_label, module_name = module_path.split('.', 1)
+    return self.get_app_config(app_label).get_class(module_name, class_name)
 
 if six.PY2:
     get_class = types.MethodType(get_class, None, Apps)
@@ -60,7 +63,7 @@ setattr(Apps, 'get_class', get_class)
 @lru_cache(maxsize=None)
 def get_overriding_app_configs(self):
     """
-    Returns a list of overriding app configs.
+    Returns a list of all overriding app configs.
     """
     from yepes.apps import OverridingConfig
     return [
@@ -77,6 +80,12 @@ setattr(Apps, 'get_overriding_app_configs', get_overriding_app_configs)
 
 
 def register_model(self, app_label, model):
+    """
+    Adds the given model to the registry. Models which are already
+    registered, will be ignored. This is because overriding models need
+    to prevail over overridden models. And because reloading models can
+    lead to inconsistencies, most notably with related models.
+    """
     # Since this method is called when models are imported, it cannot
     # perform imports because of the risk of import loops. It mustn't
     # call get_app_config().

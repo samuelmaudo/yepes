@@ -10,55 +10,29 @@ from django.utils import six
 from yepes.utils.modules import import_module
 
 
-def get_class(self, module_path, class_name):
+def get_class(self, module_name, class_name):
     """
-    Returns the model with the given case-insensitive model_name.
+    Dynamically imports a single class from the given ``module_name``.
 
-    Raises LookupError if no model exists with this name.
+    This is very similar to ``AppConfig.get_model()`` method but this
+    method is more general though as it can load any class from the
+    matching app, not just a model.
 
-    """
-    """
-    Dynamically import a single class from the given module.
-
-    This is a simple wrapper around ``get_classes()`` for the case of loading a
-    single class.
-
-    Args:
-
-        module_path (str): Module path comprising the app label and the module
-                           name, separated by a dot. E.g., 'registry.base'.
-
-        class_name (str): Name of the class to be imported.
-
-    Returns:
-
-        The requested class.
-
-    Example:
-
-        >>> get_class('registry.base', 'Registry')
-        <class 'yepes.contrib.registry.base.Registry'>
-
-    Raises:
-
-        MissingAppError: If no installed app matches the passed app label.
-
-        MissingModuleError: If no app contains the specified module.
-
-        MissingClassError: If the requested class cannot be found in any module.
+    Raises LookupError if the app does not contain the specified module
+    or if the requested class cannot be found in the module.
 
     """
-    module_full_path = '.'.join((self.module.__name__, module_path))
-    module = import_module(module_full_path, ignore_missing=True)
+    module_full_name = '.'.join((self.module.__name__, module_name))
+    module = import_module(module_full_name, ignore_missing=True)
     if module is None:
         msg = "Module '{0}.{1}' could not be found."
-        raise LookupError(msg.format(self.label, module_path))
+        raise LookupError(msg.format(self.label, module_name))
 
     try:
         return getattr(module, class_name)
     except AttributeError:
         msg = "Class '{0}' could not be found in '{1}.{2}'."
-        raise LookupError(msg.format(class_name, self.label, module_path))
+        raise LookupError(msg.format(class_name, self.label, module_name))
 
 if six.PY2:
     get_class = types.MethodType(get_class, None, AppConfig)
