@@ -52,12 +52,10 @@ class GuidField(CharField):
 
     def get_default(self):
         guid = self.generate_guid()
-
         if self.unique:
-            lookup = self.get_validator_unique_lookup_type()
             qs = self.model._default_manager.get_queryset()
             for i in range(63):
-                if qs.filter(**{lookup: guid}).exists():
+                if qs.filter(**{self.name: guid}).exists():
                     guid = self.generate_guid()
                 else:
                     break
