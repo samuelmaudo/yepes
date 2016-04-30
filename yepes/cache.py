@@ -143,8 +143,10 @@ class LookupTable(object):
 
     default_registry_key = None
     indexed_fields = None
+    name = None
     prefetch_related = None
     timeout = 600
+    use_in_migrations = False
 
     def __init__(self, indexed_fields=None, prefetch_related=None, timeout=None,
                        default_registry_key=None):
@@ -224,7 +226,7 @@ class LookupTable(object):
         cache_name = '{0}.{1}.{2}'.format(
             model._meta.app_label,
             model._meta.model_name,
-            self._name,
+            self.name,
         )
         self._cache = CACHES.setdefault(cache_name, OrderedDict())
         self._info = CACHE_INFO.setdefault(cache_name, {'expire_time': 0})
@@ -235,7 +237,7 @@ class LookupTable(object):
             cache_name = '{0}.{1}.{2}.{3}'.format(
                 model._meta.app_label,
                 model._meta.model_name,
-                self._name,
+                self.name,
                 field_name,
             )
             self._indexes[field_name] = CACHES.setdefault(cache_name, {})
@@ -255,25 +257,23 @@ class LookupTable(object):
                 index.clear()
 
     def contribute_to_class(self, model, name):
-        self._name = name
         self._set_model(model)
+        if not self.name:
+            self.name = name
+
         # Only contribute the manager if the model is concrete.
-        if model._meta.abstract:
+        opts = model._meta
+        if opts.abstract:
             setattr(model, name, AbstractManagerDescriptor(model))
-        elif model._meta.swapped:
+        elif opts.swapped:
             setattr(model, name, SwappedManagerDescriptor(model))
         else:
             post_save.connect(self._model_changed, sender=model)
             post_delete.connect(self._model_changed, sender=model)
             setattr(model, name, ManagerDescriptor(self))
 
-        if (model._meta.abstract
-                or (self._inherited and not self.model._meta.proxy)):
-            model._meta.abstract_managers.append(
-                    (self.creation_counter, name, self))
-        else:
-            model._meta.concrete_managers.append(
-                    (self.creation_counter, name, self))
+        abstract = (opts.abstract or (self._inherited and not opts.proxy))
+        opts.managers.append((self.creation_counter, self, abstract))
 
     def create(self, **kwargs):
         record = self.model(**kwargs)
