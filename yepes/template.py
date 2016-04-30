@@ -343,9 +343,9 @@ class InclusionTag(SingleTag):
         if isinstance(t, Template):
             template = t
         elif isinstance(t, six.string_types):
-            template = get_template(t)
+            template = get_template(t).template
         elif is_iterable(t):
-            template = select_template(t)
+            template = select_template(t).template
         else:
             template = Template('')
 
