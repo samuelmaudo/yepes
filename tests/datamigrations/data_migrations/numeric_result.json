@@ -1,5 +1,5 @@
 [
-{"integer": 0, "integer_as_string": "0", "float": 0.0, "float_as_string": "0.0", "decimal": 0, "decimal_as_string": "0"},
+{"integer": 0, "integer_as_string": "0", "float": 0.0, "float_as_string": "0.0", "decimal": 0, "decimal_as_string": "0.00"},
 {"integer": 1, "integer_as_string": "1", "float": 0.1, "float_as_string": "0.1", "decimal": 0.01, "decimal_as_string": "0.01"},
 {"integer": 2, "integer_as_string": "2", "float": 0.2, "float_as_string": "0.2", "decimal": 0.02, "decimal_as_string": "0.02"},
 {"integer": 3, "integer_as_string": "3", "float": 0.3, "float_as_string": "0.3", "decimal": 0.03, "decimal_as_string": "0.03"},

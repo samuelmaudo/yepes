@@ -47,7 +47,6 @@ class YamlSerializer(Serializer):
         finally:
             dumper.dispose()
 
-
     def load(self, headers, file):
         loader = YamlLoader(file)
         return (
