@@ -81,10 +81,14 @@ class CacheMixin(object):
             return super_dispatch(request, *args, **kwargs)
 
     def get_use_cache(self, request):
-        if (not self.use_cache
-                or request.method.upper() not in self.cached_methods
-                or hasattr(request, 'user') and request.user.is_staff):
+        if not self.use_cache:
             return False
-        else:
+
+        if request.method.upper() not in self.cached_methods:
+            return False
+
+        try:
+            return not request.user.is_staff
+        except AttributeError:
             return True
 

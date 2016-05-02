@@ -35,10 +35,16 @@ class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,
 
     def dispatch(self, *args, **kwargs):
         response = super(DetailView, self).dispatch(*args, **kwargs)
-        if (isinstance(response, HttpResponse)
-                and response.status_code == 200
-                and not self.request.user.is_staff):
-            self.send_view_signal(self.object, self.request, response)
+        if isinstance(response, HttpResponse) and response.status_code == 200:
+
+            try:
+                is_staff = self.request.user.is_staff
+            except AttributeError:
+                is_staff = False
+
+            if is_staff:
+                self.send_view_signal(self.object, self.request, response)
+
         return response
 
     def get(self, request, *args, **kwargs):

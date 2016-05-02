@@ -503,7 +503,10 @@ class MetricsMiddleware(object):
         return request.COOKIES.get(settings.METRICS_COOKIE_NAME)
 
     def is_visitor_authenticated(self, request, response, user_agent, current_site):
-        return hasattr(request, 'user') and request.user.is_authenticated()
+        try:
+            return request.user.is_authenticated()
+        else:
+            return False
 
     def must_send_cookie(self, request, response, user_agent, current_site):
         return (not response.streaming
@@ -516,13 +519,19 @@ class MetricsMiddleware(object):
             method = 'AJAX'
         else:
             method = get_meta_data(request, 'REQUEST_METHOD', 'GET').upper()
+
+        try:
+            is_staff = self.request.user.is_staff
+        except AttributeError:
+            is_staff = False
+
         if (method not in registry['metrics:TRACKED_REQUEST_METHODS']
                 or not user_agent
                 or FAVICON_RE.search(request.path)
                 or SITEMAP_RE.search(request.path)
                 or TEXT_FILES_RE.search(request.path)
                 or TOUCH_ICON_RE.search(request.path)
-                or hasattr(request, 'user') and request.user.is_staff):
+                or is_staff):
             return False
 
         for path in registry['metrics:UNTRACKED_PATHS']:

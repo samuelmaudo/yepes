@@ -269,8 +269,12 @@ class MessageView(SubscriberMixin, MessageMixin, View):
     def get_prerendered_html(self, message):
         key = 'yepes.newsletters.message.{0}'.format(message.guid)
         html = cache.get(key)
-        if html is None or self.request.user.is_staff:
+        try:
+            is_staff = self.request.user.is_staff
+        except AttributeError:
+            is_staff = False
 
+        if html is None or is_staff:
             context = {
                 'subscriber': None, # Subscriber must not be specified here.
                 'newsletter': message.newsletter,

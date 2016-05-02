@@ -42,9 +42,6 @@ class SitemapView(CachedTemplateView):
     def get_sitemap_kwargs(self):
         return {}
 
-    def get_use_cache(self, request):
-        return (not request.user.is_staff)
-
 
 class StaticSitemapView(SitemapView):
 
@@ -91,7 +88,4 @@ class SitemapIndexView(CachedTemplateView):
                 urls.extend(url)
 
         return urls
-
-    def get_use_cache(self, request):
-        return (not request.user.is_staff)
 
