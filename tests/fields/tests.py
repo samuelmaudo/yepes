@@ -735,7 +735,7 @@ class CachedForeignKeyTest(test.TestCase):
             'tests:DEFAULT_CACHED_MODEL',
             ModelChoiceField(
                 label = 'Default Cached Model',
-                model = 'fields.CachedModelWithDefaultValue',
+                model = 'fields_tests.CachedModelWithDefaultValue',
                 required = True,
         ))
         registry['tests:DEFAULT_CACHED_MODEL'] = default
