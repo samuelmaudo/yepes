@@ -3,11 +3,13 @@
 from __future__ import unicode_literals
 
 from django.db.models import Model
-from django.contrib.sites.models import Site, SITE_CACHE
 from django.utils import six
 
 from yepes.apps import apps
 from yepes.exceptions import UnexpectedTypeError
+from yepes.loading import LazyModelManager
+
+SiteManager = LazyModelManager('sites', 'Site')
 
 
 def get_model(info):
@@ -31,12 +33,9 @@ def get_queryset(info):
     return model._default_manager.get_queryset()
 
 
-def get_site(site_id):
-    try:
-        site = SITE_CACHE[site_id]
-    except KeyError:
-        site = Site.objects.get(pk=site_id)
-        SITE_CACHE[site_id] = site
-
-    return site
+def get_site(site_id=None):
+    if site_id is None:
+        return SiteManager.get_current()
+    else:
+        return SiteManager._get_site_by_id(site_id)
 

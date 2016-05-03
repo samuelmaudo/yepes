@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -13,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 class BaseEntry(models.Model):
 
     site = models.ForeignKey(
-            Site,
+            'sites.Site',
             verbose_name=_('Site'))
     key = models.CharField(
             max_length=63,
