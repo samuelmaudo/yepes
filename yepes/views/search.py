@@ -439,6 +439,9 @@ class SearchAvailablePages(object):
     def __iter__(self):
         return six.itervalues(self)
 
+    def __len__(self):
+        return self._search.num_pages
+
     def get(self, key, default=None):
         try:
             return self[key]
@@ -522,6 +525,9 @@ class SearchVisiblePages(object):
 
     def __iter__(self):
         return six.itervalues(self)
+
+    def __len__(self):
+        return len(self._range)
 
     def get(self, key, default=None):
         try:
