@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 from decimal import Decimal as dec
 
-#from django.core import checks
+from django.core import checks
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import six

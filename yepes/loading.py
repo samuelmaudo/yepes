@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 
 from django.utils import six
 from django.utils.encoding import force_str
-from django.utils.functional import empty
+from django.utils.functional import empty, LazyObject
 
 from yepes.apps import apps
-from yepes.utils.compat import LazyObject
 from yepes.utils.modules import import_module
 
 __all__ = (

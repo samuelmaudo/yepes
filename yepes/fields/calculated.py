@@ -2,9 +2,8 @@
 
 from __future__ import unicode_literals
 
-#from django.core import checks
+from django.core import checks
 from django.core.exceptions import ImproperlyConfigured
-#from django.db.models import NOT_PROVIDED
 from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 
 from yepes.types import Undefined

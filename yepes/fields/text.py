@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-#from django.core import checks
+from django.core import checks
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.utils import six
