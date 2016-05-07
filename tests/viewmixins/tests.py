@@ -7,7 +7,7 @@ import time
 
 from django import http
 from django import test
-from django.core.cache import get_cache
+from django.core.cache import caches, DEFAULT_CACHE_ALIAS
 from django.core.exceptions import (
     ImproperlyConfigured,
     PermissionDenied,
@@ -42,7 +42,7 @@ class CacheMixinTest(test.SimpleTestCase):
         self.request_factory = test.RequestFactory()
 
     def tearDown(self):
-        get_cache('default').clear()
+        caches[DEFAULT_CACHE_ALIAS].clear()
 
     def assertResponseContentEqual(self, content, view, method, msg=None):
         req = getattr(self.request_factory, method)('/')

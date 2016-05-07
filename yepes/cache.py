@@ -7,7 +7,7 @@ from copy import copy
 from time import time
 from weakref import ref as weakref
 
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.db.models.manager import (
     Manager,
@@ -24,24 +24,13 @@ from yepes.contrib.registry import registry
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
-__all__ = ('get_cache', 'get_mint_cache', 'MintCache', 'LookupTable')
+__all__ = ('MintCache', 'LookupTable')
 
 # Global in-memory store of cache data. Keyed by name, to provide multiple
 # named local memory caches.
 CACHES = {}
 CACHE_INFO = {}
 LOCKS = {}
-
-
-def get_mint_cache(backend, **kwargs):
-    """
-    Function that loads a cache backend dynamically and returns it wrapped
-    in a ``MintCache`` object.
-    """
-    delay = kwargs.pop('delay')
-    timeout = kwargs.pop('timeout')
-    cache = get_cache(backend, **kwargs)
-    return MintCache(cache, timeout, delay)
 
 
 class MintCache(object):
@@ -64,6 +53,8 @@ class MintCache(object):
 
     """
     def __init__(self, cache, timeout=None, delay=None):
+        if isinstance(cache, six.string_types):
+            cache = caches[cache]
         self._cache = cache
         self._timeout = timeout or settings.MINT_CACHE_SECONDS
         self._delay = delay or settings.MINT_CACHE_DELAY_SECONDS

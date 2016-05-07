@@ -8,9 +8,8 @@ from django.contrib import messages
 from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import force_bytes
 
-from yepes.cache import get_mint_cache
+from yepes.cache import MintCache
 from yepes.conf import settings
-from yepes.types import Undefined
 from yepes.utils.minifier import minify_html_response
 
 
@@ -33,11 +32,10 @@ class CacheMixin(object):
 
     def __init__(self, *args, **kwargs):
         super(CacheMixin, self).__init__(*args, **kwargs)
-        self._cache = get_mint_cache(
-            self.cache_alias or settings.VIEW_CACHE_ALIAS,
-            timeout=self.timeout or settings.VIEW_CACHE_SECONDS,
-            delay=self.delay or settings.VIEW_CACHE_DELAY_SECONDS,
-        )
+        self._cache = MintCache(
+                self.cache_alias or settings.VIEW_CACHE_ALIAS,
+                timeout=self.timeout or settings.VIEW_CACHE_SECONDS,
+                delay=self.delay or settings.VIEW_CACHE_DELAY_SECONDS)
 
     def get_cache_hash(self, request):
         return '{0}://{1}{2}'.format(

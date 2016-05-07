@@ -7,17 +7,12 @@ from posixpath import normpath
 
 from django.contrib.staticfiles import finders as staticfiles_finders
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.core.cache import get_cache
+from django.core.cache import caches, DEFAULT_CACHE_ALIAS
 from django.template.base import Library, TemplateSyntaxError
 from django.utils.encoding import force_bytes, force_text
 
 from yepes.conf import settings
 from yepes.template import SingleTag
-
-SYMBOL_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
-    'LOCATION': 'yepes.templatetags.svg.insert_symbol',
-    'TIMEOUT': 600,
-})
 
 register = Library()
 
@@ -147,9 +142,9 @@ class InsertSymbolTag(SvgMixin, SingleTag):
             msg = "'{0}' tag does not support '{1}' method."
             raise TemplateSyntaxError(msg.format(self.tag_name, method))
 
-        cache = SYMBOL_CACHE.get(file_name)
-        if cache is None:
-            cache = {}
+        symbols = self.retrieve_symbol_definitions(file_name)
+        if symbols is None:
+            symbols = {}
 
             root = self.parse_file(file_name)
             if root is not None and root.tag.endswith('svg'):
@@ -195,15 +190,25 @@ class InsertSymbolTag(SvgMixin, SingleTag):
                             encoding='utf8',
                             pretty_print=False
                         ))
-                        cache[symbol.attrib['id']] = xml
+                        symbols[symbol.attrib['id']] = xml
 
-            SYMBOL_CACHE.set(file_name, cache)
+            self.store_symbol_definitions(file_name, symbols)
 
-        symbol_xml = cache.get(symbol_name)
+        symbol_xml = symbols.get(symbol_name)
         if symbol_xml is None:
             return ''
 
         return self.generate_code(etree.fromstring(symbol_xml), method)
+
+    def retrieve_symbol_definitions(self, key):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('yepes.templatetags.svg.insert_symbol', key))
+        return cache.get(new_key)
+
+    def store_symbol_definitions(self, key, symbols):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('yepes.templatetags.svg.insert_symbol', key))
+        cache.set(new_key, symbols, timeout=600)
 
 register.tag('insert_symbol', InsertSymbolTag.as_tag())
 

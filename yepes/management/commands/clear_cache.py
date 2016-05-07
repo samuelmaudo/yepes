@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 from optparse import make_option
 
 from django.core.cache import (
+    caches,
     DEFAULT_CACHE_ALIAS,
-    get_cache,
     InvalidCacheBackendError,
 )
 from django.core.management.base import BaseCommand, CommandError
@@ -36,17 +36,17 @@ class Command(BaseCommand):
         elif not aliases:
             aliases = [DEFAULT_CACHE_ALIAS]
 
-        caches = []
+        selected_caches = []
         for alias in aliases:
             try:
-                cache = get_cache(alias)
+                cache = caches[alias]
             except InvalidCacheBackendError:
                 msg = "Cache '{0}' could not be found"
                 raise CommandError(msg.format(alias))
             else:
-                caches.append((cache, alias))
+                selected_caches.append((cache, alias))
 
-        for cache, alias in caches:
+        for cache, alias in selected_caches:
             self.stdout.write('Cleaning {0} ...'.format(alias))
             cache.clear()
 
