@@ -88,7 +88,7 @@ class EncryptedTextField(CalculatedSubfield, models.BinaryField):
         errors.extend(self._check_min_length_attribute(**kwargs))
         return errors
 
-    #_check_max_length_attribute = CharField._check_max_length_attribute
+    _check_max_length_attribute = CharField._check_max_length_attribute
     _check_min_length_attribute = CharField._check_min_length_attribute
 
     def deconstruct(self):

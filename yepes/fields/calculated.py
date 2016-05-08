@@ -20,7 +20,7 @@ class CalculatedField(object):
 
     def check(self, **kwargs):
         errors = super(CalculatedField, self).check(**kwargs)
-        errors.extend(self._check_calculator_method(**kwargs))
+        errors.extend(self._check_calculator())
         return errors
 
     def _check_calculator(self):

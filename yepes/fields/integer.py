@@ -30,7 +30,7 @@ class IntegerField(CalculatedField, models.IntegerField):
         errors = super(IntegerField, self).check(**kwargs)
         errors.extend(self._check_max_value_attribute(**kwargs))
         errors.extend(self._check_min_value_attribute(**kwargs))
-        errors.extend(self._check_column_range(**kwargs))
+        errors.extend(self._check_column_range())
         return errors
 
     def _check_column_range(self):

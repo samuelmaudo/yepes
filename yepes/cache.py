@@ -240,6 +240,9 @@ class LookupTable(object):
         with self._lock.reader():
             return list(six.itervalues(self._cache))
 
+    def check(self, **kwargs):
+        return []
+
     def clear(self):
         with self._lock.writer():
             self._cache.clear()

@@ -2,9 +2,13 @@
 
 from __future__ import unicode_literals
 
+from django import VERSION as DJANGO_VERSION
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
-from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+if DJANGO_VERSION < (1, 9):
+    from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+else:
+    from django.db.models.fields.related import ForwardManyToOneDescriptor as ReverseSingleRelatedObjectDescriptor
 
 from yepes.utils.properties import cached_property
 
