@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from yepes.loading import get_model, get_models
+from yepes.apps import apps
 from yepes.model_mixins import Nestable
 
 
@@ -20,14 +20,14 @@ class Command(BaseCommand):
     def handle(self, *labels, **options):
 
         if not labels:
-            models = get_models()
+            models = apps.get_models()
         else:
             models = []
             for label in labels:
                 if '.' in label:
-                    models.append(get_model(*label.rsplit('.', 1)))
+                    models.append(apps.get_model(label))
                 else:
-                    models.extend(get_models(label))
+                    models.extend(apps.get_app_config(label).get_models())
 
         nested_models = [
             model

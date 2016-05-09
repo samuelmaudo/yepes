@@ -9,14 +9,16 @@ from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.contrib.metrics.model_mixins import Parameter
-from yepes.contrib.standards.fields import (
-    CountryField,
-    LanguageField,
-    RegionField,
-)
-from yepes.loading import get_model
+from yepes.apps import apps
+from yepes.loading import LazyModel
 from yepes.types import Undefined
+
+Page = LazyModel('metrics', 'Page')
+Parameter = apps.get_class('metrics.model_mixins', 'Parameter')
+
+CountryField = apps.get_class('standards.fields', 'CountryField')
+LanguageField = apps.get_class('standards.fields', 'LanguageField')
+RegionField = apps.get_class('standards.fields', 'RegionField')
 
 
 class AbstractBrowser(Parameter):
@@ -137,9 +139,7 @@ class AbstractPageView(models.Model):
             if self.next_page_id is None:
                 self._next_page_cache = None
             else:
-                Page = get_model('metrics', 'Page')
-                PageManager = Page._default_manager
-                self._next_page_cache = PageManager.get(pk=self.next_page_id)
+                self._next_page_cache = Page.objects.get(pk=self.next_page_id)
 
         return self._next_page_cache
     get_next_page.short_description = _('Next Page')
@@ -149,9 +149,7 @@ class AbstractPageView(models.Model):
             if self.previous_page_id is None:
                 self._previous_page_cache = None
             else:
-                Page = get_model('metrics', 'Page')
-                PageManager = Page._default_manager
-                self._previous_page_cache = PageManager.get(pk=self.previous_page_id)
+                self._previous_page_cache = Page.objects.get(pk=self.previous_page_id)
 
         return self._previous_page_cache
     get_previous_page.short_description = _('Previous Page')

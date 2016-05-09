@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 
 from django.template.base import Library
 
-from yepes.contrib.thumbnails.proxies import ConfigurationProxy
+from yepes.apps import apps
 from yepes.template import AssignTag, SingleTag
+
+ConfigurationProxy = apps.get_class('thumbnails.proxies', 'ConfigurationProxy')
 
 register = Library()
 

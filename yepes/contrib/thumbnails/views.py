@@ -6,11 +6,10 @@ from django.core.files.storage import FileSystemStorage
 from django.views.generic import TemplateView
 
 from yepes.apps import apps
-from yepes.contrib.thumbnails.files import SourceFile
-from yepes.loading import get_model
 from yepes.views import ListView
 
-Configuration = get_model('thumbnails', 'Configuration')
+Configuration = apps.get_model('thumbnails', 'Configuration')
+SourceFile = apps.get_class('thumbnails.files', 'SourceFile')
 
 
 class TestMixin(object):

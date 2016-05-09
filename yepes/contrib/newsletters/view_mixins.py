@@ -7,19 +7,14 @@ from django.http import Http404
 from django.utils import six
 from django.utils.translation import ugettext as _
 
-from yepes.loading import get_model
+from yepes.apps import apps
 from yepes.types import Undefined
 
-Message = get_model('newsletters', 'Message')
-MessageManager = Message._default_manager
-MessageImage = get_model('newsletters', 'MessageImage')
-MessageImageManager = MessageImage._default_manager
-MessageLink = get_model('newsletters', 'MessageLink')
-MessageLinkManager = MessageLink._default_manager
-Newsletter = get_model('newsletters', 'Newsletter')
-NewsletterManager = Newsletter._default_manager
-Subscriber = get_model('newsletters', 'Subscriber')
-SubscriberManager = Subscriber._default_manager
+Message = apps.get_model('newsletters', 'Message')
+MessageImage = apps.get_model('newsletters', 'MessageImage')
+MessageLink = apps.get_model('newsletters', 'MessageLink')
+Newsletter = apps.get_model('newsletters', 'Newsletter')
+Subscriber = apps.get_model('newsletters', 'Subscriber')
 
 
 class ImageMixin(object):
@@ -37,9 +32,9 @@ class ImageMixin(object):
             name = self.kwargs.get('image_name')
             try:
                 if guid:
-                    image = MessageImageManager.get(guid=guid)
+                    image = MessageImage.objects.get(guid=guid)
                 elif name:
-                    image = MessageImageManager.get(name=name)
+                    image = MessageImage.objects.get(name=name)
             except MessageImage.DoesNotExist:
                 msg = _('No {verbose_name} found matching the query.')
                 kwargs = {'verbose_name': MessageImage._meta.verbose_name}
@@ -81,9 +76,9 @@ class LinkMixin(object):
             url = self.kwargs.get('link_url', self.request.GET.get('u'))
             try:
                 if guid:
-                    link = MessageLinkManager.get(guid=guid)
+                    link = MessageLink.objects.get(guid=guid)
                 elif url:
-                    link = MessageLinkManager.get(url=url)
+                    link = MessageLink.objects.get(url=url)
             except MessageLink.DoesNotExist:
                 msg = _('No {verbose_name} found matching the query.')
                 kwargs = {'verbose_name': MessageLink._meta.verbose_name}
@@ -125,9 +120,9 @@ class MessageMixin(object):
             slug = self.kwargs.get('message_slug')
             try:
                 if guid:
-                    message = MessageManager.get(guid=guid)
+                    message = Message.objects.get(guid=guid)
                 elif slug:
-                    message = MessageManager.get(slug=slug)
+                    message = Message.objects.get(slug=slug)
             except Message.DoesNotExist:
                 msg = _('No {verbose_name} found matching the query.')
                 kwargs = {'verbose_name': Message._meta.verbose_name}
@@ -169,9 +164,9 @@ class NewsletterMixin(object):
             slug = self.kwargs.get('newsletter_slug')
             try:
                 if guid:
-                    newsletter = NewsletterManager.get(guid=guid)
+                    newsletter = Newsletter.objects.get(guid=guid)
                 elif slug:
-                    newsletter = NewsletterManager.get(slug=slug)
+                    newsletter = Newsletter.objects.get(slug=slug)
             except Newsletter.DoesNotExist:
                 msg = _('No {verbose_name} found matching the query.')
                 kwargs = {'verbose_name': Newsletter._meta.verbose_name}
@@ -213,9 +208,9 @@ class SubscriberMixin(object):
             address = self.kwargs.get('subscriber_email', self.request.GET.get('e'))
             try:
                 if guid:
-                    subscriber = SubscriberManager.get(guid=guid)
+                    subscriber = Subscriber.objects.get(guid=guid)
                 elif address:
-                    subscriber = SubscriberManager.get(email_address=address)
+                    subscriber = Subscriber.objects.get(email_address=address)
             except Subscriber.DoesNotExist:
                 msg = _('No {verbose_name} found matching the query.')
                 kwargs = {'verbose_name': Subscriber._meta.verbose_name}

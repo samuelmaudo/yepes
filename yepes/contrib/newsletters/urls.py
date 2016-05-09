@@ -2,18 +2,18 @@
 
 from django.conf.urls import patterns, include, url
 
-from yepes.loading import get_class
+from yepes.apps import apps
 
-ImageView = get_class('newsletters.views', 'ImageView')
-LinkView = get_class('newsletters.views', 'LinkView')
-MessageView = get_class('newsletters.views', 'MessageView')
-#NewsletterDetailView = get_class('newsletters.views', 'NewsletterDetailView')
-#NewsletterListView = get_class('newsletters.views', 'NewsletterListView')
-ProfileView = get_class('newsletters.views', 'ProfileView')
-ResubscriptionView = get_class('newsletters.views', 'ResubscriptionView')
-SubscriptionView = get_class('newsletters.views', 'SubscriptionView')
-UnsubscriptionView = get_class('newsletters.views', 'UnsubscriptionView')
-UnsubscriptionReasonView = get_class('newsletters.views', 'UnsubscriptionReasonView')
+ImageView = apps.get_class('newsletters.views', 'ImageView')
+LinkView = apps.get_class('newsletters.views', 'LinkView')
+MessageView = apps.get_class('newsletters.views', 'MessageView')
+#NewsletterDetailView = apps.get_class('newsletters.views', 'NewsletterDetailView')
+#NewsletterListView = apps.get_class('newsletters.views', 'NewsletterListView')
+ProfileView = apps.get_class('newsletters.views', 'ProfileView')
+ResubscriptionView = apps.get_class('newsletters.views', 'ResubscriptionView')
+SubscriptionView = apps.get_class('newsletters.views', 'SubscriptionView')
+UnsubscriptionView = apps.get_class('newsletters.views', 'UnsubscriptionView')
+UnsubscriptionReasonView = apps.get_class('newsletters.views', 'UnsubscriptionReasonView')
 
 
 urlpatterns = patterns('',

@@ -12,25 +12,25 @@ from django.utils.six.moves.urllib.parse import urljoin
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import admin
+from yepes.apps import apps
 from yepes.conf import settings
-from yepes.loading import get_class, get_model
 
-Bounce = get_model('newsletters', 'Bounce')
-Click = get_model('newsletters', 'Click')
-Delivery = get_model('newsletters', 'Delivery')
-Domain = get_model('newsletters', 'Domain')
-Message = get_model('newsletters', 'Message')
-MessageImage = get_model('newsletters', 'MessageImage')
-MessageLink = get_model('newsletters', 'MessageLink')
-Newsletter = get_model('newsletters', 'Newsletter')
-Open = get_model('newsletters', 'Open')
-Subscriber = get_model('newsletters', 'Subscriber')
-SubscriberTag = get_model('newsletters', 'SubscriberTag')
-Subscription = get_model('newsletters', 'Subscription')
-Unsubscription = get_model('newsletters', 'Unsubscription')
-UnsubscriptionReason = get_model('newsletters', 'UnsubscriptionReason')
+Bounce = apps.get_model('newsletters', 'Bounce')
+Click = apps.get_model('newsletters', 'Click')
+Delivery = apps.get_model('newsletters', 'Delivery')
+Domain = apps.get_model('newsletters', 'Domain')
+Message = apps.get_model('newsletters', 'Message')
+MessageImage = apps.get_model('newsletters', 'MessageImage')
+MessageLink = apps.get_model('newsletters', 'MessageLink')
+Newsletter = apps.get_model('newsletters', 'Newsletter')
+Open = apps.get_model('newsletters', 'Open')
+Subscriber = apps.get_model('newsletters', 'Subscriber')
+SubscriberTag = apps.get_model('newsletters', 'SubscriberTag')
+Subscription = apps.get_model('newsletters', 'Subscription')
+Unsubscription = apps.get_model('newsletters', 'Unsubscription')
+UnsubscriptionReason = apps.get_model('newsletters', 'UnsubscriptionReason')
 
-DispatchView = get_class('newsletters.views', 'DispatchView')
+DispatchView = apps.get_class('newsletters.views', 'DispatchView')
 
 
 class StatisticsMixin(object):

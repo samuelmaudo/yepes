@@ -10,16 +10,18 @@ from django.core.management.base import NoArgsCommand
 from django.utils import six
 from django.utils import timezone
 
-from yepes.contrib.newsletters.utils import prerender, render
-from yepes.loading import get_model
+from yepes.apps import apps
 from yepes.utils.minifier import minify_html
 
+Delivery = apps.get_model('newsletters', 'Delivery')
+
+prerender = apps.get_class('newsletters.utils', 'prerender')
+render = apps.get_class('newsletters.utils', 'render')
 
 PrerenderedMessage = namedtuple(
     'PrerenderedMessage',
     ['subject', 'text', 'html'],
 )
-
 
 class Command(NoArgsCommand):
     help = 'Processes pending deliveries.'
@@ -34,10 +36,7 @@ class Command(NoArgsCommand):
     requires_model_validation = True
 
     def handle_noargs(self, **options):
-        Delivery = get_model('newsletters', 'Delivery')
-        DeliveryManager = Delivery._default_manager
-
-        pending_deliveries = DeliveryManager.filter(
+        pending_deliveries = Delivery.objects.filter(
             is_processed=False,
             date__lte=timezone.now(),
         ).prefetch_related(
@@ -92,7 +91,7 @@ class Command(NoArgsCommand):
             for newsletter, emails in six.iteritems(newsletters):
                 newsletter.connection.send_messages(emails)
 
-            DeliveryManager.filter(
+            Delivery.objects.filter(
                 pk__in=pending_deliveries,
             ).update(
                 is_processed=True,

@@ -7,9 +7,9 @@ from django.utils import six
 
 from yepes.apps import apps
 from yepes.exceptions import UnexpectedTypeError
-from yepes.loading import LazyModelManager
+from yepes.loading import LazyModel
 
-SiteManager = LazyModelManager('sites', 'Site')
+Site = LazyModel('sites', 'Site')
 
 
 def get_model(info):
@@ -35,7 +35,7 @@ def get_queryset(info):
 
 def get_site(site_id=None):
     if site_id is None:
-        return SiteManager.get_current()
+        return Site.objects.get_current()
     else:
-        return SiteManager._get_site_by_id(site_id)
+        return Site.objects._get_site_by_id(site_id)
 

@@ -7,10 +7,10 @@ from django.utils import six
 from django.utils import translation
 from django.utils.encoding import force_str, python_2_unicode_compatible
 
+from yepes.apps import apps
 from yepes.conf import settings
 from yepes.contrib.standards.model_mixins import NAME_RE
 from yepes.exceptions import MissingAttributeError
-from yepes.loading import get_model
 from yepes.utils.properties import cached_property
 
 
@@ -215,5 +215,5 @@ class GeographicAreaProxy(object):
     # care about this (especially in equality tests).
     @cached_property
     def __class__(self):
-        return get_model('standards', 'GeographicArea')
+        return apps.get_model('standards', 'GeographicArea')
 

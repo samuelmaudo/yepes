@@ -5,17 +5,17 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import admin
-from yepes.loading import get_model
+from yepes.apps import apps
 
-Browser = get_model('metrics', 'Browser')
-Engine = get_model('metrics', 'Engine')
-Platform = get_model('metrics', 'Platform')
-Page = get_model('metrics', 'Page')
-PageView = get_model('metrics', 'PageView')
-Referrer = get_model('metrics', 'Referrer')
-ReferrerPage = get_model('metrics', 'ReferrerPage')
-Visit = get_model('metrics', 'Visit')
-Visitor = get_model('metrics', 'Visitor')
+Browser = apps.get_model('metrics', 'Browser')
+Engine = apps.get_model('metrics', 'Engine')
+Platform = apps.get_model('metrics', 'Platform')
+Page = apps.get_model('metrics', 'Page')
+PageView = apps.get_model('metrics', 'PageView')
+Referrer = apps.get_model('metrics', 'Referrer')
+ReferrerPage = apps.get_model('metrics', 'ReferrerPage')
+Visit = apps.get_model('metrics', 'Visit')
+Visitor = apps.get_model('metrics', 'Visitor')
 
 
 class PageAdmin(admin.ReadOnlyMixin, admin.ModelAdmin):

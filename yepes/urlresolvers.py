@@ -9,11 +9,11 @@ from django.utils.functional import lazy
 
 from yepes.conf import settings
 from yepes.contrib.registry import registry
-from yepes.loading import LazyModelManager
+from yepes.loading import LazyModel
 
 __all__ = ('build_full_url', 'full_reverse', 'full_reverse_lazy')
 
-SiteManager = LazyModelManager('sites', 'Site')
+Site = LazyModel('sites', 'Site')
 
 FULL_URL_RE = re.compile(r'^[a-z][a-z0-9.-]+:', re.IGNORECASE)
 
@@ -60,7 +60,7 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
         else:
             scheme = 'http'
 
-    domain = domain or SiteManager.get_current().domain
+    domain = domain or Site.objects.get_current().domain
     subdomain = subdomain or registry.get('core:DEFAULT_SUBDOMAIN', '')
     if subdomain:
         url = '{0}://{1}.{2}{3}'.format(scheme, subdomain, domain, location)

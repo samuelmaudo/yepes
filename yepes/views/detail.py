@@ -10,11 +10,9 @@ from django.views.generic.detail import (
     SingleObjectTemplateResponseMixin,
 )
 
-from yepes.loading import is_installed, LazyModelManager
+from yepes.loading import is_installed
 from yepes.view_mixins import CacheMixin, CanonicalMixin, ModelMixin
 from yepes.utils.properties import cached_property
-
-SlugHistoryManager = LazyModelManager('slugs', 'SlugHistory')
 
 
 class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,

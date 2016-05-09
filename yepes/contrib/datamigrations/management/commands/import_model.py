@@ -7,10 +7,10 @@ from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations import DataMigration
 from yepes.contrib.datamigrations.importation_plans import get_plan
 from yepes.contrib.datamigrations.serializers import get_serializer
-from yepes.loading import get_model, LoadingError
 
 
 class Command(BaseCommand):
@@ -93,18 +93,18 @@ class Command(BaseCommand):
             raise CommandError("File '{0}' does not exit.".format(file_path))
 
         try:
-            model = get_model(*model_name.rsplit('.', 1))
-        except LoadingError as e:
+            model = apps.get_model(model_name)
+        except LookupError as e:
             raise CommandError(str(e))
 
         try:
             serializer = get_serializer(serializer_name)
-        except LoadingError as e:
+        except LookupError as e:
             raise CommandError(str(e))
 
         try:
             plan = get_plan(plan_name)
-        except LoadingError as e:
+        except LookupError as e:
             raise CommandError(str(e))
 
         migration = DataMigration(

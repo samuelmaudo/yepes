@@ -6,18 +6,18 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.loading import get_class
+from yepes.apps import apps
 from yepes.model_mixins import Enableable, Logged, Nestable, ParentForeignKey
 from yepes.utils.properties import cached_property
 
-CountryManager = get_class('standards.managers', 'CountryManager')
-CountrySubdivisionManager = get_class('standards.managers', 'CountrySubdivisionManager')
-CurrencyManager = get_class('standards.managers', 'CurrencyManager')
-GeographicAreaLookupTable = get_class('standards.managers', 'GeographicAreaLookupTable')
-LanguageManager = get_class('standards.managers', 'LanguageManager')
-RegionManager = get_class('standards.managers', 'RegionManager')
+CountryManager = apps.get_class('standards.managers', 'CountryManager')
+CountrySubdivisionManager = apps.get_class('standards.managers', 'CountrySubdivisionManager')
+CurrencyManager = apps.get_class('standards.managers', 'CurrencyManager')
+GeographicAreaLookupTable = apps.get_class('standards.managers', 'GeographicAreaLookupTable')
+LanguageManager = apps.get_class('standards.managers', 'LanguageManager')
+RegionManager = apps.get_class('standards.managers', 'RegionManager')
 
-Standard = get_class('standards.model_mixins', 'Standard')
+Standard = apps.get_class('standards.model_mixins', 'Standard')
 
 
 class AbstractCountry(Enableable, Standard):

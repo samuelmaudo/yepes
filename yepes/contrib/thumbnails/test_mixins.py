@@ -7,8 +7,10 @@ import os
 from django.core.files.storage import FileSystemStorage
 
 from yepes.apps import apps
-from yepes.contrib.thumbnails.files import ImageFile, SourceFile
 from yepes.test_mixins import TempDirMixin
+
+ImageFile = apps.get_class('thumbnails.files', 'ImageFile')
+SourceFile = apps.get_class('thumbnails.files', 'SourceFile')
 
 
 class ThumbnailsMixin(TempDirMixin):

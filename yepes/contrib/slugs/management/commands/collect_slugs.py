@@ -6,7 +6,7 @@ from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, CommandError
 
-from yepes.loading import get_model
+from yepes.contrib.slugs import SlugHistory
 
 
 class Command(NoArgsCommand):
@@ -41,8 +41,7 @@ class Command(NoArgsCommand):
         else:
             model_names = model_names.split(',')
 
-        SlugHistory = get_model('slugs', 'SlugHistory')
-        SlugHistory._default_manager.populate(
+        SlugHistory.objects.populate(
                 force=force,
                 app_label=app_label,
                 model_names=model_names)

@@ -2,10 +2,10 @@
 
 from django.conf.urls import patterns, include, url
 
-from yepes.loading import get_class
+from yepes.apps import apps
 
-ConfigurationsTestView = get_class('thumbnails.views', 'ConfigurationsTestView')
-OptionsTestView = get_class('thumbnails.views', 'OptionsTestView')
+ConfigurationsTestView = apps.get_class('thumbnails.views', 'ConfigurationsTestView')
+OptionsTestView = apps.get_class('thumbnails.views', 'OptionsTestView')
 
 
 urlpatterns = patterns('',

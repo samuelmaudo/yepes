@@ -1,13 +1,14 @@
 # -*- coding:utf-8 -*-
 
-from yepes.contrib.standards.abstract_models import (
-    AbstractCountry,
-    AbstractCountrySubdivision,
-    AbstractCurrency,
-    AbstractGeographicArea,
-    AbstractLanguage,
-    AbstractRegion,
-)
+from yepes.apps import apps
+
+AbstractCountry = apps.get_class('standards.abstract_models', 'AbstractCountry')
+AbstractCountrySubdivision = apps.get_class('standards.abstract_models', 'AbstractCountrySubdivision')
+AbstractCurrency = apps.get_class('standards.abstract_models', 'AbstractCurrency')
+AbstractGeographicArea = apps.get_class('standards.abstract_models', 'AbstractGeographicArea')
+AbstractLanguage = apps.get_class('standards.abstract_models', 'AbstractLanguage')
+AbstractRegion = apps.get_class('standards.abstract_models', 'AbstractRegion')
+
 
 class Country(AbstractCountry):
     pass
@@ -26,3 +27,4 @@ class Language(AbstractLanguage):
 
 class Region(AbstractRegion):
     pass
+

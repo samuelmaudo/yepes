@@ -8,9 +8,9 @@ from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import six
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations import DataMigration
 from yepes.contrib.datamigrations.serializers import get_serializer
-from yepes.loading import get_model
 
 
 class Command(BaseCommand):
@@ -67,7 +67,7 @@ class Command(BaseCommand):
             raise CommandError("Model label must be like 'appname.ModelName'.")
 
         try:
-            model = get_model(*model_name.rsplit('.', 1))
+            model = apps.get_model(model_name)
         except LookupError as e:
             raise CommandError(str(e))
 

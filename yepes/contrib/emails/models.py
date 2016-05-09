@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 
-from yepes.contrib.emails.abstract_models import (
-    AbstractConnection,
-    AbstractDelivery,
-    AbstractMessage,
-)
+from yepes.apps import apps
+
+AbstractConnection = apps.get_class('emails.abstract_models', 'AbstractConnection')
+AbstractDelivery = apps.get_class('emails.abstract_models', 'AbstractDelivery')
+AbstractMessage = apps.get_class('emails.abstract_models', 'AbstractMessage')
+
 
 class Connection(AbstractConnection):
     pass
@@ -14,3 +15,4 @@ class Delivery(AbstractDelivery):
 
 class Message(AbstractMessage):
     pass
+

@@ -5,15 +5,13 @@ from __future__ import unicode_literals
 from django.core.cache import caches, DEFAULT_CACHE_ALIAS
 from django.template.base import Library
 
-from yepes.loading import get_model
+from yepes.apps import apps
 from yepes.template import SingleTag
 from yepes.urlresolvers import full_reverse
 from yepes.types import Undefined
 
-MessageImage = get_model('newsletters', 'MessageImage')
-MessageImageManager = MessageImage._default_manager
-MessageLink = get_model('newsletters', 'MessageLink')
-MessageLinkManager = MessageLink._default_manager
+MessageImage = apps.get_model('newsletters', 'MessageImage')
+MessageLink = apps.get_model('newsletters', 'MessageLink')
 
 register = Library()
 
@@ -29,7 +27,7 @@ class ImageUrlTag(SingleTag):
 
         image = self.retrieve_image(name)
         if image is Undefined:
-            image = MessageImageManager.filter(name=name).first()
+            image = MessageImage.objects.filter(name=name).first()
             self.store_image(name, image)
 
         if image is None:
@@ -46,12 +44,12 @@ class ImageUrlTag(SingleTag):
 
     def retrieve_image(self, key):
         cache = caches[DEFAULT_CACHE_ALIAS]
-        new_key = '.'.join(('yepes.contrib.newsletters.templatetags.newsletters.image_url', key))
+        new_key = '.'.join(('newsletters.templatetags.newsletters.image_url', key))
         return cache.get(new_key, Undefined)
 
     def store_image(self, key, image):
         cache = caches[DEFAULT_CACHE_ALIAS]
-        new_key = '.'.join(('yepes.contrib.newsletters.templatetags.newsletters.image_url', key))
+        new_key = '.'.join(('newsletters.templatetags.newsletters.image_url', key))
         cache.set(new_key, image, timeout=600)
 
 register.tag('image_url', ImageUrlTag.as_tag())
@@ -68,7 +66,7 @@ class LinkUrlTag(SingleTag):
 
         link = self.retrieve_link(url)
         if link is None:
-            link, __ = MessageLinkManager.get_or_create(url=url)
+            link, __ = MessageLink.objects.get_or_create(url=url)
             self.store_link(url, link)
 
         subscriber = self.context.get('subscriber')
@@ -83,12 +81,12 @@ class LinkUrlTag(SingleTag):
 
     def retrieve_link(self, key):
         cache = caches[DEFAULT_CACHE_ALIAS]
-        new_key = '.'.join(('yepes.contrib.newsletters.templatetags.newsletters.link_url', key))
+        new_key = '.'.join(('newsletters.templatetags.newsletters.link_url', key))
         return cache.get(new_key)
 
     def store_link(self, key, link):
         cache = caches[DEFAULT_CACHE_ALIAS]
-        new_key = '.'.join(('yepes.contrib.newsletters.templatetags.newsletters.link_url', key))
+        new_key = '.'.join(('newsletters.templatetags.newsletters.link_url', key))
         cache.set(new_key, link, timeout=600)
 
 register.tag('link_url', LinkUrlTag.as_tag())

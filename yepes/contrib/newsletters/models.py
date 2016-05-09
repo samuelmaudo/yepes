@@ -2,23 +2,24 @@
 
 from django.db.models.signals import post_save
 
+from yepes.apps import apps
 from yepes.contrib.newsletters import receivers
-from yepes.contrib.newsletters.abstract_models import (
-    AbstractBounce,
-    AbstractClick,
-    AbstractDelivery,
-    AbstractDomain,
-    AbstractMessage,
-    AbstractMessageImage,
-    AbstractMessageLink,
-    AbstractNewsletter,
-    AbstractOpen,
-    AbstractSubscriber,
-    AbstractSubscriberTag,
-    AbstractSubscription,
-    AbstractUnsubscription,
-    AbstractUnsubscriptionReason,
-)
+
+AbstractBounce = apps.get_class('newsletters.abstract_models', 'AbstractBounce')
+AbstractClick = apps.get_class('newsletters.abstract_models', 'AbstractClick')
+AbstractDelivery = apps.get_class('newsletters.abstract_models', 'AbstractDelivery')
+AbstractDomain = apps.get_class('newsletters.abstract_models', 'AbstractDomain')
+AbstractMessage = apps.get_class('newsletters.abstract_models', 'AbstractMessage')
+AbstractMessageImage = apps.get_class('newsletters.abstract_models', 'AbstractMessageImage')
+AbstractMessageLink = apps.get_class('newsletters.abstract_models', 'AbstractMessageLink')
+AbstractNewsletter = apps.get_class('newsletters.abstract_models', 'AbstractNewsletter')
+AbstractOpen = apps.get_class('newsletters.abstract_models', 'AbstractOpen')
+AbstractSubscriber = apps.get_class('newsletters.abstract_models', 'AbstractSubscriber')
+AbstractSubscriberTag = apps.get_class('newsletters.abstract_models', 'AbstractSubscriberTag')
+AbstractSubscription = apps.get_class('newsletters.abstract_models', 'AbstractSubscription')
+AbstractUnsubscription = apps.get_class('newsletters.abstract_models', 'AbstractUnsubscription')
+AbstractUnsubscriptionReason = apps.get_class('newsletters.abstract_models', 'AbstractUnsubscriptionReason')
+
 
 class Bounce(AbstractBounce):
     pass

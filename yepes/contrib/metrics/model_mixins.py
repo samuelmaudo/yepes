@@ -9,8 +9,10 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.contrib.metrics.managers import ParameterManager
+from yepes.apps import apps
 from yepes.model_mixins import Nestable, ParentForeignKey
+
+ParameterManager = apps.get_class('metrics.managers', 'ParameterManager')
 
 
 @python_2_unicode_compatible

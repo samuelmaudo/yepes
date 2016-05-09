@@ -8,7 +8,7 @@ from django.db import transaction
 from django.db.models import Manager
 from django.db.models.fields import FieldDoesNotExist
 
-from yepes.loading import get_models
+from yepes.apps import apps
 
 
 class SlugHistoryManager(Manager):
@@ -58,8 +58,21 @@ class SlugHistoryManager(Manager):
         """
         if force or self.count() <= 0:
             cursor = conn.cursor()
+            if app_label is None:
+                models = apps.get_models()
+
+            app_config = apps.get_app_config(app_label)
+            if model_names is None:
+                models = app_config.get_models()
+            else:
+                models = [
+                    app_config.get_model(name)
+                    for name
+                    in model_names
+                ]
+
             with transaction.commit_on_success_unless_managed():
-                for model in get_models(app_label, model_names):
+                for model in models:
                     opts = model._meta
                     try:
                         slug_field = opts.get_field('slug')

@@ -5,14 +5,14 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import admin
-from yepes.loading import get_model
+from yepes.apps import apps
 
-Country = get_model('standards', 'Country')
-CountrySubdivision = get_model('standards', 'CountrySubdivision')
-Currency = get_model('standards', 'Currency')
-GeographicArea = get_model('standards', 'GeographicArea')
-Language = get_model('standards', 'Language')
-Region = get_model('standards', 'Region')
+Country = apps.get_model('standards', 'Country')
+CountrySubdivision = apps.get_model('standards', 'CountrySubdivision')
+Currency = apps.get_model('standards', 'Currency')
+GeographicArea = apps.get_model('standards', 'GeographicArea')
+Language = apps.get_model('standards', 'Language')
+Region = apps.get_model('standards', 'Region')
 
 
 class CountrySubdivisionAdmin(admin.EnableableMixin, admin.ModelAdmin):

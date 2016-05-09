@@ -7,9 +7,10 @@ from optparse import make_option
 
 from django.core.management.base import CommandError, NoArgsCommand
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations.serializers import get_serializer
-from yepes.contrib.newsletters.migrations import SubscriberImportation
-from yepes.loading import LoadingError
+
+SubscriberImportation = apps.get_class('newsletters.migrations', 'SubscriberImportation')
 
 
 class Command(NoArgsCommand):
@@ -47,7 +48,7 @@ class Command(NoArgsCommand):
 
         try:
             serializer = get_serializer(serializer_name)
-        except LoadingError as e:
+        except LookupError as e:
             raise CommandError(str(e))
 
         migration = SubscriberImportation()

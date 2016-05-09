@@ -9,10 +9,10 @@ from django.forms.widgets import HiddenInput
 
 from yepes.contrib.registry import registry, REGISTRY_KEYS
 from yepes.contrib.registry.models import Entry
-from yepes.loading import LazyModelManager
+from yepes.loading import LazyModel
 from yepes.utils.properties import cached_property
 
-SiteManager = LazyModelManager('sites', 'Site')
+Site = LazyModel('sites', 'Site')
 
 
 class EntryFormSet(BaseModelFormSet):
@@ -56,7 +56,7 @@ class EntryFormSet(BaseModelFormSet):
 
     def get_queryset(self):
         if self.queryset is None:
-            current_site = SiteManager.get_current()
+            current_site = Site.objects.get_current()
             registry_keys = list(registry.keys())
             registry_keys.sort()
             self.queryset = [

@@ -4,9 +4,11 @@ from __future__ import unicode_literals
 
 from django.db.models import ImageField as BaseImageField
 
-from yepes.contrib.thumbnails.files import SourceFieldFile
+from yepes.apps import apps
 from yepes.forms.widgets import ImageWidget
 from yepes.utils.deconstruct import clean_keywords
+
+SourceFieldFile = apps.get_class('thumbnails.files', 'SourceFieldFile')
 
 
 class ImageField(BaseImageField):

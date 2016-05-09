@@ -6,13 +6,12 @@ from django import forms
 from django.contrib.admin import widgets
 from django.utils.translation import ugettext_lazy as _
 
+from yepes.apps import apps
 from yepes.forms import fields
-from yepes.loading import get_model
 
-Newsletter = get_model('newsletters', 'Newsletter')
-NewsletterManager = Newsletter._default_manager
-UnsubscriptionReason = get_model('newsletters', 'UnsubscriptionReason')
-UnsubscriptionReasonManager = UnsubscriptionReason._default_manager
+Newsletter = apps.get_model('newsletters', 'Newsletter')
+UnsubscriptionReason = apps.get_model('newsletters', 'UnsubscriptionReason')
+
 
 FILTER_CHOICES = [
     ('', '---------'),
@@ -92,7 +91,7 @@ class ProfileForm(forms.Form):
             required=False)
     #newsletters = forms.ModelMultipleChoiceField(
             #label=_('Newsletters'),
-            #queryset=NewsletterManager.get_queryset(),
+            #queryset=Newsletter.objects.get_queryset(),
             #widget=forms.CheckboxSelectMultiple)
 
 
@@ -100,7 +99,7 @@ class SubscriptionForm(forms.Form):
 
     newsletter = forms.ModelChoiceField(
             label=_('Newsletter'),
-            queryset=NewsletterManager.get_queryset())
+            queryset=Newsletter.objects.get_queryset())
     email_address = fields.EmailField(
             label=_('E-mail Address'),
             max_length=120)
@@ -118,7 +117,7 @@ class UnsubscriptionForm(forms.Form):
 
     newsletter = forms.ModelChoiceField(
             label=_('Newsletter'),
-            queryset=NewsletterManager.get_queryset())
+            queryset=Newsletter.objects.get_queryset())
     email_address = fields.EmailField(
             label=_('E-mail Address'),
             max_length=120)
@@ -129,6 +128,6 @@ class UnsubscriptionReasonForm(forms.Form):
     reason = forms.ModelChoiceField(
             empty_label=None,
             label=_('Reason'),
-            queryset=UnsubscriptionReasonManager.get_queryset(),
+            queryset=UnsubscriptionReason.objects.get_queryset(),
             widget=forms.RadioSelect)
 

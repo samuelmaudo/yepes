@@ -16,36 +16,24 @@ from django.utils.crypto import get_random_string
 from django.utils.http import cookie_date
 from django.utils.six.moves.urllib.parse import urlparse
 
+from yepes.apps import apps
 from yepes.conf import settings
 from yepes.contrib.registry import registry
-from yepes.loading import get_model
 from yepes.types import Undefined
 from yepes.utils.http import get_meta_data, urlunquote
 
-Browser = get_model('metrics', 'Browser')
-BrowserManager = Browser._default_manager
-Country = get_model('standards', 'Country')
-CountryManager = Country._default_manager
-Engine = get_model('metrics', 'Engine')
-EngineManager = Engine._default_manager
-Language = get_model('standards', 'Language')
-LanguageManager = Language._default_manager
-Page = get_model('metrics', 'Page')
-PageManager = Page._default_manager
-PageView = get_model('metrics', 'PageView')
-PageViewManager = PageView._default_manager
-Platform = get_model('metrics', 'Platform')
-PlatformManager = Platform._default_manager
-Referrer = get_model('metrics', 'Referrer')
-ReferrerManager = Referrer._default_manager
-ReferrerPage = get_model('metrics', 'ReferrerPage')
-ReferrerPageManager = ReferrerPage._default_manager
-Region = get_model('standards', 'Region')
-RegionManager = Region._default_manager
-Visit = get_model('metrics', 'Visit')
-VisitManager = Visit._default_manager
-Visitor = get_model('metrics', 'Visitor')
-VisitorManager = Visitor._default_manager
+Browser = apps.get_model('metrics', 'Browser')
+Country = apps.get_model('standards', 'Country')
+Engine = apps.get_model('metrics', 'Engine')
+Language = apps.get_model('standards', 'Language')
+Page = apps.get_model('metrics', 'Page')
+PageView = apps.get_model('metrics', 'PageView')
+Platform = apps.get_model('metrics', 'Platform')
+Referrer = apps.get_model('metrics', 'Referrer')
+ReferrerPage = apps.get_model('metrics', 'ReferrerPage')
+Region = apps.get_model('standards', 'Region')
+Visit = apps.get_model('metrics', 'Visit')
+Visitor = apps.get_model('metrics', 'Visitor')
 
 FAVICON_RE = re.compile(r'^/favicon[^/]*\.(ico|png)$')
 SITEMAP_RE = re.compile(r'sitemap[^/]*\.xml$')
@@ -103,7 +91,7 @@ class MetricsProxy(object):
             elif self._visitor_id is None:
                 self._is_landing = True
             else:
-                visitor = VisitorManager.filter(key=self._visitor_id)
+                visitor = Visitor.objects.filter(key=self._visitor_id)
                 self._is_landing = (not visitor.exists())
 
         return self._is_landing
@@ -152,7 +140,7 @@ class MetricsMiddleware(object):
         if registry['metrics:RECORD_VISITORS']:
 
             try:
-                visitor = VisitorManager.filter(
+                visitor = Visitor.objects.filter(
                     key=metrics.visitor_id,
                 )[0]
             except IndexError:
@@ -179,7 +167,7 @@ class MetricsMiddleware(object):
                 else:
                     timeout = timedelta(seconds=registry['metrics:VISIT_TIMEOUT'])
                     try:
-                        visit = VisitManager.filter(
+                        visit = Visit.objects.filter(
                             visitor=visitor,
                             end_date__gt=metrics.request_date - timeout,
                         )[0]
@@ -211,7 +199,7 @@ class MetricsMiddleware(object):
                     current_page_id = self.get_page(*args)
                     previous_page_id = None
                     if not new_visit:
-                        qs = PageViewManager.filter(visit=visit)
+                        qs = PageView.objects.filter(visit=visit)
                         try:
                             previous_page_id = qs.values_list(
                                 'page_id',
@@ -250,7 +238,7 @@ class MetricsMiddleware(object):
         return get_random_string(32, string.ascii_letters + string.digits)
 
     def get_browser(self, request, response, user_agent, current_site):
-        return BrowserManager.detect(user_agent)
+        return Browser.objects.detect(user_agent)
 
     def get_country(self, request, response, user_agent, current_site):
         country_id, region_id = self.get_country_from_accept_language(
@@ -273,7 +261,7 @@ class MetricsMiddleware(object):
             if matchobj.group('language') == first_language:
                 if matchobj.group('country'):
                     try:
-                        country_id, region_id = CountryManager.filter(
+                        country_id, region_id = Country.objects.filter(
                             code__iexact=matchobj.group('country'),
                         ).values_list(
                             'pk',
@@ -285,7 +273,7 @@ class MetricsMiddleware(object):
                         break
                 else:
                     try:
-                        region_id = RegionManager.filter(
+                        region_id = Region.objects.filter(
                             number__iexact=matchobj.group('region'),
                         ).values_list(
                             'pk',
@@ -307,7 +295,7 @@ class MetricsMiddleware(object):
         region_id = None
         if matchobj.group('country'):
             try:
-                country_id, region_id = CountryManager.filter(
+                country_id, region_id = Country.objects.filter(
                     code__iexact=matchobj.group('country'),
                 ).values_list(
                     'pk',
@@ -317,7 +305,7 @@ class MetricsMiddleware(object):
                 pass
         else:
             try:
-                region_id = RegionManager.filter(
+                region_id = Region.objects.filter(
                     number__iexact=matchobj.group('region'),
                 ).values_list(
                     'pk',
@@ -329,7 +317,7 @@ class MetricsMiddleware(object):
         return (country_id, region_id)
 
     def get_engine(self, request, response, user_agent, current_site):
-        return EngineManager.detect(user_agent)
+        return Engine.objects.detect(user_agent)
 
     def get_language(self, request, response, user_agent, current_site):
         language_id = self.get_language_from_accept_language(
@@ -343,7 +331,7 @@ class MetricsMiddleware(object):
             return None
 
         try:
-            language_id = LanguageManager.filter(
+            language_id = Language.objects.filter(
                 tag__iexact=matchobj.group('language'),
             ).values_list(
                 'pk',
@@ -360,7 +348,7 @@ class MetricsMiddleware(object):
             return None
 
         try:
-            language_id = LanguageManager.filter(
+            language_id = Language.objects.filter(
                 tag__iexact=matchobj.group('language'),
             ).values_list(
                 'pk',
@@ -395,19 +383,19 @@ class MetricsMiddleware(object):
             'query_string': query_string[:255],
         }
         try:
-            page_id = PageManager \
+            page_id = Page.objects \
                 .filter(**kwargs) \
                 .values_list('pk', flat=True)[0]
         except IndexError:
             try:
                 sid = transaction.savepoint()
-                page = PageManager.create(**kwargs)
+                page = Page.objects.create(**kwargs)
                 page_id = page.pk
                 transaction.savepoint_commit(sid)
             except IntegrityError:
                 transaction.savepoint_rollback(sid)
                 try:
-                    page_id = PageManager \
+                    page_id = Page.objects \
                         .filter(**kwargs) \
                         .values_list('pk', flat=True)[0]
                 except IndexError:
@@ -424,7 +412,7 @@ class MetricsMiddleware(object):
                      or get_meta_data(request, 'HTTP_X_SKYFIRE_PHONE_UA')
                      or get_meta_data(request, 'HTTP_X_UCBROWSER_DEVICE_UA')
                      or user_agent)
-        return PlatformManager.detect(device_ua)
+        return Platform.objects.detect(device_ua)
 
     def get_referrer(self, request, response, user_agent, current_site):
         referrer_id = None
@@ -455,19 +443,19 @@ class MetricsMiddleware(object):
                     'domain': ref_domain[:63],
                 }
                 try:
-                    referrer_id = ReferrerManager \
+                    referrer_id = Referrer.objects \
                         .filter(**kwargs) \
                         .values_list('pk', flat=True)[0]
                 except IndexError:
                     try:
                         sid = transaction.savepoint()
-                        referrer = ReferrerManager.create(**kwargs)
+                        referrer = Referrer.objects.create(**kwargs)
                         referrer_id = referrer.pk
                         transaction.savepoint_commit(sid)
                     except IntegrityError:
                         transaction.savepoint_rollback(sid)
                         try:
-                            referrer_id = ReferrerManager \
+                            referrer_id = Referrer.objects \
                                 .filter(**kwargs) \
                                 .values_list('pk', flat=True)[0]
                         except IndexError:
@@ -479,19 +467,19 @@ class MetricsMiddleware(object):
                     'full_path': ref_path[:255],
                 }
                 try:
-                    referrer_page_id = ReferrerPageManager \
+                    referrer_page_id = ReferrerPage.objects \
                         .filter(**kwargs) \
                         .values_list('pk', flat=True)[0]
                 except IndexError:
                     try:
                         sid = transaction.savepoint()
-                        referrer_page = ReferrerPageManager.create(**kwargs)
+                        referrer_page = ReferrerPage.objects.create(**kwargs)
                         referrer_page_id = referrer_page.pk
                         transaction.savepoint_commit(sid)
                     except IntegrityError:
                         transaction.savepoint_rollback(sid)
                         try:
-                            referrer_page_id = ReferrerPageManager \
+                            referrer_page_id = ReferrerPage.objects \
                                 .filter(**kwargs) \
                                 .values_list('pk', flat=True)[0]
                         except IndexError:
@@ -505,7 +493,7 @@ class MetricsMiddleware(object):
     def is_visitor_authenticated(self, request, response, user_agent, current_site):
         try:
             return request.user.is_authenticated()
-        else:
+        except AttributeError:
             return False
 
     def must_send_cookie(self, request, response, user_agent, current_site):
@@ -521,7 +509,7 @@ class MetricsMiddleware(object):
             method = get_meta_data(request, 'REQUEST_METHOD', 'GET').upper()
 
         try:
-            is_staff = self.request.user.is_staff
+            is_staff = request.user.is_staff
         except AttributeError:
             is_staff = False
 
@@ -561,7 +549,7 @@ class LocatedMetricsMiddleware(MetricsMiddleware):
         region_id = None
         if country_code:
             try:
-                country_id, region_id = CountryManager.filter(
+                country_id, region_id = Country.objects.filter(
                     code__iexact=country_code,
                 ).values_list(
                     'pk',

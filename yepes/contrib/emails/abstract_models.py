@@ -13,7 +13,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes.cache import LookupTable
-from yepes.loading import get_model
 from yepes.model_mixins import Logged
 from yepes.utils.html import extract_text
 from yepes.utils.properties import described_property
