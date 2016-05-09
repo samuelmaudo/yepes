@@ -8,7 +8,7 @@ from optparse import make_option
 from django.core.management.base import CommandError, NoArgsCommand
 
 from yepes.apps import apps
-from yepes.contrib.datamigrations.serializers import get_serializer
+from yepes.contrib.datamigrations.serializers import serializers
 
 SubscriberImportation = apps.get_class('newsletters.migrations', 'SubscriberImportation')
 
@@ -47,7 +47,7 @@ class Command(NoArgsCommand):
             raise CommandError("File '{0}' does not exit.".format(file_path))
 
         try:
-            serializer = get_serializer(serializer_name)
+            serializer = serializers.get_serializer(serializer_name)
         except LookupError as e:
             raise CommandError(str(e))
 

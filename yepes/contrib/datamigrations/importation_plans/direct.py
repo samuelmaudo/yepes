@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ImportationPlan
 
 
 class DirectPlan(ImportationPlan):

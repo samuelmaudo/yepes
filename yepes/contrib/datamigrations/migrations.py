@@ -8,8 +8,6 @@ from django.db import models
 from django.utils import six
 from django.utils.six.moves import zip
 
-from yepes.contrib.datamigrations import serializers
-from yepes.contrib.datamigrations import importation_plans
 from yepes.contrib.datamigrations.fields import (
     BooleanField,
     DateField, DateTimeField, TimeField,
@@ -17,9 +15,8 @@ from yepes.contrib.datamigrations.fields import (
     FloatField, IntegerField, NumberField,
     TextField,
 )
-from yepes.contrib.datamigrations.importation_plans.create import CreatePlan
-from yepes.contrib.datamigrations.importation_plans.update_or_create import UpdateOrCreatePlan
-from yepes.contrib.datamigrations.serializers.json import JsonSerializer
+from yepes.contrib.datamigrations.importation_plans import importation_plans
+from yepes.contrib.datamigrations.serializers import serializers
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
@@ -97,7 +94,8 @@ class CustomDataMigration(object):
 
     def get_importation_plan(self, plan_class=None):
         if plan_class is None:
-            plan_class = UpdateOrCreatePlan if self.can_update else CreatePlan
+            plan_name = 'update_or_create' if self.can_update else 'create'
+            plan_class = importation_plans.get_plan(plan_name)
         elif isinstance(plan_class, six.string_types):
             plan_class = importation_plans.get_plan(plan_class)
 
@@ -105,7 +103,7 @@ class CustomDataMigration(object):
 
     def get_serializer(self, serializer=None):
         if serializer is None:
-            serializer = JsonSerializer()
+            serializer = serializers.get_serializer('json')()
         elif isinstance(serializer, six.string_types):
             serializer = serializers.get_serializer(serializer)()
         elif isinstance(serializer, collections.Callable):

@@ -9,8 +9,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 from yepes.apps import apps
 from yepes.contrib.datamigrations import DataMigration
-from yepes.contrib.datamigrations.importation_plans import get_plan
-from yepes.contrib.datamigrations.serializers import get_serializer
+from yepes.contrib.datamigrations.importation_plans import importation_plans
+from yepes.contrib.datamigrations.serializers import serializers
 
 
 class Command(BaseCommand):
@@ -98,12 +98,12 @@ class Command(BaseCommand):
             raise CommandError(str(e))
 
         try:
-            serializer = get_serializer(serializer_name)
+            serializer = serializers.get_serializer(serializer_name)
         except LookupError as e:
             raise CommandError(str(e))
 
         try:
-            plan = get_plan(plan_name)
+            plan = importation_plans.get_plan(plan_name)
         except LookupError as e:
             raise CommandError(str(e))
 

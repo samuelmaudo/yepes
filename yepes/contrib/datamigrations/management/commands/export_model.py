@@ -10,7 +10,7 @@ from django.utils import six
 
 from yepes.apps import apps
 from yepes.contrib.datamigrations import DataMigration
-from yepes.contrib.datamigrations.serializers import get_serializer
+from yepes.contrib.datamigrations.serializers import serializers
 
 
 class Command(BaseCommand):
@@ -72,7 +72,7 @@ class Command(BaseCommand):
             raise CommandError(str(e))
 
         try:
-            serializer = get_serializer(serializer_name)
+            serializer = serializers.get_serializer(serializer_name)
         except LookupError as e:
             raise CommandError(str(e))
 

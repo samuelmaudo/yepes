@@ -11,7 +11,7 @@ except ImportError:
 from django.utils.six import PY3
 from django.utils.six.moves import zip
 
-from yepes.contrib.datamigrations.serializers.base import Serializer
+from yepes.contrib.datamigrations.serializers import Serializer
 from yepes.types import Undefined
 
 YamlDumper.add_representer(GeneratorType, YamlDumper.represent_list)
