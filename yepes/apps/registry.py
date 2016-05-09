@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import types
 import warnings
 
+from django import VERSION as DJANGO_VERSION
 from django.apps import apps
 from django.apps.registry import Apps
 from django.utils import six
@@ -31,6 +32,20 @@ if six.PY2:
     clear_cache = types.MethodType(clear_cache, None, Apps)
 
 setattr(Apps, 'clear_cache', clear_cache)
+
+
+if DJANGO_VERSION < (1, 9):
+
+    def do_pending_operations(self, model):
+        """
+        Does nothing, only ensures compatibility of Apps.register_model()
+        with Django 1.8.
+        """
+
+    if six.PY2:
+        do_pending_operations = types.MethodType(do_pending_operations, None, Apps)
+
+    setattr(Apps, 'do_pending_operations', do_pending_operations)
 
 
 def get_class(self, module_path, class_name=None):
@@ -104,6 +119,7 @@ def register_model(self, app_label, model):
         warnings.warn(msg.format(*args), RuntimeWarning, stacklevel=2)
     else:
         app_models[model_name] = model
+        self.do_pending_operations(model)
         self.clear_cache()
 
 if six.PY2:
