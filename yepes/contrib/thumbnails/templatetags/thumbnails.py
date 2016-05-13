@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.template.base import Library
+from django.template import Library
 
 from yepes.apps import apps
 from yepes.template import AssignTag, SingleTag

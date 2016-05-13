@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.cache import caches, DEFAULT_CACHE_ALIAS
-from django.template.base import Library
+from django.template import Library
 
 from yepes.apps import apps
 from yepes.template import SingleTag

@@ -16,7 +16,13 @@ class YepesConfig(AppConfig):
 
     def ready(self):
         super(YepesConfig, self).ready()
-        from django.template.base import add_to_builtins
-        add_to_builtins('yepes.defaultfilters')
-        add_to_builtins('yepes.defaulttags')
+        from django import VERSION as DJANGO_VERSION
+        if DJANGO_VERSION < (1, 9):
+            from django.template.base import add_to_builtins
+            add_to_builtins('yepes.defaultfilters')
+            add_to_builtins('yepes.defaulttags')
+        else:
+            from django.template.engine import Engine
+            Engine.default_builtins.append('yepes.defaultfilters')
+            Engine.default_builtins.append('yepes.defaulttags')
 

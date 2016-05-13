@@ -6,7 +6,7 @@ from collections import Iterable
 
 from django.db.models import Model
 from django.db.models.query import QuerySet
-from django.template.base import Library
+from django.template import Library
 from django.utils.safestring import mark_safe
 
 from yepes.managers import TreeQuerySet

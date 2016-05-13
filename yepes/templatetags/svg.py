@@ -8,7 +8,7 @@ from posixpath import normpath
 from django.contrib.staticfiles import finders as staticfiles_finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.cache import caches, DEFAULT_CACHE_ALIAS
-from django.template.base import Library, TemplateSyntaxError
+from django.template import Library, TemplateSyntaxError
 from django.utils.encoding import force_bytes, force_text
 
 from yepes.conf import settings

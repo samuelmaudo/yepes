@@ -2,8 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django.template.base import Library
-from django.template.context import Context
+from django.template import Context, Library
 
 from yepes.template import InclusionTag
 
