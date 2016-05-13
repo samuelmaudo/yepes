@@ -48,7 +48,7 @@ def non_token_view_using_request_processor(request):
     return HttpResponse(template.render(context))
 
 
-class ClientIpMiddlewareTest(test.SimpleTestCase):
+class ClientIpMiddlewareTest(test.TestCase):
 
     def setUp(self):
         self.middleware = ClientIpMiddleware()
@@ -475,7 +475,7 @@ class SSLRedirectMiddlewareTest(test.SimpleTestCase):
 
 
 
-class SubdomainsMiddlewareTest(test.SimpleTestCase):
+class SubdomainsMiddlewareTest(test.TestCase):
 
     def setUp(self):
         self.middleware = SubdomainsMiddleware()

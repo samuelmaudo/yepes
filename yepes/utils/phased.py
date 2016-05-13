@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import base64
 import re
 
+from django import VERSION as DJANGO_VERSION
 from django.contrib.messages.storage.base import BaseStorage
 from django.http import HttpRequest
 from django.template.base import (
@@ -125,7 +126,12 @@ def second_pass_render(request, content):
     tokens = []
     for index, bit in enumerate(content.split(SECRET_DELIMITER)):
         if index % 2:
-            tokens = Lexer(bit, None).tokenize()
+            if DJANGO_VERSION < (1, 9):
+                lexer = Lexer(bit, None)
+            else:
+                lexer = Lexer(bit)
+
+            tokens = lexer.tokenize()
         else:
             tokens.append(Token(TOKEN_TEXT, bit))
 
