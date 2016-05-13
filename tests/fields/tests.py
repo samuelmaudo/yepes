@@ -4,6 +4,7 @@ from __future__ import division, unicode_literals
 
 from collections import Counter
 from decimal import Decimal as dec
+from unittest import skip
 try:
     import cPickle as pickle
 except ImportError:
@@ -12,7 +13,6 @@ except ImportError:
 from django import test
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils import six
-from django.utils.unittest import skip
 
 from yepes.contrib.registry import registry
 from yepes.contrib.registry.fields import ModelChoiceField

@@ -8,12 +8,12 @@ from decimal import Decimal
 import random
 import sys
 import traceback
+from unittest import skipIf
 import warnings
 
 from django import test
 from django.utils.six import unichr as chr
 from django.utils.six.moves import range
-from django.utils.unittest import skipIf
 
 from yepes.utils import (
     decimals,
