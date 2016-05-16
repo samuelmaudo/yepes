@@ -313,10 +313,10 @@ class DataMigration(CustomDataMigration):
         name = model_field.name
         attname = path
 
-        related_field = model_field.related_field
+        target_field = model_field.target_field
 
         if self.use_natural_foreign_keys:
-            opts = related_field.model._meta
+            opts = target_field.model._meta
             natural_key = self.find_natural_key(
                                opts.fields,
                                opts.unique_together)
@@ -351,7 +351,7 @@ class DataMigration(CustomDataMigration):
                             in zip(flds, natural_key)
                         ]
 
-        fld = self.construct_field(related_field, path, name, attname)
+        fld = self.construct_field(target_field, path, name, attname)
         return [(fld, [model_field])]
 
     def find_natural_key(self, model_fields, unique_together=()):

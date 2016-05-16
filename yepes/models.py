@@ -4,10 +4,18 @@ from __future__ import absolute_import
 
 import types
 
+from django import VERSION as DJANGO_VERSION
 from django.db import connections
-from django.db.models.manager import Manager
-from django.db.models.query import QuerySet
+from django.db.models import (
+    ForeignKey,
+    Manager,
+    QuerySet,
+)
 from django.utils import six
+
+
+if DJANGO_VERSION < (1, 9):
+    ForeignKey.target_field = ForeignKey.related_field
 
 
 def in_batches(self, batch_size):

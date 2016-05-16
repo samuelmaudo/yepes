@@ -27,7 +27,7 @@ class CachedForeignKey(models.ForeignKey):
     def get_default(self):
         if self.has_default():
             default = self.rel.to.cache.get_default()
-            return getattr(default, self.related_field.attname, None)
+            return getattr(default, self.target_field.attname, None)
         else:
             return None
 
