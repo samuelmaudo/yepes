@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import os
-from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import six
@@ -16,40 +15,40 @@ from yepes.contrib.datamigrations.serializers import serializers
 class Command(BaseCommand):
     help = 'Dumps all objects of the specified model.'
 
-    args = '<appname.ModelName>'
-    option_list = BaseCommand.option_list + (
-        make_option('-o', '--output',
+    requires_system_checks = True
+
+    def add_arguments(self, parser):
+        parser.add_argument('args', metavar='app_label.ModelName', nargs='*')
+        parser.add_argument('-o', '--output',
             action='store',
             default=None,
             dest='output',
-            help='Specifies the file to which the data is written.'),
-        make_option('-f', '--format',
+            help='Specifies the file to which the data is written.')
+        parser.add_argument('-f', '--format',
             action='store',
             default='json',
             dest='format',
-            help='Specifies the serialization format of exported data.'),
-        make_option('--fields',
+            help='Specifies the serialization format of exported data.')
+        parser.add_argument('--fields',
             action='store',
             default=None,
             dest='fields',
-            help='A list of field names to use in the migration.'),
-        make_option('--exclude',
+            help='A list of field names to use in the migration.')
+        parser.add_argument('--exclude',
             action='store',
             default=None,
             dest='exclude',
-            help='A list of field names to exclude from the migration.'),
-        make_option('--natural-primary',
+            help='A list of field names to exclude from the migration.')
+        parser.add_argument('--natural-primary',
             action='store_true',
             default=False,
             dest='natural_primary',
-            help='Use natural primary keys if they are available.'),
-        make_option('--natural-foreign',
+            help='Use natural primary keys if they are available.')
+        parser.add_argument('--natural-foreign',
             action='store_true',
             default=False,
             dest='natural_foreign',
-            help='Use natural foreign keys if they are available.'),
-    )
-    requires_model_validation = True
+            help='Use natural foreign keys if they are available.')
 
     def handle(self, *labels, **options):
         if len(labels) != 1:

@@ -2,8 +2,6 @@
 
 from __future__ import unicode_literals
 
-from optparse import make_option
-
 from django.core.cache import (
     caches,
     DEFAULT_CACHE_ALIAS,
@@ -20,17 +18,17 @@ class Command(BaseCommand):
 
     args = '<alias alias ...>'
     can_import_settings = True
-    option_list = BaseCommand.option_list + (
-        make_option('-a', '--all',
+    requires_system_checks = False
+
+    def add_arguments(self, parser):
+        parser.add_argument('args', metavar='cache_alias', nargs='*')
+        parser.add_argument('-a', '--all',
             action='store_true',
             default=False,
             dest='all',
-            help='Clears all the caches of your site.'),
-    )
-    requires_model_validation = False
+            help='Clears all the caches of your site.')
 
     def handle(self, *aliases, **options):
-
         if options['all']:
             aliases = list(settings.CACHES)
         elif not aliases:

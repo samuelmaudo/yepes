@@ -14,11 +14,12 @@ class Command(BaseCommand):
             'rebuilds all the trees. Otherwise, only rebuilds the trees found '
             'in this apps.')
 
-    args = '<label label ...>'
-    requires_model_validation = True
+    requires_system_checks = True
+
+    def add_arguments(self, parser):
+        parser.add_argument('args', metavar='app_label[.ModelName]', nargs='*')
 
     def handle(self, *labels, **options):
-
         if not labels:
             models = apps.get_models()
         else:

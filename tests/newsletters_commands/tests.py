@@ -23,7 +23,7 @@ class ImportSubscribersTest(TempDirMixin, TestCase):
     tempDirPrefix = 'test_newsletters_commands_'
 
     def test_arguments(self):
-        with self.assertRaisesRegexp(CommandError, "Command doesn't accept any arguments"):
+        with self.assertRaisesRegexp(CommandError, "Error: unrecognized arguments: argument"):
             call_command('import_subscribers', 'argument')
 
     def test_no_file(self):
