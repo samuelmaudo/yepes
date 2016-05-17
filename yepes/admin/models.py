@@ -99,7 +99,7 @@ class ModelAdmin(DjangoModelAdmin):
                 )
         return ops
 
-    def get_formfields(self, request, unique=False, many_to_many=False, **kwargs):
+    def get_formfields(self, request, unique=False, **kwargs):
         field_names = flatten_fieldsets(self.get_fieldsets(request))
         readonly_fields = self.get_readonly_fields(request)
         opts = self.opts
@@ -108,10 +108,7 @@ class ModelAdmin(DjangoModelAdmin):
             if field_name in readonly_fields:
                 continue
             try:
-                field = opts.get_field(
-                    field_name,
-                    many_to_many=many_to_many,
-                )
+                field = opts.get_field(field_name)
             except FieldDoesNotExist:
                 continue
 
@@ -123,10 +120,9 @@ class ModelAdmin(DjangoModelAdmin):
         form_fields = []
         for dbfield in db_fields:
             formfield = self.formfield_for_dbfield(
-                dbfield,
-                request=request,
-                **kwargs
-            )
+                                    dbfield,
+                                    request=request,
+                                    **kwargs)
             if formfield is None:
                 continue
 

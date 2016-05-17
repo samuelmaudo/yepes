@@ -68,7 +68,7 @@ class AbstractCountry(Enableable, Standard):
     def natural_key(self):
         return (self.code, )
 
-AbstractCountry._meta.get_field('name', False).help_text = _(
+AbstractCountry._meta.get_field('name').help_text = _(
     'You can find country names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/ISO_3166-1">'
     'http://en.wikipedia.org/wiki/ISO_3166-1'
@@ -163,7 +163,7 @@ class AbstractCurrency(Enableable, Standard):
     def natural_key(self):
         return (self.code, )
 
-AbstractCurrency._meta.get_field('name', False).help_text = _(
+AbstractCurrency._meta.get_field('name').help_text = _(
     'You can find currency names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/ISO_4217">'
     'http://en.wikipedia.org/wiki/ISO_4217'
@@ -347,7 +347,7 @@ class AbstractLanguage(Enableable, Standard):
     def code(self):
         return self.tag
 
-AbstractLanguage._meta.get_field('name', False).help_text = _(
+AbstractLanguage._meta.get_field('name').help_text = _(
     'You can find language names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes">'
     'http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes'
@@ -391,8 +391,8 @@ class AbstractRegion(Nestable, Standard):
         return self.number
 
 
-AbstractRegion._meta.get_field('name', False).verbose_name = _('Name')
-AbstractRegion._meta.get_field('name', False).help_text = _(
+AbstractRegion._meta.get_field('name').verbose_name = _('Name')
+AbstractRegion._meta.get_field('name').help_text = _(
     'You can find region names and United Nations codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/UN_M.49">'
     'http://en.wikipedia.org/wiki/UN_M.49'

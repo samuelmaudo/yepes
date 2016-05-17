@@ -80,7 +80,7 @@ class MassUpdateFormSet(BaseFormSet):
     def __init__(self, **kwargs):
         self.request = kwargs.pop('request')
         self.modeladmin = kwargs.pop('modeladmin')
-        self.fields = self.modeladmin.get_formfields(self.request, many_to_many=True)
+        self.fields = self.modeladmin.get_formfields(self.request)
         super(MassUpdateFormSet, self).__init__(**kwargs)
 
     def add_fields(self, form, index):
