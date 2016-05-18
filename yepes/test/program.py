@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import fnmatch
 import importlib
 import logging
-import optparse
+import argparse
 import os
 import shutil
 import sys
@@ -37,6 +37,28 @@ class TestProgram(object):
         self.tempDir = tempDir
         self.templatesDir = templatesDir
         self.workingDir = workingDir
+
+    def arguments(self, parser):
+        parser.add_argument('args', metavar='label', nargs='*')
+        parser.add_argument(
+            '-v', '--verbosity', action='store', dest='verbosity', default=1,
+            type=int, choices=[0, 1, 2, 3],
+            help='Verbosity level: 0=minimal output, 1=normal output, 2=all '
+                 'output')
+        parser.add_argument(
+            '-e', '--exclude', action='append', dest='exclude',
+            help='Exclude tests whose label matches the given pattern.')
+        parser.add_argument(
+            '--noinput', action='store_false', dest='interactive', default=True,
+            help='Whether NOT prompt the user for input of any kind.')
+        parser.add_argument(
+            '--failfast', action='store_true', dest='failfast', default=False,
+            help='Whether stop running the test suite after first failed test.')
+        parser.add_argument(
+            '--settings',
+            help='Python path to settings module, e.g. "myproject.settings". If '
+                 'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
+                 'variable will be used.')
 
     def configurePlugins(self, options):
         """
@@ -139,52 +161,30 @@ class TestProgram(object):
 
     def makeParser(self):
         usage = '%prog [options] [module module module ...]'
-        parser = optparse.OptionParser(usage=usage)
-        self.options(parser)
+        parser = argparse.ArgumentParser(usage=usage)
+        self.arguments(parser)
         for plugin in self.plugins:
             try:
-                addOptions = getattr(plugin, 'addOptions')
+                addArguments = plugin.addArguments
             except AttributeError:
                 continue
             else:
-                addOptions(parser)
+                addArguments(parser)
 
         return parser
 
-    def options(self, parser):
-        parser.add_option(
-            '-v', '--verbosity', action='store', dest='verbosity', default='1',
-            type='choice', choices=['0', '1', '2', '3'],
-            help='Verbosity level: 0=minimal output, 1=normal output, 2=all '
-                 'output')
-        parser.add_option(
-            '-e', '--exclude', action='append', dest='exclude',
-            help='Exclude tests whose label matches the given pattern.')
-        parser.add_option(
-            '--noinput', action='store_false', dest='interactive', default=True,
-            help='Whether NOT prompt the user for input of any kind.')
-        parser.add_option(
-            '--failfast', action='store_true', dest='failfast', default=False,
-            help='Whether stop running the test suite after first failed test.')
-        parser.add_option(
-            '--settings',
-            help='Python path to settings module, e.g. "myproject.settings". If '
-                 'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
-                 'variable will be used.')
-
     def parseArgs(self, parser):
-        options, testLabels = parser.parse_args()
-        if options.settings:
-            os.environ['DJANGO_SETTINGS_MODULE'] = options.settings
+        args = parser.parse_args()
+        if args.settings:
+            os.environ['DJANGO_SETTINGS_MODULE'] = args.settings
         else:
             if 'DJANGO_SETTINGS_MODULE' not in os.environ:
                 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
-            options.settings = os.environ['DJANGO_SETTINGS_MODULE']
+            args.settings = os.environ['DJANGO_SETTINGS_MODULE']
 
         os.environ['DJANGO_TEST_TEMP_DIR'] = self.tempDir
-
-        return (options, testLabels)
+        return args
 
     def removeTempDir(self):
         """
@@ -209,7 +209,8 @@ class TestProgram(object):
 
     def run(self):
         parser = self.makeParser()
-        options, testLabels = self.parseArgs(parser)
+        options = self.parseArgs(parser)
+        testLabels = options.args
         self.configurePlugins(options)
         return self.runTests(testLabels, options)
 

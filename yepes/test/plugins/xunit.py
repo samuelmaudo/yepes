@@ -160,6 +160,20 @@ class Xunit(Plugin):
     def addUnexpectedSuccess(self, test):
         self.addSuccess(test)
 
+    def arguments(self, parser):
+        """
+        Sets additional command line options.
+        """
+        Plugin.arguments(self, parser)
+        parser.add_argument(
+            '--xunit-file',
+            action='store',
+            default='testresults.xml',
+            dest='xunit_file',
+            help='Path to xml file to store the xunit report in. Default is'
+                 ' testresults.xml in the working directory.',
+        )
+
     def configure(self, options, stream):
         """
         Configures the xunit plugin.
@@ -168,20 +182,6 @@ class Xunit(Plugin):
         if self.enabled:
             self.fileName = options.xunit_file
             self.mute = int(options.verbosity) < 1
-
-    def options(self, parser):
-        """
-        Sets additional command line options.
-        """
-        Plugin.options(self, parser)
-        parser.add_option(
-            '--xunit-file',
-            action='store',
-            default='testresults.xml',
-            dest='xunit_file',
-            help='Path to xml file to store the xunit report in. Default is'
-                 ' testresults.xml in the working directory.',
-        )
 
     def report(self):
         """

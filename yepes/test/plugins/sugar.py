@@ -90,6 +90,21 @@ class Sugar(Plugin):
             self.stream.write(self.dictionary['unexpected_success_abbr'])
             self.stream.flush()
 
+    def arguments(self, parser):
+        """
+        Add command-line options for this plugin.
+        """
+        parser.add_argument(
+            '--without-sugar',
+            action='store_false',
+            dest=self.enableOpt,
+            default=True,
+            help="Disables plugin '{0}'. {1}".format(
+                self.name,
+                self.help(),
+            ),
+        )
+
     def configure(self, options, stream):
         """
         Configures the sugar plugin.
@@ -151,21 +166,6 @@ class Sugar(Plugin):
             self.getAbbreviatedDescription(test),
             ')',
         ))
-
-    def options(self, parser):
-        """
-        Add command-line options for this plugin.
-        """
-        parser.add_option(
-            '--without-sugar',
-            action='store_false',
-            dest=self.enableOpt,
-            default=True,
-            help="Disables plugin '{0}'. {1}".format(
-                self.name,
-                self.help(),
-            ),
-        )
 
     def printErrors(self):
         if not self.mute:

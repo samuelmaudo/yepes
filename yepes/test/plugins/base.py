@@ -2,8 +2,8 @@
 
 from __future__ import unicode_literals
 
+from argparse import ArgumentError
 import textwrap
-from optparse import OptionConflictError
 from warnings import warn
 
 
@@ -11,7 +11,7 @@ class Plugin(object):
     """
     Base class for test plugins. It's recommended but not *necessary* to
     subclass this class to create a plugin, but all plugins *must* implement
-    `addOptions(self, parser)` and `configure(self, options, stream)`, and
+    `addArguments(self, parser)` and `configure(self, options, stream)`, and
     must have the attributes `enabled` and `name`.  The `name` attribute may
     contain hyphens ('-').
 
@@ -41,14 +41,14 @@ class Plugin(object):
             self.enableOpt = 'enable_plugin_{0}'.format(
                               self.name.replace('-', '_'))
 
-    def addOptions(self, parser):
+    def addArguments(self, parser):
         """
         Add command-line options for this plugin.
 
         The base plugin class adds --with-$name by default, used to enable the
         plugin.
 
-        .. warning :: Don't implement `addOptions` unless you want to override
+        .. warning :: Don't implement `addArguments` unless you want to override
                       all default option handling behavior, including warnings
                       for conflicting options. Implement :meth:`options
                       <yepes.test.plugins.base.PluginInterface.options>`
@@ -56,8 +56,8 @@ class Plugin(object):
 
         """
         try:
-            self.options(parser)
-        except OptionConflictError as e:
+            self.arguments(parser)
+        except ArgumentError as e:
             msg = ("Plugin '{0}' has conflicting option string: '{1}'"
                    " and will be disabled")
             warn(msg.format(self.name, e.option_id), RuntimeWarning)
@@ -66,16 +66,16 @@ class Plugin(object):
         else:
             self.canConfigure = True
 
-    def options(self, parser):
+    def arguments(self, parser):
         """
         Register commandline options.
 
         Implement this method for normal options behavior with protection from
-        OptionConflictErrors. If you override this method and want the default
+        ArgumentErrors. If you override this method and want the default
         --with-$name option to be registered, be sure to call super().
 
         """
-        parser.add_option(
+        parser.add_argument(
             '--with-{0}'.format(self.name),
             action='store_true',
             dest=self.enableOpt,
@@ -119,11 +119,11 @@ class PluginInterface(object):
     def __new__(cls, *arg, **kw):
         raise TypeError('PluginInterface class is for documentation only')
 
-    def addOptions(self, parser):
+    def addArguments(self, parser):
         """
         Called to allow plugin to register command-line options with the parser.
 
-        .. warning :: Don't implement `addOptions` unless you want to override
+        .. warning :: Don't implement `addArguments` unless you want to override
                       all default option handling behavior, including warnings
                       for conflicting options. Implement :meth:`options
                       <yepes.test.plugins.base.PluginInterface.options>`
@@ -212,19 +212,19 @@ class PluginInterface(object):
         to state or operation that are set by command line options.
 
         :param options: An object that stores all plugin options.
-        :type options:  :class:`optparse.Values`
+        :type options:  :class:`argparse.Values`
         :param stream:  Stream object, send your output here.
         :type stream:   file-like object
 
         """
         pass
 
-    def options(self, parser):
+    def arguments(self, parser):
         """
         Called to allow plugin to register command line options with the parser.
 
         :param parser:  Options parser instance.
-        :type parser:   :class:`optparse.OptionParser`
+        :type parser:   :class:`argparse.OptionParser`
 
         """
         pass
