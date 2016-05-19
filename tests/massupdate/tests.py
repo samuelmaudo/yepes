@@ -30,9 +30,10 @@ class MassUpdateTest(test.TestCase):
         self.record_3 = MassUpdateModel.objects.create()
         self.model_admin = MassUpdateAdmin(MassUpdateModel, admin.site)
         self.model_fields = {
-            field.name: field
-            for field
-            in MassUpdateModel._meta.fields
+            fld.name: fld
+            for fld
+            in MassUpdateModel._meta.get_fields()
+            if not (fld.is_relation and fld.auto_created)
         }
         self.view = MassUpdateView.as_view(modeladmin=self.model_admin)
 

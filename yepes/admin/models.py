@@ -138,7 +138,12 @@ class ModelAdmin(DjangoModelAdmin):
                 if inline.declared_fieldsets:
                     fields = flatten_fieldsets(inline.declared_fieldsets)
                 else:
-                    fields = {f.name for f in inline.model._meta.fields}
+                    fields = {
+                        f.name
+                        for f
+                        in inline.model._meta.get_fields()
+                        if not (f.is_relation and f.auto_created)
+                    }
                     fields.update(inline.readonly_fields)
 
                 inline.max_num = 0
@@ -153,7 +158,12 @@ class ModelAdmin(DjangoModelAdmin):
         if self.declared_fieldsets:
             fields = flatten_fieldsets(self.declared_fieldsets)
         else:
-            fields = {f.name for f in self.model._meta.fields}
+            fields = {
+                f.name
+                for f
+                in self.model._meta.get_fields()
+                if not (f.is_relation and f.auto_created)
+            }
             fields.update(self.readonly_fields)
 
         return list(fields)

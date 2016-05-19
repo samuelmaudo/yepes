@@ -412,7 +412,7 @@ class SearchableManager(Manager):
             if not search_fields:
                 search_fields = {
                     f.name: 1
-                    for f in self.model._meta.fields
+                    for f in self.model._meta.get_fields()
                     if isinstance(f, (CharField, TextField))
                 }
 

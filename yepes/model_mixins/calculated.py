@@ -28,7 +28,7 @@ class Calculated(models.Model):
             cls._calculated_fields = tuple(
                 field.attname
                 for field
-                in cls._meta.fields
+                in cls._meta.get_fields()
                 if getattr(field, 'calculated', False)
             )
         return cls._calculated_fields

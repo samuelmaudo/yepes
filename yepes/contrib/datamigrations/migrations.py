@@ -127,8 +127,10 @@ class CustomDataMigration(object):
         required_fields = {
             f
             for f
-            in self.model._meta.fields
-            if not f.blank and not f.has_default()
+            in self.model._meta.get_fields()
+            if not (f.is_relation and f.auto_created)
+                and not f.blank
+                and not f.has_default()
         }
         return (included_fields >= required_fields)
 
@@ -164,7 +166,8 @@ class CustomDataMigration(object):
                     models[opts.model_name] = {
                         f.name: f
                         for f
-                        in opts.fields
+                        in opts.get_fields()
+                        if not (f.is_relation and f.auto_created)
                     }
                 return models[opts.model_name].get(field_name)
 
@@ -318,7 +321,7 @@ class DataMigration(CustomDataMigration):
         if self.use_natural_foreign_keys:
             opts = target_field.model._meta
             natural_key = self.find_natural_key(
-                               opts.fields,
+                               opts.get_fields(),
                                opts.unique_together)
 
             if natural_key is not None:
@@ -356,7 +359,7 @@ class DataMigration(CustomDataMigration):
 
     def find_natural_key(self, model_fields, unique_together=()):
         for f in model_fields:
-            if f.unique and not f.primary_key:
+            if not f.is_relation and f.unique and not f.primary_key:
                 return f
 
         if unique_together:
@@ -384,8 +387,12 @@ class DataMigration(CustomDataMigration):
     @cached_property
     def model_fields(self):
         opts = self.model._meta
-        model_fields = opts.fields
-
+        model_fields = [
+            f
+            for f
+            in opts.get_fields()
+            if not (f.is_relation and f.auto_created)
+        ]
         if self.selected_fields is not None:
             available_model_fields = {
                 f.name: f
