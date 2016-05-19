@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from functools import update_wrapper
 import hashlib
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.admin import ModelAdmin as DjangoModelAdmin
 from django.contrib.admin.utils import flatten_fieldsets, model_format_dict
 from django.db import models
@@ -166,7 +166,7 @@ class ModelAdmin(DjangoModelAdmin):
             return update_wrapper(wrapper, view)
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
-        urls = patterns('',
+        urls = [
             url(r'^export-csv/$',
                 wrap(CsvExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exportcsv'.format(*info),
@@ -187,7 +187,7 @@ class ModelAdmin(DjangoModelAdmin):
                 wrap(MassUpdateView.as_view(modeladmin=self)),
                 name='{0}_{1}_massupdate'.format(*info),
             ),
-        )
+        ]
         return urls + super(ModelAdmin, self).get_urls()
 
     # NOTE: Permission verification is an inexpensive task most of time.

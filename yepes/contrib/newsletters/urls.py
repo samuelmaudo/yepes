@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 
 from yepes.apps import apps
 
@@ -16,7 +16,7 @@ UnsubscriptionView = apps.get_class('newsletters.views', 'UnsubscriptionView')
 UnsubscriptionReasonView = apps.get_class('newsletters.views', 'UnsubscriptionReasonView')
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     #url(r'^$',
         #NewsletterListView.as_view(),
         #name='newsletter_list',
@@ -109,4 +109,4 @@ urlpatterns = patterns('',
         #NewsletterDetailView.as_view(),
         #name='newsletter_detail',
     #),
-)
+]

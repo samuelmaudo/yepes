@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.db import models
 from django.db.models import Case, Count, IntegerField, When
 from django.utils.html import format_html
@@ -420,12 +420,12 @@ class MessageAdmin(StatisticsMixin, admin.ModelAdmin):
 
     def get_urls(self):
         info = (self.model._meta.app_label, self.model._meta.model_name)
-        urls = patterns('',
+        urls = [
             url(r'^(?P<pk>\d+)/dispatch/$',
                 self.admin_site.admin_view(DispatchView.as_view()),
                 name='{0}_{1}_dispatch'.format(*info),
             ),
-        )
+        ]
         return urls + super(MessageAdmin, self).get_urls()
 
 

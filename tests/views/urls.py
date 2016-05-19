@@ -2,13 +2,13 @@
 
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 
 from .views import ArticleDetailView
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^(?P<slug>[-\w]+)\.html$',
         ArticleDetailView.as_view(),
         name='article_detail',
     ),
-)
+]
