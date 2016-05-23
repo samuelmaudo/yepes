@@ -24,6 +24,7 @@ class AbstractCountry(Enableable, Standard):
 
     region = models.ForeignKey(
             'Region',
+            on_delete=models.CASCADE,
             related_name='countries',
             verbose_name=_('Region'))
     code = fields.CharField(
@@ -80,6 +81,7 @@ class AbstractCountrySubdivision(Enableable, Standard):
 
     country = models.ForeignKey(
             'Country',
+            on_delete=models.CASCADE,
             related_name='subdivisions',
             verbose_name=_('Country'))
     code = fields.CharField(
@@ -360,6 +362,7 @@ class AbstractRegion(Nestable, Standard):
     parent = ParentForeignKey(
             'self',
             null=True,
+            on_delete=models.CASCADE,
             related_name='children',
             verbose_name=_('Parent Region'))
     number = fields.CharField(

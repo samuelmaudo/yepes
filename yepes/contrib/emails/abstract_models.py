@@ -177,6 +177,7 @@ class AbstractMessage(Logged):
 
     connection = fields.CachedForeignKey(
             'Connection',
+            on_delete=models.CASCADE,
             related_name='messages',
             verbose_name=_('Connection'))
 

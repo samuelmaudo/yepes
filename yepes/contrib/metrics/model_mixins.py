@@ -21,6 +21,7 @@ class Parameter(Nestable):
     parent = ParentForeignKey(
             'self',
             null=True,
+            on_delete=models.CASCADE,
             related_name='children',
             verbose_name=_('Parent'))
     index = fields.IntegerField(

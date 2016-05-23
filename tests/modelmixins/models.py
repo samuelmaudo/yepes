@@ -60,6 +60,7 @@ class BookTranslation(models.Model):
 
     language = models.ForeignKey(
             'Language',
+            on_delete=models.CASCADE,
             related_name='book_translations')
     title = models.CharField(
             max_length=32)
@@ -67,6 +68,7 @@ class BookTranslation(models.Model):
             blank=True)
     model = models.ForeignKey(
             'Book',
+            on_delete=models.CASCADE,
             related_name='translations')
 
     def __str__(self):
@@ -85,6 +87,7 @@ class Category(Nestable, Slugged):
             'self',
             blank=True,
             null=True,
+            on_delete=models.CASCADE,
             related_name='children')
     name = models.CharField(
             unique=True,
@@ -108,6 +111,7 @@ class Image(Orderable, Illustrated):
 
     article = models.ForeignKey(
             'Article',
+            on_delete=models.CASCADE,
             related_name='images')
 
     class Meta:
@@ -153,6 +157,7 @@ class ProductVariant(Orderable):
 
     product = models.ForeignKey(
             'Product',
+            on_delete=models.CASCADE,
             related_name='variants')
     sku = models.CharField(
             max_length=32,

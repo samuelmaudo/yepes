@@ -53,6 +53,7 @@ class AbstractPage(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='pages',
             verbose_name=_('Site'))
     path_head = fields.CharField(
@@ -104,10 +105,12 @@ class AbstractPageView(models.Model):
 
     visit = models.ForeignKey(
             'metrics.Visit',
+            on_delete=models.CASCADE,
             related_name='page_views',
             verbose_name=_('Visit'))
     page = models.ForeignKey(
             'metrics.Page',
+            on_delete=models.CASCADE,
             related_name='page_views',
             verbose_name=_('Page'))
     previous_page_id = fields.IntegerField(
@@ -185,6 +188,7 @@ class AbstractReferrerPage(models.Model):
 
     referrer = models.ForeignKey(
             'metrics.Referrer',
+            on_delete=models.CASCADE,
             related_name='pages',
             verbose_name=_('Referrer'))
     full_path = fields.CharField(
@@ -211,10 +215,12 @@ class AbstractVisit(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Site'))
     visitor = models.ForeignKey(
             'metrics.Visitor',
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Visitor'))
     country = CountryField(
@@ -229,26 +235,31 @@ class AbstractVisit(models.Model):
     browser = models.ForeignKey(
             'metrics.Browser',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Browser'))
     engine = models.ForeignKey(
             'metrics.Engine',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Engine'))
     platform = models.ForeignKey(
             'metrics.Platform',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Platform'))
     referrer = models.ForeignKey(
             'metrics.Referrer',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Referrer'))
     referrer_page = models.ForeignKey(
             'metrics.ReferrerPage',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Referrer Page'))
     page_count = fields.SmallIntegerField(
@@ -296,6 +307,7 @@ class AbstractVisitor(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='visitors',
             verbose_name=_('Site'))
     is_authenticated = fields.BooleanField(

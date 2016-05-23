@@ -145,6 +145,7 @@ class AbstractThumbnail(models.Model):
 
     source = models.ForeignKey(
             'Source',
+            on_delete=models.CASCADE,
             related_name='thumbnails',
             verbose_name=_('Source'))
 

@@ -13,6 +13,7 @@ class BaseEntry(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             verbose_name=_('Site'))
     key = models.CharField(
             max_length=63,
