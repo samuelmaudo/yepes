@@ -336,8 +336,9 @@ class BitFieldLookup(Lookup):
 
     lookup_name = 'exact'
 
-    def as_sql(self, qn, connection):
+    def as_sql(self, compiler, connection):
         __, value = self.get_db_prep_lookup(self.rhs, connection)
+        qn = compiler.quote_name_unless_alias
         table = qn(self.lhs.alias)
         field = self.lhs.output_field
         if value is None:
