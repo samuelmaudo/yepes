@@ -69,7 +69,7 @@ class ModelAdmin(DjangoModelAdmin):
 
     def get_field_operations(self, request, field):
         ops = [operations.Set]
-        if not field.choices and field.rel is None:
+        if not field.choices and field.remote_field is None:
             if field.null:
                 ops.append(
                     operations.SetNull,

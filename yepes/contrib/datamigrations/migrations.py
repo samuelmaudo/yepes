@@ -149,7 +149,7 @@ class CustomDataMigration(object):
                     and fld.path.count('__') == 1):
                 f1, f2 = model_fields
                 if (f2.unique and not f2.null
-                        and f1.rel is not None and f2.rel is None):
+                        and f1.remote_field is not None and f2.remote_field is None):
                     fields.append(fld)  # This allows use of natural keys.
 
         return fields
@@ -186,10 +186,10 @@ class CustomDataMigration(object):
                     break  # This step is probably an object property.
 
                 model_fields.append(f)
-                if f.rel is None:
+                if f.remote_field is None:
                     break  # If no relation, next steps cannot be model fields.
 
-                model = f.rel.to
+                model = f.remote_field.model
 
             fields.append((fld, model_fields))
 
@@ -425,7 +425,7 @@ class DataMigration(CustomDataMigration):
 
         fields = []
         for f in model_fields:
-            if f.rel is None:
+            if f.remote_field is None:
                 fld = self.construct_field(f)
                 if fld is not None:
                     fields.append((fld, [f]))

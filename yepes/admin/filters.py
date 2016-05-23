@@ -83,9 +83,9 @@ class NestableFieldListFilter(FieldListFilter):
 
 FieldListFilter.register(
     lambda fld: (
-        fld.rel is not None and issubclass(fld.rel.to, Nestable)
+        fld.remote_field is not None and issubclass(fld.remote_field.model, Nestable)
         or
-        isinstance(fld, ForeignObjectRel) and issubclass(fld.field.rel.to, Nestable)
+        isinstance(fld, ForeignObjectRel) and issubclass(fld.field.remote_field.model, Nestable)
     ),
     NestableFieldListFilter,
     take_priority=True,
