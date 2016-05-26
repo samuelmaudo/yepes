@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes import managers
-from yepes.loading import is_installed
+from yepes.apps import apps
 from yepes.model_mixins import Linked
 
 
@@ -24,7 +24,7 @@ class Slugged(Linked):
                         'It is usually all lowercase and contains only '
                         'letters, numbers and hyphens.'))
 
-    if is_installed('slugs'):
+    if 'slugs' in apps:
         slug_history = GenericRelation(
                 'slugs.SlugHistory',
                 content_type_field='object_type',
@@ -49,7 +49,7 @@ class Slugged(Linked):
                         or not (self._get_pk_val() or updated_fields))
 
         super(Slugged, self).save(**kwargs)
-        if (is_installed('slugs')
+        if ('slugs' in apps
                 and (new_record
                         or (self.slug != self.old_slug
                                 and (not updated_fields

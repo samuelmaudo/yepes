@@ -153,12 +153,7 @@ def is_installed(app_label):
         True
 
     """
-    try:
-        apps.get_app_config(app_label)
-    except LookupError:
-        return False
-    else:
-        return True
+    return app_label in apps
 
 
 class LazyClass(LazyObject):

@@ -12,6 +12,19 @@ from django.utils import six
 from django.utils.lru_cache import lru_cache
 
 
+def __contains__(self, app_label):
+    """
+    Checks whether an application with the given label exists in the registry.
+    """
+    self.check_apps_ready()
+    return app_label in self.app_configs
+
+if six.PY2:
+    __contains__ = types.MethodType(__contains__, None, Apps)
+
+setattr(Apps, '__contains__', __contains__)
+
+
 def clear_cache(self):
     """
     Clears all internal caches, for methods that alter the app registry.
