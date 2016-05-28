@@ -1,9 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from django.db.models.signals import post_save
-
 from yepes.apps import apps
-from yepes.contrib.newsletters import receivers
 
 AbstractBounce = apps.get_class('newsletters.abstract_models', 'AbstractBounce')
 AbstractClick = apps.get_class('newsletters.abstract_models', 'AbstractClick')
@@ -62,9 +59,4 @@ class Unsubscription(AbstractUnsubscription):
 
 class UnsubscriptionReason(AbstractUnsubscriptionReason):
     pass
-
-
-post_save.connect(receivers.message_bounced, sender=Bounce)
-post_save.connect(receivers.message_clicked, sender=Click)
-post_save.connect(receivers.message_opened, sender=Open)
 

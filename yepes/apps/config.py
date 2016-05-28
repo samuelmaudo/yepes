@@ -22,8 +22,8 @@ def get_class(self, module_name, class_name):
     or if the requested class cannot be found in the module.
 
     """
-    module_full_name = '.'.join((self.module.__name__, module_name))
-    module = import_module(module_full_name, ignore_missing=True)
+    module_path = '.'.join((self.module.__name__, module_name))
+    module = import_module(module_path, ignore_missing=True)
     if module is None:
         msg = "Module '{0}.{1}' could not be found."
         raise LookupError(msg.format(self.label, module_name))
