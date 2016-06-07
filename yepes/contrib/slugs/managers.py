@@ -71,7 +71,7 @@ class SlugHistoryManager(Manager):
                     in model_names
                 ]
 
-            with transaction.commit_on_success_unless_managed():
+            with transaction.atomic():
                 for model in models:
                     opts = model._meta
                     try:
