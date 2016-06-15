@@ -22,7 +22,10 @@ def get_class(self, module_name, class_name):
     or if the requested class cannot be found in the module.
 
     """
-    module_path = '.'.join((self.module.__name__, module_name))
+    module_path = self.module.__name__
+    if module_name:
+        module_path = '.'.join((module_path, module_name))
+
     module = import_module(module_path, ignore_missing=True)
     if module is None:
         msg = "Module '{0}.{1}' could not be found."

@@ -79,7 +79,12 @@ def get_class(self, module_path, class_name=None):
     if class_name is None:
         module_path, class_name = module_path.rsplit('.', 1)
 
-    app_label, module_name = module_path.split('.', 1)
+    if '.' in module_path:
+        app_label, module_name = module_path.split('.', 1)
+    else:
+        app_label = module_path
+        module_name = ''
+
     return self.get_app_config(app_label).get_class(module_name, class_name)
 
 if six.PY2:
