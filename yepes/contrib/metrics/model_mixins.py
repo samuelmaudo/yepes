@@ -54,7 +54,7 @@ class Parameter(Nestable):
     def autocomplete_search_fields():
         return ('name__icontains', )
 
-    def check(self, user_agent_string):
+    def verify(self, user_agent_string):
         token = self.token.lower()
         ua = user_agent_string.lower()
         if self.regex:
