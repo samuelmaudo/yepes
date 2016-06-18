@@ -16,6 +16,49 @@ from yepes.utils.deconstruct import clean_keywords
 from yepes.validators import CharSetValidator
 
 
+def check_max_length_attribute(self, **kwargs):
+    if (self.max_length is not None
+            and (not isinstance(self.max_length, six.integer_types)
+                    or self.max_length <= 0)):
+        return [
+            checks.Error(
+                "'max_length' must be None or a positive integer.",
+                hint=None,
+                obj=self,
+                id='yepes.E111',
+            )
+        ]
+    else:
+        return []
+
+
+def check_min_length_attribute(self, **kwargs):
+    if self.min_length is None:
+        return []
+    elif (not isinstance(self.min_length, six.integer_types)
+            or self.min_length <= 0):
+        return [
+            checks.Error(
+                "'min_length' must be None or a positive integer.",
+                hint=None,
+                obj=self,
+                id='yepes.E112',
+            )
+        ]
+    elif (isinstance(self.max_length, six.integer_types)
+            and self.max_length < self.min_length):
+        return [
+            checks.Error(
+                "'min_length' cannot be greater than 'max_length'.",
+                hint="Decrease 'min_length' or increase 'max_length'.",
+                obj=self,
+                id='yepes.E113',
+            )
+        ]
+    else:
+        return []
+
+
 class CharField(CalculatedField, models.CharField):
 
     description = _('String')
@@ -39,31 +82,7 @@ class CharField(CalculatedField, models.CharField):
         errors.extend(self._check_min_length_attribute(**kwargs))
         return errors
 
-    def _check_min_length_attribute(self, **kwargs):
-        if self.min_length is None:
-            return []
-        elif (not isinstance(self.min_length, six.integer_types)
-                or self.min_length <= 0):
-            return [
-                checks.Error(
-                    "'min_length' must be None or a positive integer.",
-                    hint=None,
-                    obj=self,
-                    id='yepes.E111',
-                )
-            ]
-        elif (isinstance(self.max_length, six.integer_types)
-                and self.max_length < self.min_length):
-            return [
-                checks.Error(
-                    "'min_length' cannot be greater than 'max_length'.",
-                    hint="Decrease 'min_length' or increase 'max_length'.",
-                    obj=self,
-                    id='yepes.E112',
-                )
-            ]
-        else:
-            return []
+    _check_min_length_attribute = check_min_length_attribute
 
     def deconstruct(self):
         name, path, args, kwargs = super(CharField, self).deconstruct()

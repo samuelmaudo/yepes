@@ -12,7 +12,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
 from yepes.fields.calculated import CalculatedSubfield
-from yepes.fields.char import CharField
+from yepes.fields.char import (
+    check_max_length_attribute,
+    check_min_length_attribute
+)
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
@@ -47,8 +50,8 @@ class CompressedTextField(CalculatedSubfield, models.BinaryField):
         errors.extend(self._check_min_length_attribute(**kwargs))
         return errors
 
-    _check_max_length_attribute = CharField._check_max_length_attribute
-    _check_min_length_attribute = CharField._check_min_length_attribute
+    _check_max_length_attribute = check_max_length_attribute
+    _check_min_length_attribute = check_min_length_attribute
 
     def compress(self, text):
         if not text:
