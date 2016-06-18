@@ -45,6 +45,12 @@ class Sandbox(object):
     def __getattr__(self, name):
         return getattr(self.tag, name)
 
+    def __repr__(self):
+        return force_str('<{0} instance for a {1}>'.format(
+            self.__class__.__name__,
+            self.tag.__class__.__name__,
+        ))
+
     def get_content(self, context=None):
         c = getattr(self.tag, 'content', False)
         if c:
