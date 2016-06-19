@@ -32,16 +32,12 @@ PICKLED_CONTEXT_RE = re.compile(r'.*{0} context (.*) {1}.*'.format(
 FORBIDDEN_CLASSES = (Promise, LazyObject, HttpRequest, BaseStorage)
 
 
-def backup_csrf_token(context, storage=None):
+def backup_csrf_token(context, storage):
     """
     Get the CSRF token and convert it to a string (since it's lazy).
     """
-    if storage is None:
-        storage = Context()
-
     token = context.get('csrf_token', 'NOTPROVIDED')
     storage['csrf_token'] = force_bytes(token)
-    return storage
 
 
 def flatten_context(context, remove_lazy=True):
@@ -76,9 +72,6 @@ def pickle_context(context, template=None):
     """
     Pickle the given ``Context`` instance and do a few optimizations before.
     """
-    if not isinstance(context, BaseContext):
-        raise TemplateSyntaxError('Phased context is not a Context instance')
-
     context = flatten_context(context)
     context.pop('False', None)
     context.pop('None', None)
@@ -88,7 +81,7 @@ def pickle_context(context, template=None):
             pickle.dumps(context, protocol=pickle.HIGHEST_PROTOCOL))
 
     if template is not None:
-        return template.format(context=pickle_context)
+        return template.format(context=pickled_context)
     else:
         return '{0} context {1} {2}'.format(
                 COMMENT_TAG_START,
@@ -96,24 +89,19 @@ def pickle_context(context, template=None):
                 COMMENT_TAG_END)
 
 
-def restore_csrf_token(request, storage=None):
+def restore_csrf_token(request, storage):
     """
     Given the request and a the context used during the second render phase,
     this wil check if there is a CSRF cookie and restores if needed, to
     counteract the way the CSRF framework invalidates the CSRF token after
     each request/response cycle.
     """
-    if storage is None:
-        storage = {}
-
     try:
         request.META['CSRF_COOKIE'] = request.COOKIES[settings.CSRF_COOKIE_NAME]
     except KeyError:
-        csrf_token = storage.get('csrf_token', None)
+        csrf_token = storage.pop('csrf_token', None)
         if csrf_token:
             request.META['CSRF_COOKIE'] = csrf_token
-
-    return storage
 
 
 def second_pass_render(request, content):
@@ -129,10 +117,11 @@ def second_pass_render(request, content):
             result.append(bit)
             continue
 
-        csrf_token = restore_csrf_token(request, unpickle_context(bit))
-        context = RequestContext(request, csrf_token)
+        context = unpickle_context(bit)
+        restore_csrf_token(request, context)
+        request_context = RequestContext(request, context)
         try:
-            rendered = template.render(context)
+            rendered = template.render(request_context)
         except TemplateSyntaxError:
             # For example, in debug pages.
             return content
@@ -156,5 +145,5 @@ def unpickle_context(content, pattern=None):
     if match is not None:
         return pickle.loads(base64.standard_b64decode(match.group(1)))
     else:
-        return None
+        return {}
 

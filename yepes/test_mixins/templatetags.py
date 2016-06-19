@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.template import Context, Template, TemplateSyntaxError
+from django.template import Template, TemplateSyntaxError
 from django.utils import six
 
 from yepes.template import DoubleTag, TagSyntaxError

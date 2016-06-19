@@ -357,7 +357,7 @@ class PhasedTag(DoubleTag):
         rendering middleware.
         """
         # our main context
-        storage = Context()
+        storage = {}
 
         # stash the whole context if needed
         if settings.PHASED_KEEP_CONTEXT:
@@ -365,7 +365,7 @@ class PhasedTag(DoubleTag):
 
         # but check if there are variables specifically wanted
         storage.update(variables)
-        storage = backup_csrf_token(self.context, storage)
+        backup_csrf_token(self.context, storage)
 
         # lastly return the pre phased template part
         return '{delimiter}{content}{pickled}{delimiter}'.format(
