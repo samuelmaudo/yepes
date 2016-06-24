@@ -70,8 +70,8 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
     return iri_to_uri(url)
 
 
-def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
-                 current_app=None, scheme=None, domain=None, subdomain=None):
+def full_reverse(viewname, urlconf=None, args=None, kwargs=None, current_app=None,
+                 scheme=None, domain=None, subdomain=None):
     """
     First, obtains the absolute path of the URL matching given ``viewname``
     with its parameters.
@@ -88,8 +88,6 @@ def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
         args (list): Positional arguments of the URL pattern.
 
         kwargs (dict): Keyword arguments of the URL pattern.
-
-        prefix (str): Prefix of the URL pattern.
 
         current_app (str): App identifier.
 
@@ -118,7 +116,7 @@ def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
         ValueError: If both ``args`` and ``kwargs`` are given.
 
     """
-    location = reverse(viewname, urlconf, args, kwargs, prefix, current_app)
+    location = reverse(viewname, urlconf, args, kwargs, current_app)
     return build_full_url(location, scheme, domain, subdomain)
 
 
