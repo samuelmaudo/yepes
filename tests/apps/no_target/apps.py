@@ -4,5 +4,5 @@ from yepes.apps import OverridingConfig
 
 
 class AppConfig(OverridingConfig):
-    name = 'tests.apps.no_target'
+    name = 'apps.no_target'
 

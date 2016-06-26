@@ -4,6 +4,6 @@ from yepes.apps import OverridingConfig
 
 
 class AppConfig(OverridingConfig):
-    name = 'tests.apps.invalid_target'
+    name = 'apps.invalid_target'
     overridden_app_label = 'non_overridable'
 

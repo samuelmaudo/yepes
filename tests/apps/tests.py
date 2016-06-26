@@ -76,31 +76,31 @@ class GetModelsTest(test.SimpleTestCase):
 
 
 @test.override_settings(INSTALLED_APPS=[
-    'tests.apps.overriding.apps.AppConfig',
-    'tests.apps.overridable.apps.AppConfig',
+    'apps.overriding.apps.AppConfig',
+    'apps.overridable.apps.AppConfig',
 ])
 class OverridingConfigTest(test.SimpleTestCase):
 
     def test_config_attributes(self):
         overriding, overridable = apps.get_app_configs()
         self.assertEqual(overriding.label, 'overriding')
-        self.assertEqual(overriding.name, 'tests.apps.overriding')
+        self.assertEqual(overriding.name, 'apps.overriding')
         self.assertEqual(overriding.overridden_app_label, 'overridable')
         self.assertEqual(overriding.overridden_app_config, overridable)
         self.assertEqual(overridable.label, 'overridable')
-        self.assertEqual(overridable.name, 'tests.apps.overridable')
+        self.assertEqual(overridable.name, 'apps.overridable')
         self.assertEqual(overridable.overriding_app_configs, [overriding])
 
     def test_get_class(self):
         overriding, overridable = apps.get_app_configs()
         Article = apps.get_class('overridable.models', 'Article')
-        self.assertEqual(Article.__module__, 'tests.apps.overriding.models')
+        self.assertEqual(Article.__module__, 'apps.overriding.models')
         self.assertEqual(Article.__name__, 'Article')
         self.assertEqual(Article, overridable.get_class('models', 'Article'))
         self.assertEqual(Article, overriding.get_class('models', 'Article'))
 
         Author = apps.get_class('overridable.models', 'Author')
-        self.assertEqual(Author.__module__, 'tests.apps.overridable.models')
+        self.assertEqual(Author.__module__, 'apps.overridable.models')
         self.assertEqual(Author.__name__, 'Author')
         self.assertEqual(Author, overridable.get_class('models', 'Author'))
         with self.assertRaises(LookupError):
@@ -140,8 +140,8 @@ class OverridingConfigTest(test.SimpleTestCase):
 
     def test_invalid_target(self):
         app_list = [
-            'tests.apps.invalid_target.apps.AppConfig',
-            'tests.apps.non_overridable',
+            'apps.invalid_target.apps.AppConfig',
+            'apps.non_overridable',
         ]
         with self.assertRaises(ImproperlyConfigured):
             with self.settings(INSTALLED_APPS=app_list):
@@ -149,7 +149,7 @@ class OverridingConfigTest(test.SimpleTestCase):
 
     def test_missing_target(self):
         app_list = [
-            'tests.apps.missing_target.apps.AppConfig',
+            'apps.missing_target.apps.AppConfig',
         ]
         with self.assertRaises(LookupError):
             with self.settings(INSTALLED_APPS=app_list):
@@ -157,7 +157,7 @@ class OverridingConfigTest(test.SimpleTestCase):
 
     def test_no_target(self):
         app_list = [
-            'tests.apps.no_target.apps.AppConfig',
+            'apps.no_target.apps.AppConfig',
         ]
         with self.assertRaises(ImproperlyConfigured):
             with self.settings(INSTALLED_APPS=app_list):

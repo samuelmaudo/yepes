@@ -265,8 +265,9 @@ class TestProgram(object):
         settings.MIGRATION_MODULES = {
             # These 'tests.migrations' modules don't actually exist, but
             # this lets us skip creating migrations for the test models.
-            'auth': 'django.contrib.auth.tests.migrations',
-            'contenttypes': 'contenttypes_tests.migrations',
+            'auth': 'django.contrib.auth.migrations_',
+            'contenttypes': 'django.contrib.contenttypes.migrations_',
+            'sessions': 'django.contrib.sessions.migrations_',
         }
         return state
 

@@ -4,6 +4,6 @@ from yepes.apps import OverridingConfig
 
 
 class AppConfig(OverridingConfig):
-    name = 'tests.apps.missing_target'
+    name = 'apps.missing_target'
     overridden_app_label = 'missing'
 

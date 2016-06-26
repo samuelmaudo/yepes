@@ -370,7 +370,7 @@ class BitFieldLookup(Lookup):
 
     def process_empty(self, qn, table, field):
         conditions = []
-        for i in xrange(1, field.int_fields):
+        for i in range(1, field.int_fields):
             if i == 1:
                 column = qn(field.column)
             else:
@@ -385,7 +385,7 @@ class BitFieldLookup(Lookup):
 
     def process_none(self, qn, table, field):
         conditions = []
-        for i in xrange(1, field.int_fields):
+        for i in range(1, field.int_fields):
             if i == 1:
                 column = qn(field.column)
             else:
