@@ -180,12 +180,9 @@ class FullUrlTag(AssignTag):
         try:
             current_app = self.context.request.current_app
         except AttributeError:
-            # Leave only the else block when the deprecation path for
-            # Context.current_app completes in Django 1.10.
-            # Can also remove the Context.is_current_app_set property.
-            if self.context.is_current_app_set:
+            try:
                 current_app = self.context.current_app
-            else:
+            except AttributeError:
                 try:
                     current_app = self.context.request.resolver_match.namespace
                 except AttributeError:
