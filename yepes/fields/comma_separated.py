@@ -8,12 +8,11 @@ from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import forms
-from yepes.fields.calculated import CalculatedSubfield
 from yepes.fields.char import CharField
 from yepes.utils.deconstruct import clean_keywords
 
 
-class CommaSeparatedField(CalculatedSubfield, CharField):
+class CommaSeparatedField(CharField):
 
     description = _('Comma-separated strings')
 
@@ -50,6 +49,14 @@ class CommaSeparatedField(CalculatedSubfield, CharField):
         kwargs.setdefault('form_class', forms.CommaSeparatedField)
         kwargs.setdefault('separator', self.separator)
         return super(CommaSeparatedField, self).formfield(**kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        elif not value:
+            return []
+        else:
+            return self.separator_re.split(value)
 
     def get_prep_value(self, value):
         if value is None or isinstance(value, six.string_types):

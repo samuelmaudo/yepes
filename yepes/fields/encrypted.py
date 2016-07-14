@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes.conf import settings
 from yepes.exceptions import LookupTypeError
-from yepes.fields.calculated import CalculatedSubfield
+from yepes.fields.calculated import CalculatedField
 from yepes.fields.char import (
     check_max_length_attribute,
     check_min_length_attribute
@@ -54,7 +54,7 @@ class TooShortError(ValueError):
         super(TooShortError, self).__init__(msg)
 
 
-class EncryptedTextField(CalculatedSubfield, models.BinaryField):
+class EncryptedTextField(CalculatedField, models.BinaryField):
 
     description = _('Encrypted text')
 
@@ -122,6 +122,12 @@ class EncryptedTextField(CalculatedSubfield, models.BinaryField):
         kwargs.setdefault('min_length', self.min_length)
         kwargs.setdefault('max_length', self.max_length)
         return super(EncryptedTextField, self).formfield(**kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        else:
+            return self.decrypt(value)
 
     def get_prep_lookup(self, lookup_type, value):
         if lookup_type == 'exact':

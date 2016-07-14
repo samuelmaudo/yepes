@@ -10,12 +10,12 @@ from django.utils.six.moves import cPickle as pickle
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
-from yepes.fields.calculated import CalculatedSubfield
+from yepes.fields.calculated import CalculatedField
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
-class PickledObjectField(CalculatedSubfield, models.BinaryField):
+class PickledObjectField(CalculatedField, models.BinaryField):
     """
     A field that accepts *any* python object and store it in the database.
 
@@ -64,6 +64,12 @@ class PickledObjectField(CalculatedSubfield, models.BinaryField):
 
         """
         return pickle.dumps(deepcopy(obj), self.protocol)
+
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        else:
+            return self.load(value)
 
     def get_prep_lookup(self, lookup_type, value):
         if lookup_type == 'exact':

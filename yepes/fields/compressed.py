@@ -11,7 +11,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.exceptions import LookupTypeError
-from yepes.fields.calculated import CalculatedSubfield
+from yepes.fields.calculated import CalculatedField
 from yepes.fields.char import (
     check_max_length_attribute,
     check_min_length_attribute
@@ -20,7 +20,7 @@ from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
 
-class CompressedTextField(CalculatedSubfield, models.BinaryField):
+class CompressedTextField(CalculatedField, models.BinaryField):
 
     description = _('Compressed text')
 
@@ -82,6 +82,12 @@ class CompressedTextField(CalculatedSubfield, models.BinaryField):
         kwargs.setdefault('min_length', self.min_length)
         kwargs.setdefault('max_length', self.max_length)
         return super(CompressedTextField, self).formfield(**kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        else:
+            return self.decompress(value)
 
     def get_prep_lookup(self, lookup_type, value):
         if lookup_type == 'exact':
