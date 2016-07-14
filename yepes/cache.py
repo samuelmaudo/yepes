@@ -5,16 +5,18 @@ from __future__ import unicode_literals, with_statement
 from collections import OrderedDict
 from copy import copy
 from time import time
-from weakref import ref as weakref
 
+from django import VERSION as DJANGO_VERSION
 from django.core.cache import caches
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
-from django.db.models.manager import (
-    Manager,
-    ManagerDescriptor,
-    AbstractManagerDescriptor,
-    SwappedManagerDescriptor,
-)
+from django.db.models.manager import BaseManager, ManagerDescriptor
+if DJANGO_VERSION < (1, 10):
+    from django.db.models.manager import (AbstractManagerDescriptor,
+                                          SwappedManagerDescriptor)
+else:
+    AbstractManagerDescriptor = ManagerDescriptor
+    SwappedManagerDescriptor = ManagerDescriptor
+
 from django.db.models.signals import post_save, post_delete
 from django.utils import six
 from django.utils.synch import RWLock
@@ -210,30 +212,30 @@ class LookupTable(object):
         return cache, field, key
 
     def _set_creation_counter(self):
-        self.creation_counter = Manager.creation_counter
-        Manager.creation_counter += 1
+        self.creation_counter = BaseManager.creation_counter
+        BaseManager.creation_counter += 1
 
     def _set_model(self, model):
-        cache_name = '{0}.{1}.{2}'.format(
+        cache_name = '.'.join((
             model._meta.app_label,
             model._meta.model_name,
             self.name,
-        )
+        ))
         self._cache = CACHES.setdefault(cache_name, OrderedDict())
         self._info = CACHE_INFO.setdefault(cache_name, {'expire_time': 0})
         self._lock = LOCKS.setdefault(cache_name, RWLock())
 
         self._indexes = {}
         for field_name in self.indexed_fields:
-            cache_name = '{0}.{1}.{2}.{3}'.format(
+            cache_name = '.'.join((
                 model._meta.app_label,
                 model._meta.model_name,
                 self.name,
                 field_name,
-            )
+            ))
             self._indexes[field_name] = CACHES.setdefault(cache_name, {})
 
-        self._model_ref = weakref(model)
+        self.model = model
 
     def all(self):
         self._maybe_populate()
@@ -251,9 +253,10 @@ class LookupTable(object):
                 index.clear()
 
     def contribute_to_class(self, model, name):
-        self._set_model(model)
         if not self.name:
             self.name = name
+
+        self._set_model(model)
 
         # Only contribute the manager if the model is concrete.
         opts = model._meta
@@ -266,8 +269,11 @@ class LookupTable(object):
             post_delete.connect(self._model_changed, sender=model)
             setattr(model, name, ManagerDescriptor(self))
 
-        abstract = (opts.abstract or (self._inherited and not opts.proxy))
-        opts.managers.append((self.creation_counter, self, abstract))
+        if DJANGO_VERSION < (1, 10):
+            abstract = (opts.abstract or (self._inherited and not opts.proxy))
+            opts.managers.append((self.creation_counter, self, abstract))
+        else:
+            opts.add_manager(self)
 
     def create(self, **kwargs):
         record = self.model(**kwargs)
@@ -364,10 +370,6 @@ class LookupTable(object):
                     index[getattr(record, field)] = record
 
             self._info['expire_time'] = time() + self.timeout
-
-    @property
-    def model(self):
-        return self._model_ref()
 
     @cached_property
     def model_pk(self):

@@ -203,6 +203,7 @@ class AbstractGeographicArea(Logged, Standard):
             related_name='areas_that_exclude_it',
             verbose_name=_('Excluded Subdivisions'))
 
+    objects = models.Manager()
     cache = GeographicAreaLookupTable(
             indexed_fields=[
                 'api_id',

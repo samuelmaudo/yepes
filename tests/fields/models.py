@@ -102,11 +102,13 @@ class CachedForeignKeyModel(models.Model):
 
 class CachedModel(models.Model):
 
+    objects = models.Manager()
     cache = LookupTable()
 
 
 class CachedModelWithDefaultValue(models.Model):
 
+    objects = models.Manager()
     cache = LookupTable(
             default_registry_key='tests:DEFAULT_CACHED_MODEL')
 

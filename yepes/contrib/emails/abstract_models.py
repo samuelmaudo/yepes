@@ -50,6 +50,7 @@ class AbstractConnection(Logged):
             verbose_name=_('Store Mails?'),
             help_text=_('Whether to store a copy of each sent mail.'))
 
+    objects = models.Manager()
     cache = LookupTable()
 
     class Meta:

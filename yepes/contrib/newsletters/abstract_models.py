@@ -258,6 +258,7 @@ class AbstractDomain(models.Model):
             default=False,
             verbose_name=_('Is Trusted?'))
 
+    objects = models.Manager()
     cache = LookupTable(['name'])
 
     class Meta:
@@ -657,6 +658,7 @@ class AbstractSubscriberTag(Logged):
             blank=True,
             verbose_name=_('Description'))
 
+    objects = models.Manager()
     cache = LookupTable(['name'])
 
     class Meta:

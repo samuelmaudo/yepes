@@ -99,6 +99,7 @@ class AbstractConfiguration(Logged):
             min_value=1,
             verbose_name=_('Quality'))
 
+    objects = models.Manager()
     cache = LookupTable(['key'])
 
     class Meta:
