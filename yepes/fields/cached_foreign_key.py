@@ -15,8 +15,8 @@ from yepes.utils.properties import cached_property
 
 class CachedForeignKey(models.ForeignKey):
 
-    def contribute_to_class(self, cls, name, virtual_only=False):
-        super(CachedForeignKey, self).contribute_to_class(cls, name, virtual_only=virtual_only)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(CachedForeignKey, self).contribute_to_class(cls, name, **kwargs)
         setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
 
     def deconstruct(self):

@@ -7,12 +7,12 @@ from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 from django import forms
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.db.models.lookups import Exact, In
 from django.utils import six
 from django.utils.encoding import force_bytes, force_text
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.conf import settings
-from yepes.exceptions import LookupTypeError
 from yepes.fields.calculated import CalculatedField
 from yepes.fields.char import (
     check_max_length_attribute,
@@ -129,19 +129,20 @@ class EncryptedTextField(CalculatedField, models.BinaryField):
         else:
             return self.decrypt(value)
 
-    def get_prep_lookup(self, lookup_type, value):
-        if lookup_type == 'exact':
-            return self.get_prep_value(value)
-        elif lookup_type == 'in':
-            return [self.get_prep_value(v) for v in value]
+    def get_lookup(self, lookup_name):
+        if lookup_name == 'exact':
+            return Exact
+        elif lookup_name == 'in':
+            return In
         else:
-            raise LookupTypeError(lookup_type)
+            return None
 
     def get_prep_value(self, value):
-        if value is not None:
-            return self.encrypt(value)
-        else:
+        value = models.Field.get_prep_value(self, value)
+        if value is None:
             return value
+        else:
+            return self.encrypt(value)
 
     def get_secret_key(self):
         if self.secret_key:

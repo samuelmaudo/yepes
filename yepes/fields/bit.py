@@ -19,7 +19,7 @@ from django.utils.six.moves import range, zip
 from django.utils.text import capfirst
 
 from yepes import forms
-from yepes.exceptions import LookupTypeError, MissingAttributeError
+from yepes.exceptions import MissingAttributeError
 from yepes.types import Bit, Undefined
 
 __all__ = (
@@ -54,8 +54,8 @@ class BitField(models.BigIntegerField):
         self.int_fields = int(math.ceil(len(choices) / 63))
         self.validators = [MaxValueValidator(self.flags.get_max_value())]
 
-    def contribute_to_class(self, cls, name):
-        super(BitField, self).contribute_to_class(cls, name)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(BitField, self).contribute_to_class(cls, name, **kwargs)
         if self.int_fields > 1:
             counter = self.creation_counter
             for i in range(2, self.int_fields + 1):
@@ -69,7 +69,7 @@ class BitField(models.BigIntegerField):
                 )
                 counter -= 0.001
                 fld.creation_counter = counter
-                fld.contribute_to_class(cls, '{0}_{1}'.format(self.name, i))
+                fld.contribute_to_class(cls, '{0}_{1}'.format(self.name, i), **kwargs)
 
         setattr(cls, self.name, BitFieldDescriptor(self))
 
@@ -104,15 +104,6 @@ class BitField(models.BigIntegerField):
 
         return form_class(**params)
 
-    def get_db_prep_lookup(self, lookup_type, value, connection, prepared=False):
-        if not prepared:
-            value = self.get_prep_lookup(lookup_type, value)
-
-        if lookup_type == 'exact':
-            return value
-        else:
-            raise LookupTypeError(lookup_type)
-
     def get_db_prep_save(self, value, connection):
         value = models.Field.get_db_prep_save(self, value, connection)
         return self.split_value(value)[0]
@@ -136,13 +127,8 @@ class BitField(models.BigIntegerField):
     def get_lookup(self, lookup_name):
         if lookup_name == 'exact':
             return BitFieldLookup
-
-    def get_prep_lookup(self, lookup_type, value):
-        # We only handle 'exact'. All others are errors.
-        if lookup_type == 'exact':
-            return self.get_prep_value(value)
         else:
-            raise LookupTypeError(lookup_type)
+            return None
 
     def get_prep_value(self, value):
         value = models.Field.get_prep_value(self, value)
@@ -337,10 +323,12 @@ class BitFieldLookup(Lookup):
     lookup_name = 'exact'
 
     def as_sql(self, compiler, connection):
-        __, value = self.get_db_prep_lookup(self.rhs, connection)
         qn = compiler.quote_name_unless_alias
+
         table = qn(self.lhs.alias)
         field = self.lhs.output_field
+        value = self.rhs
+
         if value is None:
             conditions, params = self.process_none(qn, table, field)
         elif not value:
@@ -416,8 +404,8 @@ class RelatedBitField(BitField):
         self.flags = RelatedBitFieldFlags(self)
         self.int_fields = int(math.ceil(allowed_choices / 63))
 
-    def contribute_to_class(self, cls, name):
-        super(RelatedBitField, self).contribute_to_class(cls, name)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(RelatedBitField, self).contribute_to_class(cls, name, **kwargs)
         other = self.fake_rel.to
         if isinstance(other, six.string_types) or other._meta.pk is None:
             def resolve_related_class(field, model, cls):

@@ -23,8 +23,8 @@ class FormulaField(CharField):
         super(FormulaField, self).__init__(*args, **kwargs)
         self.validators.append(FormulaValidator(self.variables))
 
-    def contribute_to_class(self, cls, name):
-        super(FormulaField, self).contribute_to_class(cls, name)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(FormulaField, self).contribute_to_class(cls, name, **kwargs)
         setattr(cls, self.name, FormulaFieldDescriptor(self))
 
     def deconstruct(self):

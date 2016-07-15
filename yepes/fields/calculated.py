@@ -39,9 +39,9 @@ class CalculatedField(object):
         else:
             return []
 
-    def contribute_to_class(self, cls, name):
-        super(CalculatedField, self).contribute_to_class(cls, name)
-        if self.calculated and not hasattr(cls, self.name):
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(CalculatedField, self).contribute_to_class(cls, name, **kwargs)
+        if self.calculated:
             setattr(cls, self.name, CalculatedFieldDescriptor(self))
 
     def deconstruct(self):

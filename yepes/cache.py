@@ -13,9 +13,6 @@ from django.db.models.manager import BaseManager, ManagerDescriptor
 if DJANGO_VERSION < (1, 10):
     from django.db.models.manager import (AbstractManagerDescriptor,
                                           SwappedManagerDescriptor)
-else:
-    AbstractManagerDescriptor = ManagerDescriptor
-    SwappedManagerDescriptor = ManagerDescriptor
 
 from django.db.models.signals import post_save, post_delete
 from django.utils import six
@@ -255,24 +252,27 @@ class LookupTable(object):
     def contribute_to_class(self, model, name):
         if not self.name:
             self.name = name
-
         self._set_model(model)
 
-        # Only contribute the manager if the model is concrete.
         opts = model._meta
-        if opts.abstract:
-            setattr(model, name, AbstractManagerDescriptor(model))
-        elif opts.swapped:
-            setattr(model, name, SwappedManagerDescriptor(model))
-        else:
-            post_save.connect(self._model_changed, sender=model)
-            post_delete.connect(self._model_changed, sender=model)
-            setattr(model, name, ManagerDescriptor(self))
-
         if DJANGO_VERSION < (1, 10):
+            if opts.abstract:
+                setattr(model, name, AbstractManagerDescriptor(model))
+            elif opts.swapped:
+                setattr(model, name, SwappedManagerDescriptor(model))
+            else:
+                post_save.connect(self._model_changed, sender=model)
+                post_delete.connect(self._model_changed, sender=model)
+                setattr(model, name, ManagerDescriptor(self))
+
             abstract = (opts.abstract or (self._inherited and not opts.proxy))
             opts.managers.append((self.creation_counter, self, abstract))
         else:
+            setattr(model, name, ManagerDescriptor(self))
+            if not opts.abstract and not opts.swapped:
+                post_save.connect(self._model_changed, sender=model)
+                post_delete.connect(self._model_changed, sender=model)
+
             opts.add_manager(self)
 
     def create(self, **kwargs):

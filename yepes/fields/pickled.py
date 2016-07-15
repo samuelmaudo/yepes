@@ -4,12 +4,12 @@ from base64 import b64decode, b64encode
 from copy import deepcopy
 
 from django.db import models
+from django.db.models.lookups import Exact, In
 from django.utils import six
 from django.utils.encoding import force_bytes
 from django.utils.six.moves import cPickle as pickle
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.exceptions import LookupTypeError
 from yepes.fields.calculated import CalculatedField
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
@@ -71,19 +71,20 @@ class PickledObjectField(CalculatedField, models.BinaryField):
         else:
             return self.load(value)
 
-    def get_prep_lookup(self, lookup_type, value):
-        if lookup_type == 'exact':
-            return self.get_prep_value(value)
-        elif lookup_type == 'in':
-            return [self.get_prep_value(v) for v in value]
+    def get_lookup(self, lookup_name):
+        if lookup_name == 'exact':
+            return Exact
+        elif lookup_name == 'in':
+            return In
         else:
-            raise LookupTypeError(lookup_type)
+            return None
 
     def get_prep_value(self, value):
-        if value is not None:
-            return self.dump(value)
-        else:
+        value = models.Field.get_prep_value(self, value)
+        if value is None:
             return value
+        else:
+            return self.dump(value)
 
     def load(self, bytes):
         """

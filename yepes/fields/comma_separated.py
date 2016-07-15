@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
+from django.db import models
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
@@ -53,12 +54,11 @@ class CommaSeparatedField(CharField):
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
-        elif not value:
-            return []
         else:
             return self.separator_re.split(value)
 
     def get_prep_value(self, value):
+        value = models.Field.get_prep_value(self, value)
         if value is None or isinstance(value, six.string_types):
             return value
         else:
