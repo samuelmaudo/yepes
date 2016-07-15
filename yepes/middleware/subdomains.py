@@ -4,13 +4,18 @@ from __future__ import unicode_literals
 
 import re
 
+from django import VERSION as DJANGO_VERSION
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseNotFound
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.contrib.registry import registry
 
 
-class SubdomainsMiddleware(object):
+class SubdomainsMiddleware(MiddlewareMixin):
     """
     Middleware that adds a ``subdomain`` attribute to the request object,
     which corresponds to the portion of the URL before the ``domain``
