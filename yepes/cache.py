@@ -61,6 +61,8 @@ class MintCache(object):
     def __contains__(self, key):
         return self.has_key(key)
 
+    # PUBLIC METHODS
+
     def add(self, key, value, timeout=None):
         """
         Stores a packed value in the cache if the key does not already exist.
@@ -131,6 +133,7 @@ class MintCache(object):
 
 class LookupTable(object):
 
+    auto_created = False
     default_registry_key = None
     indexed_fields = None
     name = None
@@ -141,6 +144,7 @@ class LookupTable(object):
     def __init__(self, indexed_fields=None, prefetch_related=None, timeout=None,
                        default_registry_key=None):
         self._set_creation_counter()
+        self._model = None
         self._inherited = False
 
         if not indexed_fields:
@@ -167,11 +171,13 @@ class LookupTable(object):
         else:
             return self
 
+    # PRIVATE METHODS
+
     def _copy_to_model(self, model):
         assert issubclass(model, self.model)
         mgr = copy(self)
         mgr._set_creation_counter()
-        mgr._set_model(model)
+        mgr.model = model
         mgr._inherited = True
         return mgr
 
@@ -212,27 +218,7 @@ class LookupTable(object):
         self.creation_counter = BaseManager.creation_counter
         BaseManager.creation_counter += 1
 
-    def _set_model(self, model):
-        cache_name = '.'.join((
-            model._meta.app_label,
-            model._meta.model_name,
-            self.name,
-        ))
-        self._cache = CACHES.setdefault(cache_name, OrderedDict())
-        self._info = CACHE_INFO.setdefault(cache_name, {'expire_time': 0})
-        self._lock = LOCKS.setdefault(cache_name, RWLock())
-
-        self._indexes = {}
-        for field_name in self.indexed_fields:
-            cache_name = '.'.join((
-                model._meta.app_label,
-                model._meta.model_name,
-                self.name,
-                field_name,
-            ))
-            self._indexes[field_name] = CACHES.setdefault(cache_name, {})
-
-        self.model = model
+    # PUBLIC METHODS
 
     def all(self):
         self._maybe_populate()
@@ -252,7 +238,7 @@ class LookupTable(object):
     def contribute_to_class(self, model, name):
         if not self.name:
             self.name = name
-        self._set_model(model)
+        self.model = model
 
         opts = model._meta
         if DJANGO_VERSION < (1, 10):
@@ -261,27 +247,18 @@ class LookupTable(object):
             elif opts.swapped:
                 setattr(model, name, SwappedManagerDescriptor(model))
             else:
-                post_save.connect(self._model_changed, sender=model)
-                post_delete.connect(self._model_changed, sender=model)
                 setattr(model, name, ManagerDescriptor(self))
 
             abstract = (opts.abstract or (self._inherited and not opts.proxy))
             opts.managers.append((self.creation_counter, self, abstract))
         else:
             setattr(model, name, ManagerDescriptor(self))
-            if not opts.abstract and not opts.swapped:
-                post_save.connect(self._model_changed, sender=model)
-                post_delete.connect(self._model_changed, sender=model)
-
             opts.add_manager(self)
 
     def create(self, **kwargs):
         record = self.model(**kwargs)
         record._clear_lookup_table = False
-        #post_save.disconnect(self._model_changed, sender=self.model)
         record.save(force_insert=True)
-        #post_save.connect(self._model_changed, sender=self.model)
-        del record._clear_lookup_table
         if self._is_populated():
             with self._lock.writer():
                 self._cache[getattr(record, self.model_pk)] = record
@@ -370,6 +347,38 @@ class LookupTable(object):
                     index[getattr(record, field)] = record
 
             self._info['expire_time'] = time() + self.timeout
+
+    # PROPERTIES
+
+    def _get_model(self):
+        return self._model
+
+    def _set_model(self, model):
+        cache_name = '.'.join((
+            model._meta.app_label,
+            model._meta.model_name,
+            self.name,
+        ))
+        self._cache = CACHES.setdefault(cache_name, OrderedDict())
+        self._info = CACHE_INFO.setdefault(cache_name, {'expire_time': 0})
+        self._lock = LOCKS.setdefault(cache_name, RWLock())
+
+        self._indexes = {}
+        for field_name in self.indexed_fields:
+            cache_name = '.'.join((
+                model._meta.app_label,
+                model._meta.model_name,
+                self.name,
+                field_name,
+            ))
+            self._indexes[field_name] = CACHES.setdefault(cache_name, {})
+
+        self._model = model
+        if not model._meta.abstract and not model._meta.swapped:
+            post_save.connect(self._model_changed, sender=model)
+            post_delete.connect(self._model_changed, sender=model)
+
+    model = property(_get_model, _set_model)
 
     @cached_property
     def model_pk(self):
