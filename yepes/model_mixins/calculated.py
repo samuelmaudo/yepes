@@ -44,6 +44,11 @@ class Calculated(models.Model):
             )
         return cls._cached_properties
 
+    def get_deferred_fields(self):
+        deferred_fields = super(Calculated, self).get_deferred_fields()
+        deferred_fields.difference_update(self.get_calculated_fields())
+        return deferred_fields
+
     def save(self, **kwargs):
         self.clear_calculated_values()
         super(Calculated, self).save(**kwargs)
