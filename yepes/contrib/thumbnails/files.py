@@ -361,14 +361,15 @@ class SourceFieldFile(FieldFile, SourceFile):
 
     def __init__(self, instance, field, name):
         super(SourceFieldFile, self).__init__(instance, field, name)
-        if self.field.height_field:
-            height = getattr(instance, self.field.height_field)
-            if height is not None:
-                self._height_cache = height
-        if self.field.width_field:
-            width = getattr(instance, self.field.width_field)
-            if width is not None:
-                self._width_cache = width
+        if self:
+            if field.height_field:
+                height = getattr(instance, field.height_field)
+                if height is not None:
+                    self._height_cache = height
+            if field.width_field:
+                width = getattr(instance, field.width_field)
+                if width is not None:
+                    self._width_cache = width
 
     def _get_source_record(self):
         if self._source_cache is Undefined:
