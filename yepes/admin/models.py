@@ -136,8 +136,8 @@ class ModelAdmin(DjangoModelAdmin):
         inline_instances = sup.get_inline_instances(request, obj)
         if not self.has_change_permission(request, obj, strict=True):
             for inline in inline_instances:
-                if inline.declared_fieldsets:
-                    fields = flatten_fieldsets(inline.declared_fieldsets)
+                if inline.fieldsets:
+                    fields = flatten_fieldsets(inline.get_fieldsets(request, obj))
                 else:
                     fields = {
                         f.name
@@ -156,8 +156,8 @@ class ModelAdmin(DjangoModelAdmin):
         if self.has_change_permission(request, obj, strict=True):
             return self.readonly_fields
 
-        if self.declared_fieldsets:
-            fields = flatten_fieldsets(self.declared_fieldsets)
+        if self.fieldsets:
+            fields = flatten_fieldsets(self.get_fieldsets(request, obj))
         else:
             fields = {
                 f.name
