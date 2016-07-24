@@ -2,12 +2,17 @@
 
 from __future__ import unicode_literals
 
+from django import VERSION as DJANGO_VERSION
 from django.utils import translation
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.conf import settings
 
 
-class LocaleSubdomainsMiddleware(object):
+class LocaleSubdomainsMiddleware(MiddlewareMixin):
     """
     Middleware that sets the language based on the request subdomain.
     """

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.db.models import Manager
 
-from yepes.loading import is_installed
+from yepes.apps import apps
 
 
 class SluggedManager(Manager):
@@ -23,7 +23,7 @@ class SluggedManager(Manager):
         slugs.
 
         """
-        if is_installed('slugs'):
+        if 'slugs' in apps:
             qs = self.get_queryset()
             qs = qs.order_by('-slug_history__id')
             qs = qs.filter(slug_history__slug=slug)

@@ -8,10 +8,8 @@ from django.utils.encoding import force_text
 from django.utils.functional import Promise
 from django.utils.itercompat import is_iterable
 
-from yepes.loading import get_class
+from yepes.contrib.sitemaps import StaticSitemap
 from yepes.views import CachedTemplateView
-
-StaticSitemap = get_class('sitemaps', 'StaticSitemap')
 
 
 class SitemapView(CachedTemplateView):
@@ -41,9 +39,6 @@ class SitemapView(CachedTemplateView):
 
     def get_sitemap_kwargs(self):
         return {}
-
-    def get_use_cache(self, request):
-        return (not request.user.is_staff)
 
 
 class StaticSitemapView(SitemapView):
@@ -91,7 +86,4 @@ class SitemapIndexView(CachedTemplateView):
                 urls.extend(url)
 
         return urls
-
-    def get_use_cache(self, request):
-        return (not request.user.is_staff)
 

@@ -39,16 +39,16 @@ class ExportModelTest(TempDirMixin, TestCase):
             call_command('export_model', 'appname.ModelName', 'appname.ModelName')
 
     def test_app_not_found(self):
-        with self.assertRaisesRegexp(CommandError, "App with label 'appname' could not be found."):
+        with self.assertRaisesRegexp(CommandError, "No installed app with label 'appname'."):
             call_command('export_model', 'appname.ModelName')
 
     def test_model_not_found(self):
-        with self.assertRaisesRegexp(CommandError, "Model 'ModelName' could not be found."):
-            call_command('export_model', 'datamigrations_commands.ModelName')
+        with self.assertRaisesRegexp(CommandError, "App 'datamigrations_commands_tests' doesn't have a 'modelname' model."):
+            call_command('export_model', 'datamigrations_commands_tests.ModelName')
 
     def test_serializer_not_found(self):
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('export_model', 'datamigrations_commands.AlphabetModel', format='serializername')
+            call_command('export_model', 'datamigrations_commands_tests.AlphabetModel', format='serializername')
 
     def test_no_file(self):
         migration = DataMigration(AlphabetModel)
@@ -60,7 +60,7 @@ class ExportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'export_model',
-            'datamigrations_commands.AlphabetModel',
+            'datamigrations_commands_tests.AlphabetModel',
             format='csv',
             stdout=output,
         )
@@ -78,7 +78,7 @@ class ExportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'export_model',
-            'datamigrations_commands.AlphabetModel',
+            'datamigrations_commands_tests.AlphabetModel',
             format='csv',
             output=result_path,
             stdout=output,
@@ -117,23 +117,23 @@ class ImportModelTest(TempDirMixin, TestCase):
 
     def test_app_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
-        with self.assertRaisesRegexp(CommandError, "App with label 'appname' could not be found."):
+        with self.assertRaisesRegexp(CommandError, "No installed app with label 'appname'."):
             call_command('import_model', 'appname.ModelName', input=source_path)
 
     def test_model_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
-        with self.assertRaisesRegexp(CommandError, "Model 'ModelName' could not be found."):
-            call_command('import_model', 'datamigrations_commands.ModelName', input=source_path)
+        with self.assertRaisesRegexp(CommandError, "App 'datamigrations_commands_tests' doesn't have a 'modelname' model."):
+            call_command('import_model', 'datamigrations_commands_tests.ModelName', input=source_path)
 
     def test_serializer_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('import_model', 'datamigrations_commands.AlphabetModel', input=source_path, format='serializername')
+            call_command('import_model', 'datamigrations_commands_tests.AlphabetModel', input=source_path, format='serializername')
 
     def test_importation_plan_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Importation plan 'planname' could not be found."):
-            call_command('import_model', 'datamigrations_commands.AlphabetModel', input=source_path, plan='planname')
+            call_command('import_model', 'datamigrations_commands_tests.AlphabetModel', input=source_path, plan='planname')
 
     def test_file(self):
         migration = DataMigration(AlphabetModel)
@@ -144,7 +144,7 @@ class ImportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'import_model',
-            'datamigrations_commands.AlphabetModel',
+            'datamigrations_commands_tests.AlphabetModel',
             format='csv',
             input=source_path,
             stdout=output,

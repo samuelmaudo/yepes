@@ -2,14 +2,14 @@
 
 from django.db.models import F, Q
 
+from yepes.apps import apps
 from yepes.cache import LookupTable
-from yepes.loading import get_class
 from yepes.managers import (
     EnableableManager, EnableableQuerySet,
     NestableManager,
 )
 
-GeographicAreaProxy = get_class('standards.proxies', 'GeographicAreaProxy')
+GeographicAreaProxy = apps.get_class('standards.proxies', 'GeographicAreaProxy')
 
 
 class CountryManager(EnableableManager):

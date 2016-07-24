@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 from decimal import Decimal as dec
 
-#from django.core import checks
+from django.core import checks
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import six
@@ -34,7 +34,7 @@ class DecimalField(CalculatedField, models.DecimalField):
         errors = super(DecimalField, self).check(**kwargs)
         errors.extend(self._check_max_value_attribute(**kwargs))
         errors.extend(self._check_min_value_attribute(**kwargs))
-        errors.extend(self._check_column_range(**kwargs))
+        errors.extend(self._check_column_range())
         return errors
 
     def _check_column_range(self):

@@ -10,6 +10,7 @@ class Tax(models.Model):
     name = models.CharField(max_length=63)
     rate = models.FloatField()
 
+    objects = models.Manager()
     cache = LookupTable(['name'])
 
     class Meta:

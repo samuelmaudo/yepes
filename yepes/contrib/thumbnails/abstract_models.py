@@ -99,6 +99,7 @@ class AbstractConfiguration(Logged):
             min_value=1,
             verbose_name=_('Quality'))
 
+    objects = models.Manager()
     cache = LookupTable(['key'])
 
     class Meta:
@@ -145,6 +146,7 @@ class AbstractThumbnail(models.Model):
 
     source = models.ForeignKey(
             'Source',
+            on_delete=models.CASCADE,
             related_name='thumbnails',
             verbose_name=_('Source'))
 

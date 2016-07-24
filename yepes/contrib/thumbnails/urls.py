@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 
-from yepes.loading import get_class
+from yepes.apps import apps
 
-ConfigurationsTestView = get_class('thumbnails.views', 'ConfigurationsTestView')
-OptionsTestView = get_class('thumbnails.views', 'OptionsTestView')
+ConfigurationsTestView = apps.get_class('thumbnails.views', 'ConfigurationsTestView')
+OptionsTestView = apps.get_class('thumbnails.views', 'OptionsTestView')
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^configurations/$',
         ConfigurationsTestView.as_view(),
         name='thumbnail_configurations',
@@ -17,4 +17,4 @@ urlpatterns = patterns('',
         OptionsTestView.as_view(),
         name='thumbnail_options',
     ),
-)
+]

@@ -50,7 +50,7 @@ class MetaData(models.Model):
             description = self.meta_description
         else:
             description = ''
-            fields = {fld.name: fld for fld in self._meta.fields}
+            fields = {fld.name: fld for fld in self._meta.get_fields()}
             for field_name in ('excerpt', 'description', 'content'):
                 if field_name in fields:
                     field = fields[field_name]
@@ -60,7 +60,7 @@ class MetaData(models.Model):
                     if description:
                         break
             else:
-                for field in self._meta.fields:
+                for field in self._meta.get_fields():
                     if isinstance(field, models.TextField):
                         if hasattr(field, 'html_field'):
                             field = field.html_field
@@ -98,7 +98,7 @@ class MetaData(models.Model):
             title = self.meta_title
         else:
             title = ''
-            field_names = self._meta.get_all_field_names()
+            field_names = {fld.name for fld in self._meta.get_fields()}
             for field_name in ('title', 'headline', 'name'):
                 if field_name in field_names:
                     title = getattr(self, field_name)

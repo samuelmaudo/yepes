@@ -106,6 +106,7 @@ class BlogCategoryModel(models.Model):
 
     blog = models.ForeignKey(
             BlogModel,
+            on_delete=models.CASCADE,
             related_name='categories')
     name = models.CharField(
             max_length=255)
@@ -122,9 +123,11 @@ class PostModel(models.Model):
             max_length=255)
     author = models.ForeignKey(
             AuthorModel,
+            on_delete=models.CASCADE,
             related_name='posts')
     category = models.ForeignKey(
             BlogCategoryModel,
+            on_delete=models.CASCADE,
             related_name='posts')
     image = models.ImageField(
             blank=True,

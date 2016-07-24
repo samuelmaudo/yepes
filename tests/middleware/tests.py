@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 
 from django import test
 from django.contrib.auth.models import AnonymousUser, User
-from django.contrib.sites.models import Site
-from django.core.context_processors import csrf
 from django.http import HttpRequest, HttpResponse
 from django.template import RequestContext, Template
+from django.template.context_processors import csrf
 from django.test.utils import override_settings
 from django.utils import translation
 from django.utils.encoding import force_bytes
@@ -49,7 +48,7 @@ def non_token_view_using_request_processor(request):
     return HttpResponse(template.render(context))
 
 
-class ClientIpMiddlewareTest(test.SimpleTestCase):
+class ClientIpMiddlewareTest(test.TestCase):
 
     def setUp(self):
         self.middleware = ClientIpMiddleware()
@@ -476,7 +475,7 @@ class SSLRedirectMiddlewareTest(test.SimpleTestCase):
 
 
 
-class SubdomainsMiddlewareTest(test.SimpleTestCase):
+class SubdomainsMiddlewareTest(test.TestCase):
 
     def setUp(self):
         self.middleware = SubdomainsMiddleware()

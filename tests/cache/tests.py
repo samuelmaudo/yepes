@@ -7,12 +7,8 @@ import warnings
 
 from django import test
 
-from yepes.cache import (
-    get_cache,
-    get_mint_cache,
-    MintCache,
-    LookupTable,
-)
+from yepes.cache import MintCache, LookupTable
+
 from .models import Tax
 
 

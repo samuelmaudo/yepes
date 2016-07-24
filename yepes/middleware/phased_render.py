@@ -2,12 +2,17 @@
 
 from __future__ import unicode_literals
 
+from django import VERSION as DJANGO_VERSION
 from django.utils import six
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.utils.phased import second_pass_render
 
 
-class PhasedRenderMiddleware(object):
+class PhasedRenderMiddleware(MiddlewareMixin):
     """
     Middleware that performs a second-phase template rendering on the response.
     """

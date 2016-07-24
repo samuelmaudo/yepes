@@ -2,27 +2,16 @@
 
 from __future__ import unicode_literals
 
-from django.core.cache import get_cache
-from django.template.base import Library
+from django.core.cache import caches, DEFAULT_CACHE_ALIAS
+from django.template import Library
 
-from yepes.loading import get_model
+from yepes.apps import apps
 from yepes.template import SingleTag
 from yepes.urlresolvers import full_reverse
 from yepes.types import Undefined
 
-MessageImage = get_model('newsletters', 'MessageImage')
-MessageImageManager = MessageImage._default_manager
-MessageLink = get_model('newsletters', 'MessageLink')
-MessageLinkManager = MessageLink._default_manager
-
-IMAGE_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
-    'LOCATION': 'yepes.contrib.newsletters.templatetags.newsletters.image_url',
-    'TIMEOUT': 600,
-})
-LINK_CACHE = get_cache('django.core.cache.backends.locmem.LocMemCache', **{
-    'LOCATION': 'yepes.contrib.newsletters.templatetags.newsletters.link_url',
-    'TIMEOUT': 600,
-})
+MessageImage = apps.get_model('newsletters', 'MessageImage')
+MessageLink = apps.get_model('newsletters', 'MessageLink')
 
 register = Library()
 
@@ -36,10 +25,10 @@ class ImageUrlTag(SingleTag):
         if self.context.get('prerendering'):
             return "{{% {0} '{1}' %}}".format(self.tag_name, name)
 
-        image = IMAGE_CACHE.get(name, Undefined)
+        image = self.retrieve_image(name)
         if image is Undefined:
-            image = MessageImageManager.filter(name=name).first()
-            IMAGE_CACHE.set(name, image)
+            image = MessageImage.objects.filter(name=name).first()
+            self.store_image(name, image)
 
         if image is None:
             return ''
@@ -53,6 +42,16 @@ class ImageUrlTag(SingleTag):
 
         return full_reverse('image', kwargs=kwargs)
 
+    def retrieve_image(self, key):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('newsletters.templatetags.newsletters.image_url', key))
+        return cache.get(new_key, Undefined)
+
+    def store_image(self, key, image):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('newsletters.templatetags.newsletters.image_url', key))
+        cache.set(new_key, image, timeout=600)
+
 register.tag('image_url', ImageUrlTag.as_tag())
 
 
@@ -65,10 +64,10 @@ class LinkUrlTag(SingleTag):
         if self.context.get('prerendering'):
             return "{{% {0} '{1}' %}}".format(self.tag_name, url)
 
-        link = LINK_CACHE.get(url)
+        link = self.retrieve_link(url)
         if link is None:
-            link, __ = MessageLinkManager.get_or_create(url=url)
-            LINK_CACHE.set(url, link)
+            link, __ = MessageLink.objects.get_or_create(url=url)
+            self.store_link(url, link)
 
         subscriber = self.context.get('subscriber')
         message = self.context.get('message')
@@ -79,6 +78,16 @@ class LinkUrlTag(SingleTag):
             kwargs['message_guid'] = message.guid
 
         return full_reverse('link', kwargs=kwargs)
+
+    def retrieve_link(self, key):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('newsletters.templatetags.newsletters.link_url', key))
+        return cache.get(new_key)
+
+    def store_link(self, key, link):
+        cache = caches[DEFAULT_CACHE_ALIAS]
+        new_key = '.'.join(('newsletters.templatetags.newsletters.link_url', key))
+        cache.set(new_key, link, timeout=600)
 
 register.tag('link_url', LinkUrlTag.as_tag())
 

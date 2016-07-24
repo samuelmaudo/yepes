@@ -13,7 +13,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
 from yepes.cache import LookupTable
-from yepes.loading import get_model
 from yepes.model_mixins import Logged
 from yepes.utils.html import extract_text
 from yepes.utils.properties import described_property
@@ -51,6 +50,7 @@ class AbstractConnection(Logged):
             verbose_name=_('Store Mails?'),
             help_text=_('Whether to store a copy of each sent mail.'))
 
+    objects = models.Manager()
     cache = LookupTable()
 
     class Meta:
@@ -178,6 +178,7 @@ class AbstractMessage(Logged):
 
     connection = fields.CachedForeignKey(
             'Connection',
+            on_delete=models.CASCADE,
             related_name='messages',
             verbose_name=_('Connection'))
 

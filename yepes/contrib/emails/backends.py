@@ -3,9 +3,9 @@
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail.backends.smtp import EmailBackend as SmtpBackend
 
-from yepes.loading import get_model
+from yepes.apps import apps
 
-Delivery = get_model('emails', 'Delivery')
+Delivery = apps.get_model('emails', 'Delivery')
 
 __all__ = ('LoggedSmtpBackend', 'SmtpBackend')
 

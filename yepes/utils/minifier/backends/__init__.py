@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.utils import six
 
 from yepes.conf import settings
-from yepes.loading import get_module, LoadingError, MissingClassError
+from yepes.utils.modules import import_module
 
 BACKEND_PATHS = {
 
@@ -43,11 +43,7 @@ _BACKENDS = {}
 _REGISTERED = False
 
 
-class MissingBackendError(LoadingError):
-
-    def __init__(self, backend_name):
-        msg = "Backend '{0}' could not be found."
-        super(MissingBackendError, self).__init__(msg.format(backend_name))
+MissingBackendError = LookupError
 
 
 def get_backend(name):
@@ -61,7 +57,8 @@ def get_backend(name):
             _BACKENDS[name] = backend = _import_backend(BACKEND_PATHS[name])
             return backend
         else:
-            raise MissingBackendError(name)
+            msg = "Backend '{0}' could not be found."
+            raise LookupError(msg.format(name))
 
 
 def has_backend(name):
@@ -82,10 +79,11 @@ def register_backend(name, path):
 
 def _import_backend(path):
     module_path, class_name = path.rsplit('.', 1)
-    module = get_module(module_path)
+    module = import_module(module_path)
     class_ = getattr(module, class_name, None)
     if class_ is None:
-        raise MissingClassError(class_name, module_path)
+        msg = "Class '{0}' could not be found in '{1}'."
+        raise LookupError(msg.format(class_name, module_path))
     else:
         return class_
 

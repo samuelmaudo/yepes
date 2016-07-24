@@ -5,15 +5,15 @@ from __future__ import unicode_literals
 from collections import OrderedDict
 
 from django.contrib.admin.views.main import ChangeList as BaseChangeList
-from django.contrib.admin.util import quote
-from django.contrib.sites.models import Site
+from django.contrib.admin.utils import quote
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
 from django.forms.fields import CharField, IntegerField
 from django.forms.forms import Form as BaseForm
 from django.forms.widgets import HiddenInput
 
 from yepes import admin
-from yepes.contrib.registry.base import registry, REGISTRY_KEYS
+from yepes.contrib.registry import registry, REGISTRY_KEYS
 from yepes.contrib.registry.forms import EntryFormSet
 from yepes.contrib.registry.models import Entry, LongEntry
 
@@ -86,7 +86,7 @@ class EntryAdmin(admin.ModelAdmin):
                 return entry
 
     def get_queryset(self, request):
-        current_site = Site.objects.get_current()
+        current_site = get_current_site(request)
         registry_keys = list(registry.keys())
         registry_keys.sort()
         return [

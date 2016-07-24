@@ -3,71 +3,70 @@
 from __future__ import unicode_literals
 
 import os
-from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations import DataMigration
-from yepes.contrib.datamigrations.importation_plans import get_plan
-from yepes.contrib.datamigrations.serializers import get_serializer
-from yepes.loading import get_model, LoadingError
+from yepes.contrib.datamigrations.importation_plans import importation_plans
+from yepes.contrib.datamigrations.serializers import serializers
 
 
 class Command(BaseCommand):
     help = 'Loads all entries from the given file to the specified model.'
 
-    args = '<appname.ModelName>'
-    option_list = BaseCommand.option_list + (
-        make_option('-i', '--input',
+    requires_system_checks = True
+
+    def add_arguments(self, parser):
+        parser.add_argument('args', metavar='app_label.ModelName', nargs='*')
+        parser.add_argument('-i', '--input',
             action='store',
             default=None,
             dest='input',
-            help='Specifies the file from which the data is read.'),
-        make_option('-f', '--format',
+            help='Specifies the file from which the data is read.')
+        parser.add_argument('-f', '--format',
             action='store',
             default='json',
             dest='format',
-            help='Specifies the serialization format of imported data.'),
-        make_option('-p', '--plan',
+            help='Specifies the serialization format of imported data.')
+        parser.add_argument('-p', '--plan',
             action='store',
             default='update_or_create',
             dest='plan',
-            help='Specifies the importation plan used to import data.'),
-        make_option('--batch',
+            help='Specifies the importation plan used to import data.')
+        parser.add_argument('--batch',
             action='store',
             default=100,
             dest='batch',
             help='Maximum number of messages that can be dispatched.',
-            type='int'),
-        make_option('--fields',
+            type=int),
+        parser.add_argument('--fields',
             action='store',
             default=None,
             dest='fields',
-            help='A list of field names to use in the migration.'),
-        make_option('--exclude',
+            help='A list of field names to use in the migration.')
+        parser.add_argument('--exclude',
             action='store',
             default=None,
             dest='exclude',
-            help='A list of field names to exclude from the migration.'),
-        make_option('--natural-primary',
+            help='A list of field names to exclude from the migration.')
+        parser.add_argument('--natural-primary',
             action='store_true',
             default=False,
             dest='natural_primary',
-            help='Use natural primary keys if they are available.'),
-        make_option('--natural-foreign',
+            help='Use natural primary keys if they are available.')
+        parser.add_argument('--natural-foreign',
             action='store_true',
             default=False,
             dest='natural_foreign',
-            help='Use natural foreign keys if they are available.'),
-        make_option('--ignore-missing-keys',
+            help='Use natural foreign keys if they are available.')
+        parser.add_argument('--ignore-missing-keys',
             action='store_true',
             default=False,
             dest='ignore_missing_keys',
             help=('Ignores entries in the serialized data whose foreign '
                   'keys point to objects that do not currently exist in '
-                  'the database.')),
-    )
-    requires_model_validation = True
+                  'the database.'))
 
     def handle(self, *labels, **options):
         if len(labels) != 1:
@@ -93,18 +92,18 @@ class Command(BaseCommand):
             raise CommandError("File '{0}' does not exit.".format(file_path))
 
         try:
-            model = get_model(*model_name.rsplit('.', 1))
-        except LoadingError as e:
+            model = apps.get_model(model_name)
+        except LookupError as e:
             raise CommandError(str(e))
 
         try:
-            serializer = get_serializer(serializer_name)
-        except LoadingError as e:
+            serializer = serializers.get_serializer(serializer_name)
+        except LookupError as e:
             raise CommandError(str(e))
 
         try:
-            plan = get_plan(plan_name)
-        except LoadingError as e:
+            plan = importation_plans.get_plan(plan_name)
+        except LookupError as e:
             raise CommandError(str(e))
 
         migration = DataMigration(

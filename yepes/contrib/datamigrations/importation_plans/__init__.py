@@ -2,10 +2,16 @@
 
 from __future__ import unicode_literals
 
-from django.utils import six
-
 from yepes.conf import settings
-from yepes.loading import get_module, LoadingError
+from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan
+from yepes.utils.modules import import_module
+
+__all__ = (
+    'MissingPlanError',
+    'get_plan', 'has_plan', 'register_plan',
+    'ImportationPlan',
+    'importation_plans',
+)
 
 BUILTIN_PLANS = {
     'bulk_create': 'yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan',
@@ -18,57 +24,53 @@ BUILTIN_PLANS = {
     'update_or_create': 'yepes.contrib.datamigrations.importation_plans.update_or_create.UpdateOrCreatePlan',
 }
 
-_PLANS = None
+MissingPlanError = LookupError
 
 
-class MissingPlanError(LoadingError):
+class PlanHandler(object):
+    """
+    A Plan Handler to retrieve ImportationPlan classes.
+    """
+    def __init__(self):
+        self._classes = {}
+        self._registry =  {}
+        self._registry.update(BUILTIN_PLANS)
+        self._registry.update(getattr(settings, 'IMPORTATION_PLANS', []))
 
-    def __init__(self, plan_name):
-        msg = "Importation plan '{0}' could not be found."
-        super(MissingPlanError, self).__init__(msg.format(plan_name))
+    def __contains__(self, name):
+        return self.has_plan(name)
 
+    def get_plan(self, name):
+        try:
+            return self._classes[name]
+        except KeyError:
+            pass
 
-def get_plan(name):
-    if not has_plan(name):
-        raise MissingPlanError(name)
-    else:
-        return _PLANS[name]
+        if name not in self._registry:
+            msg = "Importation plan '{0}' could not be found."
+            raise LookupError(msg.format(name))
 
+        plan = self.import_plan(self._registry[name])
+        self._classes[name] = plan
+        return plan
 
-def has_plan(name):
-    if _PLANS is None:
-        _load_plans()
-    return (name in _PLANS)
+    def get_plans(self):
+        return (self.__getitem__(name) for name in self._registry)
 
+    def has_plan(self, name):
+        return name in self._registry
 
-def register_plan(name, path):
-    if _PLANS is None:
-        _load_plans()
-    plan_class = _import_plan(path)
-    if plan_class is not None:
-        _PLANS[name] = plan_class
+    def import_plan(self, path):
+        module_path, class_name = path.rsplit('.', 1)
+        module = import_module(module_path, ignore_internal_errors=True)
+        return getattr(module, class_name, None)
 
+    def register_plan(self, name, path):
+        self._registry[name] = path
 
-def _import_plan(path):
-    module_path, class_name = path.rsplit('.', 1)
-    module = get_module(module_path, ignore_internal_errors=True)
-    return getattr(module, class_name, None)
+importation_plans = PlanHandler()
 
-
-def _load_plans():
-    global _PLANS
-    plans = {}
-
-    for name, path in six.iteritems(BUILTIN_PLANS):
-        plan_class = _import_plan(path)
-        if plan_class is not None:
-            plans[name] = plan_class
-
-    if hasattr(settings, 'IMPORTATION_PLANS'):
-        for name, path in six.iteritems(settings.IMPORTATION_PLANS):
-            plan_class = _import_plan(path)
-            if plan_class is not None:
-                plans[name] = plan_class
-
-    _PLANS = plans
+get_plan = importation_plans.get_plan
+has_plan = importation_plans.has_plan
+register_plan = importation_plans.register_plan
 

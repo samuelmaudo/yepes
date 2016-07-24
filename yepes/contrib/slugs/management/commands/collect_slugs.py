@@ -2,33 +2,32 @@
 
 from __future__ import unicode_literals
 
-from optparse import make_option
+from django.core.management.base import BaseCommand, CommandError
 
-from django.core.management.base import NoArgsCommand, CommandError
-
-from yepes.loading import get_model
+from yepes.contrib.slugs import SlugHistory
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Populates the slug history.'
-    option_list = NoArgsCommand.option_list + (
-        make_option('-f', '--force',
+
+    requires_system_checks = True
+
+    def add_arguments(self, parser):
+        parser.add_argument('-f', '--force',
             action='store_true',
             default=False,
             dest='force',
-            help='Collects slugs even if the history is not empty.'),
-        make_option('-a', '--app-label',
+            help='Collects slugs even if the history is not empty.')
+        parser.add_argument('-a', '--app-label',
             action='store',
             dest='app_label',
-            help='Limits the slug collection to the models of the given application.'),
-        make_option('-m', '--model-names',
+            help='Limits the slug collection to the models of the given application.')
+        parser.add_argument('-m', '--model-names',
             action='store',
             dest='model_names',
-            help='Limits the slug collection to the given models.'),
-    )
-    requires_model_validation = True
+            help='Limits the slug collection to the given models.')
 
-    def handle_noargs(self, **options):
+    def handle(self, **options):
         force = options.get('force')
 
         app_label = options.get('app_label')
@@ -41,8 +40,7 @@ class Command(NoArgsCommand):
         else:
             model_names = model_names.split(',')
 
-        SlugHistory = get_model('slugs', 'SlugHistory')
-        SlugHistory._default_manager.populate(
+        SlugHistory.objects.populate(
                 force=force,
                 app_label=app_label,
                 model_names=model_names)

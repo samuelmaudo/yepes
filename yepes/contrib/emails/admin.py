@@ -7,11 +7,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import admin
-from yepes.loading import get_model
+from yepes.apps import apps
 
-Connection = get_model('emails', 'Connection')
-Delivery = get_model('emails', 'Delivery')
-Message = get_model('emails', 'Message')
+Connection = apps.get_model('emails', 'Connection')
+Delivery = apps.get_model('emails', 'Delivery')
+Message = apps.get_model('emails', 'Message')
 
 
 class ConnectionAdmin(admin.ModelAdmin):

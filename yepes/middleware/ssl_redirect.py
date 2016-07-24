@@ -2,16 +2,18 @@
 
 from __future__ import unicode_literals
 
-from django.http import (
-    HttpResponsePermanentRedirect,
-    HttpResponseRedirect,
-)
+from django import VERSION as DJANGO_VERSION
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.encoding import iri_to_uri
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.conf import settings
 
 
-class SSLRedirectMiddleware(object):
+class SSLRedirectMiddleware(MiddlewareMixin):
     """
     Handles redirections required for SSL when ``SSL_ENABLED`` is ``True``.
 

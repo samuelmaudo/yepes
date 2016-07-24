@@ -6,7 +6,7 @@ import collections
 
 from django.utils import six
 
-from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ImportationPlan
 
 
 class UpdatePlan(ImportationPlan):

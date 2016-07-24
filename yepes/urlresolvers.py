@@ -2,7 +2,6 @@
 
 import re
 
-from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse as reverse
 from django.utils import six
 from django.utils.encoding import iri_to_uri
@@ -10,8 +9,11 @@ from django.utils.functional import lazy
 
 from yepes.conf import settings
 from yepes.contrib.registry import registry
+from yepes.loading import LazyModel
 
 __all__ = ('build_full_url', 'full_reverse', 'full_reverse_lazy')
+
+Site = LazyModel('sites', 'Site')
 
 FULL_URL_RE = re.compile(r'^[a-z][a-z0-9.-]+:', re.IGNORECASE)
 
@@ -68,8 +70,8 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
     return iri_to_uri(url)
 
 
-def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
-                 current_app=None, scheme=None, domain=None, subdomain=None):
+def full_reverse(viewname, urlconf=None, args=None, kwargs=None, current_app=None,
+                 scheme=None, domain=None, subdomain=None):
     """
     First, obtains the absolute path of the URL matching given ``viewname``
     with its parameters.
@@ -86,8 +88,6 @@ def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
         args (list): Positional arguments of the URL pattern.
 
         kwargs (dict): Keyword arguments of the URL pattern.
-
-        prefix (str): Prefix of the URL pattern.
 
         current_app (str): App identifier.
 
@@ -116,7 +116,7 @@ def full_reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None,
         ValueError: If both ``args`` and ``kwargs`` are given.
 
     """
-    location = reverse(viewname, urlconf, args, kwargs, prefix, current_app)
+    location = reverse(viewname, urlconf, args, kwargs, current_app)
     return build_full_url(location, scheme, domain, subdomain)
 
 

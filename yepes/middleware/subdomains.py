@@ -4,13 +4,18 @@ from __future__ import unicode_literals
 
 import re
 
-from django.contrib.sites.models import Site
+from django import VERSION as DJANGO_VERSION
+from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseNotFound
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.contrib.registry import registry
 
 
-class SubdomainsMiddleware(object):
+class SubdomainsMiddleware(MiddlewareMixin):
     """
     Middleware that adds a ``subdomain`` attribute to the request object,
     which corresponds to the portion of the URL before the ``domain``
@@ -21,7 +26,7 @@ class SubdomainsMiddleware(object):
 
     """
     def process_request(self, request):
-        site = Site.objects.get_current()
+        site = get_current_site(request)
         domain = site.domain
         pattern = r'^(?:(?P<subdomain>.*?)\.)?{0}(?P<addons>.*)$'
         match = re.match(pattern.format(re.escape(domain)),

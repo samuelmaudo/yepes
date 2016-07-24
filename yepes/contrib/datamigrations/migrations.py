@@ -8,8 +8,6 @@ from django.db import models
 from django.utils import six
 from django.utils.six.moves import zip
 
-from yepes.contrib.datamigrations import serializers
-from yepes.contrib.datamigrations import importation_plans
 from yepes.contrib.datamigrations.fields import (
     BooleanField,
     DateField, DateTimeField, TimeField,
@@ -17,9 +15,8 @@ from yepes.contrib.datamigrations.fields import (
     FloatField, IntegerField, NumberField,
     TextField,
 )
-from yepes.contrib.datamigrations.importation_plans.create import CreatePlan
-from yepes.contrib.datamigrations.importation_plans.update_or_create import UpdateOrCreatePlan
-from yepes.contrib.datamigrations.serializers.json import JsonSerializer
+from yepes.contrib.datamigrations.importation_plans import importation_plans
+from yepes.contrib.datamigrations.serializers import serializers
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
@@ -97,7 +94,8 @@ class CustomDataMigration(object):
 
     def get_importation_plan(self, plan_class=None):
         if plan_class is None:
-            plan_class = UpdateOrCreatePlan if self.can_update else CreatePlan
+            plan_name = 'update_or_create' if self.can_update else 'create'
+            plan_class = importation_plans.get_plan(plan_name)
         elif isinstance(plan_class, six.string_types):
             plan_class = importation_plans.get_plan(plan_class)
 
@@ -105,7 +103,7 @@ class CustomDataMigration(object):
 
     def get_serializer(self, serializer=None):
         if serializer is None:
-            serializer = JsonSerializer()
+            serializer = serializers.get_serializer('json')()
         elif isinstance(serializer, six.string_types):
             serializer = serializers.get_serializer(serializer)()
         elif isinstance(serializer, collections.Callable):
@@ -129,8 +127,10 @@ class CustomDataMigration(object):
         required_fields = {
             f
             for f
-            in self.model._meta.fields
-            if not f.blank and not f.has_default()
+            in self.model._meta.get_fields()
+            if not (f.is_relation and f.auto_created)
+                and not f.blank
+                and not f.has_default()
         }
         return (included_fields >= required_fields)
 
@@ -149,7 +149,7 @@ class CustomDataMigration(object):
                     and fld.path.count('__') == 1):
                 f1, f2 = model_fields
                 if (f2.unique and not f2.null
-                        and f1.rel is not None and f2.rel is None):
+                        and f1.remote_field is not None and f2.remote_field is None):
                     fields.append(fld)  # This allows use of natural keys.
 
         return fields
@@ -166,7 +166,8 @@ class CustomDataMigration(object):
                     models[opts.model_name] = {
                         f.name: f
                         for f
-                        in opts.fields
+                        in opts.get_fields()
+                        if not (f.is_relation and f.auto_created)
                     }
                 return models[opts.model_name].get(field_name)
 
@@ -185,10 +186,10 @@ class CustomDataMigration(object):
                     break  # This step is probably an object property.
 
                 model_fields.append(f)
-                if f.rel is None:
+                if f.remote_field is None:
                     break  # If no relation, next steps cannot be model fields.
 
-                model = f.rel.to
+                model = f.remote_field.model
 
             fields.append((fld, model_fields))
 
@@ -315,12 +316,12 @@ class DataMigration(CustomDataMigration):
         name = model_field.name
         attname = path
 
-        related_field = model_field.related_field
+        target_field = model_field.target_field
 
         if self.use_natural_foreign_keys:
-            opts = related_field.model._meta
+            opts = target_field.model._meta
             natural_key = self.find_natural_key(
-                               opts.fields,
+                               opts.get_fields(),
                                opts.unique_together)
 
             if natural_key is not None:
@@ -353,12 +354,12 @@ class DataMigration(CustomDataMigration):
                             in zip(flds, natural_key)
                         ]
 
-        fld = self.construct_field(related_field, path, name, attname)
+        fld = self.construct_field(target_field, path, name, attname)
         return [(fld, [model_field])]
 
     def find_natural_key(self, model_fields, unique_together=()):
         for f in model_fields:
-            if f.unique and not f.primary_key:
+            if not f.is_relation and f.unique and not f.primary_key:
                 return f
 
         if unique_together:
@@ -386,8 +387,12 @@ class DataMigration(CustomDataMigration):
     @cached_property
     def model_fields(self):
         opts = self.model._meta
-        model_fields = opts.fields
-
+        model_fields = [
+            f
+            for f
+            in opts.get_fields()
+            if not (f.is_relation and f.auto_created)
+        ]
         if self.selected_fields is not None:
             available_model_fields = {
                 f.name: f
@@ -420,7 +425,7 @@ class DataMigration(CustomDataMigration):
 
         fields = []
         for f in model_fields:
-            if f.rel is None:
+            if f.remote_field is None:
                 fld = self.construct_field(f)
                 if fld is not None:
                     fields.append((fld, [f]))

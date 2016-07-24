@@ -28,7 +28,7 @@ class Calculated(models.Model):
             cls._calculated_fields = tuple(
                 field.attname
                 for field
-                in cls._meta.fields
+                in cls._meta.get_fields()
                 if getattr(field, 'calculated', False)
             )
         return cls._calculated_fields
@@ -43,6 +43,11 @@ class Calculated(models.Model):
                 if isinstance(value, cached_property)
             )
         return cls._cached_properties
+
+    def get_deferred_fields(self):
+        deferred_fields = super(Calculated, self).get_deferred_fields()
+        deferred_fields.difference_update(self.get_calculated_fields())
+        return deferred_fields
 
     def save(self, **kwargs):
         self.clear_calculated_values()

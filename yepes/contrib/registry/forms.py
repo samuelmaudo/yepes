@@ -2,15 +2,17 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.sites.models import Site
 from django.forms.fields import CharField, IntegerField
 from django.forms.forms import Form as BaseForm
 from django.forms.models import BaseModelFormSet
 from django.forms.widgets import HiddenInput
 
-from yepes.contrib.registry.base import registry, REGISTRY_KEYS
+from yepes.contrib.registry import registry, REGISTRY_KEYS
 from yepes.contrib.registry.models import Entry
+from yepes.loading import LazyModel
 from yepes.utils.properties import cached_property
+
+Site = LazyModel('sites', 'Site')
 
 
 class EntryFormSet(BaseModelFormSet):

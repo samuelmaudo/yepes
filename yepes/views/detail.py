@@ -10,11 +10,9 @@ from django.views.generic.detail import (
     SingleObjectTemplateResponseMixin,
 )
 
-from yepes.loading import is_installed, LazyModelManager
+from yepes.apps import apps
 from yepes.view_mixins import CacheMixin, CanonicalMixin, ModelMixin
 from yepes.utils.properties import cached_property
-
-SlugHistoryManager = LazyModelManager('slugs', 'SlugHistory')
 
 
 class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,
@@ -35,10 +33,16 @@ class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,
 
     def dispatch(self, *args, **kwargs):
         response = super(DetailView, self).dispatch(*args, **kwargs)
-        if (isinstance(response, HttpResponse)
-                and response.status_code == 200
-                and not self.request.user.is_staff):
-            self.send_view_signal(self.object, self.request, response)
+        if isinstance(response, HttpResponse) and response.status_code == 200:
+
+            try:
+                is_staff = self.request.user.is_staff
+            except AttributeError:
+                is_staff = False
+
+            if is_staff:
+                self.send_view_signal(self.object, self.request, response)
+
         return response
 
     def get(self, request, *args, **kwargs):
@@ -68,7 +72,7 @@ class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,
         try:
             obj = super(DetailView, self).get_object(queryset)
         except Http404 as e:
-            if not is_installed('slugs'):
+            if 'slugs' not in apps:
                 raise e
 
             pk = self.kwargs.get(self.pk_url_kwarg, None)

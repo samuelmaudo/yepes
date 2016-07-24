@@ -3,11 +3,12 @@
 from __future__ import unicode_literals
 
 from functools import update_wrapper
-import hashlib
+from hashlib import md5
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.admin import ModelAdmin as DjangoModelAdmin
-from django.contrib.admin.util import flatten_fieldsets, model_format_dict
+from django.contrib.admin.utils import flatten_fieldsets, model_format_dict
+from django.contrib.auth import get_permission_codename
 from django.db import models
 from django.db import transaction
 from django.db.models.fields import BLANK_CHOICE_DASH, FieldDoesNotExist
@@ -69,7 +70,7 @@ class ModelAdmin(DjangoModelAdmin):
 
     def get_field_operations(self, request, field):
         ops = [operations.Set]
-        if not field.choices and field.rel is None:
+        if not field.choices and field.remote_field is None:
             if field.null:
                 ops.append(
                     operations.SetNull,
@@ -99,7 +100,7 @@ class ModelAdmin(DjangoModelAdmin):
                 )
         return ops
 
-    def get_formfields(self, request, unique=False, many_to_many=False, **kwargs):
+    def get_formfields(self, request, unique=False, **kwargs):
         field_names = flatten_fieldsets(self.get_fieldsets(request))
         readonly_fields = self.get_readonly_fields(request)
         opts = self.opts
@@ -108,10 +109,7 @@ class ModelAdmin(DjangoModelAdmin):
             if field_name in readonly_fields:
                 continue
             try:
-                field = opts.get_field(
-                    field_name,
-                    many_to_many=many_to_many,
-                )
+                field = opts.get_field(field_name)
             except FieldDoesNotExist:
                 continue
 
@@ -123,10 +121,9 @@ class ModelAdmin(DjangoModelAdmin):
         form_fields = []
         for dbfield in db_fields:
             formfield = self.formfield_for_dbfield(
-                dbfield,
-                request=request,
-                **kwargs
-            )
+                                    dbfield,
+                                    request=request,
+                                    **kwargs)
             if formfield is None:
                 continue
 
@@ -139,10 +136,15 @@ class ModelAdmin(DjangoModelAdmin):
         inline_instances = sup.get_inline_instances(request, obj)
         if not self.has_change_permission(request, obj, strict=True):
             for inline in inline_instances:
-                if inline.declared_fieldsets:
-                    fields = flatten_fieldsets(inline.declared_fieldsets)
+                if inline.fieldsets:
+                    fields = flatten_fieldsets(inline.get_fieldsets(request, obj))
                 else:
-                    fields = {f.name for f in inline.model._meta.fields}
+                    fields = {
+                        f.name
+                        for f
+                        in inline.model._meta.get_fields()
+                        if not (f.is_relation and f.auto_created)
+                    }
                     fields.update(inline.readonly_fields)
 
                 inline.max_num = 0
@@ -154,10 +156,15 @@ class ModelAdmin(DjangoModelAdmin):
         if self.has_change_permission(request, obj, strict=True):
             return self.readonly_fields
 
-        if self.declared_fieldsets:
-            fields = flatten_fieldsets(self.declared_fieldsets)
+        if self.fieldsets:
+            fields = flatten_fieldsets(self.get_fieldsets(request, obj))
         else:
-            fields = {f.name for f in self.model._meta.fields}
+            fields = {
+                f.name
+                for f
+                in self.model._meta.get_fields()
+                if not (f.is_relation and f.auto_created)
+            }
             fields.update(self.readonly_fields)
 
         return list(fields)
@@ -170,7 +177,7 @@ class ModelAdmin(DjangoModelAdmin):
             return update_wrapper(wrapper, view)
 
         info = (self.model._meta.app_label, self.model._meta.model_name)
-        urls = patterns('',
+        urls = [
             url(r'^export-csv/$',
                 wrap(CsvExportView.as_view(modeladmin=self)),
                 name='{0}_{1}_exportcsv'.format(*info),
@@ -191,7 +198,7 @@ class ModelAdmin(DjangoModelAdmin):
                 wrap(MassUpdateView.as_view(modeladmin=self)),
                 name='{0}_{1}_massupdate'.format(*info),
             ),
-        )
+        ]
         return urls + super(ModelAdmin, self).get_urls()
 
     # NOTE: Permission verification is an inexpensive task most of time.
@@ -199,7 +206,7 @@ class ModelAdmin(DjangoModelAdmin):
     # response process, they may cause problems.
 
     def _get_cache_attribute(self, view, obj):
-        h = hashlib.md5(smart_bytes('{0}.{1}.{2}'.format(
+        h = md5(smart_bytes('{0}.{1}.{2}'.format(
                 self.opts.app_label,
                 self.opts.object_name.lower(),
                 hash(obj))))
@@ -217,8 +224,8 @@ class ModelAdmin(DjangoModelAdmin):
 
     def _has_add_permission(self, request):
         app_label = self.opts.app_label
-        add_permission = self.opts.get_add_permission()
-        return request.user.has_perm(app_label + '.' + add_permission)
+        codename = get_permission_codename('add', self.opts)
+        return request.user.has_perm('.'.join((app_label, codename)))
 
     def has_change_permission(self, request, obj=None, strict=False):
         if not strict:
@@ -235,8 +242,8 @@ class ModelAdmin(DjangoModelAdmin):
 
     def _has_change_permission(self, request, obj):
         app_label = self.opts.app_label
-        change_permission = self.opts.get_change_permission()
-        return request.user.has_perm(app_label + '.' + change_permission)
+        codename = get_permission_codename('change', self.opts)
+        return request.user.has_perm('.'.join((app_label, codename)))
 
     def has_delete_permission(self, request, obj=None):
         attr_name = self._get_cache_attribute('delete', obj)
@@ -250,8 +257,8 @@ class ModelAdmin(DjangoModelAdmin):
 
     def _has_delete_permission(self, request, obj):
         app_label = self.opts.app_label
-        delete_permission = self.opts.get_delete_permission()
-        return request.user.has_perm(app_label + '.' + delete_permission)
+        codename = get_permission_codename('delete', self.opts)
+        return request.user.has_perm('.'.join((app_label, codename)))
 
     def has_view_permission(self, request, obj=None):
         attr_name = self._get_cache_attribute('view', obj)
@@ -265,8 +272,8 @@ class ModelAdmin(DjangoModelAdmin):
 
     def _has_view_permission(self, request, obj):
         #app_label = self.opts.app_label
-        #view_permission = self.opts.get_view_permission()
-        #return request.user.has_perm(app_label + '.' + view_permission)
+        #codename = get_permission_codename('view', self.opts)
+        #return request.user.has_perm('.'.join((app_label, codename)))
         return True
 
     def report_change(self, request, queryset, affected_rows,

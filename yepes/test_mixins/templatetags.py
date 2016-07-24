@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.template import Context, Template, TemplateSyntaxError
+from django.template import Template, TemplateSyntaxError
 from django.utils import six
 
 from yepes.template import DoubleTag, TagSyntaxError
@@ -18,15 +18,11 @@ class TemplateTagsMixin(object):
 
     def checkSyntax(self, tag_class, expected_syntax):
         tag_name = TAG_NAME_RE.search(expected_syntax).group(1)
-        self.assertEqual(
-            expected_syntax,
-            tag_class.get_syntax(tag_name),
-        )
+        self.assertEqual(expected_syntax, tag_class.get_syntax(tag_name))
+
         error_text = 'Correct syntax is {0}'.format(expected_syntax)
-        self.assertEqual(
-            error_text,
-            six.text_type(TagSyntaxError(tag_class, tag_name)),
-        )
+        self.assertEqual(error_text, six.text_type(TagSyntaxError(tag_class, tag_name)))
+
         erroneous_args = ''
         process = tag_class.get_process_arguments()
         if len(process.args) - len(process.defaults or ()) == 1:
@@ -64,8 +60,6 @@ class TemplateTagsMixin(object):
         except TemplateSyntaxError as error:
             if error_text is not None:
                 self.assertEqual(error_text, six.text_type(error))
-        except:
-            raise self.failureException('Syntax is valid')
         else:
             raise self.failureException('Syntax is valid')
 

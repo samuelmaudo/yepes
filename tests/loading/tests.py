@@ -128,7 +128,7 @@ class GetModuleTest(test.SimpleTestCase):
         self.assertIs(module, cgi)
 
     def test_missing_module(self):
-        with self.assertRaises(MissingModuleError):
+        with self.assertRaises(ImportError):
             get_module('asdfg')
 
         module = get_module(
@@ -238,16 +238,16 @@ class LazyModelTest(test.SimpleTestCase):
 
     def test_class(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.abstract_models import BaseEntry
         from yepes.contrib.registry.models import Entry
-        self.assertEqual(model.__class__, AbstractEntry.__class__)
+        self.assertEqual(model.__class__, BaseEntry.__class__)
         self.assertEqual(model.__class__, Entry.__class__)
 
     def test_call(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.abstract_models import BaseEntry
         from yepes.contrib.registry.models import Entry
-        self.assertIsInstance(model(), AbstractEntry)
+        self.assertIsInstance(model(), BaseEntry)
         self.assertIsInstance(model(), Entry)
         self.assertIsInstance(model(), model)
 
@@ -260,10 +260,10 @@ class LazyModelTest(test.SimpleTestCase):
     @unittest.expectedFailure
     def test_subclass_check(self):
         model = LazyModel('registry', 'Entry')
-        from yepes.contrib.registry.abstract_models import AbstractEntry
+        from yepes.contrib.registry.abstract_models import BaseEntry
         from yepes.contrib.registry.models import Entry
-        self.assertFalse(issubclass(AbstractEntry, Entry))
-        self.assertFalse(issubclass(AbstractEntry, model))
+        self.assertFalse(issubclass(BaseEntry, Entry))
+        self.assertFalse(issubclass(BaseEntry, model))
         self.assertTrue(issubclass(Entry, Entry))
         self.assertTrue(issubclass(Entry, model))
         self.assertTrue(issubclass(model, Entry))

@@ -20,33 +20,32 @@ from django.views.generic import (
     View,
 )
 
-from aggregate_if import Count
-
-from yepes.contrib.newsletters.utils import prerender, render
-from yepes.loading import get_class, get_model
+from yepes.apps import apps
 from yepes.utils.views import decorate_view
+from yepes.utils.aggregates import SumIf
 from yepes.views import FormView, UpdateView
 
-Click = get_model('newsletters', 'Click')
-Delivery = get_model('newsletters', 'Delivery')
-Message = get_model('newsletters', 'Message')
-Open = get_model('newsletters', 'Open')
-OpenManager = Open._default_manager
-Subscriber = get_model('newsletters', 'Subscriber')
-SubscriberManager = Subscriber._default_manager
-Subscription = get_model('newsletters', 'Subscription')
+Click = apps.get_model('newsletters', 'Click')
+Delivery = apps.get_model('newsletters', 'Delivery')
+Message = apps.get_model('newsletters', 'Message')
+Open = apps.get_model('newsletters', 'Open')
+Subscriber = apps.get_model('newsletters', 'Subscriber')
+Subscription = apps.get_model('newsletters', 'Subscription')
 
-ProfileForm = get_class('newsletters.forms', 'ProfileForm')
-DispatchForm = get_class('newsletters.forms', 'DispatchForm')
-SubscriptionForm = get_class('newsletters.forms', 'SubscriptionForm')
-UnsubscriptionForm = get_class('newsletters.forms', 'UnsubscriptionForm')
-UnsubscriptionReasonForm = get_class('newsletters.forms', 'UnsubscriptionReasonForm')
+ProfileForm = apps.get_class('newsletters.forms', 'ProfileForm')
+DispatchForm = apps.get_class('newsletters.forms', 'DispatchForm')
+SubscriptionForm = apps.get_class('newsletters.forms', 'SubscriptionForm')
+UnsubscriptionForm = apps.get_class('newsletters.forms', 'UnsubscriptionForm')
+UnsubscriptionReasonForm = apps.get_class('newsletters.forms', 'UnsubscriptionReasonForm')
 
-ImageMixin = get_class('newsletters.view_mixins', 'ImageMixin')
-LinkMixin = get_class('newsletters.view_mixins', 'LinkMixin')
-MessageMixin = get_class('newsletters.view_mixins', 'MessageMixin')
-NewsletterMixin = get_class('newsletters.view_mixins', 'NewsletterMixin')
-SubscriberMixin = get_class('newsletters.view_mixins', 'SubscriberMixin')
+ImageMixin = apps.get_class('newsletters.view_mixins', 'ImageMixin')
+LinkMixin = apps.get_class('newsletters.view_mixins', 'LinkMixin')
+MessageMixin = apps.get_class('newsletters.view_mixins', 'MessageMixin')
+NewsletterMixin = apps.get_class('newsletters.view_mixins', 'NewsletterMixin')
+SubscriberMixin = apps.get_class('newsletters.view_mixins', 'SubscriberMixin')
+
+prerender = apps.get_class('newsletters.utils', 'prerender')
+render = apps.get_class('newsletters.utils', 'render')
 
 
 class DispatchView(UpdateView):
@@ -61,14 +60,12 @@ class DispatchView(UpdateView):
 
     def form_valid(self, form):
         form_data = form.cleaned_data
-        delivery_manager = self.delivery_model._default_manager
-        subscriber_manager = self.subscriber_model._default_manager
 
-        previous_deliveries = delivery_manager.get_queryset(
+        previous_deliveries = self.delivery_model.objects.get_queryset(
         ).filter(message=self.object
         ).values_list('subscriber_id')
 
-        subscribers = subscriber_manager.get_queryset(
+        subscribers = self.subscriber_model.objects.get_queryset(
         ).filter(~Q(pk__in=previous_deliveries)
         ).enabled()
 
@@ -79,27 +76,24 @@ class DispatchView(UpdateView):
             })
 
         if form_data.get('bounce_filter'):
-            subscribers = subscribers.annotate(bounce_count=Count(
-                'deliveries',
-                Q(deliveries__is_bounced=True)),
+            subscribers = subscribers.annotate(
+                bounce_count=SumIf(1, deliveries__is_bounced=True),
             ).filter(**{
                 'bounce_count__{0}'.format(form_data['bounce_filter']):
                 form_data['bounce_filter_value'],
             })
 
         if form_data.get('click_filter'):
-            subscribers = subscribers.annotate(click_count=Count(
-                'deliveries',
-                Q(deliveries__is_clicked=True)),
+            subscribers = subscribers.annotate(
+                click_count=SumIf(1, deliveries__is_clicked=True),
             ).filter(**{
                 'click_count__{0}'.format(form_data['click_filter']):
                 form_data['click_filter_value'],
             })
 
         if form_data.get('open_filter'):
-            subscribers = subscribers.annotate(open_count=Count(
-                'deliveries',
-                Q(deliveries__is_opened=True)),
+            subscribers = subscribers.annotate(
+                open_count=SumIf(1, deliveries__is_opened=True),
             ).filter(**{
                 'open_count__{0}'.format(form_data['open_filter']):
                 form_data['open_filter_value'],
@@ -129,7 +123,7 @@ class DispatchView(UpdateView):
             delivery.date = form_data['date']
             deliveries.append(delivery)
 
-        delivery_manager.bulk_create(deliveries)
+        self.delivery_model.objects.bulk_create(deliveries)
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -192,7 +186,7 @@ class ImageView(SubscriberMixin, MessageMixin, ImageMixin, View):
             open.message = message
             open.subscriber = subscriber
             # Unlike clicks, openings only should be registered the first time.
-            if not OpenManager.filter(
+            if not Open.objects.filter(
                     message=message,
                     subscriber=subscriber).exists():
                 # This involves more code than just call ``get_or_create()``
@@ -249,7 +243,7 @@ class MessageView(SubscriberMixin, MessageMixin, View):
             open = Open()
             open.message = message
             open.subscriber = subscriber
-            if not OpenManager.filter(
+            if not Open.objects.filter(
                     message=message,
                     subscriber=subscriber).exists():
                 open.save()
@@ -265,8 +259,12 @@ class MessageView(SubscriberMixin, MessageMixin, View):
     def get_prerendered_html(self, message):
         key = 'yepes.newsletters.message.{0}'.format(message.guid)
         html = cache.get(key)
-        if html is None or self.request.user.is_staff:
+        try:
+            is_staff = self.request.user.is_staff
+        except AttributeError:
+            is_staff = False
 
+        if html is None or is_staff:
             context = {
                 'subscriber': None, # Subscriber must not be specified here.
                 'newsletter': message.newsletter,
@@ -408,7 +406,7 @@ class SubscriptionView(SubscriberMixin, NewsletterMixin, FormView):
 
             address = form.cleaned_data['email_address']
             try:
-                subscriber = SubscriberManager.get(email_address=address)
+                subscriber = Subscriber.objects.get(email_address=address)
             except Subscriber.DoesNotExist:
                 subscriber = Subscriber()
                 subscriber.set_email(address)
@@ -517,7 +515,7 @@ class UnsubscriptionView(SubscriberMixin, NewsletterMixin, MessageMixin, FormVie
         if subscriber is None:
             address = form.cleaned_data['email_address']
             try:
-                subscriber = SubscriberManager.get(email_address=address)
+                subscriber = Subscriber.objects.get(email_address=address)
             except Subscriber.DoesNotExist:
                 pass
 

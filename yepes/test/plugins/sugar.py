@@ -90,6 +90,21 @@ class Sugar(Plugin):
             self.stream.write(self.dictionary['unexpected_success_abbr'])
             self.stream.flush()
 
+    def arguments(self, parser):
+        """
+        Add command-line options for this plugin.
+        """
+        parser.add_argument(
+            '--without-sugar',
+            action='store_false',
+            dest=self.enableOpt,
+            default=True,
+            help="Disables plugin '{0}'. {1}".format(
+                self.name,
+                self.help(),
+            ),
+        )
+
     def configure(self, options, stream):
         """
         Configures the sugar plugin.
@@ -107,8 +122,22 @@ class Sugar(Plugin):
             self.lastTestCase = None
 
     def getAbbreviatedDescription(self, test):
-        module = test.__class__.__module__
-        name = test.__class__.__name__
+        try:
+            test._testMethodName
+        except AttributeError:
+            # This handles class or module level exceptions.
+            i = test.description.index('(') + 1
+            j = test.description.index(')')
+            full_name = test.description[i:j]
+            if '.' in full_name:
+                module, name = full_name.rsplit('.', 1)
+            else:
+                module = None
+                name = full_name
+        else:
+            module = test.__class__.__module__
+            name = test.__class__.__name__
+
         if not module:
             return name
         else:
@@ -121,8 +150,15 @@ class Sugar(Plugin):
             ))
 
     def getDescription(self, test):
+        try:
+            method_name = test._testMethodName
+        except AttributeError:
+            # This handles class or module level exceptions.
+            i = test.description.index(' ')
+            method_name = test.description[:i]
+
         return ''.join((
-            test._testMethodName,
+            method_name,
             ' ',
             TERMINAL_COLORS['gray'],
             '(',
@@ -130,21 +166,6 @@ class Sugar(Plugin):
             self.getAbbreviatedDescription(test),
             ')',
         ))
-
-    def options(self, parser):
-        """
-        Add command-line options for this plugin.
-        """
-        parser.add_option(
-            '--without-sugar',
-            action='store_false',
-            dest=self.enableOpt,
-            default=True,
-            help="Disables plugin '{0}'. {1}".format(
-                self.name,
-                self.help(),
-            ),
-        )
 
     def printErrors(self):
         if not self.mute:

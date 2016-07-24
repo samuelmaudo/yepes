@@ -16,7 +16,8 @@ def clean_keywords(obj, keywords, variables=None, constants=None, overrides=None
             discard = True
             value = getattr(obj, overrides.get(name, name))
             if value is not default:
-                if not isinstance(default, collections.Iterable):
+                if (not isinstance(default, collections.Iterable)
+                        or isinstance(default, six.string_types)):
                     discard = False
                     keywords[name] = value
                 elif isinstance(value, collections.Iterable):

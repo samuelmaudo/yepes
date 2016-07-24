@@ -2,17 +2,21 @@
 
 from __future__ import unicode_literals
 
+from django import VERSION as DJANGO_VERSION
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
-from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+if DJANGO_VERSION < (1, 9):
+    from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+else:
+    from django.db.models.fields.related import ForwardManyToOneDescriptor as ReverseSingleRelatedObjectDescriptor
 
 from yepes.utils.properties import cached_property
 
 
 class CachedForeignKey(models.ForeignKey):
 
-    def contribute_to_class(self, cls, name, virtual_only=False):
-        super(CachedForeignKey, self).contribute_to_class(cls, name, virtual_only=virtual_only)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(CachedForeignKey, self).contribute_to_class(cls, name, **kwargs)
         setattr(cls, self.name, CachedRelatedObjectDescriptor(self))
 
     def deconstruct(self):
@@ -22,14 +26,14 @@ class CachedForeignKey(models.ForeignKey):
 
     def get_default(self):
         if self.has_default():
-            default = self.rel.to.cache.get_default()
-            return getattr(default, self.related_field.attname, None)
+            default = self.remote_field.model.cache.get_default()
+            return getattr(default, self.target_field.attname, None)
         else:
             return None
 
     def has_default(self):
         if not self.null:
-            return self.rel.to.cache.has_default()
+            return self.remote_field.model.cache.has_default()
         else:
             return False
 
@@ -39,17 +43,17 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
     @cached_property
     def RelatedObjectDoesNotExist(self):
         # The exception can't be created at initialization time since the
-        # related model might not be resolved yet; `rel.to` might still be
+        # related model might not be resolved yet; `remote_field.model` might still be
         # a string model reference.
         return type(
             str('RelatedObjectDoesNotExist'),
-            (self.field.rel.to.DoesNotExist, AttributeError),
+            (self.field.remote_field.model.DoesNotExist, AttributeError),
             {},
         )
 
     @cached_property
     def related_lookup_table(self):
-        return self.field.rel.to.cache
+        return self.field.remote_field.model.cache
 
     def __get__(self, instance, instance_type=None):
         if instance is None:

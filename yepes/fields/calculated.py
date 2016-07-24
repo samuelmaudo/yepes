@@ -2,10 +2,8 @@
 
 from __future__ import unicode_literals
 
-#from django.core import checks
+from django.core import checks
 from django.core.exceptions import ImproperlyConfigured
-#from django.db.models import NOT_PROVIDED
-from django.db.models.fields.subclassing import Creator as SubfieldDescriptor
 
 from yepes.types import Undefined
 from yepes.utils.deconstruct import clean_keywords
@@ -21,7 +19,7 @@ class CalculatedField(object):
 
     def check(self, **kwargs):
         errors = super(CalculatedField, self).check(**kwargs)
-        errors.extend(self._check_calculator_method(**kwargs))
+        errors.extend(self._check_calculator())
         return errors
 
     def _check_calculator(self):
@@ -41,9 +39,9 @@ class CalculatedField(object):
         else:
             return []
 
-    def contribute_to_class(self, cls, name):
-        super(CalculatedField, self).contribute_to_class(cls, name)
-        if self.calculated and not hasattr(cls, self.name):
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(CalculatedField, self).contribute_to_class(cls, name, **kwargs)
+        if self.calculated:
             setattr(cls, self.name, CalculatedFieldDescriptor(self))
 
     def deconstruct(self):
@@ -95,24 +93,4 @@ class CalculatedFieldDescriptor(object):
     def __set__(self, obj, value):
         if value is not Undefined:
             obj.__dict__[self.field.attname] = value
-
-
-class CalculatedSubfield(CalculatedField):
-
-    def contribute_to_class(self, cls, name):
-        super(CalculatedField, self).contribute_to_class(cls, name)
-        if self.calculated:
-            descriptor_class = CalculatedSubfieldDescriptor
-        else:
-            descriptor_class = SubfieldDescriptor
-
-        if not hasattr(cls, self.name):
-            setattr(cls, self.name, descriptor_class(self))
-
-
-class CalculatedSubfieldDescriptor(CalculatedFieldDescriptor):
-
-    def __set__(self, obj, value):
-        if value is not Undefined:
-            obj.__dict__[self.field.attname] = self.field.to_python(value)
 

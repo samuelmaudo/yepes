@@ -11,21 +11,22 @@ from django.core.exceptions import (
 )
 from django.core.validators import MaxValueValidator, EMPTY_VALUES
 from django.db import models
-from django.db.models import signals
 from django.db.models.fields.related import add_lazy_relation
+from django.db.models.lookups import Lookup
 from django.utils import six
 from django.utils.encoding import smart_text
 from django.utils.six.moves import range, zip
 from django.utils.text import capfirst
 
 from yepes import forms
-from yepes.exceptions import LookupTypeError, MissingAttributeError
+from yepes.exceptions import MissingAttributeError
 from yepes.types import Bit, Undefined
 
-__all__ = ('BitField', 'BitFieldDescriptor',
-           'BitFieldFlags', 'BitFieldQueryWrapper',
-           'RelatedBitField', 'RelatedBitFieldFlags',
-           'UnknownFlagError')
+__all__ = (
+    'BitField', 'BitFieldDescriptor', 'BitFieldFlags', 'BitFieldLookup',
+    'RelatedBitField', 'RelatedBitFieldChoices', 'RelatedBitFieldFlags',
+    'UnknownFlagError',
+)
 
 
 class UnknownFlagError(ValueError):
@@ -41,7 +42,7 @@ class UnknownFlagError(ValueError):
 
 class BitField(models.BigIntegerField):
 
-    choices = []
+    choices = ()
     __choices = Undefined
     empty_strings_allowed = False
 
@@ -53,8 +54,8 @@ class BitField(models.BigIntegerField):
         self.int_fields = int(math.ceil(len(choices) / 63))
         self.validators = [MaxValueValidator(self.flags.get_max_value())]
 
-    def contribute_to_class(self, cls, name):
-        super(BitField, self).contribute_to_class(cls, name)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(BitField, self).contribute_to_class(cls, name, **kwargs)
         if self.int_fields > 1:
             counter = self.creation_counter
             for i in range(2, self.int_fields + 1):
@@ -68,7 +69,7 @@ class BitField(models.BigIntegerField):
                 )
                 counter -= 0.001
                 fld.creation_counter = counter
-                fld.contribute_to_class(cls, '{0}_{1}'.format(self.name, i))
+                fld.contribute_to_class(cls, '{0}_{1}'.format(self.name, i), **kwargs)
 
         setattr(cls, self.name, BitFieldDescriptor(self))
 
@@ -103,15 +104,6 @@ class BitField(models.BigIntegerField):
 
         return form_class(**params)
 
-    def get_db_prep_lookup(self, lookup_type, value, connection, prepared=False):
-        if not prepared:
-            value = self.get_prep_lookup(lookup_type, value)
-
-        if lookup_type in ('exact', 'isnull'):
-            return BitFieldQueryWrapper(self, value)
-        else:
-            raise LookupTypeError(lookup_type)
-
     def get_db_prep_save(self, value, connection):
         value = models.Field.get_db_prep_save(self, value, connection)
         return self.split_value(value)[0]
@@ -132,14 +124,11 @@ class BitField(models.BigIntegerField):
         else:
             return None
 
-    def get_prep_lookup(self, lookup_type, value):
-        # We only handle 'exact' and 'isnull'. All others are errors.
-        if lookup_type == 'exact':
-            return self.get_prep_value(value)
-        elif lookup_type == 'isnull':
-            return value
+    def get_lookup(self, lookup_name):
+        if lookup_name == 'exact':
+            return BitFieldLookup
         else:
-            raise LookupTypeError(lookup_type)
+            return None
 
     def get_prep_value(self, value):
         value = models.Field.get_prep_value(self, value)
@@ -329,44 +318,73 @@ class BitFieldFlags(object):
         return self._max_value
 
 
-class BitFieldQueryWrapper(object):
+class BitFieldLookup(Lookup):
 
-    def __init__(self, field, value):
-        self.field = field
-        self.value = value
+    lookup_name = 'exact'
 
-    def as_sql(self, qn, connection=None):
-        t = qn(self.field.model._meta.db_table)
-        col = qn(self.field.column)
+    def as_sql(self, compiler, connection):
+        qn = compiler.quote_name_unless_alias
 
-        if self.field.int_fields == 1:
-            if not self.value:
-                sql = '0'
-            else:
-                sql = '({0}.{1} | {2})'.format(t, col, int(self.value))
+        table = qn(self.lhs.alias)
+        field = self.lhs.output_field
+        value = self.rhs
+
+        if value is None:
+            conditions, params = self.process_none(qn, table, field)
+        elif not value:
+            conditions, params = self.process_empty(qn, table, field)
         else:
-            if not self.value:
-                conditions = ['0']
-                cond = '{0}.{1} = 0'
-                for i in range(self.field.int_fields - 1):
-                    col = qn('{0}_{1}'.format(self.field.column, i + 2))
-                    conditions.append(cond.format(t, col))
-                sql = ' AND '.join(conditions)
+            conditions, params = self.process_bit(qn, table, field, value)
+
+        sql = '({0})'.format(' AND '.join(conditions))
+        return (sql, params)
+
+    def process_bit(self, qn, table, field, value):
+        conditions = []
+        params = []
+        for i, v in enumerate(field.split_value(value), 1):
+            if i == 1:
+                column = qn(field.column)
             else:
-                values = self.field.split_value(self.value)
+                column = qn('{0}_{1}'.format(field.column, i))
 
-                cond = '({0}.{1} | {2})'
-                val = values[0]
-                conditions = [cond.format(t, col, val)]
+            conditions.append('({0}.{1} = ({0}.{1} | %s))'.format(
+                table,
+                column,
+            ))
+            params.append(v)
 
-                cond = '{0}.{1} = ({0}.{1} | {2})'
-                for i, val in enumerate(values[1:]):
-                    col = qn('{0}_{1}'.format(self.field.column, i + 2))
-                    conditions.append(cond.format(t, col, val))
+        return (conditions, params)
 
-                sql = ' AND '.join(conditions)
+    def process_empty(self, qn, table, field):
+        conditions = []
+        for i in range(1, field.int_fields):
+            if i == 1:
+                column = qn(field.column)
+            else:
+                column = qn('{0}_{1}'.format(field.column, i))
 
-        return (sql, [])
+            conditions.append('({0}.{1} = 0)'.format(
+                table,
+                column,
+            ))
+
+        return (conditions, [])
+
+    def process_none(self, qn, table, field):
+        conditions = []
+        for i in range(1, field.int_fields):
+            if i == 1:
+                column = qn(field.column)
+            else:
+                column = qn('{0}_{1}'.format(field.column, i))
+
+            conditions.append('({0}.{1} IS NULL)'.format(
+                table,
+                column,
+            ))
+
+        return (conditions, [])
 
 
 class FakeRel(object):
@@ -386,8 +404,8 @@ class RelatedBitField(BitField):
         self.flags = RelatedBitFieldFlags(self)
         self.int_fields = int(math.ceil(allowed_choices / 63))
 
-    def contribute_to_class(self, cls, name):
-        super(RelatedBitField, self).contribute_to_class(cls, name)
+    def contribute_to_class(self, cls, name, **kwargs):
+        super(RelatedBitField, self).contribute_to_class(cls, name, **kwargs)
         other = self.fake_rel.to
         if isinstance(other, six.string_types) or other._meta.pk is None:
             def resolve_related_class(field, model, cls):
@@ -413,6 +431,19 @@ class RelatedBitField(BitField):
         # field flags to generate choices. It resets field flags before begin
         # choices generation.
         return RelatedBitFieldChoices(self)
+
+
+class RelatedBitFieldChoices(object):
+
+    def __init__(self, field):
+        self._field = field
+
+    def __iter__(self):
+        flags = self._field.flags
+        flags.reset()
+        choices = zip(flags.iter_values(), flags.iter_verbose_names())
+        for value, name in choices:
+            yield (int(value), smart_text(name))
 
 
 class RelatedBitFieldFlags(object):
@@ -444,7 +475,7 @@ class RelatedBitFieldFlags(object):
             if rel.limit_choices_to:
                 qs = qs.filter(**rel.limit_choices_to)
             self._queryset = qs
-        return self._queryset.all()
+        return self._queryset._clone()
 
     def iter_instances(self, filter=None):
         if filter:
@@ -530,17 +561,4 @@ class RelatedBitFieldFlags(object):
         self._max_value = Undefined
         self._values = Undefined
         self._verbose_names = Undefined
-
-
-class RelatedBitFieldChoices(object):
-
-    def __init__(self, field):
-        self._field = field
-
-    def __iter__(self):
-        flags = self._field.flags
-        flags.reset()
-        choices = zip(flags.iter_values(), flags.iter_verbose_names())
-        for value, name in choices:
-            yield (int(value), smart_text(name))
 

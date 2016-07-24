@@ -2,16 +2,14 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.staticfiles.storage import AppStaticStorage
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import TemplateView
 
-from yepes.conf import settings
-from yepes.contrib.thumbnails.files import SourceFile
-from yepes.loading import get_model
+from yepes.apps import apps
 from yepes.views import ListView
 
-Configuration = get_model('thumbnails', 'Configuration')
+Configuration = apps.get_model('thumbnails', 'Configuration')
+SourceFile = apps.get_class('thumbnails.files', 'SourceFile')
 
 
 class TestMixin(object):
@@ -22,16 +20,18 @@ class TestMixin(object):
         return context
 
     def get_source_file(self):
-        app = AppStaticStorage('yepes.contrib.thumbnails')
-        media = FileSystemStorage(settings.MEDIA_ROOT, settings.MEDIA_URL)
+        app_config = apps.get_app_config('thumbnails')
+        app_static_dir = os.path.join(app_config.path, 'static')
+        app_storage = FileSystemStorage(app_static_dir)
+        media_storage = FileSystemStorage()
         path = 'thumbnails/wolf.jpg'
-        if not media.exists(path):
-            media.save(path, app.open(path))
-        elif app.modified_time(path) > media.modified_time(path):
-            media.delete(path)
-            media.save(path, app.open(path))
+        if not media_storage.exists(path):
+            media_storage.save(path, app_storage.open(path))
+        elif app_storage.modified_time(path) > media_storage.modified_time(path):
+            media_storage.delete(path)
+            media_storage.save(path, app_storage.open(path))
 
-        return SourceFile(media.open(path), path, media)
+        return SourceFile(media_storage.open(path), path, media_storage)
 
 
 class ConfigurationsTestView(TestMixin, ListView):

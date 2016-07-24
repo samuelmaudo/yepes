@@ -7,14 +7,17 @@ from Crypto.Cipher import AES, ARC2, ARC4, Blowfish, CAST, DES, DES3, XOR
 from django import forms
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.db.models.lookups import Exact, In
 from django.utils import six
 from django.utils.encoding import force_bytes, force_text
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.conf import settings
-from yepes.exceptions import LookupTypeError
-from yepes.fields.calculated import CalculatedSubfield
-from yepes.fields.char import CharField
+from yepes.fields.calculated import CalculatedField
+from yepes.fields.char import (
+    check_max_length_attribute,
+    check_min_length_attribute
+)
 from yepes.forms import CharField as CharFormField
 from yepes.utils import unidecode
 from yepes.utils.deconstruct import clean_keywords
@@ -51,7 +54,7 @@ class TooShortError(ValueError):
         super(TooShortError, self).__init__(msg)
 
 
-class EncryptedTextField(CalculatedSubfield, models.BinaryField):
+class EncryptedTextField(CalculatedField, models.BinaryField):
 
     description = _('Encrypted text')
 
@@ -88,13 +91,14 @@ class EncryptedTextField(CalculatedSubfield, models.BinaryField):
         errors.extend(self._check_min_length_attribute(**kwargs))
         return errors
 
-    #_check_max_length_attribute = CharField._check_max_length_attribute
-    _check_min_length_attribute = CharField._check_min_length_attribute
+    _check_max_length_attribute = check_max_length_attribute
+    _check_min_length_attribute = check_min_length_attribute
 
     def deconstruct(self):
-        name, path, args, kwargs = super(EncryptedTextField, self).deconstruct()
+        name, path, args, kwargs = super(models.BinaryField, self).deconstruct()
         path = path.replace('yepes.fields.encrypted', 'yepes.fields')
         clean_keywords(self, kwargs, variables={
+            'calculated': False,
             'cipher': AES,
             'editable': True,
             'min_length': None,
@@ -119,19 +123,26 @@ class EncryptedTextField(CalculatedSubfield, models.BinaryField):
         kwargs.setdefault('max_length', self.max_length)
         return super(EncryptedTextField, self).formfield(**kwargs)
 
-    def get_prep_lookup(self, lookup_type, value):
-        if lookup_type == 'exact':
-            return self.get_prep_value(value)
-        elif lookup_type == 'in':
-            return [self.get_prep_value(v) for v in value]
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
         else:
-            raise LookupTypeError(lookup_type)
+            return self.decrypt(value)
+
+    def get_lookup(self, lookup_name):
+        if lookup_name == 'exact':
+            return Exact
+        elif lookup_name == 'in':
+            return In
+        else:
+            return None
 
     def get_prep_value(self, value):
-        if value is not None:
-            return self.encrypt(value)
-        else:
+        value = models.Field.get_prep_value(self, value)
+        if value is None:
             return value
+        else:
+            return self.encrypt(value)
 
     def get_secret_key(self):
         if self.secret_key:

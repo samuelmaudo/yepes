@@ -4,6 +4,7 @@ from __future__ import division, unicode_literals
 
 from collections import Counter
 from decimal import Decimal as dec
+from unittest import skip
 try:
     import cPickle as pickle
 except ImportError:
@@ -12,7 +13,6 @@ except ImportError:
 from django import test
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils import six
-from django.utils.unittest import skip
 
 from yepes.contrib.registry import registry
 from yepes.contrib.registry.fields import ModelChoiceField
@@ -735,7 +735,7 @@ class CachedForeignKeyTest(test.TestCase):
             'tests:DEFAULT_CACHED_MODEL',
             ModelChoiceField(
                 label = 'Default Cached Model',
-                model = 'fields.CachedModelWithDefaultValue',
+                model = 'fields_tests.CachedModelWithDefaultValue',
                 required = True,
         ))
         registry['tests:DEFAULT_CACHED_MODEL'] = default
@@ -1015,7 +1015,7 @@ class CommaSeparatedFieldTest(test.TestCase):
 class CompressedTextFieldTest(test.TestCase):
 
     def checkCompressedField(self, field_name, string):
-        field = CompressedModel._meta.get_field(field_name, False)
+        field = CompressedModel._meta.get_field(field_name)
         compressed = field.compress(string)
         decompressed = field.decompress(compressed)
         self.assertIsInstance(string, six.text_type)
@@ -1208,7 +1208,7 @@ class EmailFieldTest(test.TestCase):
 class EncryptedTextFieldTest(test.TestCase):
 
     def checkEncryptedField(self, field_name, string):
-        field = EncryptedModel._meta.get_field(field_name, False)
+        field = EncryptedModel._meta.get_field(field_name)
         encrypted = field.encrypt(string)
         decrypted = field.decrypt(encrypted)
         self.assertIsInstance(string, six.text_type)
@@ -1605,7 +1605,7 @@ class PhoneNumberFieldTest(test.TestCase):
 class PickledObjectFieldTest(test.TestCase):
 
     def checkPickledField(self, field_name, obj):
-        field = PickledModel._meta.get_field(field_name, False)
+        field = PickledModel._meta.get_field(field_name)
         dumped = field.dump(obj)
         loaded = field.load(dumped)
         self.assertIsInstance(obj, six.text_type)

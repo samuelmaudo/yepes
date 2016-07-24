@@ -77,32 +77,38 @@ class CachedForeignKeyModel(models.Model):
             'CachedModel',
             blank=False,
             null=False,
+            on_delete=models.CASCADE,
             related_name='+')
     optional_key = CachedForeignKey(
             'CachedModel',
             blank=True,
             null=True,
+            on_delete=models.CASCADE,
             related_name='+')
 
     mandatory_key_with_default_value = CachedForeignKey(
             'CachedModelWithDefaultValue',
             blank=False,
             null=False,
+            on_delete=models.CASCADE,
             related_name='+')
     optional_key_with_default_value = CachedForeignKey(
             'CachedModelWithDefaultValue',
             blank=True,
             null=True,
+            on_delete=models.CASCADE,
             related_name='+')
 
 
 class CachedModel(models.Model):
 
+    objects = models.Manager()
     cache = LookupTable()
 
 
 class CachedModelWithDefaultValue(models.Model):
 
+    objects = models.Manager()
     cache = LookupTable(
             default_registry_key='tests:DEFAULT_CACHED_MODEL')
 

@@ -7,15 +7,16 @@ import re
 from string import punctuation
 
 from django.db import connections
-from django.db.models import get_models, Manager, Model, Q
+from django.db.models import Manager, Model, Q
 from django.db.models.fields import CharField, TextField
 from django.db.models.manager import ManagerDescriptor
 from django.db.models.query import QuerySet
 from django.utils import six
 from django.utils.encoding import force_text
-from django.utils.module_loading import import_by_path
+from django.utils.module_loading import import_string
 from django.utils.six.moves import reduce, zip
 
+from yepes.apps import apps
 from yepes.conf import settings
 from yepes.contrib.registry import registry
 from yepes.types import Undefined
@@ -207,7 +208,7 @@ class SearchableQuerySet(QuerySet):
         assert self.query.can_filter(), \
                'Cannot filter a query once a slice has been taken.'
 
-        helper = import_by_path(self._search_helper)
+        helper = import_string(self._search_helper)
         queryset = self._clone()
         queryset._search_ordered = order_results
         queryset._search_decorated = order_results or decorate_results
@@ -411,7 +412,7 @@ class SearchableManager(Manager):
             if not search_fields:
                 search_fields = {
                     f.name: 1
-                    for f in self.model._meta.fields
+                    for f in self.model._meta.get_fields()
                     if isinstance(f, (CharField, TextField))
                 }
 
@@ -426,9 +427,18 @@ class SearchableManager(Manager):
         abstract.
         """
         if getattr(self.model._meta, 'abstract', False):
-            models = [m for m in get_models() if issubclass(m, self.model)]
+            models = [
+                m
+                for m
+                in apps.get_models()
+                if issubclass(m, self.model)
+            ]
+            parents = reduce(ior, [
+                set(m._meta.get_parent_list())
+                for m in
+                models
+            ])
             # Strip out any models that are superclasses of models.
-            parents = reduce(ior, [m._meta.get_parent_list() for m in models])
             models = [m for m in models if m not in parents]
         else:
             models = [self.model]

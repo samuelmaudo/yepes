@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.forms.formsets import BaseFormSet, DEFAULT_MAX_NUM
+from django.forms.formsets import BaseFormSet, DEFAULT_MAX_NUM, DEFAULT_MIN_NUM
 from django.utils import six
 
 from yepes.admin.operations import Operation
@@ -39,11 +39,12 @@ class OperationChoiceField(forms.ChoiceField):
         return super(OperationChoiceField, self).validate(value.label)
 
 
-class MassUpdateErrorList(forms.util.ErrorList):
+class MassUpdateErrorList(forms.utils.ErrorList):
     """
     Stores all errors for the form/formsets in a mass-update view.
     """
     def __init__(self, formset):
+        super(MassUpdateErrorList, self).__init__()
         if formset.is_bound:
             for errors in formset.errors:
                 self.extend(list(six.itervalues(errors)))
@@ -57,12 +58,13 @@ class MassUpdateForm(forms.Form):
     def errors(self):
         if self._errors is None:
             self.full_clean()
-            if not self.cleaned_data['update']:
-                self._errors.clear()
-            else:
-                op = self.cleaned_data['operation']
-                if op is not None and not op.needs_value:
+            if self.is_bound:
+                if not self.cleaned_data['update']:
                     self._errors.clear()
+                else:
+                    op = self.cleaned_data['operation']
+                    if op is not None and not op.needs_value:
+                        self._errors.clear()
 
         return self._errors
 
@@ -75,12 +77,14 @@ class MassUpdateFormSet(BaseFormSet):
     extra = 0
     form = MassUpdateForm
     max_num = DEFAULT_MAX_NUM
+    min_num = DEFAULT_MIN_NUM
+    validate_min = False
     validate_max = False
 
     def __init__(self, **kwargs):
         self.request = kwargs.pop('request')
         self.modeladmin = kwargs.pop('modeladmin')
-        self.fields = self.modeladmin.get_formfields(self.request, many_to_many=True)
+        self.fields = self.modeladmin.get_formfields(self.request)
         super(MassUpdateFormSet, self).__init__(**kwargs)
 
     def add_fields(self, form, index):

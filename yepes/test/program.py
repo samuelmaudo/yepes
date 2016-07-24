@@ -3,14 +3,20 @@
 from __future__ import unicode_literals
 
 import fnmatch
+import importlib
 import logging
-import optparse
+import argparse
 import os
 import shutil
 import sys
 
 from unittest.runner import _WritelnDecorator as WriteLnDecorator
 
+import django
+
+from django.apps import AppConfig, apps
+from django.conf import settings
+from django.test.testcases import TransactionTestCase, TestCase
 from django.utils import six
 
 
@@ -31,6 +37,28 @@ class TestProgram(object):
         self.tempDir = tempDir
         self.templatesDir = templatesDir
         self.workingDir = workingDir
+
+    def arguments(self, parser):
+        parser.add_argument('args', metavar='label', nargs='*')
+        parser.add_argument(
+            '-v', '--verbosity', action='store', dest='verbosity', default=1,
+            type=int, choices=[0, 1, 2, 3],
+            help='Verbosity level: 0=minimal output, 1=normal output, 2=all '
+                 'output')
+        parser.add_argument(
+            '-e', '--exclude', action='append', dest='exclude',
+            help='Exclude tests whose label matches the given pattern.')
+        parser.add_argument(
+            '--noinput', action='store_false', dest='interactive', default=True,
+            help='Whether NOT prompt the user for input of any kind.')
+        parser.add_argument(
+            '--failfast', action='store_true', dest='failfast', default=False,
+            help='Whether stop running the test suite after first failed test.')
+        parser.add_argument(
+            '--settings',
+            help='Python path to settings module, e.g. "myproject.settings". If '
+                 'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
+                 'variable will be used.')
 
     def configurePlugins(self, options):
         """
@@ -133,52 +161,30 @@ class TestProgram(object):
 
     def makeParser(self):
         usage = '%prog [options] [module module module ...]'
-        parser = optparse.OptionParser(usage=usage)
-        self.options(parser)
+        parser = argparse.ArgumentParser(usage=usage)
+        self.arguments(parser)
         for plugin in self.plugins:
             try:
-                addOptions = getattr(plugin, 'addOptions')
+                addArguments = plugin.addArguments
             except AttributeError:
                 continue
             else:
-                addOptions(parser)
+                addArguments(parser)
 
         return parser
 
-    def options(self, parser):
-        parser.add_option(
-            '-v', '--verbosity', action='store', dest='verbosity', default='1',
-            type='choice', choices=['0', '1', '2', '3'],
-            help='Verbosity level: 0=minimal output, 1=normal output, 2=all '
-                 'output')
-        parser.add_option(
-            '-e', '--exclude', action='append', dest='exclude',
-            help='Exclude tests whose label matches the given pattern.')
-        parser.add_option(
-            '--noinput', action='store_false', dest='interactive', default=True,
-            help='Whether NOT prompt the user for input of any kind.')
-        parser.add_option(
-            '--failfast', action='store_true', dest='failfast', default=False,
-            help='Whether stop running the test suite after first failed test.')
-        parser.add_option(
-            '--settings',
-            help='Python path to settings module, e.g. "myproject.settings". If '
-                 'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
-                 'variable will be used.')
-
     def parseArgs(self, parser):
-        options, testLabels = parser.parse_args()
-        if options.settings:
-            os.environ['DJANGO_SETTINGS_MODULE'] = options.settings
+        args = parser.parse_args()
+        if args.settings:
+            os.environ['DJANGO_SETTINGS_MODULE'] = args.settings
         else:
             if 'DJANGO_SETTINGS_MODULE' not in os.environ:
                 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
-            options.settings = os.environ['DJANGO_SETTINGS_MODULE']
+            args.settings = os.environ['DJANGO_SETTINGS_MODULE']
 
         os.environ['DJANGO_TEST_TEMP_DIR'] = self.tempDir
-
-        return (options, testLabels)
+        return args
 
     def removeTempDir(self):
         """
@@ -203,7 +209,8 @@ class TestProgram(object):
 
     def run(self):
         parser = self.makeParser()
-        options, testLabels = self.parseArgs(parser)
+        options = self.parseArgs(parser)
+        testLabels = options.args
         self.configurePlugins(options)
         return self.runTests(testLabels, options)
 
@@ -231,7 +238,7 @@ class TestProgram(object):
         state = {
             'INSTALLED_APPS': settings.INSTALLED_APPS,
             'ROOT_URLCONF': getattr(settings, 'ROOT_URLCONF', ''),
-            'TEMPLATE_DIRS': settings.TEMPLATE_DIRS,
+            'TEMPLATES': settings.TEMPLATES,
             'LANGUAGE_CODE': settings.LANGUAGE_CODE,
             'STATIC_URL': settings.STATIC_URL,
             'STATIC_ROOT': settings.STATIC_ROOT,
@@ -240,16 +247,31 @@ class TestProgram(object):
         settings.ROOT_URLCONF = 'urls'
         settings.STATIC_URL = '/static/'
         settings.STATIC_ROOT = os.path.join(self.tempDir, 'static')
-        settings.TEMPLATE_DIRS = (os.path.join(self.workingDir, self.templatesDir), )
+        settings.TEMPLATES = [{
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [os.path.join(self.workingDir, self.templatesDir)],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        }]
         settings.LANGUAGE_CODE = 'en'
         settings.SITE_ID = 1
+        settings.MIGRATION_MODULES = {
+            # These 'tests.migrations' modules don't actually exist, but
+            # this lets us skip creating migrations for the test models.
+            'auth': 'django.contrib.auth.migrations_',
+            'contenttypes': 'django.contrib.contenttypes.migrations_',
+            'sessions': 'django.contrib.sessions.migrations_',
+        }
         return state
 
     def setup(self, verbosity, testLabels):
-        from django.conf import settings
-        from django.db.models.loading import get_apps, load_app
-        from django.test.testcases import TransactionTestCase, TestCase
-
         # Force declaring available_apps in TransactionTestCase for faster tests.
         def noAvailableApps(self):
             raise Exception('Please define available_apps in'
@@ -268,26 +290,29 @@ class TestProgram(object):
             logger.addHandler(handler)
 
         # Load all the self.alwaysInstalledApps.
-        get_apps()
+        django.setup()
 
         # Reduce given test labels to just the app module path
-        appLabels = set(l.split('.', 1)[0] for l in testLabels)
+        appNames = set(l.split('.', 1)[0] for l in testLabels)
 
         # Load all the test model apps.
         if verbosity >= 2:
             self.stream.writeln('Importing applications ...')
 
-        for label in appLabels:
+        for name in appNames:
             if verbosity >= 2:
-                self.stream.writeln('Importing application {0}'.format(label))
+                self.stream.writeln('Importing application {0}'.format(name))
 
-            module = load_app(label)
-            settings.INSTALLED_APPS.append(label)
+            module = importlib.import_module(name)
+            config = AppConfig(name, module)
+            config.label = '_'.join((config.label.strip('_'), 'tests'))
+            settings.INSTALLED_APPS.append(config)
+
+        apps.set_installed_apps(settings.INSTALLED_APPS)
 
         return state
 
     def teardown(self, state):
-        from django.conf import settings
         self.removeTempDir()
         self.restoreSettings(settings, state)
 

@@ -4,15 +4,22 @@ from __future__ import absolute_import
 
 import types
 
-from django import template
+from django import VERSION as DJANGO_VERSION
 from django.db import connections
-from django.db.models.manager import Manager
-from django.db.models.query import QuerySet
+from django.db.models import (
+    Field,
+    ForeignKey,
+    Manager,
+    QuerySet,
+)
+from django.db.models.fields.related import ForeignObjectRel
 from django.utils import six
 
 
-template.add_to_builtins('yepes.defaultfilters')
-template.add_to_builtins('yepes.defaulttags')
+if DJANGO_VERSION < (1, 9):
+    Field.remote_field = property(lambda self: self.rel)
+    ForeignKey.target_field = ForeignKey.related_field
+    ForeignObjectRel.model = property(lambda self: self.to)
 
 
 def in_batches(self, batch_size):

@@ -6,24 +6,25 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.loading import get_class
+from yepes.apps import apps
 from yepes.model_mixins import Enableable, Logged, Nestable, ParentForeignKey
 from yepes.utils.properties import cached_property
 
-CountryManager = get_class('standards.managers', 'CountryManager')
-CountrySubdivisionManager = get_class('standards.managers', 'CountrySubdivisionManager')
-CurrencyManager = get_class('standards.managers', 'CurrencyManager')
-GeographicAreaLookupTable = get_class('standards.managers', 'GeographicAreaLookupTable')
-LanguageManager = get_class('standards.managers', 'LanguageManager')
-RegionManager = get_class('standards.managers', 'RegionManager')
+CountryManager = apps.get_class('standards.managers', 'CountryManager')
+CountrySubdivisionManager = apps.get_class('standards.managers', 'CountrySubdivisionManager')
+CurrencyManager = apps.get_class('standards.managers', 'CurrencyManager')
+GeographicAreaLookupTable = apps.get_class('standards.managers', 'GeographicAreaLookupTable')
+LanguageManager = apps.get_class('standards.managers', 'LanguageManager')
+RegionManager = apps.get_class('standards.managers', 'RegionManager')
 
-Standard = get_class('standards.model_mixins', 'Standard')
+Standard = apps.get_class('standards.model_mixins', 'Standard')
 
 
 class AbstractCountry(Enableable, Standard):
 
     region = models.ForeignKey(
             'Region',
+            on_delete=models.CASCADE,
             related_name='countries',
             verbose_name=_('Region'))
     code = fields.CharField(
@@ -68,7 +69,7 @@ class AbstractCountry(Enableable, Standard):
     def natural_key(self):
         return (self.code, )
 
-AbstractCountry._meta.get_field('name', False).help_text = _(
+AbstractCountry._meta.get_field('name').help_text = _(
     'You can find country names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/ISO_3166-1">'
     'http://en.wikipedia.org/wiki/ISO_3166-1'
@@ -80,6 +81,7 @@ class AbstractCountrySubdivision(Enableable, Standard):
 
     country = models.ForeignKey(
             'Country',
+            on_delete=models.CASCADE,
             related_name='subdivisions',
             verbose_name=_('Country'))
     code = fields.CharField(
@@ -163,7 +165,7 @@ class AbstractCurrency(Enableable, Standard):
     def natural_key(self):
         return (self.code, )
 
-AbstractCurrency._meta.get_field('name', False).help_text = _(
+AbstractCurrency._meta.get_field('name').help_text = _(
     'You can find currency names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/ISO_4217">'
     'http://en.wikipedia.org/wiki/ISO_4217'
@@ -201,6 +203,7 @@ class AbstractGeographicArea(Logged, Standard):
             related_name='areas_that_exclude_it',
             verbose_name=_('Excluded Subdivisions'))
 
+    objects = models.Manager()
     cache = GeographicAreaLookupTable(
             indexed_fields=[
                 'api_id',
@@ -347,7 +350,7 @@ class AbstractLanguage(Enableable, Standard):
     def code(self):
         return self.tag
 
-AbstractLanguage._meta.get_field('name', False).help_text = _(
+AbstractLanguage._meta.get_field('name').help_text = _(
     'You can find language names and ISO codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes">'
     'http://en.wikipedia.org/wiki/List_of_ISO_639-3_codes'
@@ -360,6 +363,7 @@ class AbstractRegion(Nestable, Standard):
     parent = ParentForeignKey(
             'self',
             null=True,
+            on_delete=models.CASCADE,
             related_name='children',
             verbose_name=_('Parent Region'))
     number = fields.CharField(
@@ -391,8 +395,8 @@ class AbstractRegion(Nestable, Standard):
         return self.number
 
 
-AbstractRegion._meta.get_field('name', False).verbose_name = _('Name')
-AbstractRegion._meta.get_field('name', False).help_text = _(
+AbstractRegion._meta.get_field('name').verbose_name = _('Name')
+AbstractRegion._meta.get_field('name').help_text = _(
     'You can find region names and United Nations codes here: '
     '<a target="_blank" href="http://en.wikipedia.org/wiki/UN_M.49">'
     'http://en.wikipedia.org/wiki/UN_M.49'

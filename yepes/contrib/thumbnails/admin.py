@@ -3,11 +3,11 @@
 from __future__ import unicode_literals
 
 from yepes import admin
-from yepes.loading import get_model
+from yepes.apps import apps
 
-Configuration = get_model('thumbnails', 'Configuration')
-Source = get_model('thumbnails', 'Source')
-Thumbnail = get_model('thumbnails', 'Thumbnail')
+Configuration = apps.get_model('thumbnails', 'Configuration')
+Source = apps.get_model('thumbnails', 'Source')
+Thumbnail = apps.get_model('thumbnails', 'Thumbnail')
 
 
 class ConfigurationAdmin(admin.ModelAdmin):

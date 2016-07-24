@@ -2,28 +2,34 @@
 
 from __future__ import unicode_literals
 
-from django.contrib.staticfiles.storage import AppStaticStorage
+import os
+
 from django.core.files.storage import FileSystemStorage
 
-from yepes.contrib.thumbnails.files import ImageFile, SourceFile
+from yepes.apps import apps
 from yepes.test_mixins import TempDirMixin
+
+ImageFile = apps.get_class('thumbnails.files', 'ImageFile')
+SourceFile = apps.get_class('thumbnails.files', 'SourceFile')
 
 
 class ThumbnailsMixin(TempDirMixin):
 
     def setUp(self):
         super(ThumbnailsMixin, self).setUp()
-        app = AppStaticStorage('yepes.contrib.thumbnails')
-        temp = FileSystemStorage(self.temp_dir)
-        dirnames, filenames = app.listdir('thumbnails')
+        app_config = apps.get_app_config('thumbnails')
+        app_static_dir = os.path.join(app_config.path, 'static')
+        app_storage = FileSystemStorage(app_static_dir)
+        temp_storage = FileSystemStorage(self.temp_dir)
+        dirnames, filenames = app_storage.listdir('thumbnails')
         for name in filenames:
-            file = app.open('/'.join(('thumbnails', name)))
-            temp.save(name, file)
+            file = app_storage.open('/'.join(('thumbnails', name)))
+            temp_storage.save(name, file)
             file.close()
 
-        self.source_image = ImageFile(temp.open('wolf.jpg'))
-        self.source = SourceFile(self.source_image, storage=temp)
-        self.temp_storage = temp
+        self.source_image = ImageFile(temp_storage.open('wolf.jpg'))
+        self.source = SourceFile(self.source_image, storage=temp_storage)
+        self.temp_storage = temp_storage
 
     def tearDown(self):
         self.source.close()

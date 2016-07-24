@@ -11,9 +11,9 @@ from django.utils import six
 from django.utils.encoding import force_text
 from django.utils.translation import get_language
 
+from yepes.apps import apps
 from yepes.conf import settings
 from yepes.exceptions import MissingAttributeError
-from yepes.loading import get_model
 
 __all__ = ('InvalidLanguageTag', 'Multilingual', 'TranslationDoesNotExist')
 
@@ -125,7 +125,7 @@ class Multilingual(models.Model):
             return match.group('lang')
 
     def get_all_translations(self):
-        Translation = get_model(self._meta.app_label, self._meta.translation)
+        Translation = apps.get_model(self._meta.app_label, self._meta.translation)
 
         other_translations = Translation._default_manager.filter(
             model=self
@@ -155,7 +155,7 @@ class Multilingual(models.Model):
         """
         tag = self.clean_language_tag(tag)
         if tag not in self._translations:
-            Translation = get_model(self._meta.app_label,
+            Translation = apps.get_model(self._meta.app_label,
                                     self._meta.translation)
             try:
                 qs = Translation._default_manager.select_related()

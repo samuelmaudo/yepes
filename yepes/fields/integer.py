@@ -2,10 +2,7 @@
 
 from __future__ import unicode_literals
 
-from django import VERSION as DJANGO_VERSION
-if DJANGO_VERSION >= (1, 8):
-    from django.core import checks
-
+from django.core import checks
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import connection
 from django.db import models
@@ -28,17 +25,12 @@ class IntegerField(CalculatedField, models.IntegerField):
         self.max_value = kwargs.pop('max_value', None)
         self.min_value = kwargs.pop('min_value', None)
         super(IntegerField, self).__init__(*args, **kwargs)
-        if DJANGO_VERSION < (1, 8):
-            if self.min_value is not None:
-                self.validators.append(MinValueValidator(self.min_value))
-            if self.max_value is not None:
-                self.validators.append(MaxValueValidator(self.max_value))
 
     def check(self, **kwargs):
         errors = super(IntegerField, self).check(**kwargs)
         errors.extend(self._check_max_value_attribute(**kwargs))
         errors.extend(self._check_min_value_attribute(**kwargs))
-        errors.extend(self._check_column_range(**kwargs))
+        errors.extend(self._check_column_range())
         return errors
 
     def _check_column_range(self):
@@ -131,10 +123,8 @@ class IntegerField(CalculatedField, models.IntegerField):
     def column_range(self):
         # A tuple of the (min_value, max_value) form representing the range of
         # the database column bound to the field.
-        if DJANGO_VERSION >= (1, 8):
-            return connection.ops.integer_field_range(self.get_internal_type())
-        else:
-            return (None, None)
+        internal_type = self.get_internal_type()
+        return connection.ops.integer_field_range(internal_type)
 
     @cached_property
     def range(self):

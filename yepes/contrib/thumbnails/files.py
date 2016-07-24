@@ -21,10 +21,10 @@ from django.utils.safestring import mark_safe
 from yepes.conf import settings
 from yepes.contrib.thumbnails import engine
 from yepes.contrib.thumbnails.utils import clean_config
-from yepes.loading import LazyModelManager
+from yepes.loading import LazyModel
 from yepes.types import Undefined
 
-SourceManager = LazyModelManager('thumbnails', 'source')
+Source = LazyModel('thumbnails', 'source')
 
 
 class ImageFile(File):
@@ -361,18 +361,19 @@ class SourceFieldFile(FieldFile, SourceFile):
 
     def __init__(self, instance, field, name):
         super(SourceFieldFile, self).__init__(instance, field, name)
-        if self.field.height_field:
-            height = getattr(instance, self.field.height_field)
-            if height is not None:
-                self._height_cache = height
-        if self.field.width_field:
-            width = getattr(instance, self.field.width_field)
-            if width is not None:
-                self._width_cache = width
+        if self:
+            if field.height_field:
+                height = getattr(instance, field.height_field)
+                if height is not None:
+                    self._height_cache = height
+            if field.width_field:
+                width = getattr(instance, field.width_field)
+                if width is not None:
+                    self._width_cache = width
 
     def _get_source_record(self):
         if self._source_cache is Undefined:
-            self._source_cache = SourceManager.filter(name=self.name).first()
+            self._source_cache = Source.objects.filter(name=self.name).first()
         return self._source_cache
 
     def _get_thumbnail_records(self):
@@ -443,7 +444,7 @@ class SourceFieldFile(FieldFile, SourceFile):
         Saves the source file, also saving an instance of the ``Source`` model.
         """
         super(SourceFieldFile, self).save(*args, **kwargs)
-        record, was_created = SourceManager.get_or_create(name=self.name)
+        record, was_created = Source.objects.get_or_create(name=self.name)
         if not was_created:
             record.last_modified = timezone.now()
             record.save(update_fields=['last_modified'])

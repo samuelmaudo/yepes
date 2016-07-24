@@ -3,6 +3,7 @@
 from __future__ import division, unicode_literals
 
 import hashlib
+import sys
 
 from django.core.cache import cache
 from django.template import Context, Library, TemplateSyntaxError, Variable
@@ -175,6 +176,18 @@ class FullUrlTag(AssignTag):
     def process(self, view_name, *args, **kwargs):
         from django.core.urlresolvers import NoReverseMatch
         from yepes.urlresolvers import full_reverse
+
+        try:
+            current_app = self.context.request.current_app
+        except AttributeError:
+            try:
+                current_app = self.context.current_app
+            except AttributeError:
+                try:
+                    current_app = self.context.request.resolver_match.namespace
+                except AttributeError:
+                    current_app = None
+
         scheme = kwargs.pop('scheme', None)
         domain = kwargs.pop('domain', None)
         subdomain = kwargs.pop('subdomain', None)
@@ -186,27 +199,26 @@ class FullUrlTag(AssignTag):
         url = ''
         try:
             url = full_reverse(view_name, args=args, kwargs=kwargs,
-                               current_app=self.context.current_app,
-                               scheme=scheme, domain=domain,
-                               subdomain=subdomain)
-        except NoReverseMatch as e:
+                               current_app=current_app, scheme=scheme,
+                               domain=domain, subdomain=subdomain)
+        except NoReverseMatch:
+            exc_info = sys.exc_info()
             if settings.SETTINGS_MODULE:
                 project_name = settings.SETTINGS_MODULE.split('.')[0]
                 try:
                     url = full_reverse(project_name + '.' + view_name,
                                        args=args, kwargs=kwargs,
-                                       current_app=self.context.current_app,
-                                       scheme=scheme, domain=domain,
-                                       subdomain=subdomain)
+                                       current_app=current_app, scheme=scheme,
+                                       domain=domain, subdomain=subdomain)
                 except NoReverseMatch:
                     if not self.target_var:
                         # Re-raise the original exception, not the one with
                         # the path relative to the project. This makes a
                         # better error message.
-                        raise e
+                        six.reraise(*exc_info)
             else:
                 if not self.target_var:
-                    raise e
+                    raise
 
         return url
 
@@ -357,7 +369,7 @@ class PhasedTag(DoubleTag):
         rendering middleware.
         """
         # our main context
-        storage = Context()
+        storage = {}
 
         # stash the whole context if needed
         if settings.PHASED_KEEP_CONTEXT:
@@ -365,7 +377,7 @@ class PhasedTag(DoubleTag):
 
         # but check if there are variables specifically wanted
         storage.update(variables)
-        storage = backup_csrf_token(self.context, storage)
+        backup_csrf_token(self.context, storage)
 
         # lastly return the pre phased template part
         return '{delimiter}{content}{pickled}{delimiter}'.format(

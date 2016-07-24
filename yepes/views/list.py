@@ -120,8 +120,7 @@ class ListAndCreateView(ListView, ModelMixin, MessageMixin, FormMixin):
         self.object = form.save()
         url = self.get_success_url()
         if not url:
-            form_class = self.get_form_class()
-            form = self.get_form(form_class, force_empty=True)
+            form = self.get_form(force_empty=True)
             context = self.get_context_data(create_form=form)
             response = self.render_to_response(context)
         else:
@@ -135,8 +134,7 @@ class ListAndCreateView(ListView, ModelMixin, MessageMixin, FormMixin):
 
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_object_list()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        form = self.get_form()
         context = self.get_context_data(create_form=form)
         return self.render_to_response(context)
 
@@ -145,7 +143,9 @@ class ListAndCreateView(ListView, ModelMixin, MessageMixin, FormMixin):
         context.update(kwargs)
         return super(ListAndCreateView, self).get_context_data(**context)
 
-    def get_form(self, form_class, force_empty=False):
+    def get_form(self, form_class=None, force_empty=False):
+        if form_class is None:
+            form_class = self.get_form_class()
         return form_class(**self.get_form_kwargs(force_empty=force_empty))
 
     def get_form_class(self):
@@ -192,8 +192,7 @@ class ListAndCreateView(ListView, ModelMixin, MessageMixin, FormMixin):
 
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_object_list()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
         else:

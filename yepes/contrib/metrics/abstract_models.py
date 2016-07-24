@@ -9,14 +9,16 @@ from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
-from yepes.contrib.metrics.model_mixins import Parameter
-from yepes.contrib.standards.fields import (
-    CountryField,
-    LanguageField,
-    RegionField,
-)
-from yepes.loading import get_model
+from yepes.apps import apps
+from yepes.loading import LazyModel
 from yepes.types import Undefined
+
+Page = LazyModel('metrics', 'Page')
+Parameter = apps.get_class('metrics.model_mixins', 'Parameter')
+
+CountryField = apps.get_class('standards.fields', 'CountryField')
+LanguageField = apps.get_class('standards.fields', 'LanguageField')
+RegionField = apps.get_class('standards.fields', 'RegionField')
 
 
 class AbstractBrowser(Parameter):
@@ -51,6 +53,7 @@ class AbstractPage(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='pages',
             verbose_name=_('Site'))
     path_head = fields.CharField(
@@ -102,10 +105,12 @@ class AbstractPageView(models.Model):
 
     visit = models.ForeignKey(
             'metrics.Visit',
+            on_delete=models.CASCADE,
             related_name='page_views',
             verbose_name=_('Visit'))
     page = models.ForeignKey(
             'metrics.Page',
+            on_delete=models.CASCADE,
             related_name='page_views',
             verbose_name=_('Page'))
     previous_page_id = fields.IntegerField(
@@ -137,9 +142,7 @@ class AbstractPageView(models.Model):
             if self.next_page_id is None:
                 self._next_page_cache = None
             else:
-                Page = get_model('metrics', 'Page')
-                PageManager = Page._default_manager
-                self._next_page_cache = PageManager.get(pk=self.next_page_id)
+                self._next_page_cache = Page.objects.get(pk=self.next_page_id)
 
         return self._next_page_cache
     get_next_page.short_description = _('Next Page')
@@ -149,9 +152,7 @@ class AbstractPageView(models.Model):
             if self.previous_page_id is None:
                 self._previous_page_cache = None
             else:
-                Page = get_model('metrics', 'Page')
-                PageManager = Page._default_manager
-                self._previous_page_cache = PageManager.get(pk=self.previous_page_id)
+                self._previous_page_cache = Page.objects.get(pk=self.previous_page_id)
 
         return self._previous_page_cache
     get_previous_page.short_description = _('Previous Page')
@@ -187,6 +188,7 @@ class AbstractReferrerPage(models.Model):
 
     referrer = models.ForeignKey(
             'metrics.Referrer',
+            on_delete=models.CASCADE,
             related_name='pages',
             verbose_name=_('Referrer'))
     full_path = fields.CharField(
@@ -213,10 +215,12 @@ class AbstractVisit(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Site'))
     visitor = models.ForeignKey(
             'metrics.Visitor',
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Visitor'))
     country = CountryField(
@@ -231,26 +235,31 @@ class AbstractVisit(models.Model):
     browser = models.ForeignKey(
             'metrics.Browser',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Browser'))
     engine = models.ForeignKey(
             'metrics.Engine',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Engine'))
     platform = models.ForeignKey(
             'metrics.Platform',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Platform'))
     referrer = models.ForeignKey(
             'metrics.Referrer',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Referrer'))
     referrer_page = models.ForeignKey(
             'metrics.ReferrerPage',
             null=True,
+            on_delete=models.CASCADE,
             related_name='visits',
             verbose_name=_('Referrer Page'))
     page_count = fields.SmallIntegerField(
@@ -298,6 +307,7 @@ class AbstractVisitor(models.Model):
 
     site = models.ForeignKey(
             'sites.Site',
+            on_delete=models.CASCADE,
             related_name='visitors',
             verbose_name=_('Site'))
     is_authenticated = fields.BooleanField(

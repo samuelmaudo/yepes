@@ -13,7 +13,7 @@ from django.template.base import (
     TOKEN_BLOCK, TOKEN_COMMENT, TOKEN_TEXT, TOKEN_VAR,
     VariableDoesNotExist,
 )
-from django.template.context import Context
+from django.template.context import Context, RequestContext
 from django.template.loader import get_template, select_template
 from django.utils import six
 from django.utils.decorators import classonlymethod
@@ -45,21 +45,40 @@ class Sandbox(object):
     def __getattr__(self, name):
         return getattr(self.tag, name)
 
+    def __repr__(self):
+        return force_str('<{0} instance for a {1}>'.format(
+            self.__class__.__name__,
+            self.tag.__class__.__name__,
+        ))
+
     def get_content(self, context=None):
-        c = getattr(self.tag, 'content', False)
-        if c:
-            return c
-        nl = getattr(self.tag, 'nodelist', False)
-        if nl:
-            return nl.render(context or self.context)
+        content = getattr(self.tag, 'content', False)
+        if content:
+            return content
+
+        nodelist = getattr(self.tag, 'nodelist', False)
+        if nodelist:
+            return nodelist.render(context or self.context)
+
+        template = getattr(self.tag, 'template', False)
+        if template:
+            return template.render(context or self.context)
+        else:
+            return ''
 
     def get_new_context(self):
-        return Context(**{
-            'autoescape': self.context.autoescape,
-            'current_app': self.context.current_app,
+        parameters = {
             'use_l10n': self.context.use_l10n,
-            'use_tz': self.context.use_tz
-        })
+            'use_tz': self.context.use_tz,
+        }
+        try:
+            request = self.context.request
+        except AttributeError:
+            parameters['autoescape'] = self.context.autoescape
+            return Context(**parameters)
+        else:
+            parameters['request'] = request
+            return RequestContext(**parameters)
 
     def resolve_args(self):
         args = []
@@ -343,9 +362,9 @@ class InclusionTag(SingleTag):
         if isinstance(t, Template):
             template = t
         elif isinstance(t, six.string_types):
-            template = get_template(t)
+            template = get_template(t).template
         elif is_iterable(t):
-            template = select_template(t)
+            template = select_template(t).template
         else:
             template = Template('')
 
@@ -353,8 +372,7 @@ class InclusionTag(SingleTag):
             'tag_name': tag_name,
             'args': args,
             'kwargs': kwargs,
-            'content': '',
-            'nodelist': template.nodelist,
+            'template': template,
         }
 
 

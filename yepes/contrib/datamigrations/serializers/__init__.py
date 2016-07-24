@@ -2,10 +2,17 @@
 
 from __future__ import unicode_literals
 
-from django.utils import six
-
 from yepes.conf import settings
-from yepes.loading import get_module, LoadingError
+from yepes.contrib.datamigrations.serializers.base import Serializer
+from yepes.utils.modules import import_module
+
+__all__ = (
+    'MissingSerializerError',
+    'serialize', 'deserialize',
+    'get_serializer', 'has_serializer', 'register_serializer',
+    'Serializer',
+    'serializers',
+)
 
 BUILTIN_SERIALIZERS = {
     'csv': 'yepes.contrib.datamigrations.serializers.csv.CsvSerializer',
@@ -14,67 +21,64 @@ BUILTIN_SERIALIZERS = {
     'yaml': 'yepes.contrib.datamigrations.serializers.yaml.YamlSerializer',
 }
 
-_SERIALIZERS = None
+MissingSerializerError = LookupError
 
 
-class MissingSerializerError(LoadingError):
+class SerializerHandler(object):
+    """
+    A Serializer Handler to retrieve Serializer classes.
+    """
+    def __init__(self):
+        self._classes = {}
+        self._registry =  {}
+        self._registry.update(BUILTIN_SERIALIZERS)
+        self._registry.update(getattr(settings, 'DATA_SERIALIZERS', []))
 
-    def __init__(self, serializer_name):
-        msg = "Serializer '{0}' could not be found."
-        super(MissingSerializerError, self).__init__(msg.format(serializer_name))
+    def __contains__(self, name):
+        return self.has_serializer(name)
+
+    def get_serializer(self, name):
+        try:
+            return self._classes[name]
+        except KeyError:
+            pass
+
+        if name not in self._registry:
+            msg = "Serializer '{0}' could not be found."
+            raise LookupError(msg.format(name))
+
+        serializer = self.import_serializer(self._registry[name])
+        self._classes[name] = serializer
+        return serializer
+
+    def get_serializers(self):
+        return (self.__getitem__(name) for name in self._registry)
+
+    def has_serializer(self, name):
+        return name in self._registry
+
+    def import_serializer(self, path):
+        module_path, class_name = path.rsplit('.', 1)
+        module = import_module(module_path, ignore_internal_errors=True)
+        return getattr(module, class_name, None)
+
+    def register_serializer(self, name, path):
+        self._registry[name] = path
+
+serializers = SerializerHandler()
 
 
 def serialize(format, headers, data, file=None, **parameters):
-    s = get_serializer(format)(**parameters)
+    s = serializers.get_serializer(format)(**parameters)
     return s.serialize(headers, data, file)
 
 
 def deserialize(format, headers, source, **parameters):
-    s = get_serializer(format)(**parameters)
+    s = serializers.get_serializer(format)(**parameters)
     return s.deserialize(headers, source)
 
 
-def get_serializer(name):
-    if not has_serializer(name):
-        raise MissingSerializerError(name)
-    else:
-        return _SERIALIZERS[name]
-
-
-def has_serializer(name):
-    if _SERIALIZERS is None:
-        _load_serializers()
-    return (name in _SERIALIZERS)
-
-
-def register_serializer(name, path):
-    if _SERIALIZERS is None:
-        _load_serializers()
-    serializer_class = _import_serializer(path)
-    if serializer_class is not None:
-        _SERIALIZERS[name] = serializer_class
-
-
-def _import_serializer(path):
-    module_path, class_name = path.rsplit('.', 1)
-    module = get_module(module_path, ignore_internal_errors=True)
-    return getattr(module, class_name, None)
-
-
-def _load_serializers():
-    global _SERIALIZERS
-    serializers = {}
-
-    for name, path in six.iteritems(BUILTIN_SERIALIZERS):
-        serializer_class = _import_serializer(path)
-        if serializer_class is not None:
-            serializers[name] = serializer_class
-
-    if hasattr(settings, 'DATA_SERIALIZERS'):
-        for name, path in six.iteritems(settings.DATA_SERIALIZERS):
-            serializer_class = _import_serializer(path)
-            if serializer_class is not None:
-                serializers[name] = serializer_class
-
-    _SERIALIZERS = serializers
+get_serializer = serializers.get_serializer
+has_serializer = serializers.has_serializer
+register_serializer = serializers.register_serializer
 

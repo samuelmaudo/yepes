@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-#from django.core import checks
+from django.core import checks
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.utils import six
@@ -10,6 +10,10 @@ from django.utils.encoding import force_text
 
 from yepes import forms
 from yepes.fields.calculated import CalculatedField
+from yepes.fields.char import (
+    check_max_length_attribute,
+    check_min_length_attribute
+)
 from yepes.utils.deconstruct import clean_keywords
 
 
@@ -29,46 +33,8 @@ class TextField(CalculatedField, models.TextField):
         errors.extend(self._check_min_length_attribute(**kwargs))
         return errors
 
-    def _check_max_length_attribute(self, **kwargs):
-        if (self.max_length is not None
-                and (not isinstance(self.max_length, six.integer_types)
-                        or self.max_length <= 0)):
-            return [
-                checks.Error(
-                    "'max_length' must be None or a positive integer.",
-                    hint=None,
-                    obj=self,
-                    id='yepes.E151',
-                )
-            ]
-        else:
-            return []
-
-    def _check_min_length_attribute(self, **kwargs):
-        if self.min_length is None:
-            return []
-        elif (not isinstance(self.min_length, six.integer_types)
-                or self.min_length <= 0):
-            return [
-                checks.Error(
-                    "'min_length' must be None or a positive integer.",
-                    hint=None,
-                    obj=self,
-                    id='yepes.E152',
-                )
-            ]
-        elif (isinstance(self.max_length, six.integer_types)
-                and self.max_length < self.min_length):
-            return [
-                checks.Error(
-                    "'min_length' cannot be greater than 'max_length'.",
-                    hint="Decrease 'min_length' or increase 'max_length'.",
-                    obj=self,
-                    id='yepes.E153',
-                )
-            ]
-        else:
-            return []
+    _check_max_length_attribute = check_max_length_attribute
+    _check_min_length_attribute = check_min_length_attribute
 
     def deconstruct(self):
         name, path, args, kwargs = super(TextField, self).deconstruct()

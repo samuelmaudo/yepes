@@ -6,7 +6,6 @@ import hashlib
 import re
 
 from django import forms
-from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import six
@@ -191,10 +190,7 @@ class Registry(object):
 
     @property
     def site(self):
-        if self.site_id:
-            return get_site(self.site_id)
-        else:
-            return Site.objects.get_current()
+        return get_site(self.site_id)
 
 
 registry = Registry()

@@ -11,10 +11,10 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import fields
+from yepes.apps import apps
 from yepes.cache import LookupTable
 from yepes.contrib.registry import registry
-from yepes.contrib.newsletters.managers import NewsletterManager
-from yepes.loading import LazyModelManager
+from yepes.loading import LazyModel
 from yepes.model_mixins import (
     Enableable,
     Illustrated,
@@ -28,18 +28,22 @@ from yepes.utils.html import extract_text
 from yepes.utils.properties import described_property
 from yepes.validators.email import DOMAIN_RE
 
-DeliveryManager = LazyModelManager('newsletters', 'Delivery')
-DomainManager = LazyModelManager('newsletters', 'Domain')
+NewsletterManager = apps.get_class('newsletters.managers', 'NewsletterManager')
+
+Delivery = LazyModel('newsletters', 'Delivery')
+Domain = LazyModel('newsletters', 'Domain')
 
 
 class AbstractBounce(models.Model):
 
     message = models.ForeignKey(
             'Message',
+            on_delete=models.CASCADE,
             related_name='bounces',
             verbose_name=_('Message'))
     newsletter = models.ForeignKey(
             'Newsletter',
+            on_delete=models.CASCADE,
             related_name='bounces',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
@@ -88,16 +92,19 @@ class AbstractClick(models.Model):
     link = models.ForeignKey(
             'MessageLink',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='clicks',
             verbose_name=_('Message Link'))
     message = models.ForeignKey(
             'Message',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='clicks',
             verbose_name=_('Message'))
     newsletter = models.ForeignKey(
             'Newsletter',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='clicks',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
@@ -142,21 +149,25 @@ class AbstractDelivery(models.Model):
     message = models.ForeignKey(
             'Message',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='deliveries',
             verbose_name=_('Message'))
     newsletter = models.ForeignKey(
             'Newsletter',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='deliveries',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
             'Subscriber',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='deliveries',
             verbose_name=_('Subscriber'))
     domain = models.ForeignKey(
             'Domain',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='deliveries',
             verbose_name=_('E-mail Domain'))
 
@@ -247,6 +258,7 @@ class AbstractDomain(models.Model):
             default=False,
             verbose_name=_('Is Trusted?'))
 
+    objects = models.Manager()
     cache = LookupTable(['name'])
 
     class Meta:
@@ -268,6 +280,7 @@ class AbstractMessage(Logged, Slugged, MetaData):
 
     newsletter = models.ForeignKey(
             'Newsletter',
+            on_delete=models.CASCADE,
             related_name='messages',
             verbose_name=_('Newsletter'))
 
@@ -379,6 +392,7 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
 
     connection = fields.CachedForeignKey(
             'emails.Connection',
+            on_delete=models.CASCADE,
             related_name='newsletters',
             verbose_name=_('E-mail Connection'))
 
@@ -472,11 +486,13 @@ class AbstractOpen(models.Model):
     message = models.ForeignKey(
             'Message',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='opens',
             verbose_name=_('Message'))
     newsletter = models.ForeignKey(
             'Newsletter',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='opens',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
@@ -532,6 +548,7 @@ class AbstractSubscriber(Enableable, Logged):
     email_domain = models.ForeignKey(
             'Domain',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='subscribers',
             verbose_name=_('E-mail Domain'))
     first_name = fields.CharField(
@@ -591,7 +608,7 @@ class AbstractSubscriber(Enableable, Logged):
             raise ValueError(msg.format(address))
 
         _, domain_name = address.rsplit('@', 1)
-        domain, _ = DomainManager.get_or_create(name=domain_name)
+        domain, _ = Domain.objects.get_or_create(name=domain_name)
 
         self.email_address = address
         self.email_domain = domain
@@ -641,6 +658,7 @@ class AbstractSubscriberTag(Logged):
             blank=True,
             verbose_name=_('Description'))
 
+    objects = models.Manager()
     cache = LookupTable(['name'])
 
     class Meta:
@@ -662,11 +680,13 @@ class AbstractSubscription(models.Model):
     newsletter = models.ForeignKey(
             'Newsletter',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='subscriptions',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
             'Subscriber',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='subscriptions',
             verbose_name=_('Subscriber'))
     domain = models.ForeignKey(
@@ -702,11 +722,13 @@ class AbstractUnsubscription(models.Model):
     newsletter = models.ForeignKey(
             'Newsletter',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='unsubscriptions',
             verbose_name=_('Newsletter'))
     subscriber = models.ForeignKey(
             'Subscriber',
             editable=False,
+            on_delete=models.CASCADE,
             related_name='unsubscriptions',
             verbose_name=_('Subscriber'))
     domain = models.ForeignKey(
@@ -725,12 +747,14 @@ class AbstractUnsubscription(models.Model):
             'UnsubscriptionReason',
             editable=False,
             null=True,
+            on_delete=models.CASCADE,
             related_name='unsubscriptions',
             verbose_name=_('Unsubscription Reason'))
     last_message = models.ForeignKey(
             'Message',
             editable=False,
             null=True,
+            on_delete=models.CASCADE,
             related_name='unsubscriptions',
             verbose_name=_('Last Message'))
 
@@ -745,7 +769,7 @@ class AbstractUnsubscription(models.Model):
             if (self.last_message_id is None
                     and self.newsletter_id is not None
                     and self.subscriber_id is not None):
-                delivery = DeliveryManager.filter(
+                delivery = Delivery.objects.filter(
                     newsletter=self.newsletter_id,
                     subscriber=self.subscriber_id,
                 ).order_by(

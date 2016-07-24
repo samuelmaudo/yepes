@@ -63,7 +63,7 @@ class OrderableBase(ModelBase):
             sort_field = opts.get_field('index')
             if filter_field is not None:
                 if (filter_field, 'index') not in opts.index_together:
-                    opts.index_together.append((filter_field, 'index'))
+                    opts.index_together += ((filter_field, 'index'), )
 
                 sort_field.db_index = False
             else:
@@ -99,7 +99,7 @@ class Orderable(six.with_metaclass(OrderableBase, models.Model)):
         Returns a dict to use as a filter for ordering operations containing
         the original `Meta.order_with_respect_to` value if provided.
         """
-        qs = self._default_manager.get_queryset()
+        qs = self.__class__._default_manager.get_queryset()
         if self._meta.filter_field:
             name = self._meta.filter_field
             value = getattr(self, name)

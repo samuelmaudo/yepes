@@ -4,10 +4,15 @@ from __future__ import unicode_literals
 
 import re
 
+from django import VERSION as DJANGO_VERSION
 from django.core.exceptions import ValidationError
 from django.core.validators import ipv4_re as IPV4_RE
 from django.http import HttpResponseForbidden
 from django.utils.ipv6 import clean_ipv6_address
+if DJANGO_VERSION < (1, 10):
+    MiddlewareMixin = object
+else:
+    from django.utils.deprecation import MiddlewareMixin
 
 from yepes.contrib.registry import registry
 from yepes.utils.http import get_meta_data
@@ -15,7 +20,7 @@ from yepes.utils.http import get_meta_data
 COMMA_RE = re.compile(r'\s*,\s*')
 
 
-class ClientIpMiddleware(object):
+class ClientIpMiddleware(MiddlewareMixin):
     """
     Middleware that adds a ``client_ip`` attribute to the request object, with
     the  IP address of the client.
@@ -26,11 +31,11 @@ class ClientIpMiddleware(object):
     """
     def process_request(self, request):
         banned_addresses = registry.get('core:BANNED_IP_ADDRESSES', ())
-        client_addresses = COMMA_RE.split('{0},{1},{2}'.format(
+        client_addresses = COMMA_RE.split(','.join((
             get_meta_data(request, 'HTTP_X_FORWARDED_FOR'),
             get_meta_data(request, 'HTTP_X_REAL_IP'),
             get_meta_data(request, 'REMOTE_ADDR'),
-        ))
+        )))
         for address in client_addresses:
             if not address:
                 continue
