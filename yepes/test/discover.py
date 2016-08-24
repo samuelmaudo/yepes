@@ -23,11 +23,14 @@ class TestDiscover(DiscoverRunner):
         self.plugins = kwargs.get('plugins', ())
         super(TestDiscover, self).__init__(*args, **kwargs)
 
+    def get_resultclass(self):
+        self.test_result
+
     def run_suite(self, suite, **kwargs):
         return self.test_runner(
             stream=self.stream,
             verbosity=self.verbosity,
             failfast=self.failfast,
-            resultclass=self.test_result,
+            resultclass=self.get_resultclass(),
             plugins=self.plugins,
         ).run(suite)

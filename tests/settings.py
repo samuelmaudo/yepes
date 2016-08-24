@@ -24,12 +24,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3'
     },
-    'other': {
-        'ENGINE': 'django.db.backends.sqlite3',
-    }
 }
 
 DEBUG = True
+
+# These 'tests.migrations' modules don't actually exist, but this lets us
+# skip creating migrations for the test models.
+MIGRATION_MODULES = {
+    'auth': 'django.contrib.auth.migrations_',
+    'contenttypes': 'django.contrib.contenttypes.migrations_',
+    'sessions': 'django.contrib.sessions.migrations_',
+}
 
 # Use a fast hasher to speed up tests.
 PASSWORD_HASHERS = [

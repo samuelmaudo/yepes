@@ -13,16 +13,18 @@ from yepes.test.program import TestProgram
 program = TestProgram(
     workingDir=os.path.abspath(os.path.dirname(upath(__file__))),
     tempDir=tempfile.mkdtemp(prefix='yepes_'),
-    templatesDir='templates',
     subdirsToSkip=[
         'requirements',
         'templates',
     ],
     alwaysInstalledApps=[
-        'django.contrib.admin',
-        'django.contrib.auth',
         'django.contrib.contenttypes',
+        'django.contrib.auth',
         'django.contrib.sites',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.admin.apps.SimpleAdminConfig',
+        'django.contrib.staticfiles',
         'mptt',
         'yepes',
         'yepes.contrib.datamigrations',
@@ -34,6 +36,13 @@ program = TestProgram(
         'yepes.contrib.slugs',
         'yepes.contrib.standards',
         'yepes.contrib.thumbnails',
+    ],
+    alwaysMiddlwareClasses=[
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
     ],
 )
 

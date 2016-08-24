@@ -22,8 +22,10 @@ from django.utils import six
 
 class TestProgram(object):
 
-    def __init__(self, workingDir, tempDir, templatesDir, subdirsToSkip,
-                 alwaysInstalledApps, stream=None):
+    def __init__(self, workingDir, tempDir, templatesDir='templates',
+                 subdirsToSkip=(), alwaysInstalledApps=(),
+                 alwaysMiddlwareClasses=(), stream=None):
+
         if stream is None:
             stream = sys.stderr
 
@@ -31,6 +33,7 @@ class TestProgram(object):
             stream = WriteLnDecorator(stream)
 
         self.alwaysInstalledApps = alwaysInstalledApps
+        self.alwaysMiddlwareClasses = alwaysMiddlwareClasses
         self.plugins = self.loadPlugins()
         self.stream = stream
         self.subdirsToSkip = subdirsToSkip
@@ -39,7 +42,10 @@ class TestProgram(object):
         self.workingDir = workingDir
 
     def arguments(self, parser):
-        parser.add_argument('args', metavar='label', nargs='*')
+        parser.add_argument(
+            'modules', metavar='module', nargs='*',
+            help='Optional path(s) to test modules; e.g. "apps" or '
+                 '"apps.tests.OverridingConfigTest.test_get_class".')
         parser.add_argument(
             '-v', '--verbosity', action='store', dest='verbosity', default=1,
             type=int, choices=[0, 1, 2, 3],
@@ -55,17 +61,24 @@ class TestProgram(object):
             '--failfast', action='store_true', dest='failfast', default=False,
             help='Whether stop running the test suite after first failed test.')
         parser.add_argument(
+            '-k', '--keepdb', action='store_true', dest='keepdb', default=False,
+            help='Tells Django to preserve the test database between runs.')
+        parser.add_argument(
             '--settings',
             help='Python path to settings module, e.g. "myproject.settings". If '
                  'this isn\'t provided, the DJANGO_SETTINGS_MODULE environment '
                  'variable will be used.')
+        parser.add_argument(
+            '--reverse', action='store_true', default=False,
+            help='Sort test suites and test cases in opposite order to debug '
+                 'test side effects not apparent with normal execution lineup.')
 
     def configurePlugins(self, options):
         """
         Configure the plugin and system, based on selected options.
 
-        The base plugin class sets the plugin to enabled if the enable option
-        for the plugin (self.enableOpt) is true.
+        The base plugin class sets the plugin to enabled if the enable
+        option for the plugin (self.enableOpt) is true.
 
         """
         for plugin in self.plugins:
@@ -82,10 +95,9 @@ class TestProgram(object):
             for dirName
             in os.listdir(self.workingDir)
             if ('.' not in dirName
-                    and dirName != '__pycache__'
-                    and not dirName.startswith('sql')
                     and os.path.basename(dirName) not in self.subdirsToSkip
-                    and not os.path.isfile(dirName))
+                    and not os.path.isfile(dirName)
+                    and os.path.exists(os.path.join(self.workingDir, dirName, '__init__.py')))
         ]
         modules.sort()
         return modules
@@ -210,7 +222,7 @@ class TestProgram(object):
     def run(self):
         parser = self.makeParser()
         options = self.parseArgs(parser)
-        testLabels = options.args
+        testLabels = options.modules
         self.configurePlugins(options)
         return self.runTests(testLabels, options)
 
@@ -224,6 +236,8 @@ class TestProgram(object):
             verbosity=verbosity,
             interactive=options.interactive,
             failfast=options.failfast,
+            keepdb=options.keepdb,
+            reverse=options.reverse,
             plugins=self.plugins,
             stream=self.stream,
         ).run_tests(finalTestLabels)
@@ -242,6 +256,7 @@ class TestProgram(object):
             'LANGUAGE_CODE': settings.LANGUAGE_CODE,
             'STATIC_URL': settings.STATIC_URL,
             'STATIC_ROOT': settings.STATIC_ROOT,
+            'MIDDLEWARE_CLASSES': settings.MIDDLEWARE_CLASSES,
         }
         settings.INSTALLED_APPS = self.alwaysInstalledApps
         settings.ROOT_URLCONF = 'urls'
@@ -262,17 +277,16 @@ class TestProgram(object):
         }]
         settings.LANGUAGE_CODE = 'en'
         settings.SITE_ID = 1
-        settings.MIGRATION_MODULES = {
-            # These 'tests.migrations' modules don't actually exist, but
-            # this lets us skip creating migrations for the test models.
-            'auth': 'django.contrib.auth.migrations_',
-            'contenttypes': 'django.contrib.contenttypes.migrations_',
-            'sessions': 'django.contrib.sessions.migrations_',
-        }
+        settings.MIDDLEWARE_CLASSES = self.alwaysMiddlwareClasses
+        # Ensure the middleware classes are seen as overridden otherwise we
+        # get a compatibility warning.
+        settings._explicit_settings.add('MIDDLEWARE_CLASSES')
+
         return state
 
     def setup(self, verbosity, testLabels):
-        # Force declaring available_apps in TransactionTestCase for faster tests.
+        # Force declaring available_apps in TransactionTestCase for faster
+        # tests.
         def noAvailableApps(self):
             raise Exception('Please define available_apps in'
                             ' TransactionTestCase and its subclasses.')
@@ -282,9 +296,10 @@ class TestProgram(object):
         state = self.prepareSettings(settings)
 
         if verbosity > 0:
-            # Ensure any warnings captured to logging are piped through a verbose
-            # logging handler. If any -W options were passed explicitly on command
-            # line, warnings are not captured, and this has no effect.
+            # Ensure any warnings captured to logging are piped through a
+            # verbose logging handler. If any -W options were passed
+            # explicitly  on command line, warnings are not captured, and
+            # this has no effect.
             logger = logging.getLogger('py.warnings')
             handler = logging.StreamHandler()
             logger.addHandler(handler)
