@@ -32,10 +32,16 @@ class CachedForeignKey(models.ForeignKey):
             return None
 
     def has_default(self):
-        if not self.null:
-            return self.remote_field.model.cache.has_default()
-        else:
+        if self.null:
             return False
+
+        try:
+            lookup_table = self.remote_field.model.cache
+        except AttributeError:
+            # Models do not have any lookup table during migrations.
+            return False
+        else:
+            return lookup_table.has_default()
 
 
 class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
@@ -53,7 +59,14 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
 
     @cached_property
     def related_lookup_table(self):
-        return self.field.remote_field.model.cache
+        model = self.field.remote_field.model
+        try:
+            lookup_table = model.cache
+        except AttributeError:
+            # Models do not have any lookup table during migrations.
+            return model._default_manager
+        else:
+            return lookup_table
 
     def __get__(self, instance, instance_type=None):
         if instance is None:
@@ -67,7 +80,7 @@ class CachedRelatedObjectDescriptor(ReverseSingleRelatedObjectDescriptor):
                 setattr(instance, self.cache_name, rel_obj)
         else:
             if rel_obj is None or rel_id != rel_obj._get_pk_val():
-                rel_obj = self.related_lookup_table.get(rel_id)
+                rel_obj = self.related_lookup_table.get(pk=rel_id)
                 setattr(instance, self.cache_name, rel_obj)
 
         if rel_obj is None and not self.field.null:

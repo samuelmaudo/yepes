@@ -8,6 +8,7 @@ try:
 except ImportError:
     import markdown
 
+from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 from yepes import forms
@@ -47,15 +48,18 @@ class RichTextField(TextField):
         if not self.store_html:
             setattr(cls, html_attr, HtmlGeneratorDescriptor(self))
         elif self.html_field is None:
-            self.html_field = TextField(
-                editable=False,
-                blank=True,
-                null=False,
-                db_column=html_column,
-                verbose_name=self.verbose_name,
-            )
-            self.html_field.creation_counter = self.creation_counter + 0.1
-            self.html_field.contribute_to_class(cls, html_attr, **kwargs)
+            try:
+                self.html_field = cls._meta.get_field(html_attr)
+            except FieldDoesNotExist:
+                self.html_field = TextField(
+                    editable=False,
+                    blank=True,
+                    null=False,
+                    db_column=html_column,
+                    verbose_name=self.verbose_name,
+                )
+                self.html_field.creation_counter = self.creation_counter + 0.1
+                self.html_field.contribute_to_class(cls, html_attr, **kwargs)
 
     def deconstruct(self):
         name, path, args, kwargs = super(RichTextField, self).deconstruct()
