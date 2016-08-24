@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 from django.utils import six
 
-from yepes.contrib.datamigrations.fields import TextField
-from yepes.contrib.datamigrations.migrations import CustomDataMigration
+from yepes.contrib.datamigrations import CustomDataMigration, TextField
 from yepes.loading import LazyClass, LazyModel
 from yepes.utils.properties import cached_property
 

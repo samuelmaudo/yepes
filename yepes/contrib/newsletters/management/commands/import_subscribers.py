@@ -9,7 +9,7 @@ from django.core.management.base import CommandError, BaseCommand
 from yepes.apps import apps
 from yepes.contrib.datamigrations.serializers import serializers
 
-SubscriberImportation = apps.get_class('newsletters.migrations', 'SubscriberImportation')
+SubscriberImportation = apps.get_class('newsletters.data_migrations', 'SubscriberImportation')
 
 
 class Command(BaseCommand):
