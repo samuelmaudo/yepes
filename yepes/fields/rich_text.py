@@ -59,7 +59,14 @@ class RichTextField(TextField):
                     verbose_name=self.verbose_name,
                 )
                 self.html_field.creation_counter = self.creation_counter + 0.1
-                self.html_field.contribute_to_class(cls, html_attr, **kwargs)
+
+                if cls.__module__ == '__fake__':
+                    # If the module is '__fake__', cls is a Model which has
+                    # been reconstructed from a ModelState instance, so the
+                    # html_field will be reconstructed later.
+                    self.html_field.set_attributes_from_name(html_attr)
+                else:
+                    self.html_field.contribute_to_class(cls, html_attr, **kwargs)
 
     def deconstruct(self):
         name, path, args, kwargs = super(RichTextField, self).deconstruct()
