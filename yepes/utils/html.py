@@ -2,8 +2,12 @@
 
 from __future__ import unicode_literals
 
+import collections
 import re
 
+from django.utils import six
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
 from django.utils.six import unichr as chr
 from django.utils.six.moves.html_parser import HTMLParser
 
@@ -13,6 +17,57 @@ __all__ = ('close_tags', 'extract_text')
 
 BLANK_LINES_RE = re.compile(r'\n\s+\n')
 SPACES_RE = re.compile(r'\s+')
+
+BOOLEAN_ATTRS = {
+    'allowfullscreen',
+    'async',
+    'autofocus',
+    'autoplay',
+    'checked',
+    'compact',
+    'controls',
+    'declare',
+    'default',
+    'defaultchecked',
+    'defaultmuted',
+    'defaultselected',
+    'defer',
+    'disabled',
+    'download',
+    'draggable',
+    'enabled',
+    'formnovalidate',
+    'hidden',
+    'indeterminate',
+    'inert',
+    'ismap',
+    'itemscope',
+    'loop',
+    'mozallowfullscreen',
+    'multiple',
+    'muted',
+    'nohref',
+    'noresize',
+    'noshade',
+    'novalidate',
+    'nowrap',
+    'open',
+    'pauseonexit',
+    'ping',
+    'readonly',
+    'required',
+    'reversed',
+    'scoped',
+    'seamless',
+    'selected',
+    'sortable',
+    'spellcheck',
+    'translate',
+    'truespeed',
+    'typemustmatch',
+    'visible',
+    'webkitallowfullscreen',
+}
 
 SELF_CLOSING_TAGS = {
     'area',
@@ -56,6 +111,45 @@ def extract_text(html):
     parser.feed(html)
     text = ''.join(parser.get_result())
     return BLANK_LINES_RE.sub('\n\n', text).strip()
+
+
+def make_double_tag(name, content='', attrs=None):
+    """
+    Makes a HTML tag with its end tag. The content and the values of the
+    attributes are passed through ``conditional_escape()`` and the result is
+    marked as safe.
+    """
+    start_tag = make_single_tag(name, attrs)
+    end_tag = '</{0}>'.format(name)
+    return mark_safe(''.join((start_tag, conditional_escape(content), end_tag)))
+
+
+def make_single_tag(name, attrs=None):
+    """
+    Makes an empty HTML tag which means that it has no end tag. The values
+    of the attributes are passed through ``conditional_escape()`` and the
+    result is marked as safe.
+    """
+    if attrs:
+
+        if isinstance(attrs, collections.Mapping):
+            iterator = six.iteritems(attrs)
+        else:
+            iterator = iter(attrs)
+
+        attributes = []
+        booleans = BOOLEAN_ATTRS
+        for key, value in iterator:
+            if key.lower() not in booleans:
+                attributes.append('{0}="{1}"'.format(key, conditional_escape(value)))
+            elif value:
+                attributes.append(key)
+
+        tag = '<{0} {1}>'.format(name, ' '.join(attributes))
+    else:
+        tag = '<{0}>'.format(name)
+
+    return mark_safe(tag)
 
 
 class OpenTagsParser(HTMLParser):

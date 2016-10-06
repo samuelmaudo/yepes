@@ -7,7 +7,6 @@ from django.conf.urls import url
 from django.db import models
 from django.db.models import Count
 from django.utils.html import format_html
-from django.utils.safestring import mark_safe
 from django.utils.six.moves.urllib.parse import urljoin
 from django.utils.translation import ugettext_lazy as _
 

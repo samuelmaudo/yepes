@@ -15,14 +15,13 @@ from django.db.models.fields.files import FieldFile
 from django.utils import six
 from django.utils import timezone
 from django.utils.encoding import force_bytes
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
 
 from yepes.conf import settings
 from yepes.contrib.thumbnails import engine
 from yepes.contrib.thumbnails.utils import clean_config
 from yepes.loading import LazyModel
 from yepes.types import Undefined
+from yepes.utils.html import make_single_tag
 
 Source = LazyModel('thumbnails', 'source')
 
@@ -183,11 +182,7 @@ class StoredImageFile(ImageFile):
             attrs['width'] = self.width
             attrs['height'] = self.height
 
-        return mark_safe('<img {0}>'.format(' '.join(
-            '{0}="{1}"'.format(key, escape(value))
-            for key, value
-            in six.iteritems(attrs)
-        )))
+        return make_single_tag('img', attrs)
 
     def open(self, mode='rb'):
         self.file.open(mode)
