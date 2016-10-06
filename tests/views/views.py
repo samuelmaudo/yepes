@@ -17,7 +17,7 @@ from yepes.views import (
     UpdateView,
 )
 
-from .models import Article
+from .models import Article, Artist, Author, Book
 
 
 class ArticleDetailView(DetailView):
@@ -26,4 +26,26 @@ class ArticleDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         return HttpResponse(self.object.slug)
+
+
+class DictList(ListView):
+    """A ListView that doesn't use a model."""
+    queryset = [
+        {'first': 'John', 'last': 'Lennon'},
+        {'first': 'Yoko', 'last': 'Ono'}
+    ]
+    template_name = 'views_tests/list.html'
+
+
+class ArtistList(ListView):
+    template_name = 'views_tests/list.html'
+    queryset = Artist.objects.all()
+
+
+class AuthorList(ListView):
+    queryset = Author.objects.all()
+
+
+class BookList(ListView):
+    model = Book
 

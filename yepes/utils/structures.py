@@ -7,7 +7,7 @@ from collections import OrderedDict
 from django.utils import six
 
 
-class OrderedDictThatIteratesOverValues(OrderedDict):
+class OrderedDictWhichIteratesOverValues(OrderedDict):
 
     def __iter__(self):
         return six.itervalues(self)
@@ -28,7 +28,7 @@ class OrderedDictThatIteratesOverValues(OrderedDict):
                 yield (k, self[k])
 
         def iterkeys(self):
-            return super(OrderedDictThatIteratesOverValues, self).__iter__()
+            return super(OrderedDictWhichIteratesOverValues, self).__iter__()
 
         def itervalues(self):
             for k in self.iterkeys():
@@ -47,7 +47,7 @@ class OrderedDictThatIteratesOverValues(OrderedDict):
                 yield (k, self[k])
 
         def keys(self):
-            return super(OrderedDictThatIteratesOverValues, self).__iter__()
+            return super(OrderedDictWhichIteratesOverValues, self).__iter__()
 
         def values(self):
             for k in self.keys():

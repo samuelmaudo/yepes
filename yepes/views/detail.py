@@ -40,7 +40,7 @@ class DetailView(SingleObjectTemplateResponseMixin, CacheMixin,
             except AttributeError:
                 is_staff = False
 
-            if is_staff:
+            if not is_staff:
                 self.send_view_signal(self.object, self.request, response)
 
         return response

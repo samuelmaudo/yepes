@@ -2,10 +2,11 @@
 
 from __future__ import absolute_import
 
+import collections
 import types
 
 from django import VERSION as DJANGO_VERSION
-from django.db import connections
+from django.db import connections, router
 from django.db.models import (
     Field,
     ForeignKey,
@@ -47,7 +48,7 @@ setattr(QuerySet, 'in_batches', in_batches)
 
 
 def in_batches(self, *args, **kwargs):
-        return self.get_queryset().in_batches(*args, **kwargs)
+    return self.get_queryset().in_batches(*args, **kwargs)
 
 def truncate(self):
     """
@@ -57,33 +58,41 @@ def truncate(self):
     NOTE: Sequence restarting currently is only supported by postgresql backend.
 
     """
-    qs = self.get_queryset()
-    qs._for_write = True
-
-    conn = connections[qs.db]
-    statements = self.statements.get(conn.vendor)
-    if statements is None:
-        statements = self.statements['default']
-
     opts = self.model._meta
-    cursor = conn.cursor()
-    cursor.execute(statements['truncate'].format(table=opts.db_table))
+    conn = connections[self.write_db]
+    sql = statements.get_sql('truncate', conn.vendor)
+    with conn.cursor() as cursor:
+        cursor.execute(sql.format(table=opts.db_table))
+
+def write_db(self):
+    return self._db or router.db_for_write(self.model, **self._hints)
 
 if six.PY2:
     in_batches = types.MethodType(in_batches, None, Manager)
     truncate = types.MethodType(truncate, None, Manager)
 
 setattr(Manager, 'in_batches', in_batches)
-setattr(Manager, 'statements', {
-    'postgresql': {
-        'truncate': 'TRUNCATE "{table}" RESTART IDENTITY;',
-    },
-    'mysql': {
-        'truncate': 'TRUNCATE `{table}`;',
-    },
-    'default': {
-        'truncate': 'DELETE FROM "{table}";',
-    },
-})
+setattr(Manager, 'read_db', Manager.db)
 setattr(Manager, 'truncate', truncate)
+setattr(Manager, 'write_db', property(write_db))
+
+
+class Statements(object):
+
+    def __init__(self):
+        self.sql_statements = collections.defaultdict(dict)
+
+    def get_sql(self, name, vendor=None):
+        sql = self.sql_statements[vendor].get(name)
+        if vendor is not None and not sql:
+            sql = self.sql_statements[None].get(name)
+        return sql
+
+    def register(self, name, sql, vendor=None):
+        self.sql_statements[vendor][name] = sql
+
+statements = Statements()
+statements.register('truncate', 'TRUNCATE "{table}" RESTART IDENTITY;', 'postgresql')
+statements.register('truncate', 'TRUNCATE `{table}`;', 'mysql')
+statements.register('truncate', 'DELETE FROM "{table}";')
 
