@@ -115,7 +115,7 @@ class Sandbox(object):
         kwargs = self.resolve_kwargs()
         return func(self, *args, **kwargs)
 
-    def super_proccess(self, *args, **kwargs):
+    def super_process(self, *args, **kwargs):
         func = self.tag.get_super_process_function()
         return func(self, *args, **kwargs)
 

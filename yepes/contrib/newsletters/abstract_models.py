@@ -238,10 +238,10 @@ class AbstractDelivery(models.Model):
 
     @described_property(_('Response Time'))
     def response_time(self):
-        if self.proccess_date is None or self.open_date is None:
+        if self.process_date is None or self.open_date is None:
             return None
         else:
-            return self.open_date - self.proccess_date
+            return self.open_date - self.process_date
 
 
 @python_2_unicode_compatible
