@@ -248,41 +248,6 @@ class SearchQuery(ListQuery):
         return self._view.user_query_kwarg
 
     @cached_property
-    def available_orderings(self):
-        orderings = OrderedDictWhichIteratesOverValues()
-        for ordering_class in self._view.get_orderings():
-            ordering = ordering_class(self)
-            orderings[ordering.name] = ordering
-
-        if self.user_query:
-            if all((len(ord.fields) != 1 or ord.fields[0] != 'search_score')
-                   for ord
-                   in orderings):
-                attrs = {
-                    'name': 'relevance',
-                    'fields': ['search_score'],
-                    'verbose_name': _('Relevance'),
-                }
-                ordering_class = type(str('Ordering'), (Ordering, ), attrs)
-                orderings['relevance'] = ordering_class(self)
-
-        return orderings
-
-    @cached_property
-    def default_ordering(self):
-        ordering = self.available_orderings.get(self._default_ordering)
-        if self.user_query:
-            for ord in self.available_orderings:
-                if 'search_score' in ord.fields:
-                    ordering = ord
-                    break
-
-        if not ordering:
-            return next(iter(self.available_orderings), None)
-        else:
-            return ordering
-
-    @cached_property
     def user_query(self):
         query = self._view.get_user_query()
         if query is None:
@@ -312,6 +277,31 @@ class SearchView(ListView):
                 self.send_search_signal(self.query.user_query, self.request)
 
         return response
+
+    def get_default_ordering(self):
+        if self.query.user_query:
+            for ord in self.query.available_orderings:
+                if 'search_score' in ord.fields:
+                    return ord
+
+        return super(SearchView, self).get_default_ordering()
+
+    def get_orderings(self):
+        if self._orderings is Undefined:
+            orderings = super(SearchView, self).get_orderings()
+            if (self.query.user_query
+                    and all('search_score' not in ord.fields
+                            for ord
+                            in orderings)):
+                attrs = {
+                    'name': 'relevance',
+                    'fields': ['search_score'],
+                    'verbose_name': _('Relevance'),
+                }
+                orderings.insert(0, type(str('Ordering'), (Ordering, ), attrs))
+                self._orderings = orderings
+
+        return self._orderings
 
     def get_template_names(self):
         names = super(SearchView, self).get_template_names()
