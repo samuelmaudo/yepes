@@ -51,5 +51,5 @@ class OverridingConfig(AppConfig):
     def ready(self):
         super(OverridingConfig, self).ready()
         self.label = self.original_label
-        self.__dict__['overridden_app_config'] = self.get_overridden_app_config()
+        self.__dict__.pop('overridden_app_config', None)
 

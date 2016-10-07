@@ -39,5 +39,5 @@ class OverridableConfig(AppConfig):
 
     def ready(self):
         super(OverridableConfig, self).ready()
-        self.__dict__['overriding_app_configs'] = self.get_overriding_app_configs()
+        self.__dict__.pop('overriding_app_configs', None)
 

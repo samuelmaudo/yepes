@@ -93,18 +93,18 @@ class OverridingConfigTest(test.SimpleTestCase):
 
     def test_get_class(self):
         overriding, overridable = apps.get_app_configs()
-        Article = apps.get_class('overridable.models', 'Article')
-        self.assertEqual(Article.__module__, 'apps.overriding.models')
-        self.assertEqual(Article.__name__, 'Article')
-        self.assertEqual(Article, overridable.get_class('models', 'Article'))
-        self.assertEqual(Article, overriding.get_class('models', 'Article'))
+        AbstractArticle = apps.get_class('overridable.abstract_models', 'AbstractArticle')
+        self.assertEqual(AbstractArticle.__module__, 'apps.overriding.abstract_models')
+        self.assertEqual(AbstractArticle.__name__, 'AbstractArticle')
+        self.assertEqual(AbstractArticle, overridable.get_class('abstract_models', 'AbstractArticle'))
+        self.assertEqual(AbstractArticle, overriding.get_class('abstract_models', 'AbstractArticle'))
 
-        Author = apps.get_class('overridable.models', 'Author')
-        self.assertEqual(Author.__module__, 'apps.overridable.models')
-        self.assertEqual(Author.__name__, 'Author')
-        self.assertEqual(Author, overridable.get_class('models', 'Author'))
+        AbstractAuthor = apps.get_class('overridable.abstract_models', 'AbstractAuthor')
+        self.assertEqual(AbstractAuthor.__module__, 'apps.overridable.abstract_models')
+        self.assertEqual(AbstractAuthor.__name__, 'AbstractAuthor')
+        self.assertEqual(AbstractAuthor, overridable.get_class('abstract_models', 'AbstractAuthor'))
         with self.assertRaises(LookupError):
-            overriding.get_class('models', 'Author')
+            overriding.get_class('abstract_models', 'AbstractAuthor')
 
     def test_get_model(self):
         overriding, overridable = apps.get_app_configs()

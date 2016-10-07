@@ -3,14 +3,14 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 
-class Article(models.Model):
+@python_2_unicode_compatible
+class AbstractArticle(models.Model):
 
     title = models.CharField(
             max_length=255)
-    extract = models.TextField(
-            blank=True)
     content = models.TextField(
             blank=True)
 
@@ -20,10 +20,23 @@ class Article(models.Model):
             related_name='articles')
 
     class Meta:
+        abstract = True
         ordering = ['title']
 
     def __str__(self):
         return self.title
 
-    __unicode__ = __str__
+
+@python_2_unicode_compatible
+class AbstractAuthor(models.Model):
+
+    name = models.CharField(
+            max_length=127)
+
+    class Meta:
+        abstract = True
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
