@@ -140,6 +140,13 @@ def make_single_tag(name, attrs=None):
         attributes = []
         booleans = BOOLEAN_ATTRS
         for key, value in iterator:
+
+            if key == 'cls':
+                # 'class' is a reserved word in Python so, if you
+                # want to set the attributes as keyword arguments,
+                # you cannot use it.
+                key = 'class'
+
             if key.lower() not in booleans:
                 attributes.append('{0}="{1}"'.format(key, conditional_escape(value)))
             elif value:
@@ -230,7 +237,7 @@ class TextFragmentsParser(HTMLParser):
                 if attr == 'href' and value:
                     self.last_link = value
                     break
-        if tag == 'abbr':
+        elif tag == 'abbr':
             for attr, value in attrs:
                 if attr == 'title' and value:
                     self.last_abbr = value
