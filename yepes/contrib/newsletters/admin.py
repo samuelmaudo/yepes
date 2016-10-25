@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.conf.urls import url
 from django.db import models
+from django.db.models import F, Q
 from django.db.models import Count
 from django.utils.html import format_html
 from django.utils.six.moves.urllib.parse import urljoin
@@ -299,10 +300,10 @@ class DomainAdmin(StatisticsMixin, admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(DomainAdmin, self).get_queryset(request)
         qs = qs.annotate(
-            bounce_count=SumIf(1, deliveries__is_bounced=True),
-            click_count=SumIf(1, deliveries__is_clicked=True),
-            delivery_count=SumIf(1, deliveries__is_processed=True),
-            open_count=SumIf(1, deliveries__is_opened=True),
+            bounce_count=SumIf(1, Q(deliveries__is_bounced=True)),
+            click_count=SumIf(1, Q(deliveries__is_clicked=True)),
+            delivery_count=SumIf(1, Q(deliveries__is_processed=True)),
+            open_count=SumIf(1, Q(deliveries__is_opened=True)),
         )
         return qs
 
@@ -387,10 +388,10 @@ class MessageAdmin(StatisticsMixin, admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(MessageAdmin, self).get_queryset(request)
         qs = qs.annotate(
-            bounce_count=SumIf(1, deliveries__is_bounced=True),
-            click_count=SumIf(1, deliveries__is_clicked=True),
-            delivery_count=SumIf(1, deliveries__is_processed=True),
-            open_count=SumIf(1, deliveries__is_opened=True),
+            bounce_count=SumIf(1, Q(deliveries__is_bounced=True)),
+            click_count=SumIf(1, Q(deliveries__is_clicked=True)),
+            delivery_count=SumIf(1, Q(deliveries__is_processed=True)),
+            open_count=SumIf(1, Q(deliveries__is_opened=True)),
         )
         return qs
 
@@ -570,10 +571,10 @@ class NewsletterAdmin(StatisticsMixin, admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(NewsletterAdmin, self).get_queryset(request)
         qs = qs.annotate(
-            bounce_count=SumIf(1, deliveries__is_bounced=True),
-            click_count=SumIf(1, deliveries__is_clicked=True),
-            delivery_count=SumIf(1, deliveries__is_processed=True),
-            open_count=SumIf(1, deliveries__is_opened=True),
+            bounce_count=SumIf(1, Q(deliveries__is_bounced=True)),
+            click_count=SumIf(1, Q(deliveries__is_clicked=True)),
+            delivery_count=SumIf(1, Q(deliveries__is_processed=True)),
+            open_count=SumIf(1, Q(deliveries__is_opened=True)),
         )
         return qs
 
