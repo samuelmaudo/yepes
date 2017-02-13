@@ -387,3 +387,26 @@ class PhasedTag(DoubleTag):
 
 register.tag('phased', PhasedTag.as_tag())
 
+
+## {% replace string old new[ count][ as variable_name] %} #####################
+
+
+class ReplaceTag(AssignTag):
+    """
+    Returns a copy of the ``string`` with all occurrences of substring ``old``
+    replaced by ``new``. If the optional argument ``count`` is given, only the
+    first ``count`` occurrences are replaced.
+    """
+    assign_var = False
+
+    def process(self, string, old, new, count=None):
+        string = force_text(string)
+        old = force_text(old)
+        new = force_text(new)
+        if count is None:
+            return string.replace(old, new)
+        else:
+            return string.replace(old, new, count)
+
+register.tag('replace', ReplaceTag.as_tag())
+
