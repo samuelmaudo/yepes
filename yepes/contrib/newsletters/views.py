@@ -77,7 +77,7 @@ class DispatchView(UpdateView):
 
         if form_data.get('bounce_filter'):
             subscribers = subscribers.annotate(
-                bounce_count=SumIf(1, deliveries__is_bounced=True),
+                bounce_count=SumIf(1, Q(deliveries__is_bounced=True)),
             ).filter(**{
                 'bounce_count__{0}'.format(form_data['bounce_filter']):
                 form_data['bounce_filter_value'],
@@ -85,7 +85,7 @@ class DispatchView(UpdateView):
 
         if form_data.get('click_filter'):
             subscribers = subscribers.annotate(
-                click_count=SumIf(1, deliveries__is_clicked=True),
+                click_count=SumIf(1, Q(deliveries__is_clicked=True)),
             ).filter(**{
                 'click_count__{0}'.format(form_data['click_filter']):
                 form_data['click_filter_value'],
@@ -93,7 +93,7 @@ class DispatchView(UpdateView):
 
         if form_data.get('open_filter'):
             subscribers = subscribers.annotate(
-                open_count=SumIf(1, deliveries__is_opened=True),
+                open_count=SumIf(1, Q(deliveries__is_opened=True)),
             ).filter(**{
                 'open_count__{0}'.format(form_data['open_filter']):
                 form_data['open_filter_value'],
