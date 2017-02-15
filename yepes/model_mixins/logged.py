@@ -12,10 +12,12 @@ class Logged(models.Model):
 
     creation_date = models.DateTimeField(
             auto_now_add=True,
+            db_index=True,
             editable=False,
             verbose_name=_('Creation Date'))
     last_modified = models.DateTimeField(
             auto_now=True,
+            db_index=True,
             editable=False,
             verbose_name=_('Last Modified'))
 
