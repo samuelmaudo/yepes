@@ -50,15 +50,15 @@ class FullUrlSitemap(Sitemap):
         if self._prefix is None:
             full_url = obj.get_full_url()
             absolute_url = obj.get_absolute_url()
-            common = full_url[0:-len(absolute_url)]
-            if common + absolute_url != full_url:
+            prefix = full_url[0:-len(absolute_url)]
+            if prefix + absolute_url != full_url:
                 self.homogeneous = False
                 return full_url
             else:
-                self._prefix = common + '{0}'
+                self._prefix = prefix
                 return full_url
 
-        return self._prefix.format(obj.get_absolute_url())
+        return self._prefix + obj.get_absolute_url()
 
 
 class StaticSitemap(FullUrlSitemap):
