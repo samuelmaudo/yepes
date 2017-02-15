@@ -1,0 +1,27 @@
+language: python
+
+python:
+  - '2.7'
+  - '3.4'
+  - '3.5'
+
+env:
+  - DJANGO_VERSION=1.9 GRAPPELLI_VERSION=2.8
+  - DJANGO_VERSION=1.10 GRAPPELLI_VERSION=2.9
+  - DJANGO_VERSION=1.11 GRAPPELLI_VERSION=2.10
+  - DJANGO_VERSION=2.0 GRAPPELLI_VERSION=2.11
+
+before_install:
+  - pip install --user -q coveralls
+  - pip install --user -q -r requirements/test.txt
+  - pip install --user -q -U Django<$DJANGO_VERSION
+  - pip install --user -q -U django-grappelli<$GRAPPELLI_VERSION
+
+install:
+  - python setup.py install
+
+script:
+  - python tests/runtests.py --with-coverage --cover-branches --cover-package=yepes
+
+after_success:
+  - coveralls
