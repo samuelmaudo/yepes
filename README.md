@@ -1,3 +1,11 @@
-[ ![Build Status](https://api.shippable.com/projects/546c9ba6d46935d5fbbe034d/badge?branchName=master) ](https://app.shippable.com/projects/546c9ba6d46935d5fbbe034d/builds/latest)
+Yepes
+=====
 
-Yepes is a set of tools for Django projects. These tools are designed to work together and to be used in any kind of web project.
+[![Travis-CI Status](https://secure.travis-ci.org/samuelmaudo/yepes.png?branch=master)](http://travis-ci.org/#!/samuelmaudo/yepes) [![Coverage Status](https://coveralls.io/repos/samuelmaudo/yepes/badge.png)](https://coveralls.io/r/samuelmaudo/yepes)
+
+A toolset for any kind of project based on Django: blogs, forums, shops or any
+other. Its tools are designed to work together and to be compatible with the
+last versions of Django.
+
+Some of Yepes' tools are mature and well-tested, while others are just sketches
+or trials. The documentation will only cover the first ones.

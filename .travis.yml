@@ -12,10 +12,10 @@ env:
   - DJANGO_VERSION=2.0 GRAPPELLI_VERSION=2.11
 
 before_install:
-  - pip install --user -q coveralls
-  - pip install --user -q -r requirements/test.txt
-  - pip install --user -q -U Django<$DJANGO_VERSION
-  - pip install --user -q -U django-grappelli<$GRAPPELLI_VERSION
+  - pip install -q coveralls
+  - pip install -q -r requirements/test.txt
+  - pip install -q -U Django<$DJANGO_VERSION
+  - pip install -q -U django-grappelli<$GRAPPELLI_VERSION
 
 install:
   - python setup.py install
