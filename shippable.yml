@@ -16,8 +16,8 @@ build:
   ci:
 
     - pip install -q -r requirements/test.txt
-    - pip install -q -U Django<$DJANGO_VERSION
-    - pip install -q -U django-grappelli<$GRAPPELLI_VERSION
+    - pip install -q -U "Django<$DJANGO_VERSION"
+    - pip install -q -U "django-grappelli<$GRAPPELLI_VERSION"
 
     - python setup.py install
 

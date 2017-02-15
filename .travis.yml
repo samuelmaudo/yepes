@@ -14,8 +14,8 @@ env:
 before_install:
   - pip install -q coveralls
   - pip install -q -r requirements/test.txt
-  - pip install -q -U Django<$DJANGO_VERSION
-  - pip install -q -U django-grappelli<$GRAPPELLI_VERSION
+  - pip install -q -U "Django<$DJANGO_VERSION"
+  - pip install -q -U "django-grappelli<$GRAPPELLI_VERSION"
 
 install:
   - python setup.py install
