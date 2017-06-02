@@ -475,6 +475,9 @@ class SSLRedirectMiddlewareTest(test.SimpleTestCase):
 
 
 
+@override_settings(
+    ALLOWED_HOSTS=['.example.com', '.example.org'],
+)
 class SubdomainsMiddlewareTest(test.TestCase):
 
     def setUp(self):

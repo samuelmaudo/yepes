@@ -2,25 +2,26 @@
 
 from __future__ import division, unicode_literals
 
-import datetime
-import decimal
-import operator
+from datetime import date, datetime, time, timedelta, tzinfo
+from decimal import Decimal as dec, InvalidOperation
+from operator import attrgetter
 
 from django.core import files
 from django.utils import six
 from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from django.utils.encoding import force_str, force_text, python_2_unicode_compatible
 from django.utils.functional import Promise
+from django.utils.text import camel_case_to_spaces, capfirst
 from django.utils.timezone import utc as UTC
 from django.utils.translation import ugettext_lazy as _
 
-from yepes.contrib.datamigrations.types import (
+from yepes.contrib.datamigrations.constants import (
     BOOLEAN, FLOAT, INTEGER, TEXT,
     DATE, DATETIME, TIME,
     DECIMAL,
 )
 from yepes.exceptions import UnexpectedTypeError
-from yepes.utils.properties import cached_property
+from yepes.utils.properties import cached_property, class_property
 
 __all__ = (
     'Field',
@@ -39,7 +40,12 @@ __all__ = (
 @python_2_unicode_compatible
 class Field(object):
 
-    description = _('General')
+    @class_property
+    def description(cls):
+        name = capfirst(camel_case_to_spaces(cls.__name__))
+        if name.endswith('field'):
+            name = name[:-6]
+        return name
 
     def __init__(self, path, name=None, attname=None, force_string=False):
         self.path = force_text(path)
@@ -76,25 +82,6 @@ class Field(object):
             value = value._proxy____cast()
         return value
 
-    def deconstruct(self):
-        cls = self.__class__
-        path = '.'.join((cls.__module__, cls.__name__)).replace(
-            'yepes.contrib.datamigrations.fields',
-            'yepes.contrib.datamigrations',
-        )
-        args = [self.path]
-        kwargs = {}
-        if self.name != self.path:
-            kwargs['name'] = self.name
-
-        if self.attname != self.path:
-            kwargs['attname'] = self.attname
-
-        if self.force_string is not False:
-            kwargs['force_string'] = self.force_string
-
-        return (path, args, kwargs)
-
     def export_value(self, value, serializer):
         value = self.clean(value)
         if (value is not None
@@ -102,19 +89,13 @@ class Field(object):
                         or self.data_type not in serializer.exportation_data_types)):
             value = self.export_value_as_string(value, serializer)
 
-        return self.prepare_value_for_exportation(value, serializer)
+        return self.prepare_to_export(value, serializer)
 
     def export_value_as_string(self, value, serializer):
         return force_text(value)
 
-    def get_value_from_object(self, obj):
-        try:
-            return self._getter(obj)
-        except AttributeError:
-            return None
-
     def import_value(self, value, serializer):
-        value = self.prepare_value_for_importation(value, serializer)
+        value = self.prepare_to_import(value, serializer)
         if (value is not None
                 and (self.force_string
                         or self.data_type not in serializer.importation_data_types)):
@@ -125,21 +106,27 @@ class Field(object):
     def import_value_from_string(self, value, serializer):
         return value
 
-    def prepare_value_for_importation(self, value, serializer):
+    def prepare_to_export(self, value, serializer):
+        if value is None:
+            return serializer.none_replacement
+        else:
+            return value
+
+    def prepare_to_import(self, value, serializer):
         if value == serializer.none_replacement:
             return None
         else:
             return value
 
-    def prepare_value_for_exportation(self, value, serializer):
-        if value is None and serializer.none_replacement is not None:
-            return serializer.none_replacement
-        else:
-            return value
+    def value_from_object(self, obj):
+        try:
+            return self._getter(obj)
+        except AttributeError:
+            return None
 
     @cached_property
     def _getter(self):
-        return operator.attrgetter(self.path.replace('__', '.'))
+        return attrgetter(self.path.replace('__', '.'))
 
 
 ## BASIC TYPES #################################################################
@@ -217,10 +204,10 @@ class TextField(Field):
         return value
 
     def export_value(self, value, serializer):
-        return self.prepare_value_for_exportation(self.clean(value), serializer)
+        return self.prepare_to_export(self.clean(value), serializer)
 
     def import_value(self, value, serializer):
-        return self.clean(self.prepare_value_for_importation(value, serializer))
+        return self.clean(self.prepare_to_import(value, serializer))
 
 
 ## DATES AND TIMES #############################################################
@@ -235,15 +222,15 @@ class DateField(Field):
         value = super(DateField, self).clean(value)
         if value is None:
             return value
-        elif isinstance(value, datetime.datetime):
+        elif isinstance(value, datetime):
             return value.date()
-        elif isinstance(value, datetime.date):
+        elif isinstance(value, date):
             # datetime is subclass of date,
             # so datetime instances are instances of date too,
             # so we must check first datetime
             return value
         else:
-            raise UnexpectedTypeError(datetime.date, value)
+            raise UnexpectedTypeError(date, value)
 
     def export_value_as_string(self, value, serializer):
         return value.isoformat()
@@ -255,21 +242,19 @@ class DateField(Field):
 class DateTimeField(Field):
 
     data_type = DATETIME
-    description = _('Date time')
+    description = _('Date Time')
 
     def clean(self, value):
         value = super(DateTimeField, self).clean(value)
-        if value is None or isinstance(value, datetime.datetime):
+        if value is None or isinstance(value, datetime):
             return value
-        elif isinstance(value, datetime.date):
-            return datetime.datetime(value.year, value.month, value.day)
+        elif isinstance(value, date):
+            return datetime(value.year, value.month, value.day)
         else:
-            raise UnexpectedTypeError(datetime.datetime, value)
+            raise UnexpectedTypeError(datetime, value)
 
     def export_value_as_string(self, value, serializer):
         v = value.isoformat()
-        if value.microsecond:
-            v = v[:23] + v[26:]
         if v.endswith('+00:00'):
             v = v[:-6] + 'Z'
         return v
@@ -286,10 +271,10 @@ class DayField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.date)):
+        elif isinstance(value, (datetime, date)):
             return value.day
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.date), value)
+            raise UnexpectedTypeError((int, datetime, date), value)
 
 
 class HourField(IntegerField):
@@ -300,10 +285,10 @@ class HourField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.time)):
+        elif isinstance(value, (datetime, time)):
             return value.hour
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.time), value)
+            raise UnexpectedTypeError((int, datetime, time), value)
 
 
 class MicrosecondField(IntegerField):
@@ -314,10 +299,10 @@ class MicrosecondField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.time)):
+        elif isinstance(value, (datetime, time)):
             return value.microsecond
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.time), value)
+            raise UnexpectedTypeError((int, datetime, time), value)
 
 
 class MinuteField(IntegerField):
@@ -328,10 +313,10 @@ class MinuteField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.time)):
+        elif isinstance(value, (datetime, time)):
             return value.minute
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.time), value)
+            raise UnexpectedTypeError((int, datetime, time), value)
 
 
 class MonthField(IntegerField):
@@ -342,10 +327,10 @@ class MonthField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.date)):
+        elif isinstance(value, (datetime, date)):
             return value.month
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.date), value)
+            raise UnexpectedTypeError((int, datetime, date), value)
 
 
 class SecondField(IntegerField):
@@ -356,10 +341,10 @@ class SecondField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.time)):
+        elif isinstance(value, (datetime, time)):
             return value.second
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.time), value)
+            raise UnexpectedTypeError((int, datetime, time), value)
 
 
 class TimeField(Field):
@@ -369,17 +354,15 @@ class TimeField(Field):
 
     def clean(self, value):
         value = super(TimeField, self).clean(value)
-        if value is None or isinstance(value, datetime.time):
+        if value is None or isinstance(value, time):
             return value
-        elif isinstance(value, datetime.datetime):
+        elif isinstance(value, datetime):
             return value.timetz()
         else:
-            raise UnexpectedTypeError(datetime.time, value)
+            raise UnexpectedTypeError(time, value)
 
     def export_value_as_string(self, value, serializer):
         v = value.isoformat()
-        if value.microsecond:
-            v = v[:12] + v[15:]
         if v.endswith('+00:00'):
             v = v[:-6] + 'Z'
         return v
@@ -388,7 +371,7 @@ class TimeField(Field):
         return parse_time(value)
 
 
-class FixedOffset(datetime.tzinfo):
+class FixedOffset(tzinfo):
     """
     Fixed offset in minutes east from UTC. Taken from Python's docs.
 
@@ -399,12 +382,12 @@ class FixedOffset(datetime.tzinfo):
     """
     def __init__(self, offset=None, name=None):
         if offset is not None:
-            self.__offset = datetime.timedelta(minutes=offset)
+            self.__offset = timedelta(minutes=offset)
         if name is not None:
             self.__name = name
 
     def dst(self, dt):
-        return datetime.timedelta(0)
+        return timedelta(0)
 
     def tzname(self, dt):
         return self.__name
@@ -419,7 +402,7 @@ class TimeZoneField(Field):
     description = _('Time Zone')
 
     def import_value(self, value, serializer):
-        value = self.prepare_value_for_importation(value, serializer)
+        value = self.prepare_to_import(value, serializer)
         if value is None:
             return value
         elif value == 'Z':
@@ -435,15 +418,15 @@ class TimeZoneField(Field):
     def export_value(self, value, serializer):
         value = super(TimeZoneField, self).clean(value)
         if value is not None:
-            if isinstance(value, datetime.tzinfo):
+            if isinstance(value, tzinfo):
                 offset = value.utcoffset(None)
-            elif isinstance(value, (datetime.datetime, datetime.time)):
+            elif isinstance(value, (datetime, time)):
                 offset = value.utcoffset()
             else:
                 expected_types = (
-                    datetime.tzinfo,
-                    datetime.datetime,
-                    datetime.time,
+                    tzinfo,
+                    datetime,
+                    time,
                 )
                 raise UnexpectedTypeError(expected_types, value)
 
@@ -459,7 +442,7 @@ class TimeZoneField(Field):
                     hours, minutes = divmod(total_minutes, 60)
                     value = '{0}{1:02d}:{2:02d}'.format(sign, hours, minutes)
 
-        return self.prepare_value_for_exportation(value, serializer)
+        return self.prepare_to_export(value, serializer)
 
 
 class YearField(IntegerField):
@@ -470,10 +453,10 @@ class YearField(IntegerField):
         value = super(IntegerField, self).clean(value)
         if value is None or isinstance(value, six.integer_types):
             return value
-        elif isinstance(value, (datetime.datetime, datetime.date)):
+        elif isinstance(value, (datetime, date)):
             return value.year
         else:
-            raise UnexpectedTypeError((int, datetime.datetime, datetime.date), value)
+            raise UnexpectedTypeError((int, datetime, date), value)
 
 
 ## DECIMALS ####################################################################
@@ -486,17 +469,17 @@ class DecimalField(Field):
 
     def clean(self, value):
         value = super(DecimalField, self).clean(value)
-        if value is None or isinstance(value, decimal.Decimal):
+        if value is None or isinstance(value, dec):
             return value
         try:
             return value.to_decimal()
         except AttributeError:
-            return decimal.Decimal(value)
+            return dec(value)
 
     def import_value_from_string(self, value, serializer):
         try:
-            return decimal.Decimal(value)
-        except decimal.InvalidOperation:
+            return dec(value)
+        except InvalidOperation:
             return None
 
 
@@ -504,31 +487,22 @@ class NumberField(DecimalField):
     """
     I did the following test and I found that is safe to convert
     decimals in floats and vice versa if you take care of convert
-    the float in a string before converting it into a decimal.
+    the float in a string before converting it into a
 
-    >>> import sys
-    >>> try:
-    ...     import cdecimal
-    ... except ImportError:
-    ...     pass
-    ... else:
-    ...     sys.modules['decimal'] = cdecimal
-    ...
     >>> from decimal import Decimal as dec
-    ...
     >>> def test(max_digits, decimal_places):
     ...     error_count = 0
     ...     for i in range(10 ** max_digits):
-    ...         s = str(i)
-    ...         if len(s) < decimal_places:
-    ...             s = ('0' * (decimal_places - len(s))) + s
-    ...         s = '.'.join((s[:-decimal_places], s[-decimal_places:]))
-    ...         if dec(s) != dec(str(float(dec(s)))):
+    ...         s = str(i).zfill(decimal_places)
+    ...         s = s[:-decimal_places] + '.' + s[-decimal_places:]
+    ...         d = dec(s)
+    ...         if d != dec(str(float(d))):
+    ...             print(s, str(float(d)), sep=' != ')
     ...             error_count += 1
-    ...     print 'Errors:', error_count
+    ...     print('ERRORS: ', error_count)
     ...
-    >>> test(18, 6)
-    Errors: 0
+    >>> test(12, 6)
+    ERRORS: 0
 
     WARNING: This test takes a long long time, at least in my computer.
 
@@ -553,17 +527,17 @@ class NumberField(DecimalField):
                     else:
                         value = float(v)
 
-        return self.prepare_value_for_exportation(value, serializer)
+        return self.prepare_to_export(value, serializer)
 
     def import_value(self, value, serializer):
-        value = self.prepare_value_for_importation(value, serializer)
+        value = self.prepare_to_import(value, serializer)
         if value is None:
             return value
         elif (self.force_string
                 or self.data_type not in serializer.importation_data_types):
             return self.import_value_from_string(value, serializer)
         else:
-            return decimal.Decimal(str(value))
+            return dec(str(value))
 
 
 ## Files #######################################################################

@@ -50,10 +50,16 @@ class Activatable(models.Model):
             raise ValidationError({'active_to': msg})
 
     def is_active(self, date=None):
+        if self.active_status != Activatable.ACTIVE:
+            return False
+
+        if self.active_from is None and self.active_to is None:
+            return True
+
         if date is None:
             date = timezone.now()
-        return (self.active_status == Activatable.ACTIVE
-                and (self.active_from is None or self.active_from <= date)
+
+        return ((self.active_from is None or self.active_from <= date)
                 and (self.active_to is None or self.active_to >= date))
     is_active.boolean = True
     is_active.short_description = _('Is Active?')

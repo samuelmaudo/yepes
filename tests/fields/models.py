@@ -189,8 +189,8 @@ class DecimalModel(models.Model):
     positive_decimal = DecimalField(
         max_digits=6,
         decimal_places=2,
-        min_value=0,
-        max_value=100)
+        min_value=dec('0'),
+        max_value=dec('100'))
 
 
 class EmailModel(models.Model):

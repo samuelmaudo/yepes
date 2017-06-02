@@ -58,6 +58,12 @@ class Displayable(Slugged, MetaData):
             msg = _('End date cannot be earlier than starting date.')
             raise ValidationError({'publish_to': msg})
 
+    def get_default_meta_index(self):
+        if self.is_published():
+            return super(Displayable, self).get_default_meta_index()
+        else:
+            return False
+
     def is_draft(self):
         return (self.publish_status == Displayable.DRAFT)
     is_draft.boolean = True
@@ -69,10 +75,16 @@ class Displayable(Slugged, MetaData):
     is_hidden.short_description = _('Is Hidden?')
 
     def is_published(self, date=None):
+        if self.publish_status != Displayable.PUBLISHED:
+            return False
+
+        if self.publish_from is None and self.publish_to is None:
+            return True
+
         if date is None:
             date = timezone.now()
-        return (self.publish_status == Displayable.PUBLISHED
-                and (self.publish_from is None or self.publish_from <= date)
+
+        return ((self.publish_from is None or self.publish_from <= date)
                 and (self.publish_to is None or self.publish_to >= date))
     is_published.boolean = True
     is_published.short_description = _('Is Published?')

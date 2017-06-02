@@ -2,14 +2,9 @@
 
 from __future__ import unicode_literals
 
-import os
-
 from django.core.management.base import BaseCommand, CommandError
 
-from yepes.apps import apps
-from yepes.contrib.datamigrations import DataMigration
-from yepes.contrib.datamigrations.importation_plans import importation_plans
-from yepes.contrib.datamigrations.serializers import serializers
+from yepes.contrib.datamigrations.facades import SingleImportFacade
 
 
 class Command(BaseCommand):
@@ -19,27 +14,37 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('args', metavar='app_label.ModelName', nargs='*')
-        parser.add_argument('-i', '--input',
+        parser.add_argument('-f', '--file',
             action='store',
             default=None,
-            dest='input',
-            help='Specifies the file from which the data is read.')
-        parser.add_argument('-f', '--format',
+            dest='file',
+            help='Specifies a file from which the data will be readed.')
+        parser.add_argument('--format',
             action='store',
-            default='json',
+            default=None,
             dest='format',
-            help='Specifies the serialization format of imported data.')
+            help='Specifies the serialization format of the imported data.')
+        parser.add_argument('--encoding',
+            action='store',
+            default=None,
+            dest='encoding',
+            help='Specifies the encoding used to decode the imported data.')
+        parser.add_argument('--newline',
+            action='store',
+            default=None,
+            dest='newline',
+            help='Specifies how the lines of the imported file end.')
         parser.add_argument('-p', '--plan',
             action='store',
             default='update_or_create',
             dest='plan',
-            help='Specifies the importation plan used to import data.')
+            help='Specifies the importation plan used to import the data.')
         parser.add_argument('--batch',
             action='store',
             default=100,
             dest='batch',
-            help='Maximum number of messages that can be dispatched.',
-            type=int),
+            help='Maximum number of entries that can be imported at a time.',
+            type=int)
         parser.add_argument('--fields',
             action='store',
             default=None,
@@ -50,6 +55,12 @@ class Command(BaseCommand):
             default=None,
             dest='exclude',
             help='A list of field names to exclude from the migration.')
+        parser.add_argument('--natural',
+            action='store_true',
+            default=False,
+            dest='natural',
+            help=('Use natural keys if they are available (both primary and '
+                  'foreign keys).'))
         parser.add_argument('--natural-primary',
             action='store_true',
             default=False,
@@ -60,62 +71,58 @@ class Command(BaseCommand):
             default=False,
             dest='natural_foreign',
             help='Use natural foreign keys if they are available.')
-        parser.add_argument('--ignore-missing-keys',
+        parser.add_argument('-i', '--ignore-missing',
             action='store_true',
             default=False,
-            dest='ignore_missing_keys',
-            help=('Ignores entries in the serialized data whose foreign '
+            dest='ignore_missing',
+            help=('Ignore entries in the serialized data whose foreign '
                   'keys point to objects that do not currently exist in '
                   'the database.'))
 
     def handle(self, *labels, **options):
-        if len(labels) != 1:
-            raise CommandError('This command takes one and only one positional argument.')
+        verbosity = options['verbosity']
+        show_traceback = options['traceback']
 
-        model_name = labels[0]
-        fields = options['fields'].split(',') if options['fields'] else None
-        exclude = options['exclude'].split(',') if options['exclude'] else None
-        use_natural_primary_keys = options['natural_primary']
-        use_natural_foreign_keys = options['natural_foreign']
-        ignore_missing_foreign_keys = options['ignore_missing_keys']
-        serializer_name = options['format']
-        plan_name = options['plan']
-        file_path = options['input']
-        batch_size = options['batch']
-
-        if '.' not in model_name:
-            raise CommandError("Model label must be like 'appname.ModelName'.")
-
+        file_path = options['file']
         if not file_path:
             raise CommandError('You must give an input file.')
-        elif not os.path.exists(file_path):
-            raise CommandError("File '{0}' does not exit.".format(file_path))
+
+        kwargs = {
+            'serializer': options['format'],
+            'encoding': options['encoding'],
+            'newline': options['newline'],
+            'plan': options['plan'],
+            'batch_size': options['batch'],
+            'use_natural_primary_keys': options['natural'] or options['natural_primary'],
+            'use_natural_foreign_keys': options['natural'] or options['natural_foreign'],
+            'ignore_missing_foreign_keys': options['ignore_missing'],
+        }
+        if labels:
+
+            if len(labels) > 1:
+                raise CommandError('This command takes only one positional argument.')
+
+            if labels[0].count('.') != 1:
+                raise CommandError("Model label must be like 'appname.ModelName'.")
+
+            kwargs['model'] = labels[0]
+
+        if options['fields'] is not None:
+            kwargs['fields'] = options['fields'].split(',')
+
+        if options['exclude'] is not None:
+            kwargs['exclude'] = options['exclude'].split(',')
 
         try:
-            model = apps.get_model(model_name)
-        except LookupError as e:
-            raise CommandError(str(e))
 
-        try:
-            serializer = serializers.get_serializer(serializer_name)
-        except LookupError as e:
-            raise CommandError(str(e))
+            SingleImportFacade.from_file_path(file_path, **kwargs)
 
-        try:
-            plan = importation_plans.get_plan(plan_name)
-        except LookupError as e:
-            raise CommandError(str(e))
+        except Exception as e:
+            if show_traceback:
+                raise e
+            else:
+                raise CommandError(str(e))
 
-        migration = DataMigration(
-            model,
-            fields,
-            exclude,
-            use_natural_primary_keys,
-            use_natural_foreign_keys,
-            ignore_missing_foreign_keys,
-        )
-        with open(file_path, 'r') as file:
-            migration.import_data(file, serializer, plan, batch_size)
-
-        self.stdout.write('Entries were successfully imported.')
+        if verbosity >= 1:
+            self.stdout.write('Entries were successfully imported.')
 

@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from yepes.contrib.datamigrations.importation_plans import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 from yepes.loading import LazyModel
 from yepes.utils.emails import normalize_email, validate_email
 
@@ -11,14 +11,14 @@ Newsletter = LazyModel('newsletters', 'Newsletter')
 SubscriberTag = LazyModel('newsletters', 'SubscriberTag')
 
 
-class SubscriberPlan(ImportationPlan):
+class SubscriberPlan(ModelImportationPlan):
 
     needs_create = True
 
     def import_batch(self, batch):
         model = self.migration.model
         key = self.migration.primary_key.attname
-        existing_keys = self._get_existing_object_keys(batch)
+        existing_keys = self.get_existing_keys(batch)
         for row in batch:
             if row[key] in existing_keys:
                 continue

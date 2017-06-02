@@ -4,16 +4,16 @@ from __future__ import unicode_literals
 
 import collections
 
-from yepes.contrib.datamigrations.importation_plans import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 
-class CreatePlan(ImportationPlan):
+class CreatePlan(ModelImportationPlan):
 
     needs_create = True
 
     def import_batch(self, batch):
         model = self.migration.model
-        obj_keys = self._get_existing_object_keys(batch)
+        obj_keys = self.get_existing_keys(batch)
         if not obj_keys:
             for row in batch:
                 model(**row).save(force_insert=True)

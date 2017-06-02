@@ -30,7 +30,7 @@ class cached_property(object):
             return value
 
 
-class class_property(property):
+class class_only_property(property):
     """
     Decorator that converts a class method with a single ``cls`` argument into
     a class property.
@@ -39,7 +39,17 @@ class class_property(property):
         if obj is None:
             return self.fget(objtype)
         else:
-            raise AttributeError('unreadable attribute')
+            raise AttributeError('This property is available only on the '
+                                 'class, not on instances.')
+
+
+class class_property(property):
+    """
+    Decorator that converts a class method with a single ``cls`` argument into
+    a class property.
+    """
+    def __get__(self, obj, objtype=None):
+        return self.fget(objtype)
 
 
 def described_property(short_description, allow_tags=False, boolean=False,

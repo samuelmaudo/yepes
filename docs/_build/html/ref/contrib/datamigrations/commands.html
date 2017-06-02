@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Commands &mdash; Yepes 1.0.dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Yepes 1.0.dev documentation" href="../../../index.html"/>
+        <link rel="up" title="Data Migrations" href="index.html"/>
+        <link rel="next" title="Migration classes" href="data-migrations.html"/>
+        <link rel="prev" title="Data Migrations" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../contents.html" class="icon icon-home"> Yepes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Yepes documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../topics/index.html">Using Yepes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="docutils literal"><span class="pre">contrib</span></code> packages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Data Migrations</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="data-migrations.html">Migration classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields.html">Field types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="importation-plans.html">Importation plans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serializers.html">Serializers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#datamigrations"><code class="docutils literal"><span class="pre">datamigrations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../contents.html">Yepes</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="../index.html"><code class="docutils literal"><span class="pre">contrib</span></code> packages</a> &raquo;</li>
+      
+          <li><a href="index.html">Data Migrations</a> &raquo;</li>
+      
+    <li>Commands</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/ref/contrib/datamigrations/commands.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="commands">
+<h1>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="export-model">
+<h2>export_model<a class="headerlink" href="#export-model" title="Permalink to this headline">¶</a></h2>
+<dl class="describe">
+<dt>
+<code class="descname">manage.py export_model app_label.ModelName</code></dt>
+<dd><p>Dumps all objects of the specified model.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-all">
+<code class="descname">--all</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-a</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses Django’s base manager, dumping records which might otherwise be
+filtered or modified by a custom manager.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-file">
+<code class="descname">--file</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-f</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a file to write the serialized data to. By default, the data goes
+to the standard output.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-format">
+<code class="descname">--format</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the serialization format of the output. By default, tries to guess
+the format by using the extension of the output file (if specified).
+Otherwise, defaults to JSON.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-encoding">
+<code class="descname">--encoding</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the encoding used to encode the output.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-newline">
+<code class="descname">--newline</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies how to end lines.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-fields">
+<code class="descname">--fields</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of field names to use in the migration.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-exclude">
+<code class="descname">--exclude</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-exclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of field names to exclude from the migration.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-natural">
+<code class="descname">--natural</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-natural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural keys if they are available. It has the same effect of pass both
+<code class="docutils literal"><span class="pre">--natural-primary</span></code> and <code class="docutils literal"><span class="pre">--natural-foreign</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-natural-primary">
+<code class="descname">--natural-primary</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-natural-primary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural primary keys if they are available.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-model-natural-foreign">
+<code class="descname">--natural-foreign</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-model-natural-foreign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural foreign keys if they are available.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="export-models">
+<h2>export_models<a class="headerlink" href="#export-models" title="Permalink to this headline">¶</a></h2>
+<dl class="describe">
+<dt>
+<code class="descname">manage.py export_models [app_label[.ModelName] [app_label[.ModelName] ...]]</code></dt>
+<dd><p>Dumps all objects of the specified models. If no model name is provided, all
+available models will be dumped. If you pass an application label without
+specifying the model name, all models associated with that application will
+be dumped.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-all">
+<code class="descname">--all</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-a</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses Django’s base manager, dumping records which might otherwise be
+filtered or modified by a custom manager.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-file">
+<code class="descname">--file</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-f</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a file to write the serialized data to. By default, the data goes
+to standard output.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-directory">
+<code class="descname">--directory</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-d</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a directory to write the serialized data to. This option is not combinable with the <a class="reference internal" href="#cmdoption-export-models-file"><code class="xref std std-option docutils literal"><span class="pre">export_models</span> <span class="pre">--file</span></code></a> option.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-format">
+<code class="descname">--format</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the serialization format of the output. Defaults to JSON.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-encoding">
+<code class="descname">--encoding</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the encoding used to encode the output.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-newline">
+<code class="descname">--newline</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies how to end lines.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-export-models-natural">
+<code class="descname">--natural</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-export-models-natural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural keys if they are available (both primary and foreign keys).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="import-model">
+<h2>import_model<a class="headerlink" href="#import-model" title="Permalink to this headline">¶</a></h2>
+<dl class="describe">
+<dt>
+<code class="descname">manage.py import_model [app_label.ModelName]</code></dt>
+<dd><p>Loads the contents of the given file into the database. If no model name is
+provided, it tries to guess the model from the input file name.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-file">
+<code class="descname">--file</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-f</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a file from which the data will be readed. Unlike other migration commands, <code class="docutils literal"><span class="pre">import_model</span></code> requires setting the <code class="docutils literal"><span class="pre">--file</span></code> option.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-format">
+<code class="descname">--format</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the serialization format of the input. By default, tries to guess
+the format by using the extension of the input file. Otherwise, defaults to
+JSON.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-encoding">
+<code class="descname">--encoding</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the encoding used to decode the imported data.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-newline">
+<code class="descname">--newline</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies how the lines of the imported file end.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-plan">
+<code class="descname">--plan</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-p</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the importation plan used to import the data.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-batch">
+<code class="descname">--batch</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of entries that can be imported at a time.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-fields">
+<code class="descname">--fields</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of field names to use in the migration.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-exclude">
+<code class="descname">--exclude</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-exclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of field names to exclude from the migration.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-natural">
+<code class="descname">--natural</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-natural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural keys if they are available. It has the same effect of pass both
+<code class="docutils literal"><span class="pre">--natural-primary</span></code> and <code class="docutils literal"><span class="pre">--natural-foreign</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-natural-primary">
+<code class="descname">--natural-primary</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-natural-primary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural primary keys if they are available.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-natural-foreign">
+<code class="descname">--natural-foreign</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-natural-foreign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural foreign keys if they are available.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-model-ignore-missing">
+<code class="descname">--ignore-missing</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-i</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-model-ignore-missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ignores entries in the serialized data whose foreign keys point to objects
+that do not currently exist in the database.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="import-models">
+<h2>import_models<a class="headerlink" href="#import-models" title="Permalink to this headline">¶</a></h2>
+<dl class="describe">
+<dt>
+<code class="descname">manage.py import_models</code></dt>
+<dd><p>Loads the contents of the given file into the database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-file">
+<code class="descname">--file</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-f</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a file from which the data will be readed.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-directory">
+<code class="descname">--directory</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-d</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a directory from which the data will be readed. This option is not combinable with <a class="reference internal" href="#cmdoption-import-models-file"><code class="xref std std-option docutils literal"><span class="pre">import_models</span> <span class="pre">--file</span></code></a>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-format">
+<code class="descname">--format</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the serialization format of the input. Defaults to JSON.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-encoding">
+<code class="descname">--encoding</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the encoding used to decode the imported data.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-newline">
+<code class="descname">--newline</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies how the lines of the imported file end.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-plan">
+<code class="descname">--plan</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-p</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the importation plan used to import the data.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-batch">
+<code class="descname">--batch</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of entries that can be imported at a time.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-natural">
+<code class="descname">--natural</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-natural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses natural keys if they are available (both primary and foreign keys).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-import-models-ignore-missing-keys">
+<code class="descname">--ignore-missing-keys</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-i</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-import-models-ignore-missing-keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ignores entries in the serialized data whose foreign keys point to objects
+that do not currently exist in the database.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data-migrations.html" class="btn btn-neutral float-right" title="Migration classes" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Data Migrations" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Samuel Maudo.
+      Last updated on May 29, 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

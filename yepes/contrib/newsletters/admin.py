@@ -485,6 +485,8 @@ class NewsletterAdmin(StatisticsMixin, admin.ModelAdmin):
                 'meta_title',
                 'meta_description',
                 'meta_keywords',
+                'meta_index',
+                'canonical_url',
             ]
         }),
         (_('Settings'), {

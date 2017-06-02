@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 
 from yepes.contrib.datamigrations.fields import *
 from yepes.contrib.datamigrations.data_migrations import (
-    CustomDataMigration,
     DataMigration,
+    BaseModelMigration,
+    ModelMigration,
     QuerySetExportation,
 )
 

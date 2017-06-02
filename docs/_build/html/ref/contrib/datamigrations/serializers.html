@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Serializers &mdash; Yepes 1.0.dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Yepes 1.0.dev documentation" href="../../../index.html"/>
+        <link rel="up" title="Data Migrations" href="index.html"/>
+        <link rel="prev" title="Importation plans" href="importation-plans.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../contents.html" class="icon icon-home"> Yepes
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Yepes documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../topics/index.html">Using Yepes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="docutils literal"><span class="pre">contrib</span></code> packages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Data Migrations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="data-migrations.html">Migration classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields.html">Field types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="importation-plans.html">Importation plans</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Serializers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#datamigrations"><code class="docutils literal"><span class="pre">datamigrations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../contents.html">Yepes</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+      
+          <li><a href="../index.html"><code class="docutils literal"><span class="pre">contrib</span></code> packages</a> &raquo;</li>
+      
+          <li><a href="index.html">Data Migrations</a> &raquo;</li>
+      
+    <li>Serializers</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/ref/contrib/datamigrations/serializers.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="serializers">
+<h1>Serializers<a class="headerlink" href="#serializers" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.base.</code><code class="descname">Serializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class does not inherit methods and attributes from any classes.</p>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.encoding">
+<code class="descname">encoding</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.encoding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.errors">
+<code class="descname">errors</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.errors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.exportation_data_types">
+<code class="descname">exportation_data_types</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.exportation_data_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.importation_data_types">
+<code class="descname">importation_data_types</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.importation_data_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.is_binary">
+<code class="descname">is_binary</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.is_binary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.name">
+<code class="descname">name</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.newline">
+<code class="descname">newline</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.newline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.none_replacement">
+<code class="descname">none_replacement</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.none_replacement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.serializer_parameters">
+<code class="descname">serializer_parameters</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.serializer_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.verbose_name">
+<code class="descname">verbose_name</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.verbose_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**serializer_parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the serializer instance by setting <a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer.none_replacement" title="yepes.contrib.datamigrations.serializers.base.Serializer.none_replacement"><code class="xref py py-attr docutils literal"><span class="pre">none_replacement</span></code></a>
+and <a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer.serializer_parameters" title="yepes.contrib.datamigrations.serializers.base.Serializer.serializer_parameters"><code class="xref py py-attr docutils literal"><span class="pre">serializer_parameters</span></code></a> attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.check_file">
+<code class="descname">check_file</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.check_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.check_string">
+<code class="descname">check_string</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.check_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.deserialize">
+<code class="descname">deserialize</code><span class="sig-paren">(</span><em>headers</em>, <em>source</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>headers</em>, <em>data</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.dump" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.dumps">
+<code class="descname">dumps</code><span class="sig-paren">(</span><em>headers</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.dumps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>headers</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.loads">
+<code class="descname">loads</code><span class="sig-paren">(</span><em>headers</em>, <em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.loads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.open_to_dump">
+<code class="descname">open_to_dump</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.open_to_dump" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.open_to_load">
+<code class="descname">open_to_load</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.open_to_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="yepes.contrib.datamigrations.serializers.base.Serializer.serialize">
+<code class="descname">serialize</code><span class="sig-paren">(</span><em>headers</em>, <em>data</em>, <em>file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.base.Serializer.serialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.csv.CsvSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.csv.</code><code class="descname">CsvSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.csv.CsvSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.json.JsonSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.json.</code><code class="descname">JsonSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.json.JsonSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.xls.XlsSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.xls.</code><code class="descname">XlsSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.xls.XlsSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.xlsx.XlsxSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.xlsx.</code><code class="descname">XlsxSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.xlsx.XlsxSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.tsv.TsvSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.tsv.</code><code class="descname">TsvSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.tsv.TsvSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.csv.CsvSerializer" title="yepes.contrib.datamigrations.serializers.csv.CsvSerializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.csv.CsvSerializer</span></code></a></li>
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="yepes.contrib.datamigrations.serializers.yaml.YamlSerializer">
+<em class="property">class </em><code class="descclassname">yepes.contrib.datamigrations.serializers.yaml.</code><code class="descname">YamlSerializer</code><a class="headerlink" href="#yepes.contrib.datamigrations.serializers.yaml.YamlSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Ancestors (MRO)</strong></p>
+<p>This class inherits methods and attributes from the following classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#yepes.contrib.datamigrations.serializers.base.Serializer" title="yepes.contrib.datamigrations.serializers.base.Serializer"><code class="xref py py-class docutils literal"><span class="pre">yepes.contrib.datamigrations.serializers.base.Serializer</span></code></a></li>
+</ul>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="importation-plans.html" class="btn btn-neutral" title="Importation plans" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Samuel Maudo.
+      Last updated on May 29, 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

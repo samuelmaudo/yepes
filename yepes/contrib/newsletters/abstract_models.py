@@ -276,7 +276,7 @@ class AbstractDomain(models.Model):
 
 
 @python_2_unicode_compatible
-class AbstractMessage(Logged, Slugged, MetaData):
+class AbstractMessage(Logged, Slugged):
 
     newsletter = models.ForeignKey(
             'Newsletter',
@@ -450,6 +450,14 @@ class AbstractNewsletter(Orderable, Logged, Slugged, MetaData):
     @staticmethod
     def autocomplete_search_fields():
         return ('name__icontains', )
+
+    # CUSTOM METHODS
+
+    def get_default_meta_index(self):
+        if self.is_published:
+            return super(AbstractNewsletter, self).get_default_meta_index()
+        else:
+            return False
 
     # PROPERTIES
 

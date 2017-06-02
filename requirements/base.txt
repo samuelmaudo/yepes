@@ -1,12 +1,15 @@
-Django<1.9
-django-grappelli<2.8
+Django<2.0
+django-grappelli<2.11
 django-mptt
 geoip2
 lxml
 markdown2
+openpyxl
 Pillow
 pycrypto
 pytz
 PyYAML
 unicodecsv
 Wand
+xlrd
+xlwt

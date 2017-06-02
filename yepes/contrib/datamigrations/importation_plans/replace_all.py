@@ -9,6 +9,6 @@ class ReplaceAllPlan(DirectPlan):
 
     def prepare_importation(self):
         model = self.migration.model
-        manager = model._default_manager
+        manager = model._base_manager
         manager.truncate()
 

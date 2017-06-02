@@ -6,18 +6,18 @@ import collections
 
 from django.utils import six
 
-from yepes.contrib.datamigrations.importation_plans import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 
-class UpdateOrBulkCreatePlan(ImportationPlan):
+class UpdateOrBulkCreatePlan(ModelImportationPlan):
 
     needs_create = True
     needs_update = True
 
     def import_batch(self, batch):
         model = self.migration.model
-        manager = model._default_manager
-        objs = self._get_existing_objects(batch)
+        manager = model._base_manager
+        objs = self.get_existing_objects(batch)
         if not objs:
             manager.bulk_create(
                 model(**row)
@@ -32,9 +32,13 @@ class UpdateOrBulkCreatePlan(ImportationPlan):
                 for row in batch:
                     obj = objs.get(row[key_attr])
                     if obj is not None:
+                        is_modified = False
                         for k, v in six.iteritems(row):
-                            setattr(obj, k, v)
-                        obj.save(force_update=True)
+                            if v != getattr(obj, k):
+                                setattr(obj, k, v)
+                                is_modified = True
+                        if is_modified:
+                            obj.save(force_update=True)
                     else:
                         new_objs.append(model(**row))
             else:
@@ -42,9 +46,13 @@ class UpdateOrBulkCreatePlan(ImportationPlan):
                 for row in batch:
                     obj = objs.get(tuple(row[attr] for attr in key_attrs))
                     if obj is not None:
+                        is_modified = False
                         for k, v in six.iteritems(row):
-                            setattr(obj, k, v)
-                        obj.save(force_update=True)
+                            if v != getattr(obj, k):
+                                setattr(obj, k, v)
+                                is_modified = True
+                        if is_modified:
+                            obj.save(force_update=True)
                     else:
                         new_objs.append(model(**row))
 

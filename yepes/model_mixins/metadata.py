@@ -25,6 +25,19 @@ class MetaData(models.Model):
     Abstract model that provides meta data for content.
     """
 
+    DEFAULT = None
+    INDEX = True
+    NOINDEX = False
+    INDEX_CHOICES = (
+        (DEFAULT, _('Default')),
+        (INDEX, 'index'),
+        (NOINDEX, 'noindex'),
+    )
+    meta_index = models.NullBooleanField(
+            choices=INDEX_CHOICES,
+            default=DEFAULT,
+            verbose_name=_('Robots'))
+
     meta_title = fields.CharField(
             blank=True,
             max_length=127,
@@ -40,10 +53,30 @@ class MetaData(models.Model):
             blank=True,
             verbose_name=_('Keywords'),
             help_text=_('Optional keywords to be used in the keywords meta tag. '
-                        'If left blank, will be extracted from the description.'))
+                        'If left blank, they will be extracted from the description.'))
+
+    canonical_url = models.URLField(
+            blank=True,
+            max_length=255,
+            verbose_name=_('Canonical URL'),
+            help_text=_("Optional URL to be used in the canonical meta tag. "
+                        "If left blank, the object's URL will be used."))
 
     class Meta:
         abstract = True
+
+    def get_canonical_url(self):
+        if self.canonical_url:
+            return self.canonical_url
+        elif hasattr(self, 'get_full_url'):
+            return self.get_full_url()
+        elif hasattr(self, 'get_absolute_url'):
+            return self.get_absolute_url()
+        else:
+            return ''
+
+    def get_default_meta_index(self):
+        return True
 
     def get_meta_description(self, max_words=30, end_text='...'):
         if self.meta_description:
@@ -71,6 +104,12 @@ class MetaData(models.Model):
         description = strip_tags(description)
         description = Truncator(description).words(max_words, end_text)
         return description
+
+    def get_meta_index(self):
+        if self.meta_index is None:
+            return self.get_default_meta_index()
+        else:
+            return self.meta_index
 
     def get_meta_keywords(self, max_words=10):
         if self.meta_keywords:

@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from yepes.contrib import datamigrations as migrations
 
 
-class BooleanMigration(migrations.CustomDataMigration):
+class BooleanMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.BooleanField('boolean'),
@@ -15,7 +15,7 @@ class BooleanMigration(migrations.CustomDataMigration):
     ]
 
 
-class DateTimeMigration(migrations.CustomDataMigration):
+class DateTimeMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.DateField('date'),
@@ -40,7 +40,7 @@ class DateTimeMigration(migrations.CustomDataMigration):
     ]
 
 
-class DateTimeEdgeMigration(migrations.CustomDataMigration):
+class DateTimeEdgeMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.DateTimeField('date', 'date__datetime'),
@@ -65,7 +65,7 @@ class DateTimeEdgeMigration(migrations.CustomDataMigration):
     ]
 
 
-class FileMigration(migrations.CustomDataMigration):
+class FileMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.FileField('file'),
@@ -73,7 +73,7 @@ class FileMigration(migrations.CustomDataMigration):
     ]
 
 
-class NumericMigration(migrations.CustomDataMigration):
+class NumericMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.IntegerField('integer'),
@@ -85,7 +85,7 @@ class NumericMigration(migrations.CustomDataMigration):
     ]
 
 
-class TextMigration(migrations.CustomDataMigration):
+class TextMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.TextField('char'),
@@ -93,7 +93,7 @@ class TextMigration(migrations.CustomDataMigration):
     ]
 
 
-class AlphabetMigration(migrations.CustomDataMigration):
+class AlphabetMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.IntegerField('pk'),
@@ -102,7 +102,7 @@ class AlphabetMigration(migrations.CustomDataMigration):
     ]
 
 
-class AuthorMigration(migrations.CustomDataMigration):
+class AuthorMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.TextField('name'),
@@ -110,7 +110,7 @@ class AuthorMigration(migrations.CustomDataMigration):
     ]
 
 
-class BlogMigration(migrations.CustomDataMigration):
+class BlogMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.TextField('name'),
@@ -118,7 +118,7 @@ class BlogMigration(migrations.CustomDataMigration):
     ]
 
 
-class BlogCategoryMigration(migrations.CustomDataMigration):
+class BlogCategoryMigration(migrations.BaseModelMigration):
 
     fields = [
         migrations.TextField('blog__name'),

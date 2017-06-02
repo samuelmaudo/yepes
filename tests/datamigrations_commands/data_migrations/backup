@@ -1,0 +1,36 @@
+
+--
+-- Name: datamigrations_commands_tests.alphabetmodel; Type: MODEL; Serializer: json
+--
+
+[
+]
+
+--
+-- Name: datamigrations_commands_tests.authormodel; Type: MODEL; Serializer: json
+--
+
+[
+{"name": "Scott"},
+{"name": "Lynda"},
+{"name": "Walter"}
+]
+
+--
+-- Name: datamigrations_commands_tests.categorymodel; Type: MODEL; Serializer: json
+--
+
+[
+{"name": "State Secrets", "description": ""},
+{"name": "Some Nonsense", "description": ""}
+]
+
+--
+-- Name: datamigrations_commands_tests.postmodel; Type: MODEL; Serializer: json
+--
+
+[
+{"title": "Watergate", "author__name": "Scott", "category__name": "State Secrets", "content": "A major political scandal that occurred in the United States..."},
+{"title": "Climategate", "author__name": "Scott", "category__name": "State Secrets", "content": "Emails that were hacked remotely from the Climatic Research..."},
+{"title": "Chiquito de la Calzada", "author__name": "Walter", "category__name": "Some Nonsense", "content": "Trabajas menos que el sastre de Tarzan."}
+]

@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 from json import JSONDecoder, JSONEncoder
 
-from django.utils.six import PY3
+from django.utils.six import PY2
 from django.utils.six.moves import zip
 
 from yepes.contrib.datamigrations.serializers import Serializer
@@ -19,6 +19,21 @@ class JsonSerializer(Serializer):
             'separators': (', ', ': '),
         }
         defaults.update(serializer_parameters)
+
+        # In Python 2 it is easy to mix unicode and binary strings
+        # but from Python 3 developers must ensure that all input
+        # values are unicode strings.
+        if PY2:
+            indent = defaults['indent']
+            if isinstance(indent, bytes):
+                defaults['indent'] = indent.decode()
+
+            defaults['separators'] = tuple(
+                separator.decode() if isinstance(separator, bytes) else separator
+                for separator
+                in defaults['separators']
+            )
+
         super(JsonSerializer, self).__init__(**defaults)
 
     def dump(self, headers, data, file):
@@ -37,23 +52,22 @@ class JsonSerializer(Serializer):
         row_end = '}'
         row_separator = item_separator if indent is None else item_separator.rstrip()
 
-        if not PY3:
-            headers = [h.encode('utf8', 'replace') for h in headers]
-            indent = None if indent is None else indent.encode('utf8', 'replace')
-            newline = newline.encode('utf8', 'replace')
-            newline_indent = newline_indent.encode('utf8', 'replace')
-            data_begin = data_begin.encode('utf8', 'replace')
-            data_end = data_end.encode('utf8', 'replace')
-            item_separator = item_separator.encode('utf8', 'replace')
-            key_wrapper = key_wrapper.encode('utf8', 'replace')
-            key_separator = key_separator.encode('utf8', 'replace')
-            row_begin = row_begin.encode('utf8', 'replace')
-            row_end = row_end.encode('utf8', 'replace')
-            row_separator = row_separator.encode('utf8', 'replace')
-
         # Function shortcuts
         write = file.write
         serialize = encoder.encode
+
+        # Binary decoding
+        if PY2:
+            headers = [
+                key.decode() if isinstance(key, bytes) else key
+                for key
+                in headers
+            ]
+            def serialize(value):
+                string = encoder.encode(value)
+                if isinstance(string, bytes):
+                    string = string.decode()
+                return string
 
         # Data writing
         encoder.indent = None
@@ -76,8 +90,6 @@ class JsonSerializer(Serializer):
                 write(key_separator)
 
                 serialized_value = serialize(value)
-                if not PY3:
-                    serialized_value = serialized_value.encode('utf8', 'replace')
 
                 write(serialized_value)
                 first_item = False

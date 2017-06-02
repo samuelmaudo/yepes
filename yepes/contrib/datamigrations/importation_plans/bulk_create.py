@@ -4,17 +4,17 @@ from __future__ import unicode_literals
 
 import collections
 
-from yepes.contrib.datamigrations.importation_plans import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 
-class BulkCreatePlan(ImportationPlan):
+class BulkCreatePlan(ModelImportationPlan):
 
     needs_create = True
 
     def import_batch(self, batch):
         model = self.migration.model
-        manager = model._default_manager
-        obj_keys = self._get_existing_object_keys(batch)
+        manager = model._base_manager
+        obj_keys = self.get_existing_keys(batch)
         if not obj_keys:
             manager.bulk_create(
                 model(**row)

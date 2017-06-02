@@ -2,15 +2,15 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from django.utils.six import PY3
+from django.utils.six import PY2
 
-if PY3:
-    import csv
-else:
+if PY2:
     import unicodecsv as csv
+else:
+    import csv
 
 from yepes.contrib.datamigrations.serializers import Serializer
-from yepes.contrib.datamigrations.types import FLOAT, INTEGER, TEXT
+from yepes.contrib.datamigrations.constants import FLOAT, INTEGER, TEXT
 from yepes.types import Undefined
 
 
@@ -24,18 +24,42 @@ class CsvSerializer(Serializer):
     importation_data_types = frozenset([
         TEXT,
     ])
+    is_binary = True if PY2 else False
 
     def __init__(self, **serializer_parameters):
         defaults = {
-            'delimiter': ',' if PY3 else b',',
+            'delimiter': ',',
             'doublequote': True,
-            'lineterminator': '\r\n' if PY3 else b'\r\n',
-            'nonereplacement': '\\N' if PY3 else b'\\N',
-            'quotechar': '"' if PY3 else b'"',
+            'lineterminator': '\r\n',
+            'nonereplacement': '\\N',
+            'quotechar': '"',
             'quoting': csv.QUOTE_MINIMAL,
             'skipinitialspace': False,
         }
         defaults.update(serializer_parameters)
+
+        if PY2:
+
+            delimiter = defaults['delimiter']
+            if isinstance(delimiter, unicode):
+                defaults['delimiter'] = delimiter.encode()
+
+            lineterminator = defaults['lineterminator']
+            if isinstance(lineterminator, unicode):
+                defaults['lineterminator'] = lineterminator.encode()
+
+            nonereplacement = defaults['nonereplacement']
+            if isinstance(nonereplacement, unicode):
+                defaults['nonereplacement'] = nonereplacement.encode()
+
+            quotechar = defaults['quotechar']
+            if isinstance(quotechar, unicode):
+                defaults['quotechar'] = quotechar.encode()
+
+        elif defaults.get('newline') is None:
+
+            defaults['newline'] = ''
+
         super(CsvSerializer, self).__init__(**defaults)
 
     def dump(self, headers, data, file):

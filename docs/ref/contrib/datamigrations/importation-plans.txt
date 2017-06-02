@@ -1,0 +1,124 @@
+=================
+Importation plans
+=================
+
+.. class:: yepes.contrib.datamigrations.importation_plans.base.ImportationPlan
+
+    **Ancestors (MRO)**
+
+    This class does not inherit methods and attributes from any classes.
+
+    **Attributes**
+
+    .. attribute:: migration
+    .. attribute:: name
+    .. attribute:: needs_create
+    .. attribute:: needs_update
+    .. attribute:: verbose_name
+
+    **Methods**
+
+    .. method:: __init__(migration)
+
+        Initializes the plan instance by setting :attr:`migration` attribute.
+
+    .. method:: check_conditions()
+
+    .. method:: import_batch(batch)
+
+    .. method:: prepare_batch(batch)
+
+    .. method:: prepare_importation()
+
+    .. method:: run(data, batch_size=100)
+
+.. class:: yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+    **Methods**
+
+    .. method:: get_existing_keys(batch)
+
+    .. method:: get_existing_objects(batch)
+
+    .. method:: get_existing_queryset(batch)
+
+    .. method:: prepare_batch(batch)
+
+.. class:: yepes.contrib.datamigrations.importation_plans.create.CreatePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.direct.DirectPlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.replace.ReplacePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.replace_all.ReplaceAllPlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.direct.DirectPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.update.UpdatePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.update_or_create.UpdateOrCreatePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`
+
+.. class:: yepes.contrib.datamigrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ModelImportationPlan`
+    * :class:`yepes.contrib.datamigrations.importation_plans.base.ImportationPlan`

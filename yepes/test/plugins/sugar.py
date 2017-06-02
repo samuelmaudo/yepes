@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from time import time
 
+from django.utils import six
+
 from yepes.test.plugins.base import Plugin
 from yepes.test.utils import format_traceback
 
@@ -68,7 +70,7 @@ class Sugar(Plugin):
             self.stream.flush()
 
     def addSkip(self, test, reason):
-        self.errors.append((test, reason))
+        self.skipped.append((test, reason))
         if self.showAll:
             self.stream.writeln(self.dictionary['skip'].format(reason))
         elif not self.mute:

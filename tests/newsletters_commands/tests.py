@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 import os
 
-from django.core.management import call_command
-from django.core.management.base import CommandError
+from django.core.management import call_command, CommandError
 from django.test import TestCase
 from django.utils._os import upath
 from django.utils.six import StringIO
@@ -18,6 +17,12 @@ MIGRATIONS_DIR = os.path.join(MODULE_DIR, 'data_migrations')
 
 
 class ImportSubscribersTest(TempDirMixin, TestCase):
+
+    available_apps = [
+        'yepes.contrib.datamigrations',
+        'yepes.contrib.newsletters',
+        'newsletters_commands',
+    ]
 
     maxDiff = None
     tempDirPrefix = 'test_newsletters_commands_'
@@ -32,12 +37,12 @@ class ImportSubscribersTest(TempDirMixin, TestCase):
 
     def test_file_not_found(self):
         with self.assertRaisesRegexp(CommandError, "File 'filename' does not exit."):
-            call_command('import_subscribers', input='filename')
+            call_command('import_subscribers', file='filename')
 
     def test_serializer_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'subscribers.csv')
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('import_subscribers', input=source_path, format='serializername')
+            call_command('import_subscribers', file=source_path, format='serializername')
 
     def test_file(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'subscribers.csv')
@@ -48,7 +53,7 @@ class ImportSubscribersTest(TempDirMixin, TestCase):
         call_command(
             'import_subscribers',
             format='csv',
-            input=source_path,
+            file=source_path,
             stdout=output,
         )
         self.assertIn('Subscribers were successfully imported.', output.getvalue())

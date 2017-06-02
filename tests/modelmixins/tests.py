@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 from decimal import Decimal
+from unittest import skipIf
 
 from django import test
+from django import VERSION as DJANGO_VERSION
 from django.utils import timezone
 from django.utils import translation
 
@@ -1009,6 +1011,8 @@ class SearchableTest(test.TestCase):
             name='The Definitive Guide to Django',
         )
 
+    @skipIf(DJANGO_VERSION >= (1, 10),
+            'Abstract models can not access to their managers.')
     def test_manager_methods(self):
         manager = Displayable.objects
         self.assertEqual(len(manager.search('guide')), 4)

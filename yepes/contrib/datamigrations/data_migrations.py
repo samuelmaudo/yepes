@@ -21,61 +21,21 @@ from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
 
-class CustomDataMigration(object):
+class DataMigration(object):
+
+    can_create = False
+    can_update = False
 
     fields = []
 
-    def __init__(self, model, ignore_missing_foreign_keys=False):
-        self.model = model
-        self.ignore_missing_foreign_keys = ignore_missing_foreign_keys
-
     def export_data(self, file=None, serializer=None):
         serializer = self.get_serializer(serializer)
-        headers = [fld.name for fld in self.fields]
+        headers = [fld.name for fld in self.fields_to_export]
         data = self.get_data_to_export(serializer)
         return serializer.serialize(headers, data, file)
 
     def get_data_to_export(self, serializer):
-        qs = self.model._default_manager.all()
-        if self.requires_model_instances:
-            return self._get_data_from_objects(qs, serializer)
-        else:
-            return self._get_data_from_values(qs, serializer)
-
-    def _get_data_from_objects(self, queryset, serializer):
-        fields =  self.fields
-        if (queryset._result_cache is None
-                and not queryset._prefetch_related_lookups):
-            queryset = queryset.iterator()
-
-        return (
-            [
-                fld.export_value(
-                    fld.get_value_from_object(obj),
-                    serializer,
-                )
-                for fld
-                in fields
-            ]
-            for obj
-            in queryset
-        )
-
-    def _get_data_from_values(self, queryset, serializer):
-        fields =  self.fields
-        return (
-            [
-                fld.export_value(val, serializer)
-                for val, fld
-                in zip(row, fields)
-            ]
-            for row
-            in queryset.values_list(*[
-                fld.path
-                for fld
-                in fields
-            ]).iterator()
-        )
+        raise NotImplementedError('Subclasses of DataMigration must override get_data_to_export() method')
 
     def get_data_to_import(self, source, serializer):
         fields = self.fields_to_import
@@ -92,21 +52,20 @@ class CustomDataMigration(object):
             in data
         )
 
-    def get_importation_plan(self, plan_class=None):
-        if plan_class is None:
-            plan_name = 'update_or_create' if self.can_update else 'create'
-            plan_class = importation_plans.get_plan(plan_name)
-        elif isinstance(plan_class, six.string_types):
+    def get_importation_plan(self, plan_class):
+        if isinstance(plan_class, six.string_types):
             plan_class = importation_plans.get_plan(plan_class)
 
         return plan_class(self)
 
     def get_serializer(self, serializer=None):
         if serializer is None:
-            serializer = serializers.get_serializer('json')()
-        elif isinstance(serializer, six.string_types):
-            serializer = serializers.get_serializer(serializer)()
-        elif isinstance(serializer, collections.Callable):
+            serializer = 'json'
+
+        if isinstance(serializer, six.string_types):
+            serializer = serializers.get_serializer(serializer)
+
+        if isinstance(serializer, collections.Callable):
             serializer = serializer()
 
         return serializer
@@ -116,6 +75,77 @@ class CustomDataMigration(object):
         data = self.get_data_to_import(source, serializer)
         plan = self.get_importation_plan(plan)
         plan.run(data, batch_size)
+
+    @property
+    def fields_to_export(self):
+        return self.fields
+
+    @property
+    def fields_to_import(self):
+        return self.fields
+
+
+class BaseModelMigration(DataMigration):
+
+    def __init__(self, model, use_base_manager=False,
+                       ignore_missing_foreign_keys=False):
+
+        self.model = model
+        self.use_base_manager = use_base_manager
+        self.ignore_missing_foreign_keys = ignore_missing_foreign_keys
+
+    def get_data_to_export(self, serializer):
+        if self.use_base_manager:
+            manager = self.model._base_manager
+        else:
+            manager = self.model._default_manager
+
+        qs = manager.get_queryset()
+        if self.requires_model_instances:
+            return self._data_from_objects(qs, serializer)
+        else:
+            return self._data_from_values(qs, serializer)
+
+    def _data_from_objects(self, queryset, serializer):
+        fields =  self.fields_to_export
+        if (queryset._result_cache is None
+                and not queryset._prefetch_related_lookups):
+            queryset = queryset.iterator()
+
+        return (
+            [
+                fld.export_value(
+                    fld.value_from_object(obj),
+                    serializer,
+                )
+                for fld
+                in fields
+            ]
+            for obj
+            in queryset
+        )
+
+    def _data_from_values(self, queryset, serializer):
+        fields =  self.fields_to_export
+        return (
+            [
+                fld.export_value(val, serializer)
+                for val, fld
+                in zip(row, fields)
+            ]
+            for row
+            in queryset.values_list(*[
+                fld.path
+                for fld
+                in fields
+            ]).iterator()
+        )
+
+    def get_importation_plan(self, plan_class=None):
+        if plan_class is None:
+            plan_class = 'update_or_create' if self.can_update else 'create'
+
+        return super(BaseModelMigration, self).get_importation_plan(plan_class)
 
     @cached_property
     def can_create(self):
@@ -132,7 +162,7 @@ class CustomDataMigration(object):
                 and not f.blank
                 and not f.has_default()
         }
-        return (included_fields >= required_fields)
+        return (required_fields <= included_fields)
 
     @property
     def can_update(self):
@@ -246,13 +276,16 @@ class CustomDataMigration(object):
         return False
 
 
-class DataMigration(CustomDataMigration):
+class ModelMigration(BaseModelMigration):
 
     def __init__(self, model, fields=None, exclude=None,
                        use_natural_primary_keys=False,
                        use_natural_foreign_keys=False,
+                       use_base_manager=False,
                        ignore_missing_foreign_keys=False):
-        super(DataMigration, self).__init__(model, ignore_missing_foreign_keys)
+
+        super(ModelMigration, self).__init__(model, use_base_manager,
+                                            ignore_missing_foreign_keys)
         if not fields:
             self.selected_fields = None
         else:
@@ -264,15 +297,15 @@ class DataMigration(CustomDataMigration):
         if not exclude:
             self.excluded_fields = None
         else:
-            self.excluded_fields = set(
+            self.excluded_fields = {
                 name if name != 'pk' else model._meta.pk.name
                 for name
                 in exclude
-            )
+            }
         self.use_natural_primary_keys = use_natural_primary_keys
         self.use_natural_foreign_keys = use_natural_foreign_keys
 
-    def construct_field(self, model_field, path=None, name=None, attname=None):
+    def build_field(self, model_field, path=None, name=None, attname=None):
         if hasattr(model_field, 'migrationfield'):
             return model_field.migrationfield(path, name, attname)
 
@@ -308,7 +341,8 @@ class DataMigration(CustomDataMigration):
 
         return field_class(path, name, attname)
 
-    def construct_relation(self, model_field):
+    def build_relation(self, model_field):
+        # Discard ManyToManyFields and GenericForeignKeys
         if not isinstance(model_field, models.ForeignKey):
             return None
 
@@ -327,7 +361,7 @@ class DataMigration(CustomDataMigration):
             if natural_key is not None:
                 if not isinstance(natural_key, collections.Iterable):
 
-                    fld = self.construct_field(
+                    fld = self.build_field(
                                natural_key,
                                ''.join((name, '__', natural_key.attname)),
                                ''.join((name, '__', natural_key.name)),
@@ -339,7 +373,7 @@ class DataMigration(CustomDataMigration):
                 else:
 
                     flds = [
-                        self.construct_field(
+                        self.build_field(
                              key,
                              ''.join((name, '__', key.attname)),
                              ''.join((name, '__', key.name)),
@@ -354,7 +388,7 @@ class DataMigration(CustomDataMigration):
                             in zip(flds, natural_key)
                         ]
 
-        fld = self.construct_field(target_field, path, name, attname)
+        fld = self.build_field(target_field, path, name, attname)
         return [(fld, [model_field])]
 
     def find_natural_key(self, model_fields, unique_together=()):
@@ -425,19 +459,24 @@ class DataMigration(CustomDataMigration):
 
         fields = []
         for f in model_fields:
-            if f.remote_field is None:
-                fld = self.construct_field(f)
-                if fld is not None:
-                    fields.append((fld, [f]))
-            else:
-                rel = self.construct_relation(f)
+            if f.is_relation:
+                rel = self.build_relation(f)
                 if rel is not None:
                     fields.extend(rel)
+            else:
+                fld = self.build_field(f)
+                if fld is not None:
+                    fields.append((fld, [f]))
 
         return collections.OrderedDict(fields)
 
 
-class QuerySetExportation(DataMigration):
+class QuerySetExportation(ModelMigration):
+
+    can_create = False
+    can_update = False
+
+    fields_to_import = []
 
     def __init__(self, queryset):
         model = queryset.model
@@ -459,9 +498,9 @@ class QuerySetExportation(DataMigration):
 
     def get_data_to_export(self, serializer):
         if self.requires_model_instances:
-            return self._get_data_from_objects(self.queryset, serializer)
+            return self._data_from_objects(self.queryset, serializer)
         else:
-            return self._get_data_from_values(self.queryset, serializer)
+            return self._data_from_values(self.queryset, serializer)
 
     def get_data_to_import(self, *args, **kwargs):
         raise TypeError('This migration does not support importations.')
@@ -471,18 +510,6 @@ class QuerySetExportation(DataMigration):
 
     def import_data(self, *args, **kwargs):
         raise TypeError('This migration does not support importations.')
-
-    @property
-    def can_create(self):
-        return False
-
-    @property
-    def can_update(self):
-        return False
-
-    @property
-    def fields_to_import(self):
-        return []
 
     @cached_property
     def requires_model_instances(self):

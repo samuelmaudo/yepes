@@ -418,6 +418,18 @@ class PropertiesTest(test.SimpleTestCase):
             self.assertNotIn(value, previous_values)
             previous_values.append(value)
 
+    def test_class_only_property(self):
+
+        class TestClass(object):
+            @properties.class_only_property
+            def class_property(self):
+                return 'Bilbo'
+
+        self.assertEqual(TestClass.class_property, 'Bilbo')
+        obj = TestClass()
+        with self.assertRaises(AttributeError):
+            obj.class_property
+
     def test_class_property(self):
 
         class TestClass(object):
@@ -427,8 +439,7 @@ class PropertiesTest(test.SimpleTestCase):
 
         self.assertEqual(TestClass.class_property, 'Bilbo')
         obj = TestClass()
-        with self.assertRaises(AttributeError):
-            obj.class_property
+        self.assertEqual(obj.class_property, 'Bilbo')
 
     def test_described_property(self):
 

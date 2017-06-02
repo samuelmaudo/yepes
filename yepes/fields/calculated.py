@@ -69,8 +69,7 @@ class CalculatedFieldDescriptor(object):
 
     def __get__(self, obj, cls=None):
         if obj is None:
-            msg = '`{0}` must be accessed via instance.'
-            raise AttributeError(msg.format(self.field.attname))
+            return self
 
         try:
             value = obj.__dict__[self.field.attname]

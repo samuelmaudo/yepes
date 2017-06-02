@@ -1,0 +1,205 @@
+===========
+Field types
+===========
+
+.. class:: yepes.contrib.datamigrations.fields.Field
+
+    **Ancestors (MRO)**
+
+    This class does not inherit methods and attributes from any classes.
+
+    **Attributes**
+
+    .. attribute:: attname
+    .. attribute:: description
+    .. attribute:: force_string
+    .. attribute:: name
+    .. attribute:: path
+
+    **Methods**
+
+    .. method:: __init__(path, name=None, attname=None, force_string=False)
+
+        Initializes the field instance by setting :attr:`path`, :attr:`name`,
+        :attr:`attname`, and :attr:`force_string` attributes.
+
+    .. method:: clean(value)
+
+    .. method:: export_value(value, serializer)
+
+    .. method:: export_value_as_string(value, serializer)
+
+    .. method:: import_value(value, serializer)
+
+    .. method:: import_value_from_string(value, serializer)
+
+    .. method:: prepare_to_export(value, serializer)
+
+    .. method:: prepare_to_import(value, serializer)
+
+    .. method:: value_from_object(obj)
+
+Basic types
+===========
+
+.. class:: yepes.contrib.datamigrations.fields.BooleanField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.FloatField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.IntegerField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.TextField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+Dates and times
+===============
+
+.. class:: yepes.contrib.datamigrations.fields.DateField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.DateTimeField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.DayField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.HourField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.MicrosecondField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.MinuteField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.MonthField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.SecondField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.TimeField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.TimeZoneField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.YearField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+Decimals
+========
+
+.. class:: yepes.contrib.datamigrations.fields.DecimalField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.IntegerField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+.. class:: yepes.contrib.datamigrations.fields.NumberField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.DecimalField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`
+
+Files
+=====
+
+.. class:: yepes.contrib.datamigrations.fields.FileField
+
+    **Ancestors (MRO)**
+
+    This class inherits methods and attributes from the following classes:
+
+    * :class:`yepes.contrib.datamigrations.fields.TextField`
+    * :class:`yepes.contrib.datamigrations.fields.Field`

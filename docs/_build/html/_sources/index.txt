@@ -1,0 +1,49 @@
+====================
+Yepes documentation
+====================
+
+A toolset for Django projects
+=============================
+
+Yepes is a toolset for any kind of project based on Django: blogs, forums,
+shops or any other. Some of its tools are mature and well-tested, while others
+are just sketches or trials. This documentation will only cover the first ones.
+
+The target of Yepes is to have a set of tools which are compatible with the
+last versions of Django: from the last LTS (long-term support) release to
+the next LTS release. For example, Yepes 1.0 (currently in development) is
+compatible with Django 1.8 to 1.11 and the future Yepes 2.0 will be compatible
+with Django 1.11 to 2.2.
+
+Tests are required to ensure that all tools are compatible with target versions
+of Django. Even tools which haven't received attention for some time, will
+continue to work.
+
+Tools included
+==============
+
+Yepes includes many tools for development of Web projects. Some tools extend
+the functionality of tools provided by Django, while others are completely new.
+
+* **Data Migrations:**
+  :doc:`Overview <topics/datamigrations>` |
+  :doc:`Commands <ref/contrib/datamigrations/commands>` |
+  :doc:`Facades <ref/contrib/datamigrations/facades>` |
+  :doc:`Migration classes <ref/contrib/datamigrations/data-migrations>` |
+  :doc:`Field types <ref/contrib/datamigrations/fields>` |
+  :doc:`Importation plans <ref/contrib/datamigrations/importation-plans>` |
+  :doc:`Serializers <ref/contrib/datamigrations/serializers>`
+
+.. :doc:`Apps <ref/apps>`
+.. :doc:`Form fields <ref/form/fields>`
+.. :doc:`Form widgets <ref/form/widgets>`
+.. :doc:`Middleware <ref/middleware>`
+.. :doc:`Model fields <ref/fields>`
+.. :doc:`Model managers <ref/managers>`
+.. :doc:`Model mixins <ref/model_mixins>`
+.. :doc:`Settings <ref/conf>`
+.. :doc:`Template tags <ref/template>`
+.. :doc:`Thumbnails <ref/contrib/thumbnails>`
+.. :doc:`Validators <ref/validators>`
+.. :doc:`View mixins <ref/view_mixins>`
+.. :doc:`Views <ref/views/index>`

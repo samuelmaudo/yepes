@@ -2,60 +2,49 @@
 
 from __future__ import unicode_literals
 
+from django.utils import six
+
 from yepes.conf import settings
-from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans.base import ImportationPlan, ModelImportationPlan
 from yepes.utils.modules import import_module
 
 __all__ = (
-    'MissingPlanError',
-    'get_plan', 'has_plan', 'register_plan',
-    'ImportationPlan',
     'importation_plans',
+    'get_plan', 'has_plan', 'register_plan',
+    'ImportationPlan', 'ModelImportationPlan',
 )
 
 BUILTIN_PLANS = {
-    'bulk_create': 'yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan',
-    'create': 'yepes.contrib.datamigrations.importation_plans.create.CreatePlan',
-    'direct': 'yepes.contrib.datamigrations.importation_plans.direct.DirectPlan',
-    'replace': 'yepes.contrib.datamigrations.importation_plans.replace.ReplacePlan',
-    'replace_all': 'yepes.contrib.datamigrations.importation_plans.replace_all.ReplaceAllPlan',
-    'update': 'yepes.contrib.datamigrations.importation_plans.update.UpdatePlan',
-    'update_or_bulk_create': 'yepes.contrib.datamigrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
-    'update_or_create': 'yepes.contrib.datamigrations.importation_plans.update_or_create.UpdateOrCreatePlan',
+    'yepes.contrib.datamigrations.importation_plans.bulk_create.BulkCreatePlan',
+    'yepes.contrib.datamigrations.importation_plans.create.CreatePlan',
+    'yepes.contrib.datamigrations.importation_plans.direct.DirectPlan',
+    'yepes.contrib.datamigrations.importation_plans.replace.ReplacePlan',
+    'yepes.contrib.datamigrations.importation_plans.replace_all.ReplaceAllPlan',
+    'yepes.contrib.datamigrations.importation_plans.update.UpdatePlan',
+    'yepes.contrib.datamigrations.importation_plans.update_or_bulk_create.UpdateOrBulkCreatePlan',
+    'yepes.contrib.datamigrations.importation_plans.update_or_create.UpdateOrCreatePlan',
 }
 
-MissingPlanError = LookupError
 
-
-class PlanHandler(object):
+class PlanRegistry(object):
     """
-    A Plan Handler to retrieve ImportationPlan classes.
+    A registry to retrieve Plan classes.
     """
     def __init__(self):
-        self._classes = {}
-        self._registry =  {}
-        self._registry.update(BUILTIN_PLANS)
-        self._registry.update(getattr(settings, 'IMPORTATION_PLANS', []))
+        self._registry = {}
 
     def __contains__(self, name):
-        return self.has_plan(name)
+        return name in self._registry
 
     def get_plan(self, name):
-        try:
-            return self._classes[name]
-        except KeyError:
-            pass
-
         if name not in self._registry:
             msg = "Importation plan '{0}' could not be found."
             raise LookupError(msg.format(name))
-
-        plan = self.import_plan(self._registry[name])
-        self._classes[name] = plan
-        return plan
+        else:
+            return self._registry[name]
 
     def get_plans(self):
-        return (self.__getitem__(name) for name in self._registry)
+        return six.itervalues(self._registry)
 
     def has_plan(self, name):
         return name in self._registry
@@ -65,10 +54,21 @@ class PlanHandler(object):
         module = import_module(module_path, ignore_internal_errors=True)
         return getattr(module, class_name, None)
 
-    def register_plan(self, name, path):
-        self._registry[name] = path
+    def register_plan(self, plan):
+        if isinstance(plan, six.string_types):
+            plan = self.import_plan(plan)
 
-importation_plans = PlanHandler()
+        if plan is not None:
+            self._registry[plan.name] = plan
+            return True
+        else:
+            return False
+
+importation_plans = PlanRegistry()
+for path in BUILTIN_PLANS:
+    importation_plans.register_plan(path)
+for path in settings.IMPORTATION_PLANS:
+    importation_plans.register_plan(path)
 
 get_plan = importation_plans.get_plan
 has_plan = importation_plans.has_plan

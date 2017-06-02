@@ -8,7 +8,6 @@ try:
 except ImportError:
     from yaml import SafeLoader as YamlLoader, SafeDumper as YamlDumper
 
-from django.utils.six import PY3
 from django.utils.six.moves import zip
 
 from yepes.contrib.datamigrations.serializers import Serializer
@@ -22,7 +21,7 @@ class YamlSerializer(Serializer):
     def __init__(self, **serializer_parameters):
         defaults = {
             'allow_unicode': True,
-            'encoding': None if PY3 else 'utf-8',
+            'encoding': None,
             'explicit_end': False,
             'explicit_start': False,
             'width': 1000,

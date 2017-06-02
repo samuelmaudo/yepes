@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.utils import six
 
-from yepes.contrib.datamigrations import CustomDataMigration, TextField
+from yepes.contrib.datamigrations import BaseModelMigration, TextField
 from yepes.loading import LazyClass, LazyModel
 from yepes.utils.properties import cached_property
 
@@ -12,7 +12,7 @@ Subscriber = LazyModel('newsletters', 'Subscriber')
 SubscriberPlan = LazyClass('newsletters.importation_plans', 'SubscriberPlan')
 
 
-class SubscriberImportation(CustomDataMigration):
+class SubscriberImportation(BaseModelMigration):
 
     fields = [
         TextField('email_address'),
@@ -21,8 +21,9 @@ class SubscriberImportation(CustomDataMigration):
         TextField('newsletters'),
         TextField('tags'),
     ]
+
     def __init__(self):
-        super(SubscriberImportation, self).__init__(Subscriber, True)
+        super(SubscriberImportation, self).__init__(Subscriber)
 
     def export_data(self, *args, **kwargs):
         raise TypeError('This migration does not support exportations.')
@@ -30,7 +31,7 @@ class SubscriberImportation(CustomDataMigration):
     def get_data_to_export(self, *args, **kwargs):
         raise TypeError('This migration does not support exportations.')
 
-    def get_importation_plan(self, plan_class=None):
+    def get_importation_plan(self, *args, **kwargs):
         return SubscriberPlan(self)
 
     @property
@@ -41,9 +42,9 @@ class SubscriberImportation(CustomDataMigration):
     def can_update(self):
         return False
 
-    @cached_property
+    @property
     def fields_to_import(self):
-        return list(self.fields)
+        return self.fields
 
     @cached_property
     def primary_key(self):

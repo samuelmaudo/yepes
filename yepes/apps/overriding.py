@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from django import VERSION as DJANGO_VERSION
 from django.core.exceptions import ImproperlyConfigured
 
 from yepes.apps import AppConfig, apps
@@ -44,9 +45,11 @@ class OverridingConfig(AppConfig):
 
         return app_config
 
-    def import_models(self, all_models):
+    def import_models(self, *args, **kwargs):
         self.label = self.overridden_app_config.label
-        super(OverridingConfig, self).import_models(all_models)
+        super(OverridingConfig, self).import_models(*args, **kwargs)
+        if DJANGO_VERSION >= (1, 11):
+            self.models = self.apps.all_models[self.original_label]
 
     def ready(self):
         super(OverridingConfig, self).ready()

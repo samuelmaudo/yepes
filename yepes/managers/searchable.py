@@ -128,6 +128,15 @@ class SearchableQuerySet(QuerySet):
         kwargs['_search_terms'] = self._search_terms.copy()
         return super(SearchableQuerySet, self)._clone(*args, **kwargs)
 
+    def _fetch_all(self):
+        """
+        Ensure the ``iterator()`` method is called in Django 1.11.
+        """
+        if self._result_cache is None:
+            self._result_cache = list(self.iterator())
+        if self._prefetch_related_lookups and not self._prefetch_done:
+            self._prefetch_related_objects()
+
     def count(self):
         """
         Mark the filter as being ordered if search has occurred.
@@ -147,12 +156,17 @@ class SearchableQuerySet(QuerySet):
         if not self._search_decorated and not self._search_terms:
             return super(SearchableQuerySet, self).iterator()
 
-        self._prefetch_related_lookups.extend([
+        search_related_lookups = (
             f[:f.rindex('__')]
             for f
             in self._search_fields
             if '__' in f
-        ])
+        )
+        if isinstance(self._prefetch_related_lookups, list):
+            self._prefetch_related_lookups.extend(search_related_lookups)
+        else:
+            self._prefetch_related_lookups += tuple(search_related_lookups)
+
         low_mark = self.query.low_mark
         high_mark = self.query.high_mark
         self.query.low_mark = 0

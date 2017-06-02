@@ -1,0 +1,207 @@
+========
+Commands
+========
+
+export_model
+============
+
+.. program:: export_model
+
+.. describe:: manage.py export_model app_label.ModelName
+
+   Dumps all objects of the specified model.
+
+.. option:: --all, -a
+
+   Uses Django’s base manager, dumping records which might otherwise be
+   filtered or modified by a custom manager.
+
+.. option:: --file, -f
+
+   Specifies a file to write the serialized data to. By default, the data goes
+   to the standard output.
+
+.. option:: --format
+
+   Specifies the serialization format of the output. By default, tries to guess
+   the format by using the extension of the output file (if specified).
+   Otherwise, defaults to JSON.
+
+.. option:: --encoding
+
+   Specifies the encoding used to encode the output.
+
+.. option:: --newline
+
+   Specifies how to end lines.
+
+.. option:: --fields
+
+   A list of field names to use in the migration.
+
+.. option:: --exclude
+
+   A list of field names to exclude from the migration.
+
+.. option:: --natural
+
+   Uses natural keys if they are available. It has the same effect of pass both
+   ``--natural-primary`` and ``--natural-foreign``.
+
+.. option:: --natural-primary
+
+   Uses natural primary keys if they are available.
+
+.. option:: --natural-foreign
+
+   Uses natural foreign keys if they are available.
+
+export_models
+=============
+
+.. program:: export_models
+
+.. describe:: manage.py export_models [app_label[.ModelName] [app_label[.ModelName] ...]]
+
+   Dumps all objects of the specified models. If no model name is provided, all
+   available models will be dumped. If you pass an application label without
+   specifying the model name, all models associated with that application will
+   be dumped.
+
+.. option:: --all, -a
+
+   Uses Django’s base manager, dumping records which might otherwise be
+   filtered or modified by a custom manager.
+
+.. option:: --file, -f
+
+   Specifies a file to write the serialized data to. By default, the data goes
+   to standard output.
+
+.. option:: --directory, -d
+
+   Specifies a directory to write the serialized data to. This option is not combinable with the :option:`export_models --file` option.
+
+.. option:: --format
+
+   Specifies the serialization format of the output. Defaults to JSON.
+
+.. option:: --encoding
+
+   Specifies the encoding used to encode the output.
+
+.. option:: --newline
+
+   Specifies how to end lines.
+
+.. option:: --natural
+
+   Uses natural keys if they are available (both primary and foreign keys).
+
+import_model
+============
+
+.. program:: import_model
+
+.. describe:: manage.py import_model [app_label.ModelName]
+
+   Loads the contents of the given file into the database. If no model name is
+   provided, it tries to guess the model from the input file name.
+
+.. option:: --file, -f
+
+   Specifies a file from which the data will be readed. Unlike other migration commands, ``import_model`` requires setting the ``--file`` option.
+
+.. option:: --format
+
+   Specifies the serialization format of the input. By default, tries to guess
+   the format by using the extension of the input file. Otherwise, defaults to
+   JSON.
+
+.. option:: --encoding
+
+   Specifies the encoding used to decode the imported data.
+
+.. option:: --newline
+
+   Specifies how the lines of the imported file end.
+
+.. option:: --plan, -p
+
+   Specifies the importation plan used to import the data.
+
+.. option:: --batch
+
+   Maximum number of entries that can be imported at a time.
+
+.. option:: --fields
+
+   A list of field names to use in the migration.
+
+.. option:: --exclude
+
+   A list of field names to exclude from the migration.
+
+.. option:: --natural
+
+   Uses natural keys if they are available. It has the same effect of pass both
+   ``--natural-primary`` and ``--natural-foreign``.
+
+.. option:: --natural-primary
+
+   Uses natural primary keys if they are available.
+
+.. option:: --natural-foreign
+
+   Uses natural foreign keys if they are available.
+
+.. option:: --ignore-missing, -i
+
+   Ignores entries in the serialized data whose foreign keys point to objects
+   that do not currently exist in the database.
+
+import_models
+=============
+
+.. program:: import_models
+
+.. describe:: manage.py import_models
+
+   Loads the contents of the given file into the database.
+
+.. option:: --file, -f
+
+   Specifies a file from which the data will be readed.
+
+.. option:: --directory, -d
+
+   Specifies a directory from which the data will be readed. This option is not combinable with :option:`import_models --file`.
+
+.. option:: --format
+
+   Specifies the serialization format of the input. Defaults to JSON.
+
+.. option:: --encoding
+
+   Specifies the encoding used to decode the imported data.
+
+.. option:: --newline
+
+   Specifies how the lines of the imported file end.
+
+.. option:: --plan, -p
+
+   Specifies the importation plan used to import the data.
+
+.. option:: --batch
+
+   Maximum number of entries that can be imported at a time.
+
+.. option:: --natural
+
+   Uses natural keys if they are available (both primary and foreign keys).
+
+.. option:: --ignore-missing-keys, -i
+
+   Ignores entries in the serialized data whose foreign keys point to objects
+   that do not currently exist in the database.

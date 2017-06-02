@@ -6,15 +6,15 @@ import collections
 
 from django.utils import six
 
-from yepes.contrib.datamigrations.importation_plans import ImportationPlan
+from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 
-class UpdatePlan(ImportationPlan):
+class UpdatePlan(ModelImportationPlan):
 
     needs_update = True
 
     def import_batch(self, batch):
-        objs = self._get_existing_objects(batch)
+        objs = self.get_existing_objects(batch)
         if objs:
             model = self.migration.model
             key = self.migration.primary_key
@@ -23,15 +23,23 @@ class UpdatePlan(ImportationPlan):
                 for row in batch:
                     obj = objs.get(row[key_attr])
                     if obj is not None:
+                        is_modified = False
                         for k, v in six.iteritems(row):
-                            setattr(obj, k, v)
-                        obj.save(force_update=True)
+                            if v != getattr(obj, k):
+                                setattr(obj, k, v)
+                                is_modified = True
+                        if is_modified:
+                            obj.save(force_update=True)
             else:
                 key_attrs = [k.attname for k in key]
                 for row in batch:
                     obj = objs.get(tuple(row[attr] for attr in key_attrs))
                     if obj is not None:
+                        is_modified = False
                         for k, v in six.iteritems(row):
-                            setattr(obj, k, v)
-                        obj.save(force_update=True)
+                            if v != getattr(obj, k):
+                                setattr(obj, k, v)
+                                is_modified = True
+                        if is_modified:
+                            obj.save(force_update=True)
 

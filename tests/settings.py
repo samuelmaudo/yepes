@@ -14,6 +14,12 @@
 # database backends as possible. You may want to create a separate settings
 # file for each of the backends you test against.
 
+from django import VERSION as DJANGO_VERSION
+
+ALLOWED_HOSTS = [
+    '.example.com',
+]
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -28,13 +34,20 @@ DATABASES = {
 
 DEBUG = True
 
-# These 'tests.migrations' modules don't actually exist, but this lets us
-# skip creating migrations for the test models.
-MIGRATION_MODULES = {
-    'auth': 'django.contrib.auth.migrations_',
-    'contenttypes': 'django.contrib.contenttypes.migrations_',
-    'sessions': 'django.contrib.sessions.migrations_',
-}
+if DJANGO_VERSION < (1, 9):
+    # These 'tests.migrations' modules don't actually exist, but this lets us
+    # skip creating migrations for the test models.
+    MIGRATION_MODULES = {
+        'auth': 'django.contrib.auth.migrations_',
+        'contenttypes': 'django.contrib.contenttypes.migrations_',
+        'sessions': 'django.contrib.sessions.migrations_',
+    }
+else:
+    MIGRATION_MODULES = {
+        'auth': None,
+        'contenttypes': None,
+        'sessions': None,
+    }
 
 # Use a fast hasher to speed up tests.
 PASSWORD_HASHERS = [
