@@ -35,7 +35,7 @@ version = __import__('yepes').get_version()
 setup(
     name='Yepes',
     version=version,
-    url='http://www.samuelmaudo.com/yepes/',
+    url='https://github.com/samuelmaudo/yepes',
     author='Samuel Maudo García',
     author_email='samuelmaudo@gmail.com',
     description='An extensive set of tools for Django projects.',
@@ -48,6 +48,9 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 1.8',
+        'Framework :: Django :: 1.9',
+        'Framework :: Django :: 1.10',
+        'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',

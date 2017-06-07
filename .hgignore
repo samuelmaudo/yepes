@@ -13,5 +13,10 @@ __pycache__/
 .kdev4/
 backup/
 build/
+coverage.xml
 dist/
+docs/_build/
+docs/locale/
 htmlcov/
+nosetests.xml
+testresults.xml

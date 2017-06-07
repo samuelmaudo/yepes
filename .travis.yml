@@ -18,7 +18,7 @@ before_install:
   - pip install -q -U "django-grappelli==$GRAPPELLI_VERSION"
 
 install:
-  - python setup.py install
+  - pip install -e .
 
 script:
   - python tests/runtests.py --with-coverage --cover-branches --cover-package=yepes
