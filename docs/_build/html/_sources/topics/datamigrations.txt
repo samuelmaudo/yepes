@@ -1,6 +1,0 @@
-============================
-Importing and exporting data
-============================
-
-Yepes's data migrations aims to provide efficient and easy-to-use way of
-exporting and importing your data.
