@@ -13,6 +13,7 @@ from django.utils import six
 from django.utils.encoding import force_text, python_2_unicode_compatible
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.utils.six.moves import range
 from django.utils.translation import ugettext as _
 from django.views.generic import View
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
