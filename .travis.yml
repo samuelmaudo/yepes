@@ -13,6 +13,7 @@ env:
 
 before_install:
   - pip install -q coveralls
+  - pip install -q codeclimate-test-reporter
   - pip install -q -r requirements/test.txt
   - pip install -q -U "Django==$DJANGO_VERSION"
   - pip install -q -U "django-grappelli==$GRAPPELLI_VERSION"
@@ -25,3 +26,4 @@ script:
 
 after_success:
   - coveralls
+  - codeclimate-test-reporter --token 68d7b11fdfc68c914c4a30d4ad157923b626bb23675ad9cde27bb3df5affed33

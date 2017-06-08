@@ -1,0 +1,33 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    checks:
+      Similar code:
+        enabled: false
+    config:
+      languages:
+      -javascript
+      -python
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+  scss-lint:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.py"
+  - "**.scss"
+exclude_paths:
+- docs/
+- requirements/
+- tests/
+- "**.min.js"
