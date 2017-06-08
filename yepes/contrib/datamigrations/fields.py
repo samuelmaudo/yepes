@@ -12,7 +12,7 @@ from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from django.utils.encoding import force_str, force_text, python_2_unicode_compatible
 from django.utils.functional import Promise
 from django.utils.text import camel_case_to_spaces, capfirst
-from django.utils.timezone import utc as UTC
+from django.utils.timezone import FixedOffset, utc as UTC
 from django.utils.translation import ugettext_lazy as _
 
 from yepes.contrib.datamigrations.constants import (
@@ -369,31 +369,6 @@ class TimeField(Field):
 
     def import_value_from_string(self, value, serializer):
         return parse_time(value)
-
-
-class FixedOffset(tzinfo):
-    """
-    Fixed offset in minutes east from UTC. Taken from Python's docs.
-
-    Kept as close as possible to the reference version. __init__ was changed
-    to make its arguments optional, according to Python's requirement that
-    tzinfo subclasses can be instantiated without arguments.
-
-    """
-    def __init__(self, offset=None, name=None):
-        if offset is not None:
-            self.__offset = timedelta(minutes=offset)
-        if name is not None:
-            self.__name = name
-
-    def dst(self, dt):
-        return timedelta(0)
-
-    def tzname(self, dt):
-        return self.__name
-
-    def utcoffset(self, dt):
-        return self.__offset
 
 
 class TimeZoneField(Field):
