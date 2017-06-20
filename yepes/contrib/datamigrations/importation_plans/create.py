@@ -9,7 +9,7 @@ from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 class CreatePlan(ModelImportationPlan):
 
-    needs_create = True
+    updates_data = False
 
     def import_batch(self, batch):
         model = self.migration.model

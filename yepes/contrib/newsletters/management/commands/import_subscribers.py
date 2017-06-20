@@ -48,6 +48,7 @@ class Command(BaseCommand):
         serializer_name = options['format']
         if serializer_name is None:
             _, file_ext = os.path.splitext(file_path)
+            file_ext = file_ext.lstrip('.')
             if serializers.has_serializer(file_ext):
                 serializer_name = file_ext
 

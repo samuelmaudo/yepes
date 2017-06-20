@@ -13,7 +13,7 @@ SubscriberTag = LazyModel('newsletters', 'SubscriberTag')
 
 class SubscriberPlan(ModelImportationPlan):
 
-    needs_create = True
+    updates_data = False
 
     def import_batch(self, batch):
         model = self.migration.model

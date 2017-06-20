@@ -10,18 +10,16 @@ from django.test import TestCase
 from django.utils._os import upath
 from django.utils.six import StringIO
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations import ModelMigration
 from yepes.contrib.datamigrations.importation_plans.direct import DirectPlan
 from yepes.contrib.datamigrations.serializers.csv import CsvSerializer
 from yepes.contrib.datamigrations.serializers.json import JsonSerializer
 from yepes.test_mixins import TempDirMixin
 
-from .models import (
-    AlphabetModel,
-    AuthorModel,
-    CategoryModel,
-    PostModel,
-)
+from .models import Alphabet, Author, Category, Post, Tag
+
+PostTags = apps.get_model('datamigrations_commands_tests.post_tags')
 
 MODULE_DIR = os.path.abspath(os.path.dirname(upath(__file__)))
 MIGRATIONS_DIR = os.path.join(MODULE_DIR, 'data_migrations')
@@ -56,10 +54,10 @@ class ExportModelTest(TempDirMixin, TestCase):
 
     def test_serializer_not_found(self):
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('export_model', 'datamigrations_commands_tests.AlphabetModel', format='serializername')
+            call_command('export_model', 'datamigrations_commands_tests.Alphabet', format='serializername')
 
     def test_no_file(self):
-        migration = ModelMigration(AlphabetModel)
+        migration = ModelMigration(Alphabet)
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
@@ -68,7 +66,7 @@ class ExportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'export_model',
-            'datamigrations_commands_tests.AlphabetModel',
+            'datamigrations_commands_tests.Alphabet',
             format='csv',
             stdout=output,
         )
@@ -76,7 +74,7 @@ class ExportModelTest(TempDirMixin, TestCase):
         self.assertEqual(source.splitlines(), result.splitlines())
 
     def test_file(self):
-        migration = ModelMigration(AlphabetModel)
+        migration = ModelMigration(Alphabet)
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         result_path = os.path.join(self.temp_dir, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
@@ -86,7 +84,7 @@ class ExportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'export_model',
-            'datamigrations_commands_tests.AlphabetModel',
+            'datamigrations_commands_tests.Alphabet',
             file=result_path,
             format='csv',
             stdout=output,
@@ -119,22 +117,32 @@ class ExportModelsTest(TempDirMixin, TestCase):
 
     def test_serializer_not_found(self):
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('export_models', 'datamigrations_commands_tests.AlphabetModel', format='serializername')
+            call_command('export_models', 'datamigrations_commands_tests.Alphabet', format='serializername')
 
     @expectedFailure
     def test_no_file(self):
-        migration = ModelMigration(AuthorModel)
+        migration = ModelMigration(Author)
         source_path = os.path.join(MIGRATIONS_DIR, 'author.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         source_path = os.path.join(MIGRATIONS_DIR, 'category.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(PostModel)
+        migration = ModelMigration(Tag)
+        source_path = os.path.join(MIGRATIONS_DIR, 'tag.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(Post)
         source_path = os.path.join(MIGRATIONS_DIR, 'post.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(PostTags)
+        source_path = os.path.join(MIGRATIONS_DIR, 'post_tags.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
@@ -153,18 +161,28 @@ class ExportModelsTest(TempDirMixin, TestCase):
         self.assertEqual(source.splitlines(), result.splitlines())
 
     def test_file(self):
-        migration = ModelMigration(AuthorModel)
+        migration = ModelMigration(Author)
         source_path = os.path.join(MIGRATIONS_DIR, 'author.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         source_path = os.path.join(MIGRATIONS_DIR, 'category.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(PostModel)
+        migration = ModelMigration(Tag)
+        source_path = os.path.join(MIGRATIONS_DIR, 'tag.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(Post)
         source_path = os.path.join(MIGRATIONS_DIR, 'post.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(PostTags)
+        source_path = os.path.join(MIGRATIONS_DIR, 'post_tags.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
@@ -188,7 +206,7 @@ class ExportModelsTest(TempDirMixin, TestCase):
         self.assertIn('Objects were successfully exported.', output.getvalue())
 
     def test_labels(self):
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         source_path = os.path.join(MIGRATIONS_DIR, 'category.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
@@ -197,7 +215,7 @@ class ExportModelsTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'export_models',
-            'datamigrations_commands_tests.CategoryModel',
+            'datamigrations_commands_tests.Category',
             file=result_path,
             format='json',
             natural=True,
@@ -207,7 +225,7 @@ class ExportModelsTest(TempDirMixin, TestCase):
             result = result_file.read()
 
         self.assertEqual(1, result.count('Type: MODEL;'))
-        self.assertIn('Name: datamigrations_commands_tests.categorymodel;', result)
+        self.assertIn('Name: datamigrations_commands_tests.category;', result)
 
 
 class ImportModelTest(TempDirMixin, TestCase):
@@ -253,15 +271,15 @@ class ImportModelTest(TempDirMixin, TestCase):
     def test_serializer_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Serializer 'serializername' could not be found."):
-            call_command('import_model', 'datamigrations_commands_tests.AlphabetModel', file=source_path, format='serializername')
+            call_command('import_model', 'datamigrations_commands_tests.Alphabet', file=source_path, format='serializername')
 
     def test_importation_plan_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(CommandError, "Importation plan 'planname' could not be found."):
-            call_command('import_model', 'datamigrations_commands_tests.AlphabetModel', file=source_path, plan='planname')
+            call_command('import_model', 'datamigrations_commands_tests.Alphabet', file=source_path, plan='planname')
 
     def test_file(self):
-        migration = ModelMigration(AlphabetModel)
+        migration = ModelMigration(Alphabet)
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
@@ -269,7 +287,7 @@ class ImportModelTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'import_model',
-            'datamigrations_commands_tests.AlphabetModel',
+            'datamigrations_commands_tests.Alphabet',
             file=source_path,
             format='csv',
             stdout=output,
@@ -345,7 +363,7 @@ class ImportModelsTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(AuthorModel)
+        migration = ModelMigration(Author)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -353,7 +371,7 @@ class ImportModelsTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -361,7 +379,7 @@ class ImportModelsTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(PostModel)
+        migration = ModelMigration(Post)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -370,8 +388,8 @@ class ImportModelsTest(TempDirMixin, TestCase):
         output = StringIO()
         call_command(
             'import_models',
-            'datamigrations_commands_tests.AuthorModel',
-            'datamigrations_commands_tests.CategoryModel',
+            'datamigrations_commands_tests.Author',
+            'datamigrations_commands_tests.Category',
             file=source_path,
             plan='direct',
             natural=True,
@@ -379,9 +397,9 @@ class ImportModelsTest(TempDirMixin, TestCase):
         )
         self.assertIn('Entries were successfully imported.', output.getvalue())
 
-        self.assertEqual(3, AuthorModel.objects.count())
-        self.assertEqual(2, CategoryModel.objects.count())
-        self.assertEqual(0, PostModel.objects.count())
+        self.assertEqual(3, Author.objects.count())
+        self.assertEqual(2, Category.objects.count())
+        self.assertEqual(0, Post.objects.count())
 
     def test_serializer(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'backup')

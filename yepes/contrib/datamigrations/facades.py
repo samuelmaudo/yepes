@@ -96,7 +96,7 @@ class MultipleExportFacade(object):
     def _clean_options(cls, opts):
         selected_models = opts.pop('models', None)
         if not selected_models:
-            model_list = apps.get_models()
+            model_list = apps.get_models(include_auto_created=True)
         else:
             model_list = []
             for model in selected_models:
@@ -107,7 +107,7 @@ class MultipleExportFacade(object):
                     model_list.append(model)
                 else:
                     app_config = apps.get_app_config(model)
-                    model_list.extend(app_config.get_models())
+                    model_list.extend(app_config.get_models(include_auto_created=True))
 
         use_natural_keys = opts.pop('use_natural_keys', False)
 
@@ -249,7 +249,7 @@ class MultipleImportFacade(object):
                     model_list.append(model)
                 else:
                     app_config = apps.get_app_config(model)
-                    model_list.extend(app_config.get_models())
+                    model_list.extend(app_config.get_models(include_auto_created=True))
 
         use_natural_keys = opts.pop('use_natural_keys', False)
 
@@ -399,7 +399,7 @@ class SingleExportFacade(object):
             os.makedirs(directory)
 
         if not options.get('model'):
-            _, file_name = os.path.splitext(file_path)
+            _, file_name = os.path.split(file_path)
             matchobj = FILE_NAME_RE.search(file_name)
             if matchobj is not None:
                 app_label = matchobj.group(1)
@@ -410,7 +410,8 @@ class SingleExportFacade(object):
                         options['model'] = app_config.get_model(model_name)
 
         if not options.get('serializer'):
-            _, serializer_name = os.path.splitext(file_path)
+            _, file_ext = os.path.splitext(file_path)
+            serializer_name = file_ext.lstrip('.')
             if serializers.has_serializer(serializer_name):
                 options['serializer'] = serializer_name
 
@@ -507,7 +508,7 @@ class SingleImportFacade(object):
             raise AttributeError("File '{0}' does not exit.".format(file_path))
 
         if not options.get('model'):
-            _, file_name = os.path.splitext(file_path)
+            _, file_name = os.path.split(file_path)
             matchobj = FILE_NAME_RE.search(file_name)
             if matchobj is not None:
                 app_label = matchobj.group(1)
@@ -518,7 +519,8 @@ class SingleImportFacade(object):
                         options['model'] = app_config.get_model(model_name)
 
         if not options.get('serializer'):
-            _, serializer_name = os.path.splitext(file_path)
+            _, file_ext = os.path.splitext(file_path)
+            serializer_name = file_ext.lstrip('.')
             if serializers.has_serializer(serializer_name):
                 options['serializer'] = serializer_name
 

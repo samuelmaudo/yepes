@@ -11,7 +11,7 @@ from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 class UpdatePlan(ModelImportationPlan):
 
-    needs_update = True
+    inserts_data = False
 
     def import_batch(self, batch):
         objs = self.get_existing_objects(batch)

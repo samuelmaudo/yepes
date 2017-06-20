@@ -11,13 +11,32 @@ Migration classes
     **Attributes**
 
     .. attribute:: can_create
+
+        Whether the migration can be used to insert new data.
+
+    .. attribute:: can_export
+
+        Whether the migration can be used to export data.
+
+    .. attribute:: can_import
+
+        Whether the migration can be used to import data.
+
     .. attribute:: can_update
+
+        Whether the migration can be used to update existing data.
+
     .. attribute:: fields
 
-        A list with the fields which are going to be imported/exported.
+        A list with all the fields of the migration.
 
     .. attribute:: fields_to_export
+
+        A list with the fields which are going to be exported.
+
     .. attribute:: fields_to_import
+
+        A list with the fields which are going to be imported.
 
     **Methods**
 
@@ -120,22 +139,4 @@ Migration classes
     .. method:: __init__(queryset)
 
     .. method:: get_data_to_export(serializer)
-
-    .. method:: get_data_to_import(*args, **kwargs)
-
-        Raises an error warning that :class:`QuerySetExportation
-        <yepes.contrib.datamigrations.data_migrations.QuerySetExportation>` can
-        not be used to import data.
-
-    .. method:: get_importation_plan(*args, **kwargs)
-
-        Raises an error warning that :class:`QuerySetExportation
-        <yepes.contrib.datamigrations.data_migrations.QuerySetExportation>` can
-        not be used to import data.
-
-    .. method:: import_data(*args, **kwargs)
-
-        Raises an error warning that :class:`QuerySetExportation
-        <yepes.contrib.datamigrations.data_migrations.QuerySetExportation>` can
-        not be used to import data.
 

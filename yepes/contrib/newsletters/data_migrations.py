@@ -14,6 +14,10 @@ SubscriberPlan = LazyClass('newsletters.importation_plans', 'SubscriberPlan')
 
 class SubscriberImportation(BaseModelMigration):
 
+    can_create = True
+    can_export = False
+    can_update = False
+
     fields = [
         TextField('email_address'),
         TextField('first_name'),
@@ -25,22 +29,8 @@ class SubscriberImportation(BaseModelMigration):
     def __init__(self):
         super(SubscriberImportation, self).__init__(Subscriber)
 
-    def export_data(self, *args, **kwargs):
-        raise TypeError('This migration does not support exportations.')
-
-    def get_data_to_export(self, *args, **kwargs):
-        raise TypeError('This migration does not support exportations.')
-
     def get_importation_plan(self, *args, **kwargs):
         return SubscriberPlan(self)
-
-    @property
-    def can_create(self):
-        return True
-
-    @property
-    def can_update(self):
-        return False
 
     @property
     def fields_to_import(self):

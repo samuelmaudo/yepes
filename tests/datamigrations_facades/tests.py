@@ -7,6 +7,7 @@ import os
 from django.test import TestCase
 from django.utils._os import upath
 
+from yepes.apps import apps
 from yepes.contrib.datamigrations import ModelMigration
 from yepes.contrib.datamigrations.facades import (
     MultipleExportFacade,
@@ -19,12 +20,9 @@ from yepes.contrib.datamigrations.serializers.csv import CsvSerializer
 from yepes.contrib.datamigrations.serializers.json import JsonSerializer
 from yepes.test_mixins import TempDirMixin
 
-from .models import (
-    AlphabetModel,
-    AuthorModel,
-    CategoryModel,
-    PostModel,
-)
+from .models import Alphabet, Author, Category, Post, Tag
+
+PostTags = apps.get_model('datamigrations_facades_tests.post_tags')
 
 MODULE_DIR = os.path.abspath(os.path.dirname(upath(__file__)))
 MIGRATIONS_DIR = os.path.join(MODULE_DIR, 'data_migrations')
@@ -59,21 +57,31 @@ class MultipleExportTest(TempDirMixin, TestCase):
     def test_serializer_not_found(self):
         result_path = os.path.join(self.temp_dir, 'backup')
         with self.assertRaisesRegexp(LookupError, "Serializer 'serializername' could not be found."):
-            MultipleExportFacade.to_file_path(result_path, models=['datamigrations_facades_tests.AlphabetModel'], serializer='serializername')
+            MultipleExportFacade.to_file_path(result_path, models=['datamigrations_facades_tests.Alphabet'], serializer='serializername')
 
     def test_file(self):
-        migration = ModelMigration(AuthorModel)
+        migration = ModelMigration(Author)
         source_path = os.path.join(MIGRATIONS_DIR, 'author.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         source_path = os.path.join(MIGRATIONS_DIR, 'category.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
-        migration = ModelMigration(PostModel)
+        migration = ModelMigration(Tag)
+        source_path = os.path.join(MIGRATIONS_DIR, 'tag.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(Post)
         source_path = os.path.join(MIGRATIONS_DIR, 'post.json')
+        with open(source_path, 'r') as source_file:
+            migration.import_data(source_file, JsonSerializer, DirectPlan)
+
+        migration = ModelMigration(PostTags)
+        source_path = os.path.join(MIGRATIONS_DIR, 'post_tags.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
 
@@ -93,7 +101,7 @@ class MultipleExportTest(TempDirMixin, TestCase):
         self.assertEqual(source.splitlines(), result.splitlines())
 
     def test_labels(self):
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
         source_path = os.path.join(MIGRATIONS_DIR, 'category.json')
         with open(source_path, 'r') as source_file:
             migration.import_data(source_file, JsonSerializer, DirectPlan)
@@ -101,13 +109,13 @@ class MultipleExportTest(TempDirMixin, TestCase):
         result_path = os.path.join(self.temp_dir, 'backup')
         MultipleExportFacade.to_file_path(
             result_path,
-            models=['datamigrations_facades_tests.CategoryModel'],
+            models=['datamigrations_facades_tests.Category'],
         )
         with open(result_path, 'r') as result_file:
             result = result_file.read()
 
         self.assertEqual(1, result.count('Type: MODEL;'))
-        self.assertIn('Name: datamigrations_facades_tests.categorymodel;', result)
+        self.assertIn('Name: datamigrations_facades_tests.category;', result)
 
 
 class MultipleImportTest(TempDirMixin, TestCase):
@@ -148,12 +156,12 @@ class MultipleImportTest(TempDirMixin, TestCase):
     def test_serializer_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'backup')
         with self.assertRaisesRegexp(LookupError, "Serializer 'serializername' could not be found."):
-            MultipleImportFacade.from_file_path(source_path, models=['datamigrations_facades_tests.AlphabetModel'], serializer='serializername')
+            MultipleImportFacade.from_file_path(source_path, models=['datamigrations_facades_tests.Alphabet'], serializer='serializername')
 
     def test_importation_plan_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'backup')
         with self.assertRaisesRegexp(LookupError, "Importation plan 'planname' could not be found."):
-            MultipleImportFacade.from_file_path(source_path, models=['datamigrations_facades_tests.AlphabetModel'], plan='planname')
+            MultipleImportFacade.from_file_path(source_path, models=['datamigrations_facades_tests.Alphabet'], plan='planname')
 
     def test_file(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'backup')
@@ -166,7 +174,7 @@ class MultipleImportTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(AuthorModel)
+        migration = ModelMigration(Author)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -174,7 +182,15 @@ class MultipleImportTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(CategoryModel)
+        migration = ModelMigration(Category)
+        result = migration.export_data(None, JsonSerializer)
+        self.assertEqual(source.splitlines(), result.splitlines())
+
+        source_path = os.path.join(MIGRATIONS_DIR, 'tag.json')
+        with open(source_path, 'r') as source_file:
+            source = source_file.read()
+
+        migration = ModelMigration(Tag)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -182,7 +198,15 @@ class MultipleImportTest(TempDirMixin, TestCase):
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
-        migration = ModelMigration(PostModel)
+        migration = ModelMigration(Post)
+        result = migration.export_data(None, JsonSerializer)
+        self.assertEqual(source.splitlines(), result.splitlines())
+
+        source_path = os.path.join(MIGRATIONS_DIR, 'post_tags.json')
+        with open(source_path, 'r') as source_file:
+            source = source_file.read()
+
+        migration = ModelMigration(PostTags)
         result = migration.export_data(None, JsonSerializer)
         self.assertEqual(source.splitlines(), result.splitlines())
 
@@ -191,15 +215,15 @@ class MultipleImportTest(TempDirMixin, TestCase):
         MultipleImportFacade.from_file_path(
             source_path,
             models=[
-                'datamigrations_facades_tests.AuthorModel',
-                'datamigrations_facades_tests.CategoryModel',
+                'datamigrations_facades_tests.Author',
+                'datamigrations_facades_tests.Category',
             ],
             plan='direct',
             use_natural_keys=True,
         )
-        self.assertEqual(3, AuthorModel.objects.count())
-        self.assertEqual(2, CategoryModel.objects.count())
-        self.assertEqual(0, PostModel.objects.count())
+        self.assertEqual(3, Author.objects.count())
+        self.assertEqual(2, Category.objects.count())
+        self.assertEqual(0, Post.objects.count())
 
     def test_serializer(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'backup')
@@ -246,10 +270,10 @@ class SingleExportTest(TempDirMixin, TestCase):
     def test_serializer_not_found(self):
         result_path = os.path.join(self.temp_dir, 'alphabet.csv')
         with self.assertRaisesRegexp(LookupError, "Serializer 'serializername' could not be found."):
-            SingleExportFacade.to_file_path(result_path, model='datamigrations_facades_tests.AlphabetModel', serializer='serializername')
+            SingleExportFacade.to_file_path(result_path, model='datamigrations_facades_tests.Alphabet', serializer='serializername')
 
     def test_file(self):
-        migration = ModelMigration(AlphabetModel)
+        migration = ModelMigration(Alphabet)
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         result_path = os.path.join(self.temp_dir, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
@@ -258,7 +282,7 @@ class SingleExportTest(TempDirMixin, TestCase):
         migration.import_data(source, CsvSerializer, DirectPlan)
         SingleExportFacade.to_file_path(
             result_path,
-            model='datamigrations_facades_tests.AlphabetModel',
+            model='datamigrations_facades_tests.Alphabet',
             serializer='csv',
         )
         with open(result_path, 'r') as result_file:
@@ -305,22 +329,22 @@ class SingleImportTest(TempDirMixin, TestCase):
     def test_serializer_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(LookupError, "Serializer 'serializername' could not be found."):
-            SingleImportFacade.from_file_path(source_path, model='datamigrations_facades_tests.AlphabetModel', serializer='serializername')
+            SingleImportFacade.from_file_path(source_path, model='datamigrations_facades_tests.Alphabet', serializer='serializername')
 
     def test_importation_plan_not_found(self):
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with self.assertRaisesRegexp(LookupError, "Importation plan 'planname' could not be found."):
-            SingleImportFacade.from_file_path(source_path, model='datamigrations_facades_tests.AlphabetModel', plan='planname')
+            SingleImportFacade.from_file_path(source_path, model='datamigrations_facades_tests.Alphabet', plan='planname')
 
     def test_file(self):
-        migration = ModelMigration(AlphabetModel)
+        migration = ModelMigration(Alphabet)
         source_path = os.path.join(MIGRATIONS_DIR, 'alphabet.csv')
         with open(source_path, 'r') as source_file:
             source = source_file.read()
 
         SingleImportFacade.from_file_path(
             source_path,
-            model='datamigrations_facades_tests.AlphabetModel',
+            model='datamigrations_facades_tests.Alphabet',
             serializer='csv',
         )
         result = migration.export_data(serializer=CsvSerializer)

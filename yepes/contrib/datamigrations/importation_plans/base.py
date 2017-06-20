@@ -12,6 +12,7 @@ from django.utils.text import camel_case_to_spaces, capfirst
 
 from yepes.contrib.datamigrations.exceptions import (
     UnableToCreateError,
+    UnableToImportError,
     UnableToUpdateError,
 )
 from yepes.utils.iterators import isplit
@@ -25,8 +26,8 @@ class ImportationPlan(object):
     Subclasses must at least overwrite ``import_batch()``.
 
     """
-    needs_create = False
-    needs_update = False
+    inserts_data = True
+    updates_data = True
 
     @class_property
     def name(cls):
@@ -45,10 +46,15 @@ class ImportationPlan(object):
         self.migration = migration
 
     def check_conditions(self):
-        if self.needs_create and not self.migration.can_create:
+        if not self.migration.can_import:
+            raise UnableToImportError
+        if self.inserts_data and not self.migration.can_create:
             raise UnableToCreateError
-        if self.needs_update and not self.migration.can_update:
+        if self.updates_data and not self.migration.can_update:
             raise UnableToUpdateError
+
+    def finalize_importation(self):
+        pass
 
     def import_batch(self, batch):
         raise NotImplementedError('Subclasses of ImportationPlan must override import_batch() method')
@@ -65,6 +71,8 @@ class ImportationPlan(object):
             self.prepare_importation()
             for batch in isplit(data, batch_size):
                 self.import_batch(self.prepare_batch(batch))
+
+            self.finalize_importation()
 
 
 class ModelImportationPlan(ImportationPlan):

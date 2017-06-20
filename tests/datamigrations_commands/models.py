@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class AlphabetModel(models.Model):
+class Alphabet(models.Model):
 
     letter = models.CharField(
             max_length=1,
@@ -15,14 +15,14 @@ class AlphabetModel(models.Model):
             unique=True)
 
 
-class AuthorModel(models.Model):
+class Author(models.Model):
 
     name = models.CharField(
             max_length=255,
             unique=True)
 
 
-class CategoryModel(models.Model):
+class Category(models.Model):
 
     name = models.CharField(
             max_length=255,
@@ -31,19 +31,31 @@ class CategoryModel(models.Model):
             blank=True)
 
 
-class PostModel(models.Model):
+class Tag(models.Model):
+
+    name = models.CharField(
+            max_length=255,
+            unique=True)
+
+
+class Post(models.Model):
 
     title = models.CharField(
             max_length=255,
             unique=True)
+    content = models.TextField(
+            blank=True)
+
     author = models.ForeignKey(
-            AuthorModel,
+            Author,
             on_delete=models.CASCADE,
             related_name='posts')
     category = models.ForeignKey(
-            CategoryModel,
+            Category,
             on_delete=models.CASCADE,
             related_name='posts')
-    content = models.TextField(
-            blank=True)
+    tags = models.ManyToManyField(
+            Tag,
+            blank=True,
+            related_name='posts')
 

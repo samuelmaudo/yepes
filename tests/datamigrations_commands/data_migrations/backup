@@ -1,13 +1,13 @@
 
 --
--- Name: datamigrations_commands_tests.alphabetmodel; Type: MODEL; Serializer: json
+-- Name: datamigrations_commands_tests.alphabet; Type: MODEL; Serializer: json
 --
 
 [
 ]
 
 --
--- Name: datamigrations_commands_tests.authormodel; Type: MODEL; Serializer: json
+-- Name: datamigrations_commands_tests.author; Type: MODEL; Serializer: json
 --
 
 [
@@ -17,7 +17,7 @@
 ]
 
 --
--- Name: datamigrations_commands_tests.categorymodel; Type: MODEL; Serializer: json
+-- Name: datamigrations_commands_tests.category; Type: MODEL; Serializer: json
 --
 
 [
@@ -26,11 +26,31 @@
 ]
 
 --
--- Name: datamigrations_commands_tests.postmodel; Type: MODEL; Serializer: json
+-- Name: datamigrations_commands_tests.post; Type: MODEL; Serializer: json
 --
 
 [
-{"title": "Watergate", "author__name": "Scott", "category__name": "State Secrets", "content": "A major political scandal that occurred in the United States..."},
-{"title": "Climategate", "author__name": "Scott", "category__name": "State Secrets", "content": "Emails that were hacked remotely from the Climatic Research..."},
-{"title": "Chiquito de la Calzada", "author__name": "Walter", "category__name": "Some Nonsense", "content": "Trabajas menos que el sastre de Tarzan."}
+{"title": "Watergate", "content": "A major political scandal that occurred in the United States...", "author__name": "Scott", "category__name": "State Secrets"},
+{"title": "Climategate", "content": "Emails that were hacked remotely from the Climatic Research...", "author__name": "Scott", "category__name": "State Secrets"},
+{"title": "Chiquito de la Calzada", "content": "Trabajas menos que el sastre de Tarzan.", "author__name": "Walter", "category__name": "Some Nonsense"}
+]
+
+--
+-- Name: datamigrations_commands_tests.post_tags; Type: MODEL; Serializer: json
+--
+
+[
+{"post__title": "Watergate", "tag__name": "1970s"},
+{"post__title": "Climategate", "tag__name": "2010s"},
+{"post__title": "Chiquito de la Calzada", "tag__name": "1990s"}
+]
+
+--
+-- Name: datamigrations_commands_tests.tag; Type: MODEL; Serializer: json
+--
+
+[
+{"name": "1970s"},
+{"name": "1990s"},
+{"name": "2010s"}
 ]

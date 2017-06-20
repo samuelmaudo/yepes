@@ -12,8 +12,14 @@ Importation plans
 
     .. attribute:: migration
     .. attribute:: name
-    .. attribute:: needs_create
-    .. attribute:: needs_update
+    .. attribute:: inserts_data
+
+        Whether the plan inserts new data.
+
+    .. attribute:: updates_data
+
+        Whether the plan updates existing data.
+
     .. attribute:: verbose_name
 
     **Methods**
@@ -23,6 +29,11 @@ Importation plans
         Initializes the plan instance by setting :attr:`migration` attribute.
 
     .. method:: check_conditions()
+
+        Verifies that the plan can be runned. This method is called by
+        :meth:`run` before starting the database transaction.
+
+    .. method:: finalize_importation()
 
     .. method:: import_batch(batch)
 

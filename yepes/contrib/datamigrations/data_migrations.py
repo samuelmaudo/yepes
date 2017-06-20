@@ -8,6 +8,12 @@ from django.db import models
 from django.utils import six
 from django.utils.six.moves import zip
 
+from yepes.contrib.datamigrations.exceptions import (
+    UnableToCreateError,
+    UnableToExportError,
+    UnableToImportError,
+    UnableToUpdateError,
+)
 from yepes.contrib.datamigrations.fields import (
     BooleanField,
     DateField, DateTimeField, TimeField,
@@ -29,6 +35,9 @@ class DataMigration(object):
     fields = []
 
     def export_data(self, file=None, serializer=None):
+        if not self.can_export:
+            raise UnableToExportError
+
         serializer = self.get_serializer(serializer)
         headers = [fld.name for fld in self.fields_to_export]
         data = self.get_data_to_export(serializer)
@@ -71,10 +80,27 @@ class DataMigration(object):
         return serializer
 
     def import_data(self, source, serializer=None, plan=None, batch_size=100):
+        if not self.can_import:
+            raise UnableToImportError
+
+        plan = self.get_importation_plan(plan)
+        if not self.can_create and getattr(plan, 'inserts_data', True):
+            raise UnableToCreateError
+
+        if not self.can_update and getattr(plan, 'updates_data', True):
+            raise UnableToUpdateError
+
         serializer = self.get_serializer(serializer)
         data = self.get_data_to_import(source, serializer)
-        plan = self.get_importation_plan(plan)
         plan.run(data, batch_size)
+
+    @property
+    def can_export(self):
+        return bool(self.fields_to_export)
+
+    @property
+    def can_import(self):
+        return self.fields_to_import and (self.can_create or self.can_update)
 
     @property
     def fields_to_export(self):
@@ -143,7 +169,12 @@ class BaseModelMigration(DataMigration):
 
     def get_importation_plan(self, plan_class=None):
         if plan_class is None:
-            plan_class = 'update_or_create' if self.can_update else 'create'
+            if self.can_create and self.can_update:
+                plan_class = 'update_or_create'
+            elif self.can_create:
+                plan_class = 'create'
+            elif self.can_update:
+                plan_class = 'update'
 
         return super(BaseModelMigration, self).get_importation_plan(plan_class)
 
@@ -501,15 +532,6 @@ class QuerySetExportation(ModelMigration):
             return self._data_from_objects(self.queryset, serializer)
         else:
             return self._data_from_values(self.queryset, serializer)
-
-    def get_data_to_import(self, *args, **kwargs):
-        raise TypeError('This migration does not support importations.')
-
-    def get_importation_plan(self, *args, **kwargs):
-        raise TypeError('This migration does not support importations.')
-
-    def import_data(self, *args, **kwargs):
-        raise TypeError('This migration does not support importations.')
 
     @cached_property
     def requires_model_instances(self):

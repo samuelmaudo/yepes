@@ -11,9 +11,6 @@ from yepes.contrib.datamigrations.importation_plans import ModelImportationPlan
 
 class UpdateOrBulkCreatePlan(ModelImportationPlan):
 
-    needs_create = True
-    needs_update = True
-
     def import_batch(self, batch):
         model = self.migration.model
         manager = model._base_manager
