@@ -20,10 +20,6 @@ class FloatField(CalculatedField, models.FloatField):
         self.max_value = kwargs.pop('max_value', None)
         self.min_value = kwargs.pop('min_value', None)
         super(FloatField, self).__init__(*args, **kwargs)
-        if self.min_value is not None:
-            self.validators.append(MinValueValidator(self.min_value))
-        if self.max_value is not None:
-            self.validators.append(MaxValueValidator(self.max_value))
 
     def check(self, **kwargs):
         errors = super(FloatField, self).check(**kwargs)
@@ -90,18 +86,32 @@ class FloatField(CalculatedField, models.FloatField):
 
     @cached_property
     def column_range(self):
-        # A tuple of the (min_value, max_value) form representing the range of
-        # the database column bound to the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the database column bound to the field.
         return (None, None)
 
     @cached_property
     def range(self):
-        # A tuple of the (min_value, max_value) form representing the range of
-        # the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the field.
         min_allowed, max_allowed = self.column_range
         if self.min_value is not None:
             min_allowed = self.min_value
+
         if self.max_value is not None:
             max_allowed = self.max_value
+
         return (min_allowed, max_allowed)
+
+    @cached_property
+    def validators(self):
+        min_allowed, max_allowed = self.range
+        validators = super(models.FloatField, self).validators
+        if min_allowed is not None:
+            validators.append(MinValueValidator(min_allowed))
+
+        if max_allowed is not None:
+            validators.append(MaxValueValidator(max_allowed))
+
+        return validators
 

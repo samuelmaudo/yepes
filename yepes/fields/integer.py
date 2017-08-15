@@ -121,33 +121,37 @@ class IntegerField(CalculatedField, models.IntegerField):
 
     @cached_property
     def column_range(self):
-        # A tuple of the (min_value, max_value) form representing the range of
-        # the database column bound to the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the database column bound to the field.
         internal_type = self.get_internal_type()
         return connection.ops.integer_field_range(internal_type)
 
     @cached_property
     def range(self):
-        # A tuple of the (min_value, max_value) form representing the range of
-        # the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the field.
         min_allowed, max_allowed = self.column_range
         if self.min_value is not None:
             min_allowed = self.min_value
+
         if self.max_value is not None:
             max_allowed = self.max_value
+
         return (min_allowed, max_allowed)
 
     @cached_property
     def validators(self):
-        # These validators can't be added at field initialization time since
-        # they're based on values retrieved from `connection`.
-        range_validators = []
+        # These validators can't be added at field initialization time
+        # since they're based on values retrieved from `connection`.
         min_allowed, max_allowed = self.range
+        validators = super(models.IntegerField, self).validators
         if min_allowed is not None:
-            range_validators.append(MinValueValidator(min_allowed))
+            validators.append(MinValueValidator(min_allowed))
+
         if max_allowed is not None:
-            range_validators.append(MaxValueValidator(max_allowed))
-        return super(IntegerField, self).validators + range_validators
+            validators.append(MaxValueValidator(max_allowed))
+
+        return validators
 
 
 class BigIntegerField(IntegerField):

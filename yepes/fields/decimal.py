@@ -2,20 +2,22 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from decimal import Decimal as dec
+from decimal import Decimal as dec, InvalidOperation
 
 from django.core import checks
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import six
 
 from yepes.conf import settings
 from yepes.fields.calculated import CalculatedField
+from yepes.utils.decimals import force_decimal, round_decimal
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
-DECIMAL_FIELD_RANGES = {
-    (6, 2): dec('9999.99')
+decimal_ranges = {
+    (6, 2): (dec('-9999.99'), dec('9999.99'))
 }
 
 class DecimalField(CalculatedField, models.DecimalField):
@@ -99,6 +101,15 @@ class DecimalField(CalculatedField, models.DecimalField):
         else:
             return []
 
+    def clean(self, value, model_instance):
+        value = self.to_python(value)
+        if value is not None:
+            value = round_decimal(value, exponent=self.column_range[1])
+
+        self.validate(value, model_instance)
+        self.run_validators(value)
+        return value
+
     def deconstruct(self):
         name, path, args, kwargs = super(DecimalField, self).deconstruct()
         path = path.replace('yepes.fields.decimal', 'yepes.fields')
@@ -117,27 +128,51 @@ class DecimalField(CalculatedField, models.DecimalField):
         params.update(kwargs)
         return super(DecimalField, self).formfield(**params)
 
+    def to_python(self, value):
+        if value is not None:
+            try:
+                value = force_decimal(value)
+            except InvalidOperation:
+                raise ValidationError(
+                    self.error_messages['invalid'],
+                    code='invalid',
+                    params={'value': value},
+                )
+
+        return value
+
     @cached_property
     def column_range(self):
-        # A tuple of the (min_value, max_value) form representing the range
-        # of the database column bound to the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the database column bound to the field.
         key = (self.max_digits, self.decimal_places)
-        max_value = DECIMAL_FIELD_RANGES.get(key)
-        if max_value is None:
+        range = decimal_ranges.get(key)
+        if range is None:
             digits = '9' * self.max_digits
             decimals = '1' + ('0' * self.decimal_places)
-            max_value = DECIMAL_FIELD_RANGES[key] = dec(digits) / dec(decimals)
+            max_value = dec(digits) / dec(decimals)
+            range = decimal_ranges[key] = (-max_value, max_value)
 
-        return (-max_value, max_value)
+        return range
 
     @cached_property
     def range(self):
-        # A tuple of the (min_value, max_value) form representing the range of
-        # the field.
+        # A tuple of the (min_value, max_value) form representing the
+        # range of the field.
         min_allowed, max_allowed = self.column_range
         if self.min_value is not None:
             min_allowed = self.min_value
+
         if self.max_value is not None:
             max_allowed = self.max_value
+
         return (min_allowed, max_allowed)
+
+    @cached_property
+    def validators(self):
+        min_allowed, max_allowed = self.range
+        validators = super(models.DecimalField, self).validators
+        validators.append(MinValueValidator(min_allowed))
+        validators.append(MaxValueValidator(max_allowed))
+        return validators
 
