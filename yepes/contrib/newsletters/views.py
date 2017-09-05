@@ -113,7 +113,7 @@ class DispatchView(UpdateView):
             'email_domain_id',
         ).order_by('?')
 
-        deliveries = []
+        deliveries = {}
         for subscriber_id, domain_id in subscribers:
             delivery = self.delivery_model()
             delivery.message = self.object
@@ -121,9 +121,9 @@ class DispatchView(UpdateView):
             delivery.subscriber_id = subscriber_id
             delivery.domain_id = domain_id
             delivery.date = form_data['date']
-            deliveries.append(delivery)
+            deliveries[subscriber_id] = delivery
 
-        self.delivery_model.objects.bulk_create(deliveries)
+        self.delivery_model.objects.bulk_create(six.itervalues(deliveries))
 
         return HttpResponseRedirect(self.get_success_url())
 
