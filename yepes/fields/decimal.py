@@ -12,7 +12,7 @@ from django.utils import six
 
 from yepes.conf import settings
 from yepes.fields.calculated import CalculatedField
-from yepes.utils.decimals import force_decimal, round_decimal
+from yepes.utils.decimals import force_decimal
 from yepes.utils.deconstruct import clean_keywords
 from yepes.utils.properties import cached_property
 
@@ -103,8 +103,8 @@ class DecimalField(CalculatedField, models.DecimalField):
 
     def clean(self, value, model_instance):
         value = self.to_python(value)
-        if value is not None:
-            value = round_decimal(value, exponent=self.column_range[1])
+        if isinstance(value, dec):
+            value = value.quantize(self.column_range[1])
 
         self.validate(value, model_instance)
         self.run_validators(value)
