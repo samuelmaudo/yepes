@@ -10,8 +10,8 @@ from yepes.defaulttags import (
     BuildFullUrlTag,
     CacheTag,
     FullUrlTag,
-    PaginationTag,
     PhasedTag,
+    UrlTag,
 )
 from yepes.templatetags.svg import (
     InsertFileTag,
@@ -45,16 +45,16 @@ class DefaultTagsTest(TemplateTagsMixin, SimpleTestCase):
             '{% full_url view_name *args **kwargs[ as variable_name] %}',
         )
 
-    def test_pagination_syntax(self):
-        self.checkSyntax(
-            PaginationTag,
-            '{% pagination[ paginator[ page_obj]] **kwargs %}',
-        )
-
     def test_phased_syntax(self):
         self.checkSyntax(
             PhasedTag,
             '{% phased[ with *vars **new_vars] %}...{% endphased %}',
+        )
+
+    def test_url_syntax(self):
+        self.checkSyntax(
+            UrlTag,
+            '{% url view_name *args **kwargs[ as variable_name] %}',
         )
 
 

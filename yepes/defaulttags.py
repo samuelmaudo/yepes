@@ -38,8 +38,8 @@ register = Library()
 
 class BuildFullUrlTag(AssignTag):
     """
-    Adds the scheme name and the authority part (domain and subdomain) to the
-    given absolute path.
+    Adds the scheme name and the authority part (domain and subdomain)
+    to the given absolute path.
     """
     assign_var = False
 
@@ -55,7 +55,8 @@ register.tag('build_full_url', BuildFullUrlTag.as_tag())
 
 class CacheTag(DoubleTag):
     """
-    Caches the contents of a template fragment for a given amount of time.
+    Caches the contents of a template fragment for a given amount of
+    time.
 
     Usage::
 
@@ -109,201 +110,13 @@ class CacheTag(DoubleTag):
 register.tag('cache', CacheTag.as_tag())
 
 
-## {% full_url view_name *args **kwargs[ as variable_name] %} ##################
-
-
-class FullUrlTag(AssignTag):
-    """
-    Returns a full URL matching given view with its parameters.
-
-    This is a way to define links that aren't tied to a particular URL
-    configuration::
-
-    {% full_url 'path.to.some_view' %}
-
-    The first argument is a path to a view. It can be an absolute Python path
-    or just ``app_name.view_name`` without the project name if the view is
-    located inside the project.
-
-    Other arguments are space-separated values that will be filled in place of
-    positional and keyword arguments in the URL. Don't mix positional and
-    keyword arguments.
-
-    All arguments for the URL should be present.
-
-    For example if you have a view ``app_name.client`` taking client's id and
-    the corresponding line in a URLconf looks like this::
-
-    ('^client/(\d+)/$', 'app_name.client')
-
-    and this app's URLconf is included into the project's URLconf under some
-    path::
-
-    ('^clients/', include('project_name.app_name.urls'))
-
-    then in a template you can create a link for a certain client like this::
-
-    {% full_url 'app_name.client' client.id %}
-
-    The URL will look like ``http://example.org/clients/client/123/``.
-
-    The first argument can also be a named URL instead of the Python path to
-    the view callable. For example if the URLconf entry looks like this::
-
-    url('^client/(\d+)/$', name='client-detail-view')
-
-    then in the template you can use::
-
-    {% full_url 'client-detail-view' client.id %}
-
-    There is even another possible value type for the first argument. It can be
-    the name of a template variable that will be evaluated to obtain the view
-    name or the URL name, e.g.::
-
-    {% with view_path='app_name.client' %}
-    {% full_url view_path client.id %}
-    {% endwith %}
-
-    or,
-
-    {% with url_name='client-detail-view' %}
-    {% full_url url_name client.id %}
-    {% endwith %}
-
-    """
-    assign_var = False
-
-    def process(self, view_name, *args, **kwargs):
-        from django.core.urlresolvers import NoReverseMatch
-        from yepes.urlresolvers import full_reverse
-
-        try:
-            current_app = self.context.request.current_app
-        except AttributeError:
-            try:
-                current_app = self.context.current_app
-            except AttributeError:
-                try:
-                    current_app = self.context.request.resolver_match.namespace
-                except AttributeError:
-                    current_app = None
-
-        scheme = kwargs.pop('scheme', None)
-        domain = kwargs.pop('domain', None)
-        subdomain = kwargs.pop('subdomain', None)
-
-        # Try to look up the URL twice: once given the view name, and again
-        # relative to what we guess is the "main" app. If they both fail,
-        # re-raise the NoReverseMatch unless we're using the
-        # {% full_url ... as var %} construct in which cause return nothing.
-        url = ''
-        try:
-            url = full_reverse(view_name, args=args, kwargs=kwargs,
-                               current_app=current_app, scheme=scheme,
-                               domain=domain, subdomain=subdomain)
-        except NoReverseMatch:
-            exc_info = sys.exc_info()
-            if settings.SETTINGS_MODULE:
-                project_name = settings.SETTINGS_MODULE.split('.')[0]
-                try:
-                    url = full_reverse(project_name + '.' + view_name,
-                                       args=args, kwargs=kwargs,
-                                       current_app=current_app, scheme=scheme,
-                                       domain=domain, subdomain=subdomain)
-                except NoReverseMatch:
-                    if not self.target_var:
-                        # Re-raise the original exception, not the one with
-                        # the path relative to the project. This makes a
-                        # better error message.
-                        six.reraise(*exc_info)
-            else:
-                if not self.target_var:
-                    raise
-
-        return url
-
-register.tag('full_url', FullUrlTag.as_tag())
-
-
-## {% pagination[ paginator[ page_obj]] **kwargs %} ############################
-
-
-class PaginationTag(InclusionTag):
-
-    template = 'partials/pagination.html'
-
-    def process(self, paginator=None, page_obj=None, **kwargs):
-        if paginator is None:
-            if 'paginator' in self.context:
-                paginator = self.context['paginator']
-            else:
-                return ''
-
-        if page_obj is None:
-            if 'page_obj' in self.context:
-                page_obj = self.context['page_obj']
-            else:
-                return ''
-
-        num_pages = paginator.num_pages
-        if num_pages < 2:
-            return ''
-
-        current_page = page_obj.number
-        visible_pages = int(kwargs.pop('visible_pages', 7))
-
-        start_page = current_page - ((visible_pages - 1) // 2)
-        stop_page = current_page + int(round((visible_pages - 1) / 2))
-        if start_page < 1:
-            start_page = 1
-            stop_page = visible_pages
-
-        if stop_page > num_pages:
-            start_page = start_page - stop_page + num_pages
-            stop_page = num_pages
-            if start_page < 1:
-                start_page = 1
-
-        visible_page_range = list(range(start_page, stop_page + 1))
-
-        display_gaps = bool(kwargs.pop('display_gaps', False))
-        if display_gaps and len(visible_page_range) > 4:
-            if visible_page_range[0] != 1:
-                visible_page_range[0] = 1
-                visible_page_range[1] = None
-            if visible_page_range[-1] != num_pages:
-                visible_page_range[-2] = None
-                visible_page_range[-1] = num_pages
-
-        query_string = '?' + '&'.join(
-                '{0}={1}'.format(urlquote(k), urlquote(v))
-                for k, v
-                in six.iteritems(kwargs))
-
-        context = self.get_new_context()
-        context.update({
-            'kwargs': kwargs,
-            'next_page_number': page_obj.number + 1,
-            'num_pages': num_pages,
-            'page_number': page_obj.number,
-            'page_obj': page_obj,
-            'paginator': paginator,
-            'previous_page_number': page_obj.number - 1,
-            'query_string': query_string,
-            'visible_page_range': visible_page_range,
-        })
-        return self.get_content(context)
-
-register.tag('pagination', PaginationTag.as_tag())
-
-
 ## {% phased[ with *vars **new_vars] %} ########################################
 
 
 class PhasedTag(DoubleTag):
     """
-    Template tag to denote a template section to render a second time via
-    a middleware.
+    Template tag to denote a template section to render a second time
+    via a middleware.
 
     Usage::
 
@@ -312,16 +125,17 @@ class PhasedTag(DoubleTag):
             .. some content to be rendered a second time ..
         {% endphased %}
 
-    You can pass it a list of context variables to automatically save those
-    variables for the second pass rendering of the template, e.g.::
+    You can pass it a list of context variables to automatically save
+    those variables for the second pass rendering of the template, e.g.::
 
         {% load phased_tags %}
         {% phased with object comment_count=10 %}
             There are {{ comment_count }} comments for "{{ object }}".
         {% endphased %}
 
-    Alternatively you can also set the ``PHASED_KEEP_CONTEXT`` setting to
-    ``True`` to automatically keep the whole context for each phased block.
+    Alternatively you can also set the ``PHASED_KEEP_CONTEXT`` setting
+    to ``True`` to automatically keep the whole context for each
+    phased  block.
 
     NOTE: Lazy objects such as messages and csrf tokens aren't kept.
 
@@ -364,9 +178,9 @@ class PhasedTag(DoubleTag):
 
     def process(self, **variables):
         """
-        Outputs the literal content of the phased block with pickled context,
-        enclosed in a delimited block that can be parsed by the second pass
-        rendering middleware.
+        Outputs the literal content of the phased block with pickled
+        context, enclosed in a delimited block that can be parsed by
+        the second pass rendering middleware.
         """
         # our main context
         storage = {}
@@ -393,9 +207,9 @@ register.tag('phased', PhasedTag.as_tag())
 
 class ReplaceTag(AssignTag):
     """
-    Returns a copy of the ``string`` with all occurrences of substring ``old``
-    replaced by ``new``. If the optional argument ``count`` is given, only the
-    first ``count`` occurrences are replaced.
+    Returns a copy of the ``string`` with all occurrences of substring
+    ``old`` replaced by ``new``. If the optional argument ``count`` is
+    given, only the first ``count`` occurrences are replaced.
     """
     assign_var = False
 
@@ -409,4 +223,196 @@ class ReplaceTag(AssignTag):
             return string.replace(old, new, count)
 
 register.tag('replace', ReplaceTag.as_tag())
+
+
+## {% url view_name *args **kwargs[ as variable_name] %} #######################
+
+
+class UrlTag(AssignTag):
+    """
+    Returns an absolute URL matching given view with its parameters.
+
+    This is a way to define links that aren't tied to a particular
+    URL configuration::
+
+    {% url 'path.to.some_view' %}
+
+    The first argument is a path to a view. It can be an absolute
+    Python path or just ``app_name.view_name`` without the project
+    name if the view is located inside the project.
+
+    Other arguments are space-separated values that will be filled in
+    place of positional and keyword arguments in the URL. Don't mix
+    positional and keyword arguments.
+
+    All arguments for the URL should be present.
+
+    For example if you have a view ``app_name.client`` taking client's
+    id and the corresponding line in a URLconf looks like this::
+
+    ('^client/(\d+)/$', 'app_name.client')
+
+    and this app's URLconf is included into the project's URLconf
+    under some path::
+
+    ('^clients/', include('project_name.app_name.urls'))
+
+    then in a template you can create a link for a certain client like
+    this::
+
+    {% url 'app_name.client' client.id %}
+
+    The URL will look like ``http://example.org/clients/client/123/``.
+
+    The first argument can also be a named URL instead of the Python
+    path to the view callable. For example if the URLconf entry looks
+    like this::
+
+    url('^client/(\d+)/$', name='client-detail-view')
+
+    then in the template you can use::
+
+    {% url 'client-detail-view' client.id %}
+
+    There is even another possible value type for the first argument.
+    It can be the name of a template variable that will be evaluated
+    to obtain the view name or the URL name, e.g.::
+
+    {% with view_path='app_name.client' %}
+    {% url view_path client.id %}
+    {% endwith %}
+
+    or,
+
+    {% with url_name='client-detail-view' %}
+    {% url url_name client.id %}
+    {% endwith %}
+
+    """
+    assign_var = False
+
+    def process(self, view_name, *args, **kwargs):
+        from django.core.urlresolvers import reverse, NoReverseMatch
+
+        try:
+            current_app = self.context.request.current_app
+        except AttributeError:
+            try:
+                current_app = self.context.current_app
+            except AttributeError:
+                try:
+                    current_app = self.context.request.resolver_match.namespace
+                except AttributeError:
+                    current_app = None
+
+        # Try to look up the URL twice: once given the view name, and
+        # again relative to what we guess is the "main" app. If they
+        # both fail, re-raise the NoReverseMatch unless we're using the
+        # {% url ... as var %} construct in which cause return nothing.
+        url = ''
+        try:
+            url = reverse(view_name, args=args, kwargs=kwargs,
+                          current_app=current_app)
+        except NoReverseMatch:
+            exc_info = sys.exc_info()
+            if settings.SETTINGS_MODULE:
+                project_name = settings.SETTINGS_MODULE.split('.')[0]
+                try:
+                    url = reverse(project_name + '.' + view_name,
+                                  args=args, kwargs=kwargs,
+                                  current_app=current_app)
+                except NoReverseMatch:
+                    if not self.target_var:
+                        # Re-raise the original exception, not the one with
+                        # the path relative to the project. This makes a
+                        # better error message.
+                        six.reraise(*exc_info)
+            else:
+                if not self.target_var:
+                    raise
+
+        return url
+
+register.tag('url', UrlTag.as_tag())
+
+
+## {% full_url view_name *args **kwargs[ as variable_name] %} ##################
+
+
+class FullUrlTag(UrlTag):
+    """
+    Returns a full URL matching given view with its parameters.
+
+    This is a way to define links that aren't tied to a particular
+    URL configuration::
+
+    {% full_url 'path.to.some_view' %}
+
+    The first argument is a path to a view. It can be an absolute
+    Python path or just ``app_name.view_name`` without the project
+    name if the view is located inside the project.
+
+    Other arguments are space-separated values that will be filled in
+    place of positional and keyword arguments in the URL. Don't mix
+    positional and keyword arguments.
+
+    All arguments for the URL should be present.
+
+    For example if you have a view ``app_name.client`` taking client's
+    id and the corresponding line in a URLconf looks like this::
+
+    ('^client/(\d+)/$', 'app_name.client')
+
+    and this app's URLconf is included into the project's URLconf
+    under some path::
+
+    ('^clients/', include('project_name.app_name.urls'))
+
+    then in a template you can create a link for a certain client like
+    this::
+
+    {% full_url 'app_name.client' client.id %}
+
+    The URL will look like ``http://example.org/clients/client/123/``.
+
+    The first argument can also be a named URL instead of the Python
+    path to the view callable. For example if the URLconf entry looks
+    like this::
+
+    url('^client/(\d+)/$', name='client-detail-view')
+
+    then in the template you can use::
+
+    {% full_url 'client-detail-view' client.id %}
+
+    There is even another possible value type for the first argument.
+    It can be the name of a template variable that will be evaluated
+    to obtain the view name or the URL name, e.g.::
+
+    {% with view_path='app_name.client' %}
+    {% full_url view_path client.id %}
+    {% endwith %}
+
+    or,
+
+    {% with url_name='client-detail-view' %}
+    {% full_url url_name client.id %}
+    {% endwith %}
+
+    """
+    def process(self, view_name, *args, **kwargs):
+        from yepes.urlresolvers import build_full_url
+
+        scheme = kwargs.pop('scheme', None)
+        domain = kwargs.pop('domain', None)
+        subdomain = kwargs.pop('subdomain', None)
+
+        location = self.super_process(view_name, *args, **kwargs)
+
+        return build_full_url(location,
+                              scheme=scheme,
+                              domain=domain,
+                              subdomain=subdomain)
+
+register.tag('full_url', FullUrlTag.as_tag())
 

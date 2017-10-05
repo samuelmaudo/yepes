@@ -2,7 +2,7 @@
 
 import re
 
-from django.core.urlresolvers import reverse as reverse
+from django.core.urlresolvers import reverse
 from django.utils import six
 from django.utils.encoding import iri_to_uri
 from django.utils.functional import lazy
@@ -20,8 +20,8 @@ FULL_URL_RE = re.compile(r'^[a-z][a-z0-9.-]+:', re.IGNORECASE)
 
 def build_full_url(location, scheme=None, domain=None, subdomain=None):
     """
-    Adds the scheme name and the authority part (domain and subdomain) to the
-    given absolute path.
+    Adds the scheme name and the authority part (domain and subdomain)
+    to the given absolute path.
 
     Args::
 
@@ -73,11 +73,11 @@ def build_full_url(location, scheme=None, domain=None, subdomain=None):
 def full_reverse(viewname, urlconf=None, args=None, kwargs=None, current_app=None,
                  scheme=None, domain=None, subdomain=None):
     """
-    First, obtains the absolute path of the URL matching given ``viewname``
-    with its parameters.
+    First, obtains the absolute path of the URL matching given
+    ``viewname`` with its parameters.
 
-    Then, prepends the path with the scheme name and the authority part (domain
-    and subdomain) and returns it.
+    Then, prepends the path with the scheme name and the authority
+    part (domain and subdomain) and returns it.
 
     Args::
 
