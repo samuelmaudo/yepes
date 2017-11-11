@@ -28,13 +28,20 @@ class CsrfTokenMiddleware(CsrfViewMiddleware):
             return None
 
         try:
-            # Use same token next time
-            token = request.COOKIES[settings.CSRF_COOKIE_NAME]
-            request.META['CSRF_COOKIE'] = sanitize_csrf_token(token)
+            cookie_token = request.COOKIES[settings.CSRF_COOKIE_NAME]
         except KeyError:
             # Generate token and store it in the request, so it's
             # available to the view.
             request.META['CSRF_COOKIE'] = generate_csrf_token()
+        else:
+            csrf_token = sanitize_csrf_token(cookie_token)
+            if csrf_token != cookie_token:
+                # Cookie token needed to be replaced; the cookie
+                # needs to be reset.
+                request.csrf_cookie_needs_reset = True
+
+            # Use same token next time.
+            request.META['CSRF_COOKIE'] = csrf_token
 
         return self._accept(request)
 
