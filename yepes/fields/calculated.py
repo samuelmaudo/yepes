@@ -60,6 +60,12 @@ class CalculatedField(object):
         else:
             return super(CalculatedField, self).get_default()
 
+    def has_default(self):
+        if self.calculated:
+            return False
+        else:
+            return super(CalculatedField, self).has_default()
+
 
 class CalculatedFieldDescriptor(object):
 
