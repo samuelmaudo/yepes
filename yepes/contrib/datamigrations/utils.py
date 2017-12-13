@@ -6,6 +6,47 @@ from django.db.models import ForeignKey
 from django.utils import six
 
 
+class ModelFieldsCache(object):
+
+    def __init__(self):
+        self.cache = {}
+
+    def _maybe_update(self, model):
+        if model not in self.cache:
+            self.cache[model] = OrderedDict([
+                (f.name, f)
+                for f
+                in model._meta.get_fields()
+                if not (f.is_relation and f.auto_created)
+            ])
+
+    def get_all_model_fields(self, model):
+        self._maybe_update(model)
+        return six.itervalues(self.cache[model])
+
+    def get_model_field(self, model, field_name):
+        if field_name == 'pk':
+            return model._meta.pk
+
+        self._maybe_update(model)
+        return self.cache[model].get(field_name)
+
+    def get_model_fields(self, model, field_names):
+        model_fields = []
+        for name in field_names:
+            f = self.get_model_field(model, name)
+            if f is None:
+                break  # This name probably points to an object property.
+
+            model_fields.append(f)
+            if f.remote_field is None:
+                break  # If no relation, next names cannot point to model fields.
+
+            model = f.remote_field.model
+
+        return model_fields
+
+
 def sort_dependencies(model_list):
     """
     Sorts a list of models to ensure that any model with a ForeignKey

@@ -23,6 +23,7 @@ from yepes.contrib.datamigrations.fields import (
 )
 from yepes.contrib.datamigrations.importation_plans import importation_plans
 from yepes.contrib.datamigrations.serializers import serializers
+from yepes.contrib.datamigrations.utils import ModelFieldsCache
 from yepes.types import Undefined
 from yepes.utils.properties import cached_property
 
@@ -102,13 +103,13 @@ class DataMigration(object):
     def can_import(self):
         return self.fields_to_import and (self.can_create or self.can_update)
 
-    @property
+    @cached_property
     def fields_to_export(self):
         return self.fields
 
-    @property
+    @cached_property
     def fields_to_import(self):
-        return self.fields
+        return self.fields if self.can_create or self.can_update else []
 
 
 class BaseModelMigration(DataMigration):
@@ -217,41 +218,13 @@ class BaseModelMigration(DataMigration):
 
     @cached_property
     def model_fields(self):
-        models = {}
-        def get_model_field(model, field_name):
-            opts = model._meta
-            if field_name == 'pk':
-                return opts.pk
-            else:
-                if opts.model_name not in models:
-                    models[opts.model_name] = {
-                        f.name: f
-                        for f
-                        in opts.get_fields()
-                        if not (f.is_relation and f.auto_created)
-                    }
-                return models[opts.model_name].get(field_name)
-
+        cache = ModelFieldsCache()
         fields = []
-        field_paths = [
-            (fld, fld.path.split('__'))
-            for fld
-            in self.fields
-        ]
-        for fld, path in field_paths:
-            model = self.model
-            model_fields = []
-            for step in path:
-                f = get_model_field(model, step)
-                if f is None:
-                    break  # This step is probably an object property.
-
-                model_fields.append(f)
-                if f.remote_field is None:
-                    break  # If no relation, next steps cannot be model fields.
-
-                model = f.remote_field.model
-
+        for fld in self.fields:
+            model_fields = cache.get_model_fields(
+                self.model,
+                fld.path.split('__'),
+            )
             fields.append((fld, model_fields))
 
         return collections.OrderedDict(fields)
@@ -372,14 +345,17 @@ class ModelMigration(BaseModelMigration):
 
         return field_class(path, name, attname)
 
-    def build_relation(self, model_field):
+    def build_relation(self, model_field, path=None, name=None, attname=None):
         # Discard ManyToManyFields and GenericForeignKeys
         if not isinstance(model_field, models.ForeignKey):
             return None
 
-        path = model_field.attname
-        name = model_field.name
-        attname = path
+        if path is None:
+            path = model_field.attname
+        if name is None:
+            name = model_field.name
+        if attname is None:
+            attname = path
 
         target_field = model_field.target_field
 
@@ -451,53 +427,75 @@ class ModelMigration(BaseModelMigration):
 
     @cached_property
     def model_fields(self):
-        opts = self.model._meta
-        model_fields = [
-            f
+        cache = ModelFieldsCache()
+
+        selected_fields = self.selected_fields or [
+            f.name
             for f
-            in opts.get_fields()
-            if not (f.is_relation and f.auto_created)
+            in cache.get_all_model_fields(self.model)
         ]
-        if self.selected_fields is not None:
-            available_model_fields = {
-                f.name: f
-                for f
-                in model_fields
-            }
-            model_fields = [
-                available_model_fields[name]
-                for name
-                in self.selected_fields
+        if self.excluded_fields:
+            selected_fields = [
+                field_name
+                for field_name
+                in selected_fields
+                if field_name not in self.excluded_fields
             ]
 
-        if self.excluded_fields is not None:
+        if self.use_natural_primary_keys and not self.selected_fields:
             model_fields = [
                 f
                 for f
-                in model_fields
-                if f.name not in self.excluded_fields
+                in cache.get_all_model_fields(self.model)
+                if f.name in selected_fields
             ]
-
-        if self.use_natural_primary_keys and self.selected_fields is None:
-            key = self.find_natural_key(model_fields, opts.unique_together)
-            if key is not None:
-                model_fields = [
-                    f
+            natural_key = self.find_natural_key(
+                model_fields,
+                self.model._meta.unique_together
+            )
+            if natural_key is not None:
+                excluded_fields = [
+                    f.name
                     for f
                     in model_fields
-                    if not f.primary_key
+                    if f.primary_key
+                ]
+                selected_fields = [
+                    field_name
+                    for field_name
+                    in selected_fields
+                    if field_name not in excluded_fields
                 ]
 
         fields = []
-        for f in model_fields:
-            if f.is_relation:
-                rel = self.build_relation(f)
-                if rel is not None:
-                    fields.extend(rel)
-            else:
-                fld = self.build_field(f)
+        for name in selected_fields:
+
+            path = name.split('__')
+            model_fields = cache.get_model_fields(self.model, path)
+
+            if not model_fields or len(model_fields) < len(path):
+                continue   # ModelMigration cannot handle properties.
+
+            model_field = model_fields[-1]
+            path = '__'.join(f.attname for f in model_fields)
+            name = '__'.join(f.name for f in model_fields)
+            attname = path
+
+            if not model_field.is_relation:
+                fld = self.build_field(model_field, path, name, attname)
                 if fld is not None:
-                    fields.append((fld, [f]))
+                    fields.append((fld, model_fields))
+            else:
+                rel = self.build_relation(model_field, path, name, attname)
+                if rel is not None:
+                    if len(model_fields) > 1:
+                        previous_model_fields = model_fields[:-1]
+                        rel =  [
+                            (fld, previous_model_fields + rel_model_fields)
+                            for fld, rel_model_fields
+                            in rel
+                        ]
+                    fields.extend(rel)
 
         return collections.OrderedDict(fields)
 

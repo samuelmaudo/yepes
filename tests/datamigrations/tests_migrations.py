@@ -395,26 +395,90 @@ class ModelMigrationsTests(test.TestCase):
         self.assertFalse(migration.requires_model_instances)
 
     def test_filter_migration_fields(self):
-        migration = ModelMigration(BooleanModel, fields=[
+        migration = ModelMigration(BlogCategoryModel, fields=[
             'pk',
-            'null_boolean',
-            'boolean',
+            'name',
+            'description',
         ], exclude=[
             'pk',
         ])
         self.assertEqual(
             [repr(fld) for fld in migration.fields],
-            ['<yepes.contrib.datamigrations.fields.BooleanField: null_boolean>',
-             '<yepes.contrib.datamigrations.fields.BooleanField: boolean>'],
+            ['<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>'],
         )
         self.assertEqual(migration.fields_to_export, migration.fields)
         self.assertEqual(migration.fields_to_import, migration.fields)
         self.assertIsNone(migration.primary_key)
         self.assertIsNone(migration.natural_foreign_keys)
+        self.assertFalse(migration.can_create)
+        self.assertTrue(migration.can_export)
+        self.assertFalse(migration.can_import)
+        self.assertFalse(migration.can_update)
+        self.assertFalse(migration.requires_model_instances)
+
+        migration = ModelMigration(BlogCategoryModel, fields=[
+            'pk',
+            'name',
+            'blog__name',
+        ])
+        self.assertEqual(
+            [repr(fld) for fld in migration.fields],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__name (blog_id__name)>'],
+        )
+        self.assertEqual(migration.fields_to_export, migration.fields)
+        self.assertEqual(migration.fields_to_import, migration.fields)
+        self.assertEqual(
+            repr(migration.primary_key),
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
+        )
+        self.assertEqual(
+            [repr(fld) for fld in migration.natural_foreign_keys],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name (blog_id__name)>'],
+        )
         self.assertTrue(migration.can_create)
         self.assertTrue(migration.can_export)
         self.assertTrue(migration.can_import)
-        self.assertFalse(migration.can_update)
+        self.assertTrue(migration.can_update)
+        self.assertFalse(migration.requires_model_instances)
+
+        migration = ModelMigration(BlogCategoryModel, fields=[
+            'pk',
+            'name',
+            'description',
+            'blog__name',
+            'blog__description',
+        ])
+        self.assertEqual(
+            [repr(fld) for fld in migration.fields],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__name (blog_id__name)>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__description (blog_id__description)>'],
+        )
+        self.assertEqual(migration.fields_to_export, migration.fields)
+        self.assertEqual(
+            [repr(fld) for fld in migration.fields_to_import],
+            ['<yepes.contrib.datamigrations.fields.IntegerField: id>',
+             '<yepes.contrib.datamigrations.fields.TextField: name>',
+             '<yepes.contrib.datamigrations.fields.TextField: description>',
+             '<yepes.contrib.datamigrations.fields.TextField: blog__name (blog_id__name)>'],
+        )
+        self.assertEqual(
+            repr(migration.primary_key),
+            '<yepes.contrib.datamigrations.fields.IntegerField: id>',
+        )
+        self.assertEqual(
+            [repr(fld) for fld in migration.natural_foreign_keys],
+            ['<yepes.contrib.datamigrations.fields.TextField: blog__name (blog_id__name)>'],
+        )
+        self.assertTrue(migration.can_create)
+        self.assertTrue(migration.can_export)
+        self.assertTrue(migration.can_import)
+        self.assertTrue(migration.can_update)
         self.assertFalse(migration.requires_model_instances)
 
     def test_natural_keys(self):
